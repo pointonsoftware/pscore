@@ -14,18 +14,19 @@ endif(CI_BUILD)
 unset(CI_BUILD CACHE)
 
 add_executable(
-    qure
+    console_app
     main.cpp
 )
 
+option(CORE_LIB_DIR "Core lib directory" "")
 find_library(CORE_LIB 
     core 
-    "../packages/lib"
+    ${CORE_LIB_DIR}
     REQUIRED
 )
 
 target_link_libraries(
-    qure
+    console_app
     ${CORE_LIB}
 )
 

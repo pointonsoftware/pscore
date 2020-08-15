@@ -7,6 +7,6 @@
 #include <iostream>
 
 int main() {
-    std::cout << "Hello, Welcome Qure!" << std::endl;
+    std::cout << "Hello, Welcome Core!" << std::endl;
     return 0;
 }

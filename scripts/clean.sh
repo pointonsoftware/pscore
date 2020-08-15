@@ -1,11 +1,11 @@
 #!/bin/sh
 
 # Clean bins
-cd ../packages/bin
+cd $BIN_DIR
 ls -Q | grep -v .gitignore | xargs rm -rf
 
 # Clean libs
-cd ../lib
+cd $LIB_DIR
 ls -Q | grep -v .gitignore | xargs rm -rf
 
 echo "Cleaned!"
