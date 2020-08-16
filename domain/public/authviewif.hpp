@@ -13,6 +13,7 @@
 #include <inc/employee.hpp>
 
 namespace domain {
+namespace authentication {
 
 class AuthViewIface {
  public:
@@ -24,6 +25,7 @@ class AuthViewIface {
     virtual void loginSuccessful(const entities::Employee& employee) = 0;
 };
 
+}  // authentication
 }  // domain
 
 #endif

@@ -13,6 +13,7 @@
 #include <dataproviderif.hpp>
 
 namespace domain {
+namespace authentication {
 
 class AuthDataProviderIface : public DataProviderIface {
  public:
@@ -20,6 +21,7 @@ class AuthDataProviderIface : public DataProviderIface {
     virtual ~AuthDataProviderIface() = default;
 };
 
+}  // authentication
 }  // domain
 
 #endif
