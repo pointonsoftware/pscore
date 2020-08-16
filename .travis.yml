@@ -31,9 +31,10 @@ matrix:
   # cpplint
   - os: linux
     addons:
-    script:
-          # Run static analyzer
-          - travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py | python - --filter=-readability/multiline_comment --linelength=100 --recursive domain
+    # Run static analyzer
+    script: >-
+          travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
+          python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
 
   # Build
   - os: linux
