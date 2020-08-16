@@ -7,7 +7,6 @@
 *   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
 *                                                                             *
 ******************************************************************************/
-
 #ifndef DOMAIN_CONTROLLERS_AUTHENTICATION
 #define DOMAIN_CONTROLLERS_AUTHENTICATION
 

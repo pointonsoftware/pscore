@@ -7,7 +7,6 @@
 *   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
 *                                                                             *
 ******************************************************************************/
-
 #ifndef DOMAIN_PUBLIC_AUTHVIEW
 #define DOMAIN_PUBLIC_AUTHVIEW
 

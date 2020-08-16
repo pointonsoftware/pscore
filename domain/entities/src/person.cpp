@@ -7,7 +7,6 @@
 *   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
 *                                                                             *
 ******************************************************************************/
-
 #include <inc/person.hpp>
 
 namespace domain {
