@@ -10,10 +10,10 @@
 #include <inc/authcontroller.hpp>
 
 namespace domain {
-namespace controllers {
+namespace authentication {
 
 AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view, 
-                     std::unique_ptr<AuthDataProviderIface>&& dataprovider)
+                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
 : mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
     // Empty for now
 }
@@ -31,5 +31,5 @@ status::General AuthController::authenticate(const std::string& pin) {
     return status::General::SUCCESS;
 }
 
-}  // controllers
+}  // authentication
 }  // domain

@@ -27,7 +27,14 @@ matrix:
     script:
           # Run static analyzer
           - cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
-  
+
+  # cpplint
+  - os: linux
+    addons:
+    script:
+          # Run static analyzer
+          - travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py | python - --recursive domain
+
   # Build
   - os: linux
     addons:

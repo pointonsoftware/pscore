@@ -17,12 +17,12 @@
 #include <memory>
 
 namespace domain {
-namespace controllers {
+namespace authentication {
 
 class AuthController {
  public:
     explicit AuthController(std::unique_ptr<AuthViewIface>&& view, 
-                     std::unique_ptr<AuthDataProviderIface>&& dataprovider);
+                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
     bool login(const std::string& pin);
  private:
     status::General authenticate(const std::string& pin);
@@ -30,7 +30,7 @@ class AuthController {
     std::unique_ptr<AuthDataProviderIface> mDataProvider;
 };
 
-}  // controllers
+}  // authentication
 }  // domain
 
 #endif
