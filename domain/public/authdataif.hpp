@@ -1,14 +1,14 @@
-/**************************************************************************//**
-*         Copyright (C) Pointon Software - All Rights Reserved                *
-*                                                                             *
-*   Unauthorized copying of this file via any medium is strictly prohibited   *
-*   Proprietary and confidential                                              *
-*                                                                             *
-*   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
-*                                                                             *
-******************************************************************************/
-#ifndef DOMAIN_PUBLIC_AUTHDATAPROVIDER
-#define DOMAIN_PUBLIC_AUTHDATAPROVIDER
+/**************************************************************************************************
+*                      Copyright (C) Pointon Software - All Rights Reserved                       *
+*                                                                                                 *
+*             Unauthorized copying of this file via any medium is strictly prohibited             *
+*                                  Proprietary and confidential                                   *
+*                                                                                                 *
+*                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
+*                                                                                                 *
+**************************************************************************************************/
+#ifndef DOMAIN_PUBLIC_AUTHDATAIF_HPP_
+#define DOMAIN_PUBLIC_AUTHDATAIF_HPP_
 
 #include <dataproviderif.hpp>
 
@@ -21,7 +21,6 @@ class AuthDataProviderIface : public DataProviderIface {
     virtual ~AuthDataProviderIface() = default;
 };
 
-}  // authentication
-}  // domain
-
-#endif
+}  // namespace authentication
+}  // namespace domain
+#endif  // DOMAIN_PUBLIC_AUTHDATAIF_HPP_

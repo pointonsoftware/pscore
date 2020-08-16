@@ -1,14 +1,14 @@
-/**************************************************************************//**
-*         Copyright (C) Pointon Software - All Rights Reserved                *
-*                                                                             *
-*   Unauthorized copying of this file via any medium is strictly prohibited   *
-*   Proprietary and confidential                                              *
-*                                                                             *
-*   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
-*                                                                             *
-******************************************************************************/
-#ifndef DOMAIN_ENTITIES_PERSON
-#define DOMAIN_ENTITIES_PERSON
+/**************************************************************************************************
+*                      Copyright (C) Pointon Software - All Rights Reserved                       *
+*                                                                                                 *
+*             Unauthorized copying of this file via any medium is strictly prohibited             *
+*                                  Proprietary and confidential                                   *
+*                                                                                                 *
+*                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
+*                                                                                                 *
+**************************************************************************************************/
+#ifndef DOMAIN_ENTITIES_INC_PERSON_HPP_
+#define DOMAIN_ENTITIES_INC_PERSON_HPP_
 
 #include <string>
 #include <vector>
@@ -23,7 +23,7 @@ class Person {
  public:
     Person(const std::string& firstname,
            const std::string& middlename,
-           const std::string& lastname, 
+           const std::string& lastname,
            const std::string& birthdate,
            const std::string& gender);
     Person() = default;
@@ -34,7 +34,7 @@ class Person {
     void setPersonalIds(const std::vector<PersonalId>& personalids);
     void setEmail(const std::string& email);
     void setAddress(const Address& address);
-    
+
  private:
     std::string m_firstname;
     std::string m_middlename;
@@ -47,7 +47,6 @@ class Person {
     std::vector<PersonalId> m_personal_ids;
 };
 
-}  // entities
-}  // domain
-
-#endif
+}  // namespace entities
+}  // namespace domain
+#endif  // DOMAIN_ENTITIES_INC_PERSON_HPP_

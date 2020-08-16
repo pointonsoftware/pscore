@@ -1,14 +1,14 @@
-/**************************************************************************//**
-*         Copyright (C) Pointon Software - All Rights Reserved                *
-*                                                                             *
-*   Unauthorized copying of this file via any medium is strictly prohibited   *
-*   Proprietary and confidential                                              *
-*                                                                             *
-*   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
-*                                                                             *
-******************************************************************************/
-#ifndef DOMAIN_PUBLIC_DEFINES
-#define DOMAIN_PUBLIC_DEFINES
+/**************************************************************************************************
+*                      Copyright (C) Pointon Software - All Rights Reserved                       *
+*                                                                                                 *
+*             Unauthorized copying of this file via any medium is strictly prohibited             *
+*                                  Proprietary and confidential                                   *
+*                                                                                                 *
+*                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
+*                                                                                                 *
+**************************************************************************************************/
+#ifndef DOMAIN_PUBLIC_DEFINES_HPP_
+#define DOMAIN_PUBLIC_DEFINES_HPP_
 
 namespace domain {
 namespace status {
@@ -23,7 +23,7 @@ enum class General {
     OCCUPIED = 6,
 };
 
-}  // status
-}  // domain
+}  // namespace status
+}  // namespace domain
 
-#endif
+#endif  // DOMAIN_PUBLIC_DEFINES_HPP_

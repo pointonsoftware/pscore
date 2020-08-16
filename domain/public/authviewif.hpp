@@ -1,14 +1,14 @@
-/**************************************************************************//**
-*         Copyright (C) Pointon Software - All Rights Reserved                *
-*                                                                             *
-*   Unauthorized copying of this file via any medium is strictly prohibited   *
-*   Proprietary and confidential                                              *
-*                                                                             *
-*   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
-*                                                                             *
-******************************************************************************/
-#ifndef DOMAIN_PUBLIC_AUTHVIEW
-#define DOMAIN_PUBLIC_AUTHVIEW
+/**************************************************************************************************
+*                      Copyright (C) Pointon Software - All Rights Reserved                       *
+*                                                                                                 *
+*             Unauthorized copying of this file via any medium is strictly prohibited             *
+*                                  Proprietary and confidential                                   *
+*                                                                                                 *
+*                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
+*                                                                                                 *
+**************************************************************************************************/
+#ifndef DOMAIN_PUBLIC_AUTHVIEWIF_HPP_
+#define DOMAIN_PUBLIC_AUTHVIEWIF_HPP_
 
 #include <inc/employee.hpp>
 
@@ -25,7 +25,6 @@ class AuthViewIface {
     virtual void loginSuccessful(const entities::Employee& employee) = 0;
 };
 
-}  // authentication
-}  // domain
-
-#endif
+}  // namespace authentication
+}  // namespace domain
+#endif  // DOMAIN_PUBLIC_AUTHVIEWIF_HPP_

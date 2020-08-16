@@ -1,14 +1,14 @@
-/**************************************************************************//**
-*         Copyright (C) Pointon Software - All Rights Reserved                *
-*                                                                             *
-*   Unauthorized copying of this file via any medium is strictly prohibited   *
-*   Proprietary and confidential                                              *
-*                                                                             *
-*   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
-*                                                                             *
-******************************************************************************/
-#ifndef DOMAIN_ENTITIES_ADDRESS
-#define DOMAIN_ENTITIES_ADDRESS
+/**************************************************************************************************
+*                      Copyright (C) Pointon Software - All Rights Reserved                       *
+*                                                                                                 *
+*             Unauthorized copying of this file via any medium is strictly prohibited             *
+*                                  Proprietary and confidential                                   *
+*                                                                                                 *
+*                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
+*                                                                                                 *
+**************************************************************************************************/
+#ifndef DOMAIN_ENTITIES_INC_ADDRESS_HPP_
+#define DOMAIN_ENTITIES_INC_ADDRESS_HPP_
 
 #include <string>
 
@@ -29,7 +29,6 @@ struct Address {
     std::string zip;
 };
 
-}  // entities
-}  // domain
-
-#endif
+}  // namespace entities
+}  // namespace domain
+#endif  // DOMAIN_ENTITIES_INC_ADDRESS_HPP_
