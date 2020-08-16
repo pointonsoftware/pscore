@@ -7,10 +7,19 @@
 *   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
 *                                                                             *
 ******************************************************************************/
+#ifndef DOMAIN_PUBLIC_DATAPROVIDER
+#define DOMAIN_PUBLIC_DATAPROVIDER
 
-#include <iostream>
+namespace domain {
 
-int main() {
-    std::cout << "Hello, Welcome Core!" << std::endl;
-    return 0;
-}
+class DataProviderIface {
+ public:
+    DataProviderIface() = default;
+    virtual ~DataProviderIface() = default;
+
+    virtual bool getDatabaseStatus() = 0;
+};
+
+}  // domain
+
+#endif

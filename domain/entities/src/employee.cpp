@@ -7,10 +7,19 @@
 *   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
 *                                                                             *
 ******************************************************************************/
+#include <inc/employee.hpp>
 
-#include <iostream>
+namespace domain {
+namespace entities {
 
-int main() {
-    std::cout << "Hello, Welcome Core!" << std::endl;
-    return 0;
+Employee::Employee(const std::string& firstname,
+            const std::string& middlename,
+            const std::string& lastname, 
+            const std::string& birthdate,
+            const std::string& gender)
+: Person(firstname, middlename, lastname, birthdate, gender) {
+    // Empty for now
 }
+
+}  // entities
+}  // domain

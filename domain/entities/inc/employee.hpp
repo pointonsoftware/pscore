@@ -7,10 +7,28 @@
 *   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
 *                                                                             *
 ******************************************************************************/
+#ifndef DOMAIN_ENTITIES_EMPLOYEE
+#define DOMAIN_ENTITIES_EMPLOYEE
 
-#include <iostream>
+#include "person.hpp"
 
-int main() {
-    std::cout << "Hello, Welcome Core!" << std::endl;
-    return 0;
-}
+namespace domain {
+namespace entities {
+
+class Employee : public Person {
+ public:
+   Employee(const std::string& firstname,
+            const std::string& middlename,
+            const std::string& lastname, 
+            const std::string& birthdate,
+            const std::string& gender);
+    Employee() = default;
+    ~Employee() = default;
+ private:
+    bool is_system_user;
+};
+
+}  // entities
+}  // domain
+
+#endif

@@ -8,9 +8,23 @@
 *                                                                             *
 ******************************************************************************/
 
-#include <iostream>
+#ifndef DOMAIN_PUBLIC_AUTHVIEW
+#define DOMAIN_PUBLIC_AUTHVIEW
 
-int main() {
-    std::cout << "Hello, Welcome Core!" << std::endl;
-    return 0;
-}
+#include <inc/employee.hpp>
+
+namespace domain {
+
+class AuthViewIface {
+ public:
+    AuthViewIface() = default;
+    virtual ~AuthViewIface() = default;
+
+    virtual void showLoginScreen() = 0;
+    virtual void showLoginFailed() = 0;
+    virtual void loginSuccessful(const entities::Employee& employee) = 0;
+};
+
+}  // domain
+
+#endif

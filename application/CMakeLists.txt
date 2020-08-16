@@ -30,4 +30,4 @@ target_link_libraries(
     ${CORE_LIB}
 )
 
-# include_directories (include/domain)
+#include_directories (../domain/)

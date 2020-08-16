@@ -16,15 +16,15 @@ create_dirs() {
 }
 
 start_build() {
-    # Build core lib
+    echo "Building core lib..."
     cd $LIB_DIR
     cmake $DOMAIN_DIR
     make
 
-    # Build app bin
-    cd $BIN_DIR
-    cmake $APP_DIR -DCORE_LIB_DIR=$LIB_DIR
-    make
+    #echo "Building app bin..."
+    #cd $BIN_DIR
+    #cmake $APP_DIR -DCORE_LIB_DIR=$LIB_DIR
+    #make
 }
 
 # main

@@ -8,9 +8,30 @@
 *                                                                             *
 ******************************************************************************/
 
-#include <iostream>
+#ifndef DOMAIN_CONTROLLERS_AUTHENTICATION
+#define DOMAIN_CONTROLLERS_AUTHENTICATION
 
-int main() {
-    std::cout << "Hello, Welcome Core!" << std::endl;
-    return 0;
-}
+#include <authviewif.hpp>
+#include <authdataif.hpp>
+#include <defines.hpp>
+#include <string>
+#include <memory>
+
+namespace domain {
+namespace controllers {
+
+class AuthController {
+ public:
+    explicit AuthController(std::unique_ptr<AuthViewIface>&& view, 
+                     std::unique_ptr<AuthDataProviderIface>&& dataprovider);
+    bool login(const std::string& pin);
+ private:
+    status::General authenticate(const std::string& pin);
+    std::unique_ptr<AuthViewIface> mView;
+    std::unique_ptr<AuthDataProviderIface> mDataProvider;
+};
+
+}  // controllers
+}  // domain
+
+#endif
