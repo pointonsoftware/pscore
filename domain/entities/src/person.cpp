@@ -23,25 +23,22 @@ Person::Person(const std::string& firstname,
 }
 
 void Person::addPhoneNumber(const std::string& phonenumber) {
-    m_phone_numbers.emplace_back(phonenumber);
+    m_contact_details.phone_number.emplace_back(phonenumber);
 }
 
-void Person::addEmail(const std::string& email) {
-    m_emails.emplace_back(email);
+void Person::addPersonalId(const std::string& type, const std::string& number) {
+    m_personal_ids.emplace_back((type, number));
 }
 
-void Person::setPhoneNumbers(const std::vector<std::string>& phonenumbers) {
-    if(!m_phone_numbers.empty()) {
+void Person::setPersonalIds(const std::vector<PersonalId>& personalids) {
+    if(!m_personal_ids.empty()) {
         // warning, we're overwriting the container
     }
-    m_phone_numbers = phonenumbers;
+    m_personal_ids = personalids;
 }
 
-void Person::setEmails(const std::vector<std::string>& emails) {
-    if(!m_emails.empty()) {
-        // warning, we're overwriting the container
-    }
-    m_emails = emails;
+void Person::setEmail(const std::string& email) {
+    m_contact_details.email = email;
 }
 
 void Person::setAddress(const Address& address) {

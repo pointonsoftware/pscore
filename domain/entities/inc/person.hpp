@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include "address.hpp"
+#include "contactdetails.hpp"
 #include "personalid.hpp"
 
 namespace domain {
@@ -29,9 +30,9 @@ class Person {
     virtual ~Person() = default;
 
     void addPhoneNumber(const std::string& phonenumber);
-    void addEmail(const std::string& email);
-    void setPhoneNumbers(const std::vector<std::string>& phonenumbers);
-    void setEmails(const std::vector<std::string>& emails);
+    void addPersonalId(const std::string& type, const std::string& number);
+    void setPersonalIds(const std::vector<PersonalId>& personalids);
+    void setEmail(const std::string& email);
     void setAddress(const Address& address);
     
  private:
@@ -40,10 +41,10 @@ class Person {
     std::string m_lastname;
     std::string m_birthdate;
     std::string m_gender;
-    std::vector<std::string> m_phone_numbers;
-    std::vector<std::string> m_emails;
-    std::vector<PersonalId> m_personalIds;
+    std::string m_email;
     Address m_address;
+    ContactDetails m_contact_details;
+    std::vector<PersonalId> m_personal_ids;
 };
 
 }  // entities

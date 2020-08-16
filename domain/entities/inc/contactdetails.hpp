@@ -7,19 +7,22 @@
 *   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020               *
 *                                                                             *
 ******************************************************************************/
-#include <inc/employee.hpp>
+#ifndef DOMAIN_ENTITIES_CONTACTDETAILS
+#define DOMAIN_ENTITIES_CONTACTDETAILS
+
+#include <string>
+#include <vector>
 
 namespace domain {
 namespace entities {
 
-Employee::Employee(const std::string& firstname,
-            const std::string& middlename,
-            const std::string& lastname, 
-            const std::string& birthdate,
-            const std::string& gender)
-: Person{firstname, middlename, lastname, birthdate, gender} {
-    // Empty for now
-}
+struct ContactDetails {
+    std::string name;
+    std::string email;
+    std::vector<std::string> phone_number;
+};
 
 }  // entities
 }  // domain
+
+#endif

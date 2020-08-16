@@ -16,10 +16,15 @@ namespace domain {
 namespace entities {
 
 struct Address {
+    std::string housenumber;
+    std::string lot;
+    std::string block;
+    std::string street;
+    std::string subdivision;
     std::string sitio;
     std::string purok;
     std::string barangay;
-    std::string town;
+    std::string city_town;
     std::string province;
     std::string zip;
 };

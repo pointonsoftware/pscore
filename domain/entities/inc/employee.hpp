@@ -26,6 +26,7 @@ class Employee : public Person {
     ~Employee() = default;
  private:
     bool is_system_user;
+    std::string position;
 };
 
 }  // entities
