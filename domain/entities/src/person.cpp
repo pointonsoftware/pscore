@@ -27,7 +27,7 @@ void Person::addPhoneNumber(const std::string& phonenumber) {
 }
 
 void Person::addPersonalId(const std::string& type, const std::string& number) {
-    m_personal_ids.emplace_back((type, number));
+    m_personal_ids.emplace_back(PersonalId{type, number});
 }
 
 void Person::setPersonalIds(const std::vector<PersonalId>& personalids) {
