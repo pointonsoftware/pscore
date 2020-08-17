@@ -13,6 +13,6 @@ cmake -DCI_BUILD=ON $DOMAIN_DIR
 make
 
 # Build app bin
-cd $BIN_DIR
-cmake -DCI_BUILD=ON -DCORE_LIB_DIR=$LIB_DIR $APP_DIR
-make
+#cd $BIN_DIR
+#cmake -DCI_BUILD=ON -DCORE_LIB_DIR=$LIB_DIR $APP_DIR
+#make

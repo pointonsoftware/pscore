@@ -1,4 +1,4 @@
-# Pointon CORE
+# PSCore
 
 The all-in-one engine for Pointon Business Software products!
 
@@ -33,7 +33,7 @@ You can clone the repository to a local destination using git:
 ### How to build
 
 - Go to pscore/scripts folder
-- Run `build.sh`
+- Run `do.sh -h`
 - Generated/output files are in pscore/packages folder
 
 ---
