@@ -24,27 +24,26 @@ install:
   - sudo apt-get install -qq g++-7
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
 
-stages:
+#stages:
   #- Static code analysis
-  - Compile
+  #- Compile
   #- unittest
-  - Profile
+  #- Profile
 
 jobs:
   include:
     - stage  : Static code analysis
       name   : CppLint
       script : >-
-        travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
-        python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
+               travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
+               python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
     
-    - stage  : Static code analysis
-      name   : CppCheck
+    - name   : CppCheck
       script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
     
     - stage  : Compile
       name   : Build
-      script : scripts/ci_build.sh
+      script : clean_build.sh -DCI_BUILD=ON
 
     - stage  : Profile
       name   : gprof
