@@ -24,15 +24,18 @@ matrix:
       apt:
         packages:
           - cppcheck
-    script:
-          # Run static analyzer
-          - cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
+    jobs:
+      - name: "CPPCheck"
+        # Run static analyzer
+      - cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
 
   # cpplint
   - os: linux
     addons:
     # Run static analyzer
-    script: >-
+    jobs:
+      - name: "Linter"
+        script: >-
           travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
           python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
 
@@ -42,11 +45,16 @@ matrix:
       apt:
         packages:
           - cmake
-    script:
-          - scripts/ci_build.sh
-          # Produce the gprof log
-          - scripts/ci_profiling.sh
-
+    jobs:
+        # stages:
+        #       - compile
+        #       - test
+        #       - profiling
+      include:
+        - stage: Compile
+          script: scripts/ci_build.sh
+        - stage: Profiling
+          script: scripts/ci_profiling.sh
 
 after_success:
   - echo "Successful!"
