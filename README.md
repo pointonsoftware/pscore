@@ -32,9 +32,8 @@ You can clone the repository to a local destination using git:
 
 ### How to build
 
-- Go to pscore/scripts folder
-- Run `do.sh -h`
-- Generated/output files are in pscore/packages folder
+- Run `clean_build.sh`
+- Generated/output files are in pscore/build folder
 
 ---
 

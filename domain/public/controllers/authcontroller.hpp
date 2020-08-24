@@ -7,29 +7,29 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <inc/authcontroller.hpp>
+#ifndef DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+#define DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+
+#include <string>
+#include <memory>
+#include <defines.hpp>
+#include <views/authviewif.hpp>
+#include <dataproviders/authdataif.hpp>
 
 namespace domain {
 namespace authentication {
 
-AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
-                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
-: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
-    // Empty for now
-}
-
-bool AuthController::login(const std::string& pin) {
-    // Check if pin is empty
-    // Check if pin is numeric
-    // Call authenticate
-    return true;
-}
-
-status::General AuthController::authenticate(const std::string& pin) {
-    // Check if dataprovider is ready; else throw
-    // Check pin in dataprovider
-    return status::General::SUCCESS;
-}
+class AuthController {
+ public:
+    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
+                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
+    bool login(const std::string& pin);
+ private:
+    status::General authenticate(const std::string& pin);
+    std::unique_ptr<AuthViewIface> mView;
+    std::unique_ptr<AuthDataProviderIface> mDataProvider;
+};
 
 }  // namespace authentication
 }  // namespace domain
+#endif  // DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_

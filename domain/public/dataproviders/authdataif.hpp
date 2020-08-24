@@ -7,29 +7,20 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
-#define DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+#ifndef DOMAIN_PUBLIC_AUTHDATAIF_HPP_
+#define DOMAIN_PUBLIC_AUTHDATAIF_HPP_
 
-#include <string>
-#include <memory>
-#include <defines.hpp>
-#include <authviewif.hpp>
-#include <authdataif.hpp>
+#include "dataproviderif.hpp"
 
 namespace domain {
 namespace authentication {
 
-class AuthController {
+class AuthDataProviderIface : public DataProviderIface {
  public:
-    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
-                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
-    bool login(const std::string& pin);
- private:
-    status::General authenticate(const std::string& pin);
-    std::unique_ptr<AuthViewIface> mView;
-    std::unique_ptr<AuthDataProviderIface> mDataProvider;
+    AuthDataProviderIface() = default;
+    virtual ~AuthDataProviderIface() = default;
 };
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+#endif  // DOMAIN_PUBLIC_AUTHDATAIF_HPP_

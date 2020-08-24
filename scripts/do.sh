@@ -32,6 +32,18 @@ rebuild_lib() {
     make
 }
 
+clean_build() {
+    # Clean bins
+    cd $BIN_DIR
+    ls -Q | grep -v .gitignore | xargs rm -rf
+
+    # Clean libs
+    cd $LIB_DIR
+    ls -Q | grep -v .gitignore | xargs rm -rf
+
+    echo "Cleaned!"
+}
+
 
 #  Get command-line arguments
 OPTS=`getopt -o bcpalh --long build,clean,profile,rbapp,rblib,help -- "$@"`
@@ -42,7 +54,7 @@ eval set -- "$OPTS"
 while true; do
     case "$1" in
     -b | --build) cd $SCRIPT_DIR; ./build.sh; exit 0 ;;
-    -c | --clean) cd $SCRIPT_DIR; ./clean.sh; exit 0 ;;
+    -c | --clean) clean_build; exit 0 ;;
     -p | --profile) cd $SCRIPT_DIR; ./profiling.sh; exit 0 ;;
     -a | --rbapp) rebuild_app; exit 0 ;;
     -l | --rblib) rebuild_lib; exit 0 ;;

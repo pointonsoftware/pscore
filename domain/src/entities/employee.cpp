@@ -7,20 +7,19 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_AUTHDATAIF_HPP_
-#define DOMAIN_PUBLIC_AUTHDATAIF_HPP_
-
-#include <dataproviderif.hpp>
+#include <entities/employee.hpp>
 
 namespace domain {
-namespace authentication {
+namespace entities {
 
-class AuthDataProviderIface : public DataProviderIface {
- public:
-    AuthDataProviderIface() = default;
-    virtual ~AuthDataProviderIface() = default;
-};
+Employee::Employee(const std::string& firstname,
+                   const std::string& middlename,
+                   const std::string& lastname,
+                   const std::string& birthdate,
+                   const std::string& gender)
+: Person{firstname, middlename, lastname, birthdate, gender} {
+    // Empty for now
+}
 
-}  // namespace authentication
+}  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_AUTHDATAIF_HPP_
