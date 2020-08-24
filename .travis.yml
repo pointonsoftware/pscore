@@ -14,47 +14,41 @@ dist: trusty
     #- RUN_TESTS=true
     #- COVERAGE=false
 
-# Build Matrix
-matrix:
+before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install cmake
+  - sudo apt-get install cppcheck
+  - sudo apt-get install -qq g++-7
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+
+stages:
+  - static analyzer
+  - build
+  #- unittest
+  - profiling
+
+jobs:
   include:
+    - stage  : static analyzer
+      name   : CppLint
+      script : >-
+        travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
+        python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
+    
+    - stage  : static analyzer
+      name   : CppCheck
+      script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
+    
+    - stage  : build
+      name   : Build
+      script : scripts/ci_build.sh
 
-  # cppcheck
-  - os: linux
-    addons:
-      apt:
-        packages:
-          - cppcheck
-    jobs:
-      - name: "CPPCheck"
-        # Run static analyzer
-      - cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
-
-  # cpplint
-  - os: linux
-    addons:
-    # Run static analyzer
-    jobs:
-      - name: "Linter"
-        script: >-
-          travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
-          python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
-
-  # Build
-  - os: linux
-    addons:
-      apt:
-        packages:
-          - cmake
-    jobs:
-        # stages:
-        #       - compile
-        #       - test
-        #       - profiling
-      include:
-        - stage: Compile
-          script: scripts/ci_build.sh
-        - stage: Profiling
-          script: scripts/ci_profiling.sh
+    - stage  : profiling
+      name   : Profiling
+      script : scripts/ci_profiling.sh
 
 after_success:
   - echo "Successful!"
