@@ -7,8 +7,8 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_AUTHDATAIF_HPP_
-#define DOMAIN_PUBLIC_AUTHDATAIF_HPP_
+#ifndef DOMAIN_PUBLIC_DATAPROVIDERS_AUTHDATAIF_HPP_
+#define DOMAIN_PUBLIC_DATAPROVIDERS_AUTHDATAIF_HPP_
 
 #include "dataproviderif.hpp"
 
@@ -23,4 +23,4 @@ class AuthDataProviderIface : public DataProviderIface {
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_AUTHDATAIF_HPP_
+#endif  // DOMAIN_PUBLIC_DATAPROVIDERS_AUTHDATAIF_HPP_

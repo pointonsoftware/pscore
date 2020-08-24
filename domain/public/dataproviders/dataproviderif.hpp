@@ -7,8 +7,8 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_DATAPROVIDERIF_HPP_
-#define DOMAIN_PUBLIC_DATAPROVIDERIF_HPP_
+#ifndef DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_
+#define DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_
 
 namespace domain {
 
@@ -22,4 +22,4 @@ class DataProviderIface {
 
 }  // namespace domain
 
-#endif  // DOMAIN_PUBLIC_DATAPROVIDERIF_HPP_
+#endif  // DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_

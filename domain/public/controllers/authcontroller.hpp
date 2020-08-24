@@ -7,8 +7,8 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
-#define DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+#ifndef DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
+#define DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
 
 #include <string>
 #include <memory>
@@ -32,4 +32,4 @@ class AuthController {
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+#endif  // DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_

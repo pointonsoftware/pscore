@@ -7,8 +7,8 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_ENTITIES_INC_PERSON_HPP_
-#define DOMAIN_ENTITIES_INC_PERSON_HPP_
+#ifndef DOMAIN_INC_ENTITIES_PERSON_HPP_
+#define DOMAIN_INC_ENTITIES_PERSON_HPP_
 
 #include <string>
 #include <vector>
@@ -49,4 +49,4 @@ class Person {
 
 }  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_ENTITIES_INC_PERSON_HPP_
+#endif  // DOMAIN_INC_ENTITIES_PERSON_HPP_

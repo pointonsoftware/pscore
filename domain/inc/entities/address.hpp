@@ -7,8 +7,8 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_ENTITIES_INC_ADDRESS_HPP_
-#define DOMAIN_ENTITIES_INC_ADDRESS_HPP_
+#ifndef DOMAIN_INC_ENTITIES_ADDRESS_HPP_
+#define DOMAIN_INC_ENTITIES_ADDRESS_HPP_
 
 #include <string>
 
@@ -31,4 +31,4 @@ struct Address {
 
 }  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_ENTITIES_INC_ADDRESS_HPP_
+#endif  // DOMAIN_INC_ENTITIES_ADDRESS_HPP_
