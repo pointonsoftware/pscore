@@ -43,7 +43,7 @@ jobs:
     
     - stage  : Compile
       name   : Build
-      script : scripts/ci_profiling.sh
+      script : scripts/ci_build.sh
 
     # - stage  : Profile
     #   name   : gprof

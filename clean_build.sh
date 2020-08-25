@@ -2,7 +2,7 @@
 
 for i in "$@"
 do
-  CORE_CMAKE_FLAGS="$i $CORE_CMAKE_FLAGS"
+  CORE_CMAKE_FLAGS="$i $CORE_CMAKE_FLAGS";
 done
 
 cd "$(dirname $0)" || exit 1
