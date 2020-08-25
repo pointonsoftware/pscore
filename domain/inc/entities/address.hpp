@@ -7,29 +7,28 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
-#define DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+#ifndef DOMAIN_INC_ENTITIES_ADDRESS_HPP_
+#define DOMAIN_INC_ENTITIES_ADDRESS_HPP_
 
 #include <string>
-#include <memory>
-#include <defines.hpp>
-#include <authviewif.hpp>
-#include <authdataif.hpp>
 
 namespace domain {
-namespace authentication {
+namespace entities {
 
-class AuthController {
- public:
-    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
-                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
-    bool login(const std::string& pin);
- private:
-    status::General authenticate(const std::string& pin);
-    std::unique_ptr<AuthViewIface> mView;
-    std::unique_ptr<AuthDataProviderIface> mDataProvider;
+struct Address {
+    std::string housenumber;
+    std::string lot;
+    std::string block;
+    std::string street;
+    std::string subdivision;
+    std::string sitio;
+    std::string purok;
+    std::string barangay;
+    std::string city_town;
+    std::string province;
+    std::string zip;
 };
 
-}  // namespace authentication
+}  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_CONTROLLERS_INC_AUTHCONTROLLER_HPP_
+#endif  // DOMAIN_INC_ENTITIES_ADDRESS_HPP_

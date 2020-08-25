@@ -7,28 +7,19 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_ENTITIES_INC_ADDRESS_HPP_
-#define DOMAIN_ENTITIES_INC_ADDRESS_HPP_
-
-#include <string>
+#ifndef DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_
+#define DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_
 
 namespace domain {
-namespace entities {
 
-struct Address {
-    std::string housenumber;
-    std::string lot;
-    std::string block;
-    std::string street;
-    std::string subdivision;
-    std::string sitio;
-    std::string purok;
-    std::string barangay;
-    std::string city_town;
-    std::string province;
-    std::string zip;
+class DataProviderIface {
+ public:
+    DataProviderIface() = default;
+    virtual ~DataProviderIface() = default;
+
+    virtual bool getDatabaseStatus() = 0;
 };
 
-}  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_ENTITIES_INC_ADDRESS_HPP_
+
+#endif  // DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_

@@ -7,24 +7,21 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_AUTHVIEWIF_HPP_
-#define DOMAIN_PUBLIC_AUTHVIEWIF_HPP_
+#ifndef DOMAIN_INC_ENTITIES_CONTACTDETAILS_HPP_
+#define DOMAIN_INC_ENTITIES_CONTACTDETAILS_HPP_
 
-#include <inc/employee.hpp>
+#include <string>
+#include <vector>
 
 namespace domain {
-namespace authentication {
+namespace entities {
 
-class AuthViewIface {
- public:
-    AuthViewIface() = default;
-    virtual ~AuthViewIface() = default;
-
-    virtual void showLoginScreen() = 0;
-    virtual void showLoginFailed() = 0;
-    virtual void loginSuccessful(const entities::Employee& employee) = 0;
+struct ContactDetails {
+    std::string name;
+    std::string email;
+    std::vector<std::string> phone_number;
 };
 
-}  // namespace authentication
+}  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_AUTHVIEWIF_HPP_
+#endif  // DOMAIN_INC_ENTITIES_CONTACTDETAILS_HPP_

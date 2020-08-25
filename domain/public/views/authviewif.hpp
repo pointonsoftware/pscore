@@ -7,20 +7,35 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_AUTHDATAIF_HPP_
-#define DOMAIN_PUBLIC_AUTHDATAIF_HPP_
-
-#include <dataproviderif.hpp>
+#ifndef DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
+#define DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
+#include <string>
 
 namespace domain {
 namespace authentication {
 
-class AuthDataProviderIface : public DataProviderIface {
+class AuthViewIface {
  public:
-    AuthDataProviderIface() = default;
-    virtual ~AuthDataProviderIface() = default;
+    AuthViewIface() = default;
+    virtual ~AuthViewIface() = default;
+
+    /**
+    * showLoginScreen
+    */
+    virtual void showLoginScreen() = 0;
+
+    /**
+    * showLoginFailed
+    */
+    virtual void showLoginFailed() = 0;
+
+    /**
+    * Will be called if user was found
+    * @param employee a JSON string containing employee details
+    */
+    virtual void loginSuccessful(const std::string& employee) = 0;
 };
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_AUTHDATAIF_HPP_
+#endif  // DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_

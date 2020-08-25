@@ -8,8 +8,10 @@
 *                                                                             *
 ******************************************************************************/
 #include <iostream>
+#include <controllers/authcontroller.hpp>
 
 int main() {
+    domain::authentication::AuthController aut (nullptr, nullptr);
     std::cout << "Hello, Welcome Core!" << std::endl;
     return 0;
 }

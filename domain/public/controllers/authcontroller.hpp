@@ -7,19 +7,29 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_ENTITIES_INC_PERSONALID_HPP_
-#define DOMAIN_ENTITIES_INC_PERSONALID_HPP_
+#ifndef DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
+#define DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
 
 #include <string>
+#include <memory>
+#include <defines.hpp>
+#include <views/authviewif.hpp>
+#include <dataproviders/authdataif.hpp>
 
 namespace domain {
-namespace entities {
+namespace authentication {
 
-struct PersonalId {
-    std::string type;
-    std::string id_number;
+class AuthController {
+ public:
+    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
+                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
+    bool login(const std::string& pin);
+ private:
+    status::General authenticate(const std::string& pin);
+    std::unique_ptr<AuthViewIface> mView;
+    std::unique_ptr<AuthDataProviderIface> mDataProvider;
 };
 
-}  // namespace entities
+}  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_ENTITIES_INC_PERSONALID_HPP_
+#endif  // DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_

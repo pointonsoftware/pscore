@@ -9,7 +9,7 @@ create_dirs() {
     if [ ! -d "$LIB_DIR" ]; then
         mkdir $LIB_DIR
     fi
-   # Create the binaries directory
+    # Create the binaries directory
     if [ ! -d "$BIN_DIR" ]; then
         mkdir $BIN_DIR
     fi

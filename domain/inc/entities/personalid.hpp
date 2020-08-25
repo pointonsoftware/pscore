@@ -7,29 +7,19 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_ENTITIES_INC_EMPLOYEE_HPP_
-#define DOMAIN_ENTITIES_INC_EMPLOYEE_HPP_
+#ifndef DOMAIN_INC_ENTITIES_PERSONALID_HPP_
+#define DOMAIN_INC_ENTITIES_PERSONALID_HPP_
 
 #include <string>
-#include "person.hpp"
 
 namespace domain {
 namespace entities {
 
-class Employee : public Person {
- public:
-    Employee(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender);
-    Employee() = default;
-    ~Employee() = default;
- private:
-    bool is_system_user;
-    std::string position;
+struct PersonalId {
+    std::string type;
+    std::string id_number;
 };
 
 }  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_ENTITIES_INC_EMPLOYEE_HPP_
+#endif  // DOMAIN_INC_ENTITIES_PERSONALID_HPP_

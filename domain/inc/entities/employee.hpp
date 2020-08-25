@@ -7,19 +7,29 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_DATAPROVIDERIF_HPP_
-#define DOMAIN_PUBLIC_DATAPROVIDERIF_HPP_
+#ifndef DOMAIN_INC_ENTITIES_EMPLOYEE_HPP_
+#define DOMAIN_INC_ENTITIES_EMPLOYEE_HPP_
+
+#include <string>
+#include "person.hpp"
 
 namespace domain {
+namespace entities {
 
-class DataProviderIface {
+class Employee : public Person {
  public:
-    DataProviderIface() = default;
-    virtual ~DataProviderIface() = default;
-
-    virtual bool getDatabaseStatus() = 0;
+    Employee(const std::string& firstname,
+             const std::string& middlename,
+             const std::string& lastname,
+             const std::string& birthdate,
+             const std::string& gender);
+    Employee() = default;
+    ~Employee() = default;
+ private:
+    bool is_system_user;
+    std::string position;
 };
 
+}  // namespace entities
 }  // namespace domain
-
-#endif  // DOMAIN_PUBLIC_DATAPROVIDERIF_HPP_
+#endif  // DOMAIN_INC_ENTITIES_EMPLOYEE_HPP_
