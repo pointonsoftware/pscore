@@ -20,7 +20,7 @@ before_install:
 
 install:
   - sudo apt-get install cmake
-  # - sudo apt-get install cppcheck
+  - sudo apt-get install cppcheck
   - sudo apt-get install -qq g++-7
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
 
@@ -32,22 +32,22 @@ install:
 
 jobs:
   include:
-    # - stage  : Static code analysis
-    #   name   : CppLint
-    #   script : >-
-    #            travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
-    #            python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
+    - stage  : Static code analysis
+      name   : CppLint
+      script : >-
+               travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
+               python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
     
-    # - name   : CppCheck
-    #   script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
+    - name   : CppCheck
+      script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
     
     - stage  : Compile
       name   : Build
       script : scripts/ci_build.sh
 
-    # - stage  : Profile
-    #   name   : gprof
-    #   script : scripts/ci_profiling.sh
+    - stage  : Profile
+      name   : gprof
+      script : scripts/ci_profiling.sh
 
 after_success:
   - echo "Successful!"
