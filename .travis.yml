@@ -43,7 +43,7 @@ jobs:
     
     - stage  : Compile
       name   : Build
-      script : clean_build.sh -DCI_BUILD=ON
+      script : scripts/ci_build.sh
 
     - stage  : Profile
       name   : gprof
