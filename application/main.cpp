@@ -9,9 +9,11 @@
 ******************************************************************************/
 #include <iostream>
 #include <controllers/authcontroller.hpp>
+#include <logger/loghelper.hpp>
 
 int main() {
     domain::authentication::AuthController aut (nullptr, nullptr);
     std::cout << "Hello, Welcome Core!" << std::endl;
+    LOG_DEBUG("Your logger is now alive!");
     return 0;
 }

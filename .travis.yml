@@ -43,11 +43,11 @@ jobs:
     
     - stage  : Compile
       name   : Build
-      script : scripts/ci_build.sh
+      script : ci/ci_build.sh
 
     - stage  : Profile
       name   : gprof
-      script : scripts/ci_profiling.sh
+      script : ci/ci_profiling.sh
 
 after_success:
   - echo "Successful!"
