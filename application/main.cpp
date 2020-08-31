@@ -14,6 +14,7 @@
 int main() {
     domain::authentication::AuthController aut (nullptr, nullptr);
     std::cout << "Hello, Welcome Core!" << std::endl;
-    LOG_DEBUG("Your logger is now alive!");
+    unsigned int percent = 100;
+    LOG_DEBUG("Your logger is now %u%% alive!", percent);
     return 0;
 }

@@ -14,10 +14,10 @@
 #include <memory>
 #include <string>
 
-#define LOG_DEBUG(log_str) utility::LogHelper::GetInstance().write("debug", __PRETTY_FUNCTION__, log_str)
-#define LOG_INFO(log_str)  utility::LogHelper::GetInstance().write("info", __PRETTY_FUNCTION__, log_str)
-#define LOG_WARN(log_str)  utility::LogHelper::GetInstance().write("warn", __PRETTY_FUNCTION__, log_str)
-#define LOG_ERROR(log_str) utility::LogHelper::GetInstance().write("error", __PRETTY_FUNCTION__, log_str)
+#define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", __PRETTY_FUNCTION__, log_str)
+#define LOG_INFO(log_str...)  utility::LogHelper::GetInstance().write("info", __PRETTY_FUNCTION__, log_str)
+#define LOG_WARN(log_str...)  utility::LogHelper::GetInstance().write("warn", __PRETTY_FUNCTION__, log_str)
+#define LOG_ERROR(log_str...) utility::LogHelper::GetInstance().write("error", __PRETTY_FUNCTION__, log_str)
 
 namespace utility {
 
@@ -27,7 +27,8 @@ class LogHelper {
         static LogHelper loghelper;
         return loghelper;
     }
-    void write(const std::string& logMode, const std::string& prettyFunction, const std::string& logString) const;
+    void write(const std::string& logMode, const std::string& prettyFunction,
+               const std::string& logFormat...) const;
 
  private:
     LogHelper();
@@ -35,7 +36,7 @@ class LogHelper {
     const std::string getMethodName(const std::string& prettyFunction) const;
     const std::string extractClassName(const std::string& signature) const;
     const std::string extractMethodName(const std::string& signature) const;
-    
+
     std::unique_ptr<LoggerInterface> m_logger;
 
     enum class LoggerType {
