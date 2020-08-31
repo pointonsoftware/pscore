@@ -10,4 +10,5 @@ add_executable (
 target_link_libraries (
     console_app
     core
+    utility
 )
