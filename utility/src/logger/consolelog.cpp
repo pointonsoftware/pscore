@@ -16,8 +16,8 @@ namespace utility {
 
 void ConsoleLogger::write(const std::string& className, const std::string& methodName,
                           const std::string& logString) {
-    // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |- Hello World!
-    getTime();
+    // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
+    getTimestamp();
     std::cout << std::left << " | "
               << std::setw(MAX_NAME)  << className  << " | "
               << std::setw(MAX_NAME)  << methodName << " | -- "

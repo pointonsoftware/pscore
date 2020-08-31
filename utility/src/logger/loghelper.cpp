@@ -26,7 +26,7 @@
     do { \
         va_list args; \
         va_start(args, logFormat); \
-        size_t len = std::vsnprintf(NULL, 0, logFormat.c_str(), args); \
+        const size_t len = std::vsnprintf(NULL, 0, logFormat.c_str(), args); \
         va_end(args); \
         std::vector<char> vec(len + 1); \
         va_start(args, logFormat); \
@@ -100,11 +100,11 @@ const std::string LogHelper::extractMethodName(const std::string& signature) con
     if(signature.empty()) {
         return "unknown";
     }
-    size_t colons = signature.find("::");
-    colons = [&colons]{
+    const size_t colons = signature.find("::");
+    const size_t begin = [&colons]{
         return (colons < MIN_CHAR) || (colons > MAX_NAME) ? 0 : colons + 2;
     }();
-    return signature.substr(colons);
+    return signature.substr(begin);
 }
 
 }  // namespace utility

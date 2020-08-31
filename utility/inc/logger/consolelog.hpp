@@ -17,8 +17,8 @@ namespace utility {
 
 class ConsoleLogger : public LoggerInterface {
  private:
-    virtual void write(const std::string& className, const std::string& methodName,
-                        const std::string& logString) override;
+    void write(const std::string& className, const std::string& methodName,
+               const std::string& logString) override;
 };
 
 }  // namespace utility

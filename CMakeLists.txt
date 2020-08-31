@@ -21,6 +21,7 @@ endif()
 include_directories (domain/inc)
 include_directories (domain/public)
 include_directories (utility/inc)
+
 add_subdirectory (domain)
 add_subdirectory (utility)
 

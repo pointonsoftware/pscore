@@ -24,7 +24,7 @@ class LoggerInterface {
  public:
     virtual void write(const std::string& className, const std::string& methodName,
                        const std::string& logString) = 0;
-      virtual ~LoggerInterface()= default;
+    virtual ~LoggerInterface()= default;
  protected:
     /**
     * Code copy-pasted from StackOverflow by bames53
@@ -47,7 +47,7 @@ class LoggerInterface {
     * Original question: https://stackoverflow.com/q/27136854
     * Answer: https://stackoverflow.com/a/27137475
     */
-    inline void getTime() {
+    inline void getTimestamp() {
         using namespace std;
         using namespace std::chrono;
         system_clock::time_point now = system_clock::now();
