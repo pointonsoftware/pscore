@@ -12,9 +12,12 @@
 #include <logger/loghelper.hpp>
 
 int main() {
-    domain::authentication::AuthController aut (nullptr, nullptr);
-    std::cout << "Hello, Welcome Core!" << std::endl;
-    unsigned int percent = 100;
-    LOG_DEBUG("Your logger is now %u%% alive!", percent);
+    domain::authentication::AuthController auth (nullptr, nullptr);
+    std::string name;
+
+    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
+    std::cin >> name;
+
+    LOG_DEBUG("Hello %s, I'm using the core logger to print this message!", name.c_str());
     return 0;
 }
