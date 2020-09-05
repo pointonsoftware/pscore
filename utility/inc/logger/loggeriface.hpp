@@ -25,6 +25,7 @@ class LoggerInterface {
     virtual void write(const std::string& className, const std::string& methodName,
                        const std::string& logString) = 0;
     virtual ~LoggerInterface()= default;
+
  protected:
     /**
     * Code copy-pasted from StackOverflow by bames53
@@ -35,7 +36,8 @@ class LoggerInterface {
     */
     template <typename Duration>
     void printTime(tm t, Duration fraction) {
-        using namespace std::chrono;
+        using std::chrono::milliseconds;
+        using std::chrono::duration_cast;
         std::printf("[%04u-%02u-%02u %02u:%02u:%02u.%03u]", t.tm_year + 1900,
                     t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
                     static_cast<unsigned>(duration_cast<milliseconds>(fraction).count()));
@@ -48,13 +50,14 @@ class LoggerInterface {
     * Answer: https://stackoverflow.com/a/27137475
     */
     inline void getTimestamp() {
-        using namespace std;
-        using namespace std::chrono;
+        using std::chrono::system_clock;
+        using std::chrono::seconds;
+        using std::chrono::duration_cast;
         system_clock::time_point now = system_clock::now();
         system_clock::duration tp = now.time_since_epoch();
         tp -= duration_cast<seconds>(tp);
         time_t tt = system_clock::to_time_t(now);
-        printTime(*localtime(&tt), tp);
+        printTime(*localtime(&tt), tp);  // NOLINT(runtime/threadsafe_fn)
     }
 };
 }  // namespace utility

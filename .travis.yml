@@ -36,11 +36,11 @@ jobs:
       name   : CppLint
       script : >-
                travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
-               python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
-    
+               scripts/run_cpplint.sh
+
     - name   : CppCheck
       script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
-    
+
     - stage  : Compile
       name   : Build
       script : ci/ci_build.sh

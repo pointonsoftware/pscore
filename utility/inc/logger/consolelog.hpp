@@ -10,8 +10,8 @@
 #ifndef UTILITY_INC_LOGGER_CONSOLELOG_HPP_
 #define UTILITY_INC_LOGGER_CONSOLELOG_HPP_
 
-#include "loggeriface.hpp"
 #include <string>
+#include "loggeriface.hpp"
 
 namespace utility {
 

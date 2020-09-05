@@ -18,7 +18,7 @@ class TestAuth : public testing::Test {
  public:
     TestAuth() : authController(nullptr, nullptr) {
         // empty for now
-    };
+    }
 
     ~TestAuth() = default;
     void SetUp() {}
