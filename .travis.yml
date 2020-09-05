@@ -36,7 +36,8 @@ jobs:
       name   : CppLint
       script : >-
                travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
-               scripts/run_cpplint.sh
+               python - --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11
+               --linelength=100 --recursive application databoundary domain utility
 
     - name   : CppCheck
       script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
