@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.9.2)
 project (core C CXX)
 
 option (BUILD_ALL "Build app and data" ON)
-option (BUILD_UNITTEST "Build unit tests" OFF)
+option (BUILD_UNITTEST "Build unit tests" ON)
 
 # set(CMAKE_BUILD_TYPE Debug)
 set (CMAKE_CXX_STANDARD 17)
@@ -27,9 +27,8 @@ endif()
 
 if (BUILD_UNITTEST)
     message(STATUS "Unittest enabled")
-    include_directories(external/googletest)
+    include_directories (external/googletest)
+    add_subdirectory (external/googletest)
     add_compile_options(-ftest-coverage -fprofile-arcs -fno-inline)
     add_link_options(-fprofile-arcs -ftest-coverage -lgcov)
 endif()
-
-

@@ -8,8 +8,35 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <gtest/gtest.h>
+#include <controllers/authcontroller.hpp>
 
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+namespace domain {
+namespace authentication {
+namespace test {
+
+class TestAuth : public testing::Test {
+ public:
+    TestAuth() : authController(nullptr, nullptr) {
+        // empty for now
+    };
+
+    ~TestAuth() = default;
+    void SetUp() {}
+    void TearDown() {}
+
+    domain::authentication::AuthController authController;
+};
+
+TEST_F(TestAuth, LoginShouldSucceed) {
+    bool retValue = authController.login("123");
+    ASSERT_TRUE(retValue);
 }
+
+TEST_F(TestAuth, DISABLED_LoginShouldFail) {
+    bool retValue = authController.login("123");
+    ASSERT_FALSE(retValue);
+}
+
+}  // namespace test
+}  // namespace authentication
+}  // namespace domain
