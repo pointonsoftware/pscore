@@ -46,6 +46,10 @@ jobs:
       name   : Build
       script : ci/ci_build.sh
 
+    - stage  : Unit Test
+      name   : Unit Test
+      script : ci/ci_unittest.sh
+
     - stage  : Profile
       name   : gprof
       script : ci/ci_profiling.sh
