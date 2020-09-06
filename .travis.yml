@@ -40,7 +40,10 @@ jobs:
                --linelength=100 --recursive application databoundary domain utility
 
     - name   : CppCheck
-      script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
+      script : >-
+              cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style
+              --suppress=missingIncludeSystem --check-config
+              application databoundary domain utility -idomain/unittest
 
     - stage  : Compile
       name   : Build

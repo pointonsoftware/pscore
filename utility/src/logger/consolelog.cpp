@@ -7,7 +7,7 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "logger/consolelog.hpp"
+#include <logger/consolelog.hpp>
 #include <sys/time.h>
 #include <iostream>
 #include <iomanip>

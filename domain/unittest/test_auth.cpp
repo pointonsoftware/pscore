@@ -28,13 +28,11 @@ class TestAuth : public testing::Test {
 };
 
 TEST_F(TestAuth, LoginShouldSucceed) {
-    bool retValue = authController.login("123");
-    ASSERT_TRUE(retValue);
+    ASSERT_TRUE(authController.login("123"));
 }
 
 TEST_F(TestAuth, DISABLED_LoginShouldFail) {
-    bool retValue = authController.login("123");
-    ASSERT_FALSE(retValue);
+    ASSERT_FALSE(authController.login("123"));
 }
 
 }  // namespace test
