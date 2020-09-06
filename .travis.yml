@@ -39,21 +39,21 @@ jobs:
               - sudo apt-get install cmake
               - sudo apt-get install -qq g++-7
               - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+      script : ci/ci_build.sh
       workspaces:
         create:
-          name: linux-build
-      script : ci/ci_build.sh
+          name: buildws
 
     - stage  : Test
       name   : Unit Test
       workspaces:
-        use: linux-build
+        use: buildws
       script : ci/ci_unittest.sh
 
     - stage  : Profile
       name   : Gprof
       workspaces:
-        use: linux-build
+        use: buildws
       script : ci/ci_profiling.sh
 
 after_success:
