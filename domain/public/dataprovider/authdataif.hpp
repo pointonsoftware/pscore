@@ -7,19 +7,20 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_
-#define DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_
+#ifndef DOMAIN_PUBLIC_DATAPROVIDER_AUTHDATAIF_HPP_
+#define DOMAIN_PUBLIC_DATAPROVIDER_AUTHDATAIF_HPP_
+
+#include "dataproviderif.hpp"
 
 namespace domain {
+namespace authentication {
 
-class DataProviderIface {
+class AuthDataProviderIface : public DataProviderIface {
  public:
-    DataProviderIface() = default;
-    virtual ~DataProviderIface() = default;
-
-    virtual bool getDatabaseStatus() = 0;
+    AuthDataProviderIface() = default;
+    virtual ~AuthDataProviderIface() = default;
 };
 
+}  // namespace authentication
 }  // namespace domain
-
-#endif  // DOMAIN_PUBLIC_DATAPROVIDERS_DATAPROVIDERIF_HPP_
+#endif  // DOMAIN_PUBLIC_DATAPROVIDER_AUTHDATAIF_HPP_

@@ -7,8 +7,8 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_INC_ENTITIES_CONTACTDETAILS_HPP_
-#define DOMAIN_INC_ENTITIES_CONTACTDETAILS_HPP_
+#ifndef DOMAIN_INC_ENTITY_CONTACTDETAILS_HPP_
+#define DOMAIN_INC_ENTITY_CONTACTDETAILS_HPP_
 
 #include <string>
 #include <vector>
@@ -24,4 +24,4 @@ struct ContactDetails {
 
 }  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_INC_ENTITIES_CONTACTDETAILS_HPP_
+#endif  // DOMAIN_INC_ENTITY_CONTACTDETAILS_HPP_

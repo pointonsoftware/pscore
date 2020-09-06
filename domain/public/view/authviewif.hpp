@@ -7,8 +7,8 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
-#define DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
+#ifndef DOMAIN_PUBLIC_VIEW_AUTHVIEWIF_HPP_
+#define DOMAIN_PUBLIC_VIEW_AUTHVIEWIF_HPP_
 #include <string>
 
 namespace domain {
@@ -38,4 +38,4 @@ class AuthViewIface {
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
+#endif  // DOMAIN_PUBLIC_VIEW_AUTHVIEWIF_HPP_

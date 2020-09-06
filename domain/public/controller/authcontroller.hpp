@@ -7,14 +7,14 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
-#define DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
+#ifndef DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_
+#define DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_
 
 #include <string>
 #include <memory>
 #include <defines.hpp>
-#include <views/authviewif.hpp>
-#include <dataproviders/authdataif.hpp>
+#include <view/authviewif.hpp>
+#include <dataprovider/authdataif.hpp>
 
 namespace domain {
 namespace authentication {
@@ -32,4 +32,4 @@ class AuthController {
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
+#endif  // DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_

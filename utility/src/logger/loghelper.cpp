@@ -60,11 +60,17 @@ void LogHelper::write(const std::string& logMode, const std::string& prettyFunct
         if (logFormat.find("%") != std::string::npos) {
             EXTRACT_VAR(logFormat, logString);
         }
-        m_logger->write(className, methodName, logString);
+        m_logger->write(logMode, className, methodName, logString);
     }
 }
 
 const bool LogHelper::isLogModeWritable(const std::string& logMode) const {
+    /* We need to apply the following rules:
+     * VERBOSE  => debug, info, warn, error
+     * NORMAL   => info, warn, error
+     * ALERT    => warn, error
+     * CRITICAL => error
+    */
     if (logMode.compare("debug") == 0) {
         return m_logLevel == LogLevel::VERBOSE;
     }

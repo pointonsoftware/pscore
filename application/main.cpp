@@ -8,7 +8,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <iostream>
-#include <controllers/authcontroller.hpp>
+#include <controller/authcontroller.hpp>
 #include <logger/loghelper.hpp>
 
 int main() {
@@ -18,6 +18,6 @@ int main() {
     std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
     std::cin >> name;
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this message!", name.c_str());
+    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
     return 0;
 }

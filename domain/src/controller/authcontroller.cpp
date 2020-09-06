@@ -7,7 +7,7 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <controllers/authcontroller.hpp>
+#include <controller/authcontroller.hpp>
 
 namespace domain {
 namespace authentication {

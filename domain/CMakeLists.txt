@@ -9,14 +9,14 @@ add_library (
     STATIC
     # Root public
     public/defines.hpp
-    # View
-    public/views/authviewif.hpp
-    # Dataprovider
-    public/dataproviders/dataproviderif.hpp
-    public/dataproviders/authdataif.hpp
-    # Controller
-    public/controllers/authcontroller.hpp
-    src/controllers/authcontroller.cpp
+    # Views
+    public/view/authviewif.hpp
+    # Dataproviders
+    public/dataprovider/dataproviderif.hpp
+    public/dataprovider/authdataif.hpp
+    # Controllers
+    public/controller/authcontroller.hpp
+    src/controller/authcontroller.cpp
     # Entities
     inc/entity/address.hpp
     inc/entity/contactdetails.hpp
