@@ -14,7 +14,7 @@
 
 namespace utility {
 
-void ConsoleLogger:: write(const std::string& logMode, const std::string& className,
+void ConsoleLogger::write(const std::string& logMode, const std::string& className,
                            const std::string& methodName, const std::string& logString) {
     // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
     std::cout << getLogModeTerminalColor(logMode)

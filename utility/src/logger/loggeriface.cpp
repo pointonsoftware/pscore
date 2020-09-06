@@ -15,7 +15,7 @@
 namespace utility {
 
 /**
- * Code copy-pasted from StackOverflow by bames53
+ * Code based-from StackOverflow by bames53
  * Author profile: https://stackoverflow.com/users/365496/bames53
  * 
  * Original question: https://stackoverflow.com/q/27136854
@@ -26,7 +26,7 @@ std::string LoggerInterface::getTimestamp() {
     std::chrono::system_clock::duration tp = now.time_since_epoch();
     tp -= std::chrono::duration_cast<std::chrono::seconds>(tp);
     time_t tt = std::chrono::system_clock::to_time_t(now);
-    return printTime(*localtime(&tt), tp);  // NOLINT(runtime/threadsafe_fn)
+    return formatTimestamp(*localtime(&tt), tp);  // NOLINT(runtime/threadsafe_fn)
 }
 
 }  // namespace utility

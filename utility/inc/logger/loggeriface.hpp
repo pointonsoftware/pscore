@@ -28,14 +28,14 @@ class LoggerInterface {
 
  protected:
     /**
-    * Code copy-pasted from StackOverflow by bames53
+    * Code based-from StackOverflow by bames53
     * Author profile: https://stackoverflow.com/users/365496/bames53
     * 
     * Original question: https://stackoverflow.com/q/27136854
     * Answer: https://stackoverflow.com/a/27137475
     */
     template <typename Duration>
-    std::string printTime(tm t, Duration fraction) {
+    std::string formatTimestamp(tm t, Duration fraction) {
         using std::chrono::milliseconds;
         using std::chrono::duration_cast;
         char buff[100];
