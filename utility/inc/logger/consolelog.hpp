@@ -10,15 +10,16 @@
 #ifndef UTILITY_INC_LOGGER_CONSOLELOG_HPP_
 #define UTILITY_INC_LOGGER_CONSOLELOG_HPP_
 
-#include "loggeriface.hpp"
 #include <string>
+#include "loggeriface.hpp"
 
 namespace utility {
 
 class ConsoleLogger : public LoggerInterface {
  private:
-    void write(const std::string& className, const std::string& methodName,
-               const std::string& logString) override;
+    void write(const std::string& logMode, const std::string& className,
+               const std::string& methodName, const std::string& logString) override;
+    std::string getLogModeTerminalColor(const std::string& logMode);
 };
 
 }  // namespace utility

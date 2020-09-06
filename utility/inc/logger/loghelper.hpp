@@ -10,19 +10,20 @@
 #ifndef UTILITY_INC_LOGGER_LOGHELPER_HPP_
 #define UTILITY_INC_LOGGER_LOGHELPER_HPP_
 
-#include "loggeriface.hpp"
 #include <memory>
 #include <string>
+#include "loggeriface.hpp"
 
-#define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", __PRETTY_FUNCTION__, log_str)
-#define LOG_INFO(log_str...)  utility::LogHelper::GetInstance().write("info" , __PRETTY_FUNCTION__, log_str)
-#define LOG_WARN(log_str...)  utility::LogHelper::GetInstance().write("warn" , __PRETTY_FUNCTION__, log_str)
-#define LOG_ERROR(log_str...) utility::LogHelper::GetInstance().write("error", __PRETTY_FUNCTION__, log_str)
+#define FUNC __PRETTY_FUNCTION__
+#define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)
+#define LOG_INFO(log_str...)  utility::LogHelper::GetInstance().write("info" , FUNC, log_str)
+#define LOG_WARN(log_str...)  utility::LogHelper::GetInstance().write("warn" , FUNC, log_str)
+#define LOG_ERROR(log_str...) utility::LogHelper::GetInstance().write("error", FUNC, log_str)
 
 namespace utility {
 
 class LogHelper {
- public: 
+ public:
     static LogHelper& GetInstance() {
         static LogHelper loghelper;
         return loghelper;

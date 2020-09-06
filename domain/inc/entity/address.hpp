@@ -7,19 +7,28 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <entities/employee.hpp>
+#ifndef DOMAIN_INC_ENTITY_ADDRESS_HPP_
+#define DOMAIN_INC_ENTITY_ADDRESS_HPP_
+
+#include <string>
 
 namespace domain {
 namespace entities {
 
-Employee::Employee(const std::string& firstname,
-                   const std::string& middlename,
-                   const std::string& lastname,
-                   const std::string& birthdate,
-                   const std::string& gender)
-: Person{firstname, middlename, lastname, birthdate, gender} {
-    // Empty for now
-}
+struct Address {
+    std::string housenumber;
+    std::string lot;
+    std::string block;
+    std::string street;
+    std::string subdivision;
+    std::string sitio;
+    std::string purok;
+    std::string barangay;
+    std::string city_town;
+    std::string province;
+    std::string zip;
+};
 
 }  // namespace entities
 }  // namespace domain
+#endif  // DOMAIN_INC_ENTITY_ADDRESS_HPP_

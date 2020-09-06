@@ -10,15 +10,15 @@
 #ifndef UTILITY_INC_LOGGER_FILELOG_HPP_
 #define UTILITY_INC_LOGGER_FILELOG_HPP_
 
-#include "loggeriface.hpp"
 #include <string>
+#include "loggeriface.hpp"
 
 namespace utility {
 
 class FileLogger : public LoggerInterface {
  private:
-    void write(const std::string& className, const std::string& methodName,
-                        const std::string& logString) override;
+    void write(const std::string& logMode, const std::string& className,
+               const std::string& methodName, const std::string& logString) override;
 };
 
 }  // namespace utility

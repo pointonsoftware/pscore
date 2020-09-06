@@ -7,19 +7,19 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_LOGGER_SOCKETLOG_HPP_
-#define UTILITY_INC_LOGGER_SOCKETLOG_HPP_
+#ifndef DOMAIN_PUBLIC_DATAPROVIDER_DATAPROVIDERIF_HPP_
+#define DOMAIN_PUBLIC_DATAPROVIDER_DATAPROVIDERIF_HPP_
 
-#include <string>
-#include "loggeriface.hpp"
+namespace domain {
 
-namespace utility {
+class DataProviderIface {
+ public:
+    DataProviderIface() = default;
+    virtual ~DataProviderIface() = default;
 
-class SocketLogger : public LoggerInterface {
- private:
-    void write(const std::string& logMode, const std::string& className,
-               const std::string& methodName, const std::string& logString) override;
+    virtual bool getDatabaseStatus() = 0;
 };
 
-}  // namespace utility
-#endif  // UTILITY_INC_LOGGER_SOCKETLOG_HPP_
+}  // namespace domain
+
+#endif  // DOMAIN_PUBLIC_DATAPROVIDER_DATAPROVIDERIF_HPP_

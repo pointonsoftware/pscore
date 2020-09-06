@@ -7,19 +7,20 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_INC_ENTITIES_PERSONALID_HPP_
-#define DOMAIN_INC_ENTITIES_PERSONALID_HPP_
+#ifndef DOMAIN_PUBLIC_DATAPROVIDER_AUTHDATAIF_HPP_
+#define DOMAIN_PUBLIC_DATAPROVIDER_AUTHDATAIF_HPP_
 
-#include <string>
+#include "dataproviderif.hpp"
 
 namespace domain {
-namespace entities {
+namespace authentication {
 
-struct PersonalId {
-    std::string type;
-    std::string id_number;
+class AuthDataProviderIface : public DataProviderIface {
+ public:
+    AuthDataProviderIface() = default;
+    virtual ~AuthDataProviderIface() = default;
 };
 
-}  // namespace entities
+}  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_INC_ENTITIES_PERSONALID_HPP_
+#endif  // DOMAIN_PUBLIC_DATAPROVIDER_AUTHDATAIF_HPP_

@@ -7,29 +7,26 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <controllers/authcontroller.hpp>
+#include <logger/loggeriface.hpp>
+#include <sys/time.h>
+#include <iostream>
+#include <iomanip>
 
-namespace domain {
-namespace authentication {
+namespace utility {
 
-AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
-                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
-: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
-    // Empty for now
+/**
+ * Code based-from StackOverflow by bames53
+ * Author profile: https://stackoverflow.com/users/365496/bames53
+ * 
+ * Original question: https://stackoverflow.com/q/27136854
+ * Answer: https://stackoverflow.com/a/27137475
+*/
+std::string LoggerInterface::getTimestamp() {
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+    std::chrono::system_clock::duration tp = now.time_since_epoch();
+    tp -= std::chrono::duration_cast<std::chrono::seconds>(tp);
+    time_t tt = std::chrono::system_clock::to_time_t(now);
+    return formatTimestamp(*localtime(&tt), tp);  // NOLINT(runtime/threadsafe_fn)
 }
 
-bool AuthController::login(const std::string& pin) {
-    // Check if pin is empty
-    // Check if pin is numeric
-    // Call authenticate
-    return true;
-}
-
-status::General AuthController::authenticate(const std::string& pin) {
-    // Check if dataprovider is ready; else throw
-    // Check pin in dataprovider
-    return status::General::SUCCESS;
-}
-
-}  // namespace authentication
-}  // namespace domain
+}  // namespace utility

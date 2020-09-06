@@ -7,28 +7,34 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_INC_ENTITIES_ADDRESS_HPP_
-#define DOMAIN_INC_ENTITIES_ADDRESS_HPP_
-
-#include <string>
+#include <gtest/gtest.h>
+#include <controller/authcontroller.hpp>
 
 namespace domain {
-namespace entities {
+namespace authentication {
+namespace test {
 
-struct Address {
-    std::string housenumber;
-    std::string lot;
-    std::string block;
-    std::string street;
-    std::string subdivision;
-    std::string sitio;
-    std::string purok;
-    std::string barangay;
-    std::string city_town;
-    std::string province;
-    std::string zip;
+class TestAuth : public testing::Test {
+ public:
+    TestAuth() : authController(nullptr, nullptr) {
+        // empty for now
+    }
+
+    ~TestAuth() = default;
+    void SetUp() {}
+    void TearDown() {}
+
+    domain::authentication::AuthController authController;
 };
 
-}  // namespace entities
+TEST_F(TestAuth, LoginShouldSucceed) {
+    ASSERT_TRUE(authController.login("123"));
+}
+
+TEST_F(TestAuth, DISABLED_LoginShouldFail) {
+    ASSERT_FALSE(authController.login("123"));
+}
+
+}  // namespace test
+}  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_INC_ENTITIES_ADDRESS_HPP_

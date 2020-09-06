@@ -7,35 +7,19 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
-#define DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
+#ifndef DOMAIN_INC_ENTITY_PERSONALID_HPP_
+#define DOMAIN_INC_ENTITY_PERSONALID_HPP_
+
 #include <string>
 
 namespace domain {
-namespace authentication {
+namespace entities {
 
-class AuthViewIface {
- public:
-    AuthViewIface() = default;
-    virtual ~AuthViewIface() = default;
-
-    /**
-    * showLoginScreen
-    */
-    virtual void showLoginScreen() = 0;
-
-    /**
-    * showLoginFailed
-    */
-    virtual void showLoginFailed() = 0;
-
-    /**
-    * Will be called if user was found
-    * @param employee a JSON string containing employee details
-    */
-    virtual void loginSuccessful(const std::string& employee) = 0;
+struct PersonalId {
+    std::string type;
+    std::string id_number;
 };
 
-}  // namespace authentication
+}  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_VIEWS_AUTHVIEWIF_HPP_
+#endif  // DOMAIN_INC_ENTITY_PERSONALID_HPP_

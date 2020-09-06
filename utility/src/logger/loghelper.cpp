@@ -7,13 +7,13 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "logger/loghelper.hpp"
-#include "logger/consolelog.hpp"
-#include "logger/filelog.hpp"
-#include "logger/socketlog.hpp"
 #include <cstdarg>
 #include <string>
 #include <vector>
+#include <logger/loghelper.hpp>
+#include <logger/consolelog.hpp>
+#include <logger/filelog.hpp>
+#include <logger/socketlog.hpp>
 
 /**
 * This code is sourced from StackOverflow
@@ -51,7 +51,7 @@ LogHelper::LogHelper() {
 
 void LogHelper::write(const std::string& logMode, const std::string& prettyFunction,
                       const std::string& logFormat...) const {
-    if(isLogModeWritable(logMode)) {
+    if (isLogModeWritable(logMode)) {
         const std::string signature = getMethodName(prettyFunction);
         const std::string className = extractClassName(signature);
         const std::string methodName = extractMethodName(signature);
@@ -60,19 +60,25 @@ void LogHelper::write(const std::string& logMode, const std::string& prettyFunct
         if (logFormat.find("%") != std::string::npos) {
             EXTRACT_VAR(logFormat, logString);
         }
-        m_logger->write(className, methodName, logString);
+        m_logger->write(logMode, className, methodName, logString);
     }
 }
 
 const bool LogHelper::isLogModeWritable(const std::string& logMode) const {
-    if(logMode.compare("debug") == 0) {
+    /* We need to apply the following rules:
+     * VERBOSE  => debug, info, warn, error
+     * NORMAL   => info, warn, error
+     * ALERT    => warn, error
+     * CRITICAL => error
+    */
+    if (logMode.compare("debug") == 0) {
         return m_logLevel == LogLevel::VERBOSE;
     }
-    if(logMode.compare("info") == 0) {
+    if (logMode.compare("info") == 0) {
         return (m_logLevel == LogLevel::VERBOSE) ||
                (m_logLevel == LogLevel::NORMAL);
     }
-    if(logMode.compare("warn") == 0) {
+    if (logMode.compare("warn") == 0) {
         return m_logLevel != LogLevel::CRITICAL;
     }
     return true;
@@ -80,28 +86,28 @@ const bool LogHelper::isLogModeWritable(const std::string& logMode) const {
 
 const std::string LogHelper::getMethodName(const std::string& prettyFunction) const {
     size_t colons = prettyFunction.find("::");
-    if((colons < MIN_CHAR) || (colons > MAX_NAME)) {
+    if ((colons < MIN_CHAR) || (colons > MAX_NAME)) {
         colons = MAX_NAME;
     }
-    const size_t begin = prettyFunction.substr(0,colons).rfind(" ") + 1;
+    const size_t begin = prettyFunction.substr(0, colons).rfind(" ") + 1;
     const size_t end = prettyFunction.rfind("(") - begin;
-    return prettyFunction.substr(begin,end);
+    return prettyFunction.substr(begin, end);
 }
 
 const std::string LogHelper::extractClassName(const std::string& signature) const {
     const size_t colons = signature.find("::");
-    if(signature.empty() || (colons < MIN_CHAR) || (colons > MAX_NAME)) {
+    if (signature.empty() || (colons < MIN_CHAR) || (colons > MAX_NAME)) {
         return "unknown";
     }
     return signature.substr(0, colons);
 }
 
 const std::string LogHelper::extractMethodName(const std::string& signature) const {
-    if(signature.empty()) {
+    if (signature.empty()) {
         return "unknown";
     }
     const size_t colons = signature.find("::");
-    const size_t begin = [&colons]{
+    const size_t begin = [&colons] {
         return (colons < MIN_CHAR) || (colons > MAX_NAME) ? 0 : colons + 2;
     }();
     return signature.substr(begin);

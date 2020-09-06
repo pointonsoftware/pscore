@@ -6,13 +6,7 @@
 # Configuration
 language: cpp
 compiler: gcc
-dist: trusty
-
-#env:
-  #global:
-    # Misc, we will use this once we setup unit tests
-    #- RUN_TESTS=true
-    #- COVERAGE=false
+dist: bionic
 
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -36,14 +30,21 @@ jobs:
       name   : CppLint
       script : >-
                travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
-               python - --filter=-readability/multiline_comment,-whitespace/ending_newline --linelength=100 --recursive domain
-    
+               python - --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11
+               --linelength=100 --recursive application databoundary domain utility
+
     - name   : CppCheck
-      script : cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style --suppress=missingIncludeSystem .
-    
-    - stage  : Compile
-      name   : Build
+      script : >-
+              cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style
+              --suppress=missingIncludeSystem --check-config
+              application databoundary domain utility -idomain/unittest
+
+    - stage  : Build and test
+      name   : Compile
       script : ci/ci_build.sh
+
+    # - name   : Unit Test
+    #   script : ci/ci_unittest.sh
 
     - stage  : Profile
       name   : gprof

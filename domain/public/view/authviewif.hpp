@@ -7,29 +7,35 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
-#define DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
-
+#ifndef DOMAIN_PUBLIC_VIEW_AUTHVIEWIF_HPP_
+#define DOMAIN_PUBLIC_VIEW_AUTHVIEWIF_HPP_
 #include <string>
-#include <memory>
-#include <defines.hpp>
-#include <views/authviewif.hpp>
-#include <dataproviders/authdataif.hpp>
 
 namespace domain {
 namespace authentication {
 
-class AuthController {
+class AuthViewIface {
  public:
-    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
-                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
-    bool login(const std::string& pin);
- private:
-    status::General authenticate(const std::string& pin);
-    std::unique_ptr<AuthViewIface> mView;
-    std::unique_ptr<AuthDataProviderIface> mDataProvider;
+    AuthViewIface() = default;
+    virtual ~AuthViewIface() = default;
+
+    /**
+    * showLoginScreen
+    */
+    virtual void showLoginScreen() = 0;
+
+    /**
+    * showLoginFailed
+    */
+    virtual void showLoginFailed() = 0;
+
+    /**
+    * Will be called if user was found
+    * @param employee a JSON string containing employee details
+    */
+    virtual void loginSuccessful(const std::string& employee) = 0;
 };
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_CONTROLLERS_AUTHCONTROLLER_HPP_
+#endif  // DOMAIN_PUBLIC_VIEW_AUTHVIEWIF_HPP_

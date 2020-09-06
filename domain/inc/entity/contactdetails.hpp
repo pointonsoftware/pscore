@@ -7,19 +7,21 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_LOGGER_SOCKETLOG_HPP_
-#define UTILITY_INC_LOGGER_SOCKETLOG_HPP_
+#ifndef DOMAIN_INC_ENTITY_CONTACTDETAILS_HPP_
+#define DOMAIN_INC_ENTITY_CONTACTDETAILS_HPP_
 
 #include <string>
-#include "loggeriface.hpp"
+#include <vector>
 
-namespace utility {
+namespace domain {
+namespace entities {
 
-class SocketLogger : public LoggerInterface {
- private:
-    void write(const std::string& logMode, const std::string& className,
-               const std::string& methodName, const std::string& logString) override;
+struct ContactDetails {
+    std::string name;
+    std::string email;
+    std::vector<std::string> phone_number;
 };
 
-}  // namespace utility
-#endif  // UTILITY_INC_LOGGER_SOCKETLOG_HPP_
+}  // namespace entities
+}  // namespace domain
+#endif  // DOMAIN_INC_ENTITY_CONTACTDETAILS_HPP_

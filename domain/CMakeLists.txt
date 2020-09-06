@@ -9,22 +9,22 @@ add_library (
     STATIC
     # Root public
     public/defines.hpp
-    # View
-    public/views/authviewif.hpp
-    # Dataprovider
-    public/dataproviders/dataproviderif.hpp
-    public/dataproviders/authdataif.hpp
-    # Controller
-    public/controllers/authcontroller.hpp
-    src/controllers/authcontroller.cpp
+    # Views
+    public/view/authviewif.hpp
+    # Dataproviders
+    public/dataprovider/dataproviderif.hpp
+    public/dataprovider/authdataif.hpp
+    # Controllers
+    public/controller/authcontroller.hpp
+    src/controller/authcontroller.cpp
     # Entities
-    inc/entities/address.hpp
-    inc/entities/contactdetails.hpp
-    inc/entities/employee.hpp
-    src/entities/employee.cpp
-    inc/entities/person.hpp
-    src/entities/person.cpp
-    inc/entities/personalid.hpp
+    inc/entity/address.hpp
+    inc/entity/contactdetails.hpp
+    inc/entity/employee.hpp
+    src/entity/employee.cpp
+    inc/entity/person.hpp
+    src/entity/person.cpp
+    inc/entity/personalid.hpp
 )
 
 if (BUILD_UNITTEST)
