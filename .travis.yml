@@ -44,7 +44,8 @@ jobs:
       workspaces:
         create:
           name: buildws
-      paths: foo.txt
+          paths:
+            - foo.txt
 
     - stage  : Test
       name   : Unit Test
