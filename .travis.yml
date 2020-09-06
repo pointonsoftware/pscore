@@ -39,10 +39,11 @@ jobs:
               --suppress=missingIncludeSystem --check-config
               application databoundary domain utility -idomain/unittest
 
-    - stage  : Build
+    - stage  : Build and test
       name   : Compile
       script : ci/ci_build.sh
-      name   : Unit Test
+
+    - name   : Unit Test
       script : ci/ci_unittest.sh
 
     - stage  : Profile
