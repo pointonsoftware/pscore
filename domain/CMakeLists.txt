@@ -18,13 +18,13 @@ add_library (
     public/controllers/authcontroller.hpp
     src/controllers/authcontroller.cpp
     # Entities
-    inc/entities/address.hpp
-    inc/entities/contactdetails.hpp
-    inc/entities/employee.hpp
-    src/entities/employee.cpp
-    inc/entities/person.hpp
-    src/entities/person.cpp
-    inc/entities/personalid.hpp
+    inc/entity/address.hpp
+    inc/entity/contactdetails.hpp
+    inc/entity/employee.hpp
+    src/entity/employee.cpp
+    inc/entity/person.hpp
+    src/entity/person.cpp
+    inc/entity/personalid.hpp
 )
 
 if (BUILD_UNITTEST)

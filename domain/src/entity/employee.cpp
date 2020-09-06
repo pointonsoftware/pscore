@@ -7,7 +7,7 @@
 *                   Written by Ben Ziv <pointonsoftware@gmail.com>, August 2020                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <entities/employee.hpp>
+#include <entity/employee.hpp>
 
 namespace domain {
 namespace entities {
