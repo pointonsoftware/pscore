@@ -8,20 +8,9 @@ language: cpp
 compiler: gcc
 dist: bionic
 
-env:
-  global:
-    # include $HOME/.local/bin for `aws`
-    - PATH=$HOME/.local/bin:$PATH
-
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
-  # S3 setup
-  - pyenv global 3.7.1
-  - pip install -U pip
-  - pip install awscli
-  - mkdir -p ~/$TRAVIS_BUILD_NUMBER
-  - aws s3 sync s3://travis-build-stages-shared-storage-test/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
 
 install:
   - sudo apt-get install cmake
@@ -50,11 +39,9 @@ jobs:
               --suppress=missingIncludeSystem --check-config
               application databoundary domain utility -idomain/unittest
 
-    - stage  : Compile
-      name   : Build
+    - stage  : Build
+      name   : Compile
       script : ci/ci_build.sh
-
-    - stage  : Unit Test
       name   : Unit Test
       script : ci/ci_unittest.sh
 
@@ -62,12 +49,8 @@ jobs:
       name   : gprof
       script : ci/ci_profiling.sh
 
-      after_success:
-        - aws s3 rm --recursive s3://travis-build-stages-shared-storage-test/$TRAVIS_BUILD_NUMBER # clean up after ourselves
-
 after_success:
   - echo "Successful!"
-  - aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://travis-build-stages-shared-storage-test/$TRAVIS_BUILD_NUMBER
 
 after_failure:
   - echo "Failed!"
