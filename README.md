@@ -1,6 +1,6 @@
 # PSCore
 
-The all-in-one engine for Pointon Business Software products!
+The all-in-one engine for business management software.
 
 ---
 
@@ -16,7 +16,9 @@ For this repo, we are using:
 - Build system: CMake
 - Profiling: gprof
 - Libraries: STL
-- Code coverage: gtest/gcov (to be applied soon)
+- Code coverage: gtest/gcov
+- Static tools: cpplint/cppcheck
+- CI: travis-ci
 
 ---
 
@@ -39,10 +41,20 @@ You can clone the repository to a local destination using git:
 
 ## License
 
-Copyright (C) Pointon Software - All Rights Reserved  
-   Unauthorized copying of this file, via any medium is strictly prohibited.  
-   Proprietary and confidential  
-   Written August 2020  
+GNU AFFERO GENERAL PUBLIC LICENSE  
+   Version 3, 19 November 2007  
+
+   Copyright (C) 2020 Pointon Software  
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
 
 ---
 
