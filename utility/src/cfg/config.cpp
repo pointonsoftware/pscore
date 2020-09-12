@@ -18,35 +18,51 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <logger/consolelog.hpp>
-#include <sys/time.h>
-#include <iostream>
-#include <iomanip>
+#include <algorithm>
+#include <cfg/config.hpp>
+#include <logger/loghelper.hpp>
 
 namespace utility {
 
-void ConsoleLogger::write(const std::string& logMode, const std::string& className,
-                           const std::string& methodName, const std::string& logString) {
-    // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
-    std::cout << getLogModeTerminalColor(logMode)
-              << getTimestamp() << std::left << " | "
-              << std::setw(MAX_NAME)  << className  << " | "
-              << std::setw(MAX_NAME)  << methodName << " | -- "
-              << logString << "\033[0m"<< std::endl;
+constexpr char EQUALS_SIGN[] = "=";
+constexpr int OFFSET_ONE = 1;
+
+Config::Config(const std::string& fileName) : mFileIo(fileName) {
+    // Empty for now
 }
 
-std::string ConsoleLogger::getLogModeTerminalColor(const std::string& logMode) {
-    if (logMode.compare("info") == 0) {
-        return "\033[0;36m";
+void Config::set(const std::string& key, const std::string& value) {
+    const std::string updateLine = key + EQUALS_SIGN + value;
+    if (getLineFromConfig(key).empty()) {
+        LOG_WARN("Key %s does not exists, system will create one.", key.c_str());
+        mFileIo.write(updateLine);
+    } else {
+        LOG_INFO("Updated config key=%s with value=%s.", key.c_str(), value.c_str());
+        mFileIo.replace(key, updateLine);
     }
-    if (logMode.compare("warn") == 0) {
-        return "\033[0;33m";
-    }
-    if (logMode.compare("error") == 0) {
-        return "\033[0;31m";
-    }
+}
 
-    return "";
+std::string Config::get(const std::string& key, const std::string& defaultValue) {
+    const std::string line = getLineFromConfig(key);
+    if (line.empty()) {
+        LOG_WARN("Key %s was not found, returning default %s", key.c_str(), defaultValue.c_str());
+        return defaultValue;
+    }
+    return extractValueFromLine(line);
+}
+
+std::string Config::extractValueFromLine(const std::string& line) {
+    return line.substr(line.find(EQUALS_SIGN) + OFFSET_ONE);
+}
+
+std::string Config::getLineFromConfig(const std::string& key) {
+    std::string templine;
+    const FileOperationStatus status = mFileIo.find(key, &templine);
+    if (status != FileOperationStatus::SUCCESS) {
+        LOG_ERROR("Config file read error - %d!", status);
+    }
+    // templine is empty if mFileIo.find operation is not successful (see above)
+    return templine;
 }
 
 }  // namespace utility

@@ -18,35 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <logger/consolelog.hpp>
-#include <sys/time.h>
-#include <iostream>
-#include <iomanip>
+#ifndef UTILITY_INC_CFG_CONFIGIFACE_HPP_
+#define UTILITY_INC_CFG_CONFIGIFACE_HPP_
+
+#include <string>
 
 namespace utility {
 
-void ConsoleLogger::write(const std::string& logMode, const std::string& className,
-                           const std::string& methodName, const std::string& logString) {
-    // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
-    std::cout << getLogModeTerminalColor(logMode)
-              << getTimestamp() << std::left << " | "
-              << std::setw(MAX_NAME)  << className  << " | "
-              << std::setw(MAX_NAME)  << methodName << " | -- "
-              << logString << "\033[0m"<< std::endl;
-}
+class ConfigIface {
+ public:
+    ConfigIface() = default;
+    virtual ~ConfigIface() = default;
 
-std::string ConsoleLogger::getLogModeTerminalColor(const std::string& logMode) {
-    if (logMode.compare("info") == 0) {
-        return "\033[0;36m";
-    }
-    if (logMode.compare("warn") == 0) {
-        return "\033[0;33m";
-    }
-    if (logMode.compare("error") == 0) {
-        return "\033[0;31m";
-    }
+    /*! void set()
+     * Will override value if key exists
+     * Otherwise, will create new key + value
+    */
+    virtual void set(const std::string& key, const std::string& value) = 0;
 
-    return "";
-}
+    /*! std::string get()
+     * Will get the value of the specified key
+     * Will return the defaultValue if key does not exist
+    */
+    virtual std::string get(const std::string& key, const std::string& defaultValue) = 0;
+};
 
 }  // namespace utility
+#endif  // UTILITY_INC_CFG_CONFIGIFACE_HPP_

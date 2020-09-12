@@ -48,6 +48,8 @@
 
 namespace utility {
 
+constexpr char LOG_CONFIG[] = "corelog.conf";
+
 LogHelper::LogHelper() {
     // read from config
 
