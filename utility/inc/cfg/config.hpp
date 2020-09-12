@@ -18,35 +18,27 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <logger/consolelog.hpp>
-#include <sys/time.h>
-#include <iostream>
-#include <iomanip>
+#ifndef UTILITY_INC_CFG_CONFIG_HPP_
+#define UTILITY_INC_CFG_CONFIG_HPP_
+
+#include <string>
+#include "configiface.hpp"
+#include <fileio/fileio.hpp>
 
 namespace utility {
 
-void ConsoleLogger::write(const std::string& logMode, const std::string& className,
-                           const std::string& methodName, const std::string& logString) {
-    // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
-    std::cout << getLogModeTerminalColor(logMode)
-              << getTimestamp() << std::left << " | "
-              << std::setw(MAX_NAME)  << className  << " | "
-              << std::setw(MAX_NAME)  << methodName << " | -- "
-              << logString << "\033[0m"<< std::endl;
-}
+class Config : public ConfigIface {
+ public:
+    explicit Config(const std::string& fileName);
+    ~Config() = default;
+    void set(const std::string& key, const std::string& value) override;
+    std::string get(const std::string& key, const std::string& defaultValue) override;
 
-std::string ConsoleLogger::getLogModeTerminalColor(const std::string& logMode) {
-    if (logMode.compare("info") == 0) {
-        return "\033[0;36m";
-    }
-    if (logMode.compare("warn") == 0) {
-        return "\033[0;33m";
-    }
-    if (logMode.compare("error") == 0) {
-        return "\033[0;31m";
-    }
-
-    return "";
-}
+ private:
+    FileIo mFileIo;
+    std::string getLineFromConfig(const std::string& key);
+    std::string extractValueFromLine(const std::string& line);
+};
 
 }  // namespace utility
+#endif  // UTILITY_INC_CFG_CONFIG_HPP_
