@@ -115,10 +115,12 @@ bool FileIo::isFileOpen() {
 FileOperationStatus FileIo::overWriteFile(const std::vector<std::string>& fileContents) {
     // temporarily close our member file for overwriting
     closeFile();
-    // make a file with the same name (overwrite!)
+    // reopen the file as ostream (to overwrite!)
     std::ofstream newFile(mFileName);
     if (!newFile.is_open()) {
-        // reopen our member file to keep other operations running
+        // not sure what can cause us to fail reopening the file
+        // maybe a race-condition? (future proofing)
+        // anyhow, let's try to reopen through our member file to keep other operations running
         openFile(mFileName);
         return FileOperationStatus::FILE_NOT_FOUND;
     }
