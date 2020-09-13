@@ -40,4 +40,17 @@ std::string LoggerInterface::getTimestamp() {
     return formatTimestamp(*localtime(&tt), tp);  // NOLINT(runtime/threadsafe_fn)
 }
 
+std::string LoggerInterface::getLogModeTerminalColor(const std::string& logMode) {
+    if (logMode.compare("info") == 0) {
+        return "\033[0;36m";
+    }
+    if (logMode.compare("warn") == 0) {
+        return "\033[0;33m";
+    }
+    if (logMode.compare("error") == 0) {
+        return "\033[0;31m";
+    }
+    return "";
+}
+
 }  // namespace utility

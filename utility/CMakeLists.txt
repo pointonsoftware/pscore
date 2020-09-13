@@ -25,3 +25,11 @@ add_library (
     inc/cfg/config.hpp
     src/cfg/config.cpp
 )
+
+if (BUILD_LOG_CLIENT)
+    # Logger client
+    add_executable (
+        log_client_app
+        src/logclient/logclient.cpp
+    )
+endif()
