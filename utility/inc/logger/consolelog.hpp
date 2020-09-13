@@ -30,7 +30,6 @@ class ConsoleLogger : public LoggerInterface {
  private:
     void write(const std::string& logMode, const std::string& className,
                const std::string& methodName, const std::string& logString) override;
-    std::string getLogModeTerminalColor(const std::string& logMode);
 };
 
 }  // namespace utility

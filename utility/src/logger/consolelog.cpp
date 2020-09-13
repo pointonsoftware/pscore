@@ -19,7 +19,6 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <logger/consolelog.hpp>
-#include <sys/time.h>
 #include <iostream>
 #include <iomanip>
 
@@ -33,20 +32,6 @@ void ConsoleLogger::write(const std::string& logMode, const std::string& classNa
               << std::setw(MAX_NAME)  << className  << " | "
               << std::setw(MAX_NAME)  << methodName << " | -- "
               << logString << "\033[0m"<< std::endl;
-}
-
-std::string ConsoleLogger::getLogModeTerminalColor(const std::string& logMode) {
-    if (logMode.compare("info") == 0) {
-        return "\033[0;36m";
-    }
-    if (logMode.compare("warn") == 0) {
-        return "\033[0;33m";
-    }
-    if (logMode.compare("error") == 0) {
-        return "\033[0;31m";
-    }
-
-    return "";
 }
 
 }  // namespace utility

@@ -30,6 +30,7 @@ class SocketLogger : public LoggerInterface {
  private:
     void write(const std::string& logMode, const std::string& className,
                const std::string& methodName, const std::string& logString) override;
+    void broadcast(const std::string& logStr);
 };
 
 }  // namespace utility

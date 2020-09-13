@@ -3,6 +3,7 @@ project (core C CXX)
 
 option (BUILD_ALL "Build app and data" ON)
 option (BUILD_UNITTEST "Build unit tests" ON)
+option (BUILD_LOG_CLIENT "Build socketlogger client" OFF)
 
 # set(CMAKE_BUILD_TYPE Debug)
 set (CMAKE_CXX_STANDARD 17)

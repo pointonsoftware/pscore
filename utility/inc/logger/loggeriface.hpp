@@ -57,6 +57,7 @@ class LoggerInterface {
     }
 
     std::string getTimestamp();
+    std::string getLogModeTerminalColor(const std::string& logMode);
 };
 }  // namespace utility
 #endif  // UTILITY_INC_LOGGER_LOGGERIFACE_HPP_
