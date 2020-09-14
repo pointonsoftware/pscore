@@ -18,22 +18,34 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
-
-#include <iostream>
+#include <gtest/gtest.h>
 #include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+namespace domain {
+namespace authentication {
+namespace test {
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+class TestAuth : public testing::Test {
+ public:
+    TestAuth() : authController(nullptr, nullptr) {
+        // empty for now
+    }
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
+    ~TestAuth() = default;
+    void SetUp() {}
+    void TearDown() {}
+
+    domain::authentication::AuthController authController;
+};
+
+TEST_F(TestAuth, LoginShouldSucceed) {
+    ASSERT_TRUE(authController.login("123"));
 }
+
+TEST_F(TestAuth, DISABLED_LoginShouldFail) {
+    ASSERT_FALSE(authController.login("123"));
+}
+
+}  // namespace test
+}  // namespace authentication
+}  // namespace domain

@@ -18,22 +18,20 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
-
+#include "consolelog.hpp"
 #include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+#include <iomanip>
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+namespace utility {
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
+void ConsoleLogger::write(const std::string& logMode, const std::string& className,
+                           const std::string& methodName, const std::string& logString) {
+    // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
+    std::cout << getLogModeTerminalColor(logMode)
+              << getTimestamp() << std::left << " | "
+              << std::setw(MAX_NAME)  << className  << " | "
+              << std::setw(MAX_NAME)  << methodName << " | -- "
+              << logString << "\033[0m"<< std::endl;
 }
+
+}  // namespace utility

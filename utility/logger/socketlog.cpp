@@ -18,22 +18,76 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#include "socketlog.hpp"
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+// Socket headers
+#include <unistd.h>
+#include <string.h>
+
+#ifdef __WIN32__
+#include <winsock2.h>
+#pragma comment(lib, "Ws2_32.lib")
+#else
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#endif
 
 #include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+#include <iomanip>
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+namespace utility {
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+constexpr unsigned int PORT = 2020;
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
+void SocketLogger::write(const std::string& logMode, const std::string& className,
+                           const std::string& methodName, const std::string& logString) {
+    // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
+    std::ostringstream stream;
+    stream << getLogModeTerminalColor(logMode)
+              << getTimestamp() << std::left << " | "
+              << std::setw(MAX_NAME)  << className  << " | "
+              << std::setw(MAX_NAME)  << methodName << " | -- "
+              << logString << "\033[0m"<< std::endl;
+
+    broadcast(stream.str());
 }
+
+void SocketLogger::broadcast(const std::string& logStr) {
+    struct sockaddr_in send_addr;
+    int fd;
+#ifdef __WIN32__
+    char trueflag = '1';
+    WSADATA wsaData;
+
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != NO_ERROR) {
+          return
+    }
+#else
+    int trueflag = 1;
+#endif
+
+    if ((fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
+        return;
+    }
+
+    if (setsockopt(fd, SOL_SOCKET, SO_BROADCAST,
+                   &trueflag, sizeof(trueflag)) < 0) {
+        return;
+    }
+
+    memset(&send_addr, 0, sizeof(send_addr));
+    // Bind the socket to any address and the specified port.
+    send_addr.sin_family = AF_INET;
+    send_addr.sin_port = htons(PORT);
+    send_addr.sin_addr.s_addr = htonl(INADDR_BROADCAST);
+
+    if (sendto(fd, logStr.c_str(), logStr.size(), 0,
+            (struct sockaddr*) &send_addr, sizeof(send_addr)) < 0) {
+            close(fd);
+            return;
+    }
+
+    close(fd);
+}
+
+}  // namespace utility

@@ -18,22 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef UTILITY_CFG_CONFIGIFACE_HPP_
+#define UTILITY_CFG_CONFIGIFACE_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#include <string>
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+namespace utility {
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+class ConfigIface {
+ public:
+    ConfigIface() = default;
+    virtual ~ConfigIface() = default;
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+    /*! void set()
+     * Will override value if key exists
+     * Otherwise, will create new key + value
+    */
+    virtual void set(const std::string& key, const std::string& value) = 0;
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+    /*! std::string get()
+     * Will get the value of the specified key
+     * Will return the defaultValue if key does not exist
+    */
+    virtual std::string get(const std::string& key, const std::string& defaultValue) = 0;
+};
+
+}  // namespace utility
+#endif  // UTILITY_CFG_CONFIGIFACE_HPP_

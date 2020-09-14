@@ -18,22 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#include "authcontroller.hpp"
+#include <utility>
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+namespace domain {
+namespace authentication {
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
-
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
-
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
+AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
+                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
+: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
+    // Empty for now
 }
+
+bool AuthController::login(const std::string& pin) {
+    // Check if pin is empty
+    // Check if pin is numeric
+    // Call authenticate
+    return true;
+}
+
+status::General AuthController::authenticate(const std::string& pin) {
+    // Check if dataprovider is ready; else throw
+    // Check pin in dataprovider
+    return status::General::SUCCESS;
+}
+
+}  // namespace authentication
+}  // namespace domain

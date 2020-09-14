@@ -18,22 +18,27 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef UTILITY_CFG_CONFIG_HPP_
+#define UTILITY_CFG_CONFIG_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#include <string>
+#include "configiface.hpp"
+#include <fileio/fileio.hpp>
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+namespace utility {
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+class Config : public ConfigIface {
+ public:
+    explicit Config(const std::string& fileName);
+    ~Config() = default;
+    void set(const std::string& key, const std::string& value) override;
+    std::string get(const std::string& key, const std::string& defaultValue) override;
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+ private:
+    FileIo mFileIo;
+    std::string getLineFromConfig(const std::string& key);
+    std::string extractValueFromLine(const std::string& line);
+};
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+}  // namespace utility
+#endif  // UTILITY_CFG_CONFIG_HPP_

@@ -1,12 +1,10 @@
 # PSCore
 
-The all-in-one engine for business management software.
+A business management software engine
 
 ---
 
 ### Technologies
-
-One of the highlights of this project is that the user interface and database can be swapped with other frameworks/dbms by implementing the domain provided interfaces.
 
 For this repo, we are using:
 - Language: C++17
@@ -19,6 +17,8 @@ For this repo, we are using:
 - Code coverage: gtest/gcov
 - Static tools: cpplint/cppcheck
 - CI: travis-ci
+
+The project is designed so that the user interface and database can be swapped with another framework/dbms by implementing the domain provided interfaces.
 
 ---
 

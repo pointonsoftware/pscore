@@ -18,22 +18,23 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef INVOKER_DOMAIN_DEFINES_HPP_
+#define INVOKER_DOMAIN_DEFINES_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+namespace domain {
+namespace status {
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+enum class General {
+    FAILED   = 0,
+    SUCCESS  = 1,
+    BUSY     = 2,
+    EXISTS   = 3,
+    OFFLINE  = 4,
+    EMPTY    = 5,
+    OCCUPIED = 6,
+};
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+}  // namespace status
+}  // namespace domain
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+#endif  // INVOKER_DOMAIN_DEFINES_HPP_

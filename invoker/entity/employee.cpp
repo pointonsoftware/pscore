@@ -18,22 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#include "employee.hpp"
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+namespace domain {
+namespace entities {
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
-
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
-
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
+Employee::Employee(const std::string& firstname,
+                   const std::string& middlename,
+                   const std::string& lastname,
+                   const std::string& birthdate,
+                   const std::string& gender)
+: Person{firstname, middlename, lastname, birthdate, gender} {
+    // Empty for now
 }
+
+}  // namespace entities
+}  // namespace domain

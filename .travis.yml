@@ -26,13 +26,13 @@ jobs:
       script : >-
                travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
                python - --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11
-               --linelength=100 --recursive application databoundary domain utility
+               --linelength=100 --recursive application databoundary invoker utility
     - name   : CppCheck
       install: sudo apt-get install cppcheck
       script : >-
               cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style
               --suppress=missingIncludeSystem --check-config
-              application databoundary domain utility -idomain/unittest
+              application databoundary invoker utility -iinvoker/unittest
 
     - stage  : Compile
       name   : Build

@@ -18,22 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef INVOKER_ENTITY_PERSONALID_HPP_
+#define INVOKER_ENTITY_PERSONALID_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#include <string>
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+namespace domain {
+namespace entities {
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+struct PersonalId {
+    std::string type;
+    std::string id_number;
+};
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+}  // namespace entities
+}  // namespace domain
+#endif  // INVOKER_ENTITY_PERSONALID_HPP_

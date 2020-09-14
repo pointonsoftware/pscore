@@ -18,22 +18,28 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef INVOKER_ENTITY_ADDRESS_HPP_
+#define INVOKER_ENTITY_ADDRESS_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#include <string>
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+namespace domain {
+namespace entities {
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+struct Address {
+    std::string housenumber;
+    std::string lot;
+    std::string block;
+    std::string street;
+    std::string subdivision;
+    std::string sitio;
+    std::string purok;
+    std::string barangay;
+    std::string city_town;
+    std::string province;
+    std::string zip;
+};
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+}  // namespace entities
+}  // namespace domain
+#endif  // INVOKER_ENTITY_ADDRESS_HPP_

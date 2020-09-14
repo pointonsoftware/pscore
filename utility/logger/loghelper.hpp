@@ -18,22 +18,52 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef UTILITY_LOGGER_LOGHELPER_HPP_
+#define UTILITY_LOGGER_LOGHELPER_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#include <memory>
+#include <string>
+#include "loggeriface.hpp"
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+#define FUNC __PRETTY_FUNCTION__
+#define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)
+#define LOG_INFO(log_str...)  utility::LogHelper::GetInstance().write("info" , FUNC, log_str)
+#define LOG_WARN(log_str...)  utility::LogHelper::GetInstance().write("warn" , FUNC, log_str)
+#define LOG_ERROR(log_str...) utility::LogHelper::GetInstance().write("error", FUNC, log_str)
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+namespace utility {
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+class LogHelper {
+ public:
+    static LogHelper& GetInstance() {
+        static LogHelper loghelper;
+        return loghelper;
+    }
+    void write(const std::string& logMode, const std::string& prettyFunction,
+               const std::string& logFormat...) const;
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+ private:
+    LogHelper();
+    const bool isLogModeWritable(const std::string& logMode) const;
+    const std::string getMethodName(const std::string& prettyFunction) const;
+    const std::string extractClassName(const std::string& signature) const;
+    const std::string extractMethodName(const std::string& signature) const;
+
+    std::unique_ptr<LoggerInterface> m_logger;
+
+    enum class LoggerType {
+        CONSOLE = 0x00,
+        FILE    = 0x01,
+        SOCKET  = 0x02
+    };
+
+    enum class LogLevel {
+        VERBOSE   = 0x01,
+        NORMAL    = 0x02,
+        ALERT     = 0x03,
+        CRITICAL  = 0x04
+    } m_logLevel;
+};
+
+}  // namespace utility
+#endif  // UTILITY_LOGGER_LOGHELPER_HPP_

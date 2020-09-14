@@ -18,22 +18,46 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef UTILITY_LOGGER_LOGGERIFACE_HPP_
+#define UTILITY_LOGGER_LOGGERIFACE_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
-
+#include <ctime>
+#include <chrono>
 #include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+#include <string>
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+namespace utility {
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+constexpr unsigned int MIN_CHAR = 1;
+constexpr unsigned int MAX_NAME = 20;
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+class LoggerInterface {
+ public:
+    virtual void write(const std::string& logMode, const std::string& className,
+                       const std::string& methodName, const std::string& logString) = 0;
+    virtual ~LoggerInterface()= default;
+
+ protected:
+    /**
+    * Code based-from StackOverflow by bames53
+    * Author profile: https://stackoverflow.com/users/365496/bames53
+    * 
+    * Original question: https://stackoverflow.com/q/27136854
+    * Answer: https://stackoverflow.com/a/27137475
+    */
+    template <typename Duration>
+    std::string formatTimestamp(tm t, Duration fraction) {
+        using std::chrono::milliseconds;
+        using std::chrono::duration_cast;
+        char buff[100];
+        snprintf(buff, sizeof(buff), "[%04u-%02u-%02u %02u:%02u:%02u.%03u]", t.tm_year + 1900,
+                    t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
+                    static_cast<unsigned>(duration_cast<milliseconds>(fraction).count()));
+        return buff;
+    }
+
+    std::string getTimestamp();
+    std::string getLogModeTerminalColor(const std::string& logMode);
+};
+}  // namespace utility
+#endif  // UTILITY_LOGGER_LOGGERIFACE_HPP_

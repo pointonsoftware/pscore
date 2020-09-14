@@ -18,22 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef UTILITY_LOGGER_FILELOG_HPP_
+#define UTILITY_LOGGER_FILELOG_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#include <string>
+#include "loggeriface.hpp"
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+namespace utility {
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+class FileLogger : public LoggerInterface {
+ private:
+    void write(const std::string& logMode, const std::string& className,
+               const std::string& methodName, const std::string& logString) override;
+};
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+}  // namespace utility
+#endif  // UTILITY_LOGGER_FILELOG_HPP_

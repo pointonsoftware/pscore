@@ -18,22 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef INVOKER_DOMAIN_INTERFACE_VIEW_AUTHVIEWIF_HPP_
+#define INVOKER_DOMAIN_INTERFACE_VIEW_AUTHVIEWIF_HPP_
+#include <string>
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+namespace domain {
+namespace authentication {
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+class AuthViewIface {
+ public:
+    AuthViewIface() = default;
+    virtual ~AuthViewIface() = default;
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+    /**
+    * showLoginScreen
+    */
+    virtual void showLoginScreen() = 0;
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+    /**
+    * showLoginFailed
+    */
+    virtual void showLoginFailed() = 0;
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+    /**
+    * Will be called if user was found
+    * @param employee a JSON string containing employee details
+    */
+    virtual void loginSuccessful(const std::string& employee) = 0;
+};
+
+}  // namespace authentication
+}  // namespace domain
+#endif  // INVOKER_DOMAIN_INTERFACE_VIEW_AUTHVIEWIF_HPP_

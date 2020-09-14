@@ -18,22 +18,20 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#ifndef INVOKER_DOMAIN_INTERFACE_DATAPROVIDER_AUTHDATAIF_HPP_
+#define INVOKER_DOMAIN_INTERFACE_DATAPROVIDER_AUTHDATAIF_HPP_
 
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#include "dataproviderif.hpp"
 
-#include <iostream>
-#include <domain/controller/authcontroller.hpp>
-#include <logger/loghelper.hpp>
+namespace domain {
+namespace authentication {
 
-int main() {
-    domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+class AuthDataProviderIface : public DataProviderIface {
+ public:
+    AuthDataProviderIface() = default;
+    virtual ~AuthDataProviderIface() = default;
+};
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
-
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
-    return 0;
-}
+}  // namespace authentication
+}  // namespace domain
+#endif  // INVOKER_DOMAIN_INTERFACE_DATAPROVIDER_AUTHDATAIF_HPP_
