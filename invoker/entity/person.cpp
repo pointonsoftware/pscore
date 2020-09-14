@@ -18,34 +18,43 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <gtest/gtest.h>
-#include <controller/authcontroller.hpp>
+#include "person.hpp"
 
 namespace domain {
-namespace authentication {
-namespace test {
+namespace entities {
 
-class TestAuth : public testing::Test {
- public:
-    TestAuth() : authController(nullptr, nullptr) {
-        // empty for now
+Person::Person(const std::string& firstname,
+               const std::string& middlename,
+               const std::string& lastname,
+               const std::string& birthdate,
+               const std::string& gender)
+: m_firstname(firstname), m_middlename(middlename), m_lastname(lastname),
+  m_birthdate(birthdate), m_gender(gender) {
+    // Empty for now
+}
+
+void Person::addPhoneNumber(const std::string& phonenumber) {
+    m_contact_details.phone_number.emplace_back(phonenumber);
+}
+
+void Person::addPersonalId(const std::string& type, const std::string& number) {
+    m_personal_ids.emplace_back(PersonalId{type, number});
+}
+
+void Person::setPersonalIds(const std::vector<PersonalId>& personalids) {
+    if (!m_personal_ids.empty()) {
+        // warning, we're overwriting the container
     }
-
-    ~TestAuth() = default;
-    void SetUp() {}
-    void TearDown() {}
-
-    domain::authentication::AuthController authController;
-};
-
-TEST_F(TestAuth, LoginShouldSucceed) {
-    ASSERT_TRUE(authController.login("123"));
+    m_personal_ids = personalids;
 }
 
-TEST_F(TestAuth, DISABLED_LoginShouldFail) {
-    ASSERT_FALSE(authController.login("123"));
+void Person::setEmail(const std::string& email) {
+    m_contact_details.email = email;
 }
 
-}  // namespace test
-}  // namespace authentication
+void Person::setAddress(const Address& address) {
+    m_address = address;
+}
+
+}  // namespace entities
 }  // namespace domain

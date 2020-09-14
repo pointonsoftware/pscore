@@ -10,6 +10,6 @@ add_executable(domain_unittest
 
 target_link_libraries (
     domain_unittest
-    core
+    invoker
     gtest
 )

@@ -18,29 +18,29 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_
-#define DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_
-
-#include <string>
-#include <memory>
-#include <defines.hpp>
-#include <view/authviewif.hpp>
-#include <dataprovider/authdataif.hpp>
+#include "authcontroller.hpp"
 
 namespace domain {
 namespace authentication {
 
-class AuthController {
- public:
-    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
-                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
-    bool login(const std::string& pin);
- private:
-    status::General authenticate(const std::string& pin);
-    std::unique_ptr<AuthViewIface> mView;
-    std::unique_ptr<AuthDataProviderIface> mDataProvider;
-};
+AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
+                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
+: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
+    // Empty for now
+}
+
+bool AuthController::login(const std::string& pin) {
+    // Check if pin is empty
+    // Check if pin is numeric
+    // Call authenticate
+    return true;
+}
+
+status::General AuthController::authenticate(const std::string& pin) {
+    // Check if dataprovider is ready; else throw
+    // Check pin in dataprovider
+    return status::General::SUCCESS;
+}
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_

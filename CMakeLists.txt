@@ -13,11 +13,10 @@ set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib CACHE INTERNAL "")
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin CACHE INTERNAL "")
 set (CMAKE_CXX_FLAGS "-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow -g -O2 -fsanitize=address -pg")
 
-include_directories (domain/inc)
-include_directories (domain/public)
-include_directories (utility/inc)
+include_directories (invoker)
+include_directories (utility)
 
-add_subdirectory (domain)
+add_subdirectory (invoker)
 add_subdirectory (utility)
 
 if (BUILD_ALL)

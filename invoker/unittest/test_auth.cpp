@@ -18,29 +18,34 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <controller/authcontroller.hpp>
+#include <gtest/gtest.h>
+#include <domain/controller/authcontroller.hpp>
 
 namespace domain {
 namespace authentication {
+namespace test {
 
-AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
-                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
-: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
-    // Empty for now
+class TestAuth : public testing::Test {
+ public:
+    TestAuth() : authController(nullptr, nullptr) {
+        // empty for now
+    }
+
+    ~TestAuth() = default;
+    void SetUp() {}
+    void TearDown() {}
+
+    domain::authentication::AuthController authController;
+};
+
+TEST_F(TestAuth, LoginShouldSucceed) {
+    ASSERT_TRUE(authController.login("123"));
 }
 
-bool AuthController::login(const std::string& pin) {
-    // Check if pin is empty
-    // Check if pin is numeric
-    // Call authenticate
-    return true;
+TEST_F(TestAuth, DISABLED_LoginShouldFail) {
+    ASSERT_FALSE(authController.login("123"));
 }
 
-status::General AuthController::authenticate(const std::string& pin) {
-    // Check if dataprovider is ready; else throw
-    // Check pin in dataprovider
-    return status::General::SUCCESS;
-}
-
+}  // namespace test
 }  // namespace authentication
 }  // namespace domain
