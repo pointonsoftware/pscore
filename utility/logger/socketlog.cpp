@@ -18,7 +18,7 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <logger/socketlog.hpp>
+#include "socketlog.hpp"
 
 // Socket headers
 #include <unistd.h>

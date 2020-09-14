@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_CFG_CONFIGIFACE_HPP_
-#define UTILITY_INC_CFG_CONFIGIFACE_HPP_
+#ifndef UTILITY_CFG_CONFIGIFACE_HPP_
+#define UTILITY_CFG_CONFIGIFACE_HPP_
 
 #include <string>
 
@@ -44,4 +44,4 @@ class ConfigIface {
 };
 
 }  // namespace utility
-#endif  // UTILITY_INC_CFG_CONFIGIFACE_HPP_
+#endif  // UTILITY_CFG_CONFIGIFACE_HPP_

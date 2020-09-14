@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_
-#define DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_
+#ifndef INVOKER_DOMAIN_CONTROLLER_AUTHCONTROLLER_HPP_
+#define INVOKER_DOMAIN_CONTROLLER_AUTHCONTROLLER_HPP_
 
 #include <string>
 #include <memory>
@@ -43,4 +43,4 @@ class AuthController {
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // DOMAIN_PUBLIC_CONTROLLER_AUTHCONTROLLER_HPP_
+#endif  // INVOKER_DOMAIN_CONTROLLER_AUTHCONTROLLER_HPP_

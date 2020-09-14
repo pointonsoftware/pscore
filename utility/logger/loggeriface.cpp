@@ -18,7 +18,7 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <logger/loggeriface.hpp>
+#include "loggeriface.hpp"
 #include <sys/time.h>
 #include <iostream>
 #include <iomanip>

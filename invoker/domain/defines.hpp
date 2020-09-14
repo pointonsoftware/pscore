@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_DEFINES_HPP_
-#define DOMAIN_PUBLIC_DEFINES_HPP_
+#ifndef INVOKER_DOMAIN_DEFINES_HPP_
+#define INVOKER_DOMAIN_DEFINES_HPP_
 
 namespace domain {
 namespace status {
@@ -37,4 +37,4 @@ enum class General {
 }  // namespace status
 }  // namespace domain
 
-#endif  // DOMAIN_PUBLIC_DEFINES_HPP_
+#endif  // INVOKER_DOMAIN_DEFINES_HPP_

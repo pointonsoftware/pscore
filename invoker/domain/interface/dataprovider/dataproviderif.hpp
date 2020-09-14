@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_PUBLIC_DATAPROVIDER_DATAPROVIDERIF_HPP_
-#define DOMAIN_PUBLIC_DATAPROVIDER_DATAPROVIDERIF_HPP_
+#ifndef INVOKER_DOMAIN_INTERFACE_DATAPROVIDER_DATAPROVIDERIF_HPP_
+#define INVOKER_DOMAIN_INTERFACE_DATAPROVIDER_DATAPROVIDERIF_HPP_
 
 namespace domain {
 
@@ -33,4 +33,4 @@ class DataProviderIface {
 
 }  // namespace domain
 
-#endif  // DOMAIN_PUBLIC_DATAPROVIDER_DATAPROVIDERIF_HPP_
+#endif  // INVOKER_DOMAIN_INTERFACE_DATAPROVIDER_DATAPROVIDERIF_HPP_

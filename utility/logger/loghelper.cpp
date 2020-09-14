@@ -21,10 +21,10 @@
 #include <cstdarg>
 #include <string>
 #include <vector>
-#include <logger/loghelper.hpp>
-#include <logger/consolelog.hpp>
-#include <logger/filelog.hpp>
-#include <logger/socketlog.hpp>
+#include "loghelper.hpp"
+#include "consolelog.hpp"
+#include "filelog.hpp"
+#include "socketlog.hpp"
 
 /**
 * This code is sourced from StackOverflow

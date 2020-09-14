@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_FILEIO_FILEIO_HPP_
-#define UTILITY_INC_FILEIO_FILEIO_HPP_
+#ifndef UTILITY_FILEIO_FILEIO_HPP_
+#define UTILITY_FILEIO_FILEIO_HPP_
 
 #include <fstream>
 #include <string>
@@ -117,4 +117,4 @@ class FileIo {
 };
 
 }  // namespace utility
-#endif  // UTILITY_INC_FILEIO_FILEIO_HPP_
+#endif  // UTILITY_FILEIO_FILEIO_HPP_

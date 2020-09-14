@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_LOGGER_SOCKETLOG_HPP_
-#define UTILITY_INC_LOGGER_SOCKETLOG_HPP_
+#ifndef UTILITY_LOGGER_SOCKETLOG_HPP_
+#define UTILITY_LOGGER_SOCKETLOG_HPP_
 
 #include <string>
 #include "loggeriface.hpp"
@@ -34,4 +34,4 @@ class SocketLogger : public LoggerInterface {
 };
 
 }  // namespace utility
-#endif  // UTILITY_INC_LOGGER_SOCKETLOG_HPP_
+#endif  // UTILITY_LOGGER_SOCKETLOG_HPP_

@@ -18,7 +18,7 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <logger/consolelog.hpp>
+#include "consolelog.hpp"
 #include <iostream>
 #include <iomanip>
 

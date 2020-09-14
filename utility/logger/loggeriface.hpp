@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_LOGGER_LOGGERIFACE_HPP_
-#define UTILITY_INC_LOGGER_LOGGERIFACE_HPP_
+#ifndef UTILITY_LOGGER_LOGGERIFACE_HPP_
+#define UTILITY_LOGGER_LOGGERIFACE_HPP_
 
 #include <ctime>
 #include <chrono>
@@ -60,4 +60,4 @@ class LoggerInterface {
     std::string getLogModeTerminalColor(const std::string& logMode);
 };
 }  // namespace utility
-#endif  // UTILITY_INC_LOGGER_LOGGERIFACE_HPP_
+#endif  // UTILITY_LOGGER_LOGGERIFACE_HPP_

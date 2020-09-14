@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_INC_ENTITY_EMPLOYEE_HPP_
-#define DOMAIN_INC_ENTITY_EMPLOYEE_HPP_
+#ifndef INVOKER_ENTITY_EMPLOYEE_HPP_
+#define INVOKER_ENTITY_EMPLOYEE_HPP_
 
 #include <string>
 #include "person.hpp"
@@ -43,4 +43,4 @@ class Employee : public Person {
 
 }  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_INC_ENTITY_EMPLOYEE_HPP_
+#endif  // INVOKER_ENTITY_EMPLOYEE_HPP_

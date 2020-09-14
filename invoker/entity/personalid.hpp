@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_INC_ENTITY_PERSONALID_HPP_
-#define DOMAIN_INC_ENTITY_PERSONALID_HPP_
+#ifndef INVOKER_ENTITY_PERSONALID_HPP_
+#define INVOKER_ENTITY_PERSONALID_HPP_
 
 #include <string>
 
@@ -33,4 +33,4 @@ struct PersonalId {
 
 }  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_INC_ENTITY_PERSONALID_HPP_
+#endif  // INVOKER_ENTITY_PERSONALID_HPP_

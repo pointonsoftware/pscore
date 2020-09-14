@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "authcontroller.hpp"
+#include <utility>
 
 namespace domain {
 namespace authentication {

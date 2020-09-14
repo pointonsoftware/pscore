@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_LOGGER_CONSOLELOG_HPP_
-#define UTILITY_INC_LOGGER_CONSOLELOG_HPP_
+#ifndef UTILITY_LOGGER_CONSOLELOG_HPP_
+#define UTILITY_LOGGER_CONSOLELOG_HPP_
 
 #include <string>
 #include "loggeriface.hpp"
@@ -33,4 +33,4 @@ class ConsoleLogger : public LoggerInterface {
 };
 
 }  // namespace utility
-#endif  // UTILITY_INC_LOGGER_CONSOLELOG_HPP_
+#endif  // UTILITY_LOGGER_CONSOLELOG_HPP_

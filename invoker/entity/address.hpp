@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_INC_ENTITY_ADDRESS_HPP_
-#define DOMAIN_INC_ENTITY_ADDRESS_HPP_
+#ifndef INVOKER_ENTITY_ADDRESS_HPP_
+#define INVOKER_ENTITY_ADDRESS_HPP_
 
 #include <string>
 
@@ -42,4 +42,4 @@ struct Address {
 
 }  // namespace entities
 }  // namespace domain
-#endif  // DOMAIN_INC_ENTITY_ADDRESS_HPP_
+#endif  // INVOKER_ENTITY_ADDRESS_HPP_

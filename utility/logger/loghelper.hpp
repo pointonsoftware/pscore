@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_INC_LOGGER_LOGHELPER_HPP_
-#define UTILITY_INC_LOGGER_LOGHELPER_HPP_
+#ifndef UTILITY_LOGGER_LOGHELPER_HPP_
+#define UTILITY_LOGGER_LOGHELPER_HPP_
 
 #include <memory>
 #include <string>
@@ -66,4 +66,4 @@ class LogHelper {
 };
 
 }  // namespace utility
-#endif  // UTILITY_INC_LOGGER_LOGHELPER_HPP_
+#endif  // UTILITY_LOGGER_LOGHELPER_HPP_
