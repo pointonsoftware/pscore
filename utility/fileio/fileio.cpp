@@ -91,14 +91,15 @@ FileOperationStatus FileIo::find_and_replace(const std::string& keyword,
     std::vector<std::string> readContainer;
     read(&readContainer);
 
-    // Try to find and replace
+    // Try to find the key
     VectorIterator lineToReplace = findVectorContent(keyword, &readContainer);
 
     if (lineToReplace == readContainer.end()) {
-        // Key not found
+        // Key not found!
         return FileOperationStatus::FAILED;
     }
 
+    // Replace the current contents then overwrite the file
     return overWriteFile(replaceVectorElement(lineToReplace, readContainer, newline));
 }
 

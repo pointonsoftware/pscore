@@ -56,7 +56,7 @@ void ConsoleLogger::write(const std::string& logMode, const std::string& classNa
                            const std::string& methodName, const std::string& logString) {
 #ifdef _WIN32
     // For Windows, we need to enable Console Virtual Terminal Processing
-    // for the coloring to take effect
+    // for the console coloring to take effect
     if (!enableVTMode()) {
         std::cout << "Unable to enter VT processing mode." << std::endl;
     }
