@@ -24,6 +24,10 @@ add_library (
     cfg/config.cpp
 )
 
+if (MINGW)
+    target_link_libraries (utility "-lws2_32")
+endif ()
+
 # Uncomment the condition below if we dont want to build the logclient always
 # if (BUILD_LOG_CLIENT)
 add_subdirectory (logclient)

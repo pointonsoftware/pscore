@@ -60,7 +60,7 @@ void SocketLogger::broadcast(const std::string& logStr) {
     WSADATA wsaData;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != NO_ERROR) {
-          return
+          return;
     }
 #else
     int trueflag = 1;
