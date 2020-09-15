@@ -90,7 +90,7 @@ bool EnableVTMode() {
 }
 #endif
 
-int main(int argc, char* argv[]) {
+int main() {
     struct sockaddr_in recv_addr;
     int socketfd;
 #ifdef __WIN32__

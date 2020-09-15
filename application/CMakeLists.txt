@@ -11,4 +11,5 @@ target_link_libraries (
     console_app
     invoker
     utility
+    ${STATIC_LIBS}
 )
