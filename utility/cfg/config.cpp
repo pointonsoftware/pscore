@@ -38,7 +38,7 @@ void Config::set(const std::string& key, const std::string& value) {
         mFileIo.write(updateLine);
     } else {
         LOG_INFO("Updated config key=%s with value=%s.", key.c_str(), value.c_str());
-        mFileIo.replace(key, updateLine);
+        mFileIo.find_and_replace(key, updateLine);
     }
 }
 

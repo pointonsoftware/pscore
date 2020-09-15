@@ -66,40 +66,61 @@ FileOperationStatus FileIo::find(const std::string& keyword, std::string* out) {
     if (!isFileOpen()) {
         return FileOperationStatus::FILE_NOT_FOUND;
     }
-    // read
-    std::vector<std::string> readContainer;
-    read(&readContainer);
-    // find
-    *out = [&readContainer, &keyword]() {
-                for (const std::string temp : readContainer) {
-                    if (temp.find(keyword) != std::string::npos) {
-                        return temp;
-                    }
-                }
-                return std::string("");
-            }();
+
+    {
+        // Read
+        std::vector<std::string> readContainer;
+        read(&readContainer);
+        {
+            // Find
+            VectorIterator value = findVectorContent(keyword, &readContainer);
+            *out = value != readContainer.end() ? *(value) : std::string("");
+        }
+    }
+
     return FileOperationStatus::SUCCESS;
 }
 
-FileOperationStatus FileIo::replace(const std::string& keyword, const std::string& line) {
+FileOperationStatus FileIo::find_and_replace(const std::string& keyword,
+                                             const std::string& newline) {
      if (!isFileOpen()) {
         return FileOperationStatus::FILE_NOT_FOUND;
     }
-    // read
+
+    // Read
     std::vector<std::string> readContainer;
     read(&readContainer);
-    // try to find and replace
-    const bool keywordFound = [&readContainer, &keyword, &line]() {
-        using VectorIterator = std::vector<std::string>::iterator;
-        for (VectorIterator it = readContainer.begin(); it != readContainer.end(); ++it) {
-             if (it->find(keyword) != std::string::npos) {
-                *it = line;
-                return true;
-            }
+
+    // Try to find the key
+    VectorIterator lineToReplace = findVectorContent(keyword, &readContainer);
+
+    if (lineToReplace == readContainer.end()) {
+        // Key not found!
+        return FileOperationStatus::FAILED;
+    }
+
+    // Replace the current contents then overwrite the file
+    return overWriteFile(replaceVectorElement(lineToReplace, readContainer, newline));
+}
+
+std::vector<std::string> FileIo::replaceVectorElement(VectorIterator key,
+                    const std::vector<std::string>& container, const std::string& newElement) {
+    if (key != container.end()) {
+        // Replace here!
+        *key = newElement;
+    }
+    return container;
+}
+
+VectorIterator FileIo::findVectorContent(const std::string& keyword,
+                                         std::vector<std::string>* container) {
+    VectorIterator it = container->end();
+    for (it = container->begin(); it != container->end(); ++it) {
+        if (it->find(keyword) != std::string::npos) {
+            break;
         }
-        return false;
-    }();
-    return (keywordFound ? overWriteFile(readContainer) : FileOperationStatus::FAILED);
+    }
+    return it;
 }
 
 FileOperationStatus FileIo::discard() {

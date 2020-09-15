@@ -27,6 +27,8 @@
 
 namespace utility {
 
+using VectorIterator = std::vector<std::string>::iterator;
+
 enum class FileOperationStatus {
     SUCCESS = 0x00,
     FAILED = 0x01,
@@ -86,16 +88,16 @@ class FileIo {
     FileOperationStatus find(const std::string& keyword, std::string* out);
 
     /*!
-     * FileOperationStatus replace()
-     * Replace the whole line with the [line] parameter
+     * FileOperationStatus find_and_replace()
+     * Find a line that contains the keyword and replace with the [newline] parameter
      * Will return failure status if keyword is not found
      *
      * [in] keyword - the keyword used to find the line-to-be-replaced
-     * [in] line - the new line that will replace the old
+     * [in] newline - the new line that will replace the old
      *
      * [ret] status
     */
-    FileOperationStatus replace(const std::string& keyword, const std::string& line);
+    FileOperationStatus find_and_replace(const std::string& keyword, const std::string& newline);
 
     /*!
      * FileOperationStatus discard()
@@ -113,7 +115,42 @@ class FileIo {
     bool isFileOpen();
     void openFile(const std::string& file);
     void closeFile();
+
+    /*!
+     * VectorIterator overWriteFile()
+     * Overwrites our mFile with [fileContents] parameter
+     *
+     * [in] fileContents - the new contents to place in the file
+     *
+     * [ret] status
+    */
     FileOperationStatus overWriteFile(const std::vector<std::string>& fileContents);
+
+    /*!
+     * VectorIterator findVectorContent()
+     * Find the key from the container and return the iterator
+     * Returns container.end() if key is not found
+     *
+     * [in] key - the keyword to find
+     * [in] container  - the vector container
+     *
+     * [ret] pointer to the element when found
+    */
+    VectorIterator findVectorContent(const std::string& keyword,
+                                     std::vector<std::string>* container);
+
+    /*!
+     * FileOperationStatus replace()
+     * Replace an element in the container with [newElement] parameter
+     *
+     * [in] key - pointer to the element that will be replaced in the vector
+     * [in] container  - the vector container
+     * [in] line - the new line that will replace the old
+     *
+     * [ret] New vector (container + updated element)
+    */
+    std::vector<std::string> replaceVectorElement(VectorIterator key,
+                    const std::vector<std::string>& container, const std::string& newElement);
 };
 
 }  // namespace utility
