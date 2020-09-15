@@ -24,8 +24,43 @@
 
 namespace utility {
 
+#ifdef _WIN32
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+// https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
+bool enableVTMode() {
+    // Set output mode to handle virtual terminal sequences
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE) {
+        std::cout << "VT processing: INVALID_HANDLE_VALUE." << std::endl;
+        return false;
+    }
+
+    DWORD dwMode = 0;
+    if (!GetConsoleMode(hOut, &dwMode)) {
+        std::cout << "VT processing: GetConsoleMode failed." << std::endl;
+        return false;
+    }
+
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    if (!SetConsoleMode(hOut, dwMode)) {
+        std::cout << "VT processing: SetConsoleMode failed." << std::endl;
+        return false;
+    }
+    return true;
+}
+#endif
+
 void ConsoleLogger::write(const std::string& logMode, const std::string& className,
                            const std::string& methodName, const std::string& logString) {
+#ifdef _WIN32
+    // For Windows, we need to enable Console Virtual Terminal Processing
+    // for the coloring to take effect
+    if (!enableVTMode()) {
+        std::cout << "Unable to enter VT processing mode." << std::endl;
+    }
+#endif
     // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
     std::cout << getLogModeTerminalColor(logMode)
               << getTimestamp() << std::left << " | "
