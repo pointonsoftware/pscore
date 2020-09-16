@@ -18,15 +18,16 @@ jobs:
       with:
         submodules: recursive
 
-    # - name: Installing mingw
-    #   uses: msys2/setup-msys2@v2
-    #   with:
-    #     install: cmake mingw-w64-x86_64-gcc
-    #   run: gcc --version
+    - name: Installing mingw
+      uses: msys2/setup-msys2@v2
+      with:
+        install: mingw-w64-x86_64-gcc
+      run: gcc --version
     
     - name: Running CMake
+      uses: msys2/setup-msys2@v2
+      shell: msys2 {0}
       run : |
         cmake --version
-        gcc --version
         cd ${{ github.workspace }}
         ./clean_build.sh
