@@ -26,6 +26,7 @@ jobs:
     
     - name: Running CMake
       run : |
-        message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
+        cmake --version
+        gcc --version
         cd ${{ github.workspace }}
         ./clean_build.sh
