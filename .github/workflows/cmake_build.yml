@@ -1,0 +1,30 @@
+# Copyright (C) Pointon Software - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Written by Ben Ziv <pointonsoftware@gmail.com>, September 2020
+
+name: cmake_build
+
+# Build on pull requests only
+on: pull_request
+
+jobs:
+  windows-64-mingw:
+    name: Windows 64-bit with MinGW
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Installing mingw
+      run: |
+          pacman --noconfirm -S msys/gcc
+          pacman --noconfirm -S mingw64/mingw-w64-x86_64-gcc
+    
+    - name: Running CMake
+      run : |
+        message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
+        cd ${{ github.workspace }}
+        ./clean_build.sh
