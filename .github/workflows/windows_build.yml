@@ -13,17 +13,15 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: msys2/setup-msys2@v2
-
     - name: Checkout
+      uses: actions/checkout@v2
       with:
         submodules: recursive
 
     - name: Installing mingw
+      uses: msys2/setup-msys2@v2
       with:
         install: mingw-w64-x86_64-gcc
-      run: gcc --version
     
     - name: Running CMake
       shell: msys2 {0}
