@@ -5,6 +5,8 @@
 
 name: windows
 
+on: push
+
 jobs:
   windows:
     name:  MinGW64
