@@ -5,8 +5,8 @@
 
 name: windows_build
 
-# Build on pull requests only
-on: pull_request
+# Build on push and pr
+on: [push, pull_request]
 
 jobs:
   mingw-64:
