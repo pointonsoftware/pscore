@@ -3,23 +3,23 @@
 # Proprietary and confidential
 # Written by Ben Ziv <pointonsoftware@gmail.com>, September 2020
 
-name: windows_build
-
-# Build on push and pr
-on: [push, pull_request]
+name: windows
 
 jobs:
-  mingw-64:
+  windows:
     name:  MinGW64
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
       with:
         submodules: recursive
 
     - name: Installing mingw
-      uses: msys2/setup-msys2@v1
+      uses: msys2/setup-msys2@v2
       with:
         install: cmake mingw-w64-x86_64-gcc
       run: gcc --version
