@@ -19,3 +19,7 @@ cmake -G "Unix Makefiles" $CORE_CMAKE_FLAGS .. || exit 1
 make || exit 1
 
 echo "Build completed successfully"
+
+# Copy the configs
+cp ../config/* bin/ || exit 1
+echo "Config files copied to bin folder."

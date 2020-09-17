@@ -20,7 +20,6 @@
 **************************************************************************************************/
 #include <algorithm>
 #include <cfg/config.hpp>
-#include <logger/loghelper.hpp>
 
 namespace utility {
 
@@ -34,10 +33,8 @@ Config::Config(const std::string& fileName) : mFileIo(fileName) {
 void Config::set(const std::string& key, const std::string& value) {
     const std::string updateLine = key + EQUALS_SIGN + value;
     if (getLineFromConfig(key).empty()) {
-        LOG_WARN("Key %s does not exists, system will create one.", key.c_str());
         mFileIo.write(updateLine);
     } else {
-        LOG_INFO("Updated config key=%s with value=%s.", key.c_str(), value.c_str());
         mFileIo.find_and_replace(key, updateLine);
     }
 }
@@ -45,7 +42,6 @@ void Config::set(const std::string& key, const std::string& value) {
 std::string Config::get(const std::string& key, const std::string& defaultValue) {
     const std::string line = getLineFromConfig(key);
     if (line.empty()) {
-        LOG_WARN("Key %s was not found, returning default %s", key.c_str(), defaultValue.c_str());
         return defaultValue;
     }
     return extractValueFromLine(line);
@@ -57,10 +53,7 @@ std::string Config::extractValueFromLine(const std::string& line) {
 
 std::string Config::getLineFromConfig(const std::string& key) {
     std::string templine;
-    const FileOperationStatus status = mFileIo.find(key, &templine);
-    if (status != FileOperationStatus::SUCCESS) {
-        LOG_ERROR("Config file read error - %d!", status);
-    }
+    mFileIo.find(key, &templine);
     // templine is empty if mFileIo.find operation is not successful (see above)
     return templine;
 }

@@ -43,6 +43,7 @@ class FileIo {
  public:
     /*!
      * Caller must provide the complete file path and file name
+     * Will create a new file if it doesn't exist
     */
     explicit FileIo(const std::string& file);
 

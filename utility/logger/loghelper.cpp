@@ -25,6 +25,7 @@
 #include "consolelog.hpp"
 #include "filelog.hpp"
 #include "socketlog.hpp"
+#include <cfg/config.hpp>
 
 /**
 * This code is sourced from StackOverflow
@@ -48,22 +49,19 @@
 
 namespace utility {
 
-constexpr char LOG_CONFIG[] = "corelog.conf";
+constexpr char LOG_CONFIG[] = "pslog.cfg";
 
+/* todo (xxx) - this constructor is doing too much of work
+ * might be a good idea to have a separate initialize() call
+*/
 LogHelper::LogHelper() {
-    // read from config
-
-    // m_logger = config->What is the logger type? (getConfig(logger) == LoggerType::?)
-    // We default to console for now.
-    m_logger = std::make_unique<ConsoleLogger>();
-
-    // m_logLevel = config -> What is the log level?
-    // We default to Verbose for now.
-    m_logLevel = LogLevel::VERBOSE;
+    mConfig = std::make_unique<Config>(LOG_CONFIG);
+    initializeLoggerType();
+    initializeLogLevel();
 }
 
 void LogHelper::write(const std::string& logMode, const std::string& prettyFunction,
-                      const std::string& logFormat...) const {
+                      const std::string logFormat...) const {
     if (isLogModeWritable(logMode)) {
         const std::string signature = getMethodName(prettyFunction);
         const std::string className = extractClassName(signature);
@@ -73,11 +71,11 @@ void LogHelper::write(const std::string& logMode, const std::string& prettyFunct
         if (logFormat.find("%") != std::string::npos) {
             EXTRACT_VAR(logFormat, logString);
         }
-        m_logger->write(logMode, className, methodName, logString);
+        mLogger->write(logMode, className, methodName, logString);
     }
 }
 
-const bool LogHelper::isLogModeWritable(const std::string& logMode) const {
+bool LogHelper::isLogModeWritable(const std::string& logMode) const {
     /* We need to apply the following rules:
      * VERBOSE  => debug, info, warn, error
      * NORMAL   => info, warn, error
@@ -85,14 +83,14 @@ const bool LogHelper::isLogModeWritable(const std::string& logMode) const {
      * CRITICAL => error
     */
     if (logMode.compare("debug") == 0) {
-        return m_logLevel == LogLevel::VERBOSE;
+        return mLogLevel == LogLevel::VERBOSE;
     }
     if (logMode.compare("info") == 0) {
-        return (m_logLevel == LogLevel::VERBOSE) ||
-               (m_logLevel == LogLevel::NORMAL);
+        return (mLogLevel == LogLevel::VERBOSE) ||
+               (mLogLevel == LogLevel::NORMAL);
     }
     if (logMode.compare("warn") == 0) {
-        return m_logLevel != LogLevel::CRITICAL;
+        return mLogLevel != LogLevel::CRITICAL;
     }
     return true;
 }
@@ -124,6 +122,59 @@ const std::string LogHelper::extractMethodName(const std::string& signature) con
         return (colons < MIN_CHAR) || (colons > MAX_NAME) ? 0 : colons + 2;
     }();
     return signature.substr(begin);
+}
+
+void LogHelper::initializeLoggerType() {
+    if (!mConfig) {
+        // Dont proceed if mConfig is not initialized
+        return;
+    }
+    // Get logger type from config
+    const LoggerType loggerType = [this] {
+        try {
+            return static_cast<LoggerType>(std::stoi(mConfig->get("log_type", "0")));
+        } catch (const std::invalid_argument&) {
+            return LoggerType::CONSOLE;
+        }
+        catch (const std::out_of_range&) {
+            return LoggerType::CONSOLE;
+        }
+    }();
+    mLogger = [loggerType] {
+        std::unique_ptr<LoggerInterface> temp;
+        switch (loggerType) {
+            case LoggerType::FILE:
+                temp = std::make_unique<FileLogger>();
+                break;
+            case LoggerType::SOCKET:
+                temp = std::make_unique<SocketLogger>();
+                break;
+            case LoggerType::CONSOLE:
+                // Fallthrough
+            default:
+                // We default to console
+                temp = std::make_unique<ConsoleLogger>();
+                break;
+        }
+        return temp;
+    }();
+}
+
+void LogHelper::initializeLogLevel() {
+    if (!mConfig) {
+        // Dont proceed if mConfig is not initialized
+        return;
+    }
+    mLogLevel = [this] {
+        try {
+            return static_cast<LogLevel>(std::stoi(mConfig->get("log_level", "0")));
+        } catch (const std::invalid_argument&) {
+            return LogLevel::VERBOSE;
+        }
+        catch (const std::out_of_range&) {
+            return LogLevel::VERBOSE;
+        }
+    }();
 }
 
 }  // namespace utility
