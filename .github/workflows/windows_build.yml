@@ -25,4 +25,4 @@ jobs:
 
     - name: Running CMake
       shell: bash
-      run  : ./clean_build.sh -G "Unix Makefiles"
+      run  : ./clean_build.sh

@@ -15,7 +15,7 @@ cd build || exit 1
 echo Starting clean build...
 echo "cmake flags: " $CORE_CMAKE_FLAGS
 
-cmake $CORE_CMAKE_FLAGS .. || exit 1
+cmake -G "Unix Makefiles" $CORE_CMAKE_FLAGS .. || exit 1
 make || exit 1
 
 echo "Build completed successfully"
