@@ -1,0 +1,42 @@
+# Copyright (C) Pointon Software - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Written by Ben Ziv <pointonsoftware@gmail.com>, September 2020
+
+name: windows
+
+on: [pull_request]
+
+jobs:
+  windows:
+    name:  MinGW64
+    runs-on: windows-latest
+
+    steps:
+    - name: Install
+      uses: msys2/setup-msys2@v2
+      with:
+        install: cmake mingw-w64-x86_64-gcc
+
+    - name: Code checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build
+      shell: bash
+      run  : ./clean_build.sh
+
+    - name: Upload Binaries
+      uses: actions/upload-artifact@v2
+      with:
+        name: binary-artifact
+        path: build/bin/
+
+    - name: Upload Libraries
+      uses: actions/upload-artifact@v2
+      with:
+        name: library-artifact
+        path: |
+          build/lib/libinvoker.a
+          build/lib/libutility.a
