@@ -27,11 +27,15 @@ jobs:
       shell: bash
       run  : ./clean_build.sh
 
-    - name: Upload Artifacts
+    - name: Upload Binaries
       uses: actions/upload-artifact@v2
       with:
         name: binary-artifact
         path: build/bin/
+
+    - name: Upload Libraries
+      uses: actions/upload-artifact@v2
+      with:
         name: library-artifact
         path: |
           build/lib/libinvoker.a
