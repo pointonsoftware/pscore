@@ -1,6 +1,6 @@
 # PSCore
 
-A business management software engine
+Business management software engine
 
 ---
 
