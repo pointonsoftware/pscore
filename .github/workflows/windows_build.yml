@@ -23,6 +23,18 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Running CMake
+    - name: Build
       shell: bash
       run  : ./clean_build.sh
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: binary-artifact
+        path: build/bin/
+      uses: actions/upload-artifact@v2
+      with:
+        name: library-artifact
+        path: |
+          build/lib/libinvoker.a
+          build/lib/libutility.a
