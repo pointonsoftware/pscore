@@ -19,3 +19,11 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "filelog.hpp"
+namespace utility {
+
+void FileLogger::write(const std::string& logMode, const std::string& className,
+               const std::string& methodName, const std::string& logString) {
+    // empty for now
+}
+
+}  // namespace utility

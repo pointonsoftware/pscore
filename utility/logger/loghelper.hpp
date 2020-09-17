@@ -24,6 +24,7 @@
 #include <memory>
 #include <string>
 #include "loggeriface.hpp"
+#include <cfg/configiface.hpp>
 
 #define FUNC __PRETTY_FUNCTION__
 #define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)
@@ -40,16 +41,17 @@ class LogHelper {
         return loghelper;
     }
     void write(const std::string& logMode, const std::string& prettyFunction,
-               const std::string& logFormat...) const;
+               const std::string logFormat...) const;
 
  private:
     LogHelper();
-    const bool isLogModeWritable(const std::string& logMode) const;
+    bool isLogModeWritable(const std::string& logMode) const;
     const std::string getMethodName(const std::string& prettyFunction) const;
     const std::string extractClassName(const std::string& signature) const;
     const std::string extractMethodName(const std::string& signature) const;
 
-    std::unique_ptr<LoggerInterface> m_logger;
+    std::unique_ptr<LoggerInterface> mLogger;
+    std::unique_ptr<ConfigIface> mConfig;
 
     enum class LoggerType {
         CONSOLE = 0x00,
@@ -58,11 +60,11 @@ class LogHelper {
     };
 
     enum class LogLevel {
-        VERBOSE   = 0x01,
-        NORMAL    = 0x02,
-        ALERT     = 0x03,
-        CRITICAL  = 0x04
-    } m_logLevel;
+        VERBOSE   = 0x00,
+        NORMAL    = 0x01,
+        ALERT     = 0x02,
+        CRITICAL  = 0x03
+    } mLogLevel;
 };
 
 }  // namespace utility
