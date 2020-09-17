@@ -25,7 +25,4 @@ jobs:
 
     - name: Running CMake
       shell: bash
-      run : |
-        cmake --version
-        cd ${{ github.workspace }}
-        ./clean_build.sh
+      run  : ./clean_build.sh
