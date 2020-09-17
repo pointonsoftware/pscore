@@ -50,8 +50,11 @@ class LogHelper {
     const std::string extractClassName(const std::string& signature) const;
     const std::string extractMethodName(const std::string& signature) const;
 
-    std::unique_ptr<LoggerInterface> mLogger;
-    std::unique_ptr<ConfigIface> mConfig;
+    void initializeLoggerType();
+    void initializeLogLevel();
+
+    std::unique_ptr<LoggerInterface> mLogger = nullptr;
+    std::unique_ptr<ConfigIface> mConfig = nullptr;
 
     enum class LoggerType {
         CONSOLE = 0x00,
