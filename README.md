@@ -7,7 +7,7 @@
 
 ---
 
-This project aims to create a software engine that will lessen the time of writing the same algorithms for business management applications such as creating a user, checking the number of inventory items, etc..
+This project aims to develop a generic software engine that will house the common algorithms used for business management applications such as user creation, inventory checker, and more.
 
 ---
 
