@@ -1,30 +1,17 @@
-# PSCore
 
-Business management software engine
-
----
-
-### Technologies
-
-For this repo, we are using:
-- Language: C++17
-- Compiler: gcc-7
-- Framework: Qt
-- Database: SQLite
-- Build system: CMake
-- Profiling: gprof
-- Libraries: STL
-- Code coverage: gtest/gcov
-- Static tools: cpplint/cppcheck
-- CI: travis-ci
-
-The project is designed so that the user interface and database can be swapped with another framework/dbms by implementing the domain provided interfaces.
+<p align="center">
+  <img width="649" height="652" src="https://bit.ly/3ksFjdQ">
+  <h2 align="center">PSCORE</h2>
+  <p align="center">Business Management Software engine</p>
+</p>
 
 ---
 
-### Getting Started
+This project aims to create a software engine that will lessen the time of writing the same algorithms for business management applications such as creating a user, checking the number of inventory items, etc..
 
-Ubuntu linux environment is recommended, Core is still untested on other development environments whilst we focus on a Linux build.
+---
+
+## Getting Started
 
 You can clone the repository to a local destination using git:
 
@@ -32,7 +19,34 @@ You can clone the repository to a local destination using git:
 
 ---
 
-### How to build
+## Technologies
+
+For this repo, we are using:
+- Language: C++17
+- Compiler: gcc-7
+- GUI Framework: Qt
+- Database: SQLite
+- Build system: CMake
+- Profiling: gprof
+- Libraries: STL
+- Unit test: gtest
+- Static tools: cpplint/cppcheck
+- CI: travis-ci
+- Platform: Linux, Windows, MinGW
+
+The project is designed so the user interface and database can be swapped with another framework/dbms just by implementing the domain provided interfaces.
+
+---
+
+### Build Requirements
+
+These are the base requirements to build and use PSCore.
+ - Cmake
+ - C++11-standard-compliant compiler
+
+---
+
+### How to build in Linux
 
 - Run `clean_build.sh`
 - Generated/output files are in pscore/build folder
