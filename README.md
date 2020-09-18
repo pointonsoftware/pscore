@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img width="649" height="652" src="https://bit.ly/3ksFjdQ">
+  <img width="520" height="522" src="https://bit.ly/2ZOUFBj">
   <h2 align="center">PSCORE</h2>
   <p align="center">Business Management Software engine</p>
 </p>
