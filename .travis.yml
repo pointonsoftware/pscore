@@ -47,11 +47,18 @@ jobs:
           paths:
             - ${TRAVIS_BUILD_DIR}/build/
 
-    - stage  : Test
-      name   : Unit Test
+    - stage  : Unit Test
+      name   : Test Suite
       workspaces:
         use: buildws
       script : ci/ci_unittest.sh
+
+    - name   : Code Coverage
+      workspaces:
+        use: buildws
+      script :
+              - pip install --user cpp-coveralls
+              - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*" -E ".*.sh"
 
     - stage  : Profile
       name   : Gprof
