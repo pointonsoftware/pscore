@@ -24,7 +24,7 @@
 */
 
 #include <iostream>
-#include <domain/controller/authcontroller.hpp>
+#include <domain/userlogin/authcontroller.hpp>
 #include <logger/loghelper.hpp>
 
 int main() {

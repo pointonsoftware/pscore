@@ -19,7 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <gtest/gtest.h>
-#include <domain/controller/authcontroller.hpp>
+#include <domain/userlogin/authcontroller.hpp>
 
 namespace domain {
 namespace authentication {

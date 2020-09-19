@@ -18,35 +18,29 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_DOMAIN_INTERFACE_VIEW_AUTHVIEWIF_HPP_
-#define INVOKER_DOMAIN_INTERFACE_VIEW_AUTHVIEWIF_HPP_
+#ifndef INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#define INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+
 #include <string>
+#include <memory>
+#include <domain/defines.hpp>
+#include "interface/authviewif.hpp"
+#include "interface/authdataif.hpp"
 
 namespace domain {
 namespace authentication {
 
-class AuthViewIface {
+class AuthController {
  public:
-    AuthViewIface() = default;
-    virtual ~AuthViewIface() = default;
-
-    /**
-    * showLoginScreen
-    */
-    virtual void showLoginScreen() = 0;
-
-    /**
-    * showLoginFailed
-    */
-    virtual void showLoginFailed() = 0;
-
-    /**
-    * Will be called if user was found
-    * @param employee a JSON string containing employee details
-    */
-    virtual void loginSuccessful(const std::string& employee) = 0;
+    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
+                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
+    bool login(const std::string& pin);
+ private:
+    status::General authenticate(const std::string& pin);
+    std::unique_ptr<AuthViewIface> mView;
+    std::unique_ptr<AuthDataProviderIface> mDataProvider;
 };
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // INVOKER_DOMAIN_INTERFACE_VIEW_AUTHVIEWIF_HPP_
+#endif  // INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_

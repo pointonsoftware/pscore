@@ -18,29 +18,18 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_DOMAIN_CONTROLLER_AUTHCONTROLLER_HPP_
-#define INVOKER_DOMAIN_CONTROLLER_AUTHCONTROLLER_HPP_
-
-#include <string>
-#include <memory>
-#include <domain/defines.hpp>
-#include <domain/interface/view/authviewif.hpp>
-#include <domain/interface/dataprovider/authdataif.hpp>
+#ifndef INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
+#define INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
 
 namespace domain {
 namespace authentication {
 
-class AuthController {
+class AuthDataProviderIface {
  public:
-    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
-                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
-    bool login(const std::string& pin);
- private:
-    status::General authenticate(const std::string& pin);
-    std::unique_ptr<AuthViewIface> mView;
-    std::unique_ptr<AuthDataProviderIface> mDataProvider;
+    AuthDataProviderIface() = default;
+    virtual ~AuthDataProviderIface() = default;
 };
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // INVOKER_DOMAIN_CONTROLLER_AUTHCONTROLLER_HPP_
+#endif  // INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
