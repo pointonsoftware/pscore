@@ -57,6 +57,7 @@ jobs:
       workspaces:
         use: buildws
       script :
+              - ci/ci_unittest.sh
               - pip install --user cpp-coveralls
               - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*" -E ".*.sh"
 
