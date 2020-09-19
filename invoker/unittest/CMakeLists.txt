@@ -1,7 +1,8 @@
 project (domain_unittest)
 
-add_compile_options (-ftest-coverage -fprofile-arcs -fno-inline)
-set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov ${CMAKE_EXE_LINKER_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
+set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov --coverage ${CMAKE_EXE_LINKER_FLAGS}")
 
 add_executable (
     domain_unittest
