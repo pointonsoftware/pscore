@@ -10,13 +10,12 @@ add_library (
     # Root public
     domain/defines.hpp
     # Views
-    domain/interface/view/authviewif.hpp
+    domain/userlogin/interface/authviewif.hpp
     # Dataproviders
-    domain/interface/dataprovider/dataproviderif.hpp
-    domain/interface/dataprovider/authdataif.hpp
+    domain/userlogin/interface/authdataif.hpp
     # Controllers
-    domain/controller/authcontroller.hpp
-    domain/controller/authcontroller.cpp
+    domain/userlogin/authcontroller.hpp
+    domain/userlogin/authcontroller.cpp
     # Entities
     entity/address.hpp
     entity/contactdetails.hpp
