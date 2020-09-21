@@ -33,7 +33,7 @@ AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
     // Empty for now
 }
 
-// cppcheck-suppress unusedFunction
+// cppcheck-suppress unusedFunction  ! remove this line when function is used
 bool AuthController::login(const std::string& username, const std::string& password) {
     return true;
 }

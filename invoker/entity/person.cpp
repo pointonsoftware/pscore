@@ -31,26 +31,26 @@ Person::Person(const std::string& firstname,
   m_birthdate(birthdate), m_gender(gender) {
     // Empty for now
 }
-// cppcheck-suppress unusedFunction
+// cppcheck-suppress unusedFunction  ! remove this line when function is used
 void Person::addPhoneNumber(const std::string& phonenumber) {
     m_contact_details.phone_number.emplace_back(phonenumber);
 }
-// cppcheck-suppress unusedFunction
+// cppcheck-suppress unusedFunction  ! remove this line when function is used
 void Person::addPersonalId(const std::string& type, const std::string& number) {
     m_personal_ids.emplace_back(PersonalId{type, number});
 }
-// cppcheck-suppress unusedFunction
+// cppcheck-suppress unusedFunction  ! remove this line when function is used
 void Person::setPersonalIds(const std::vector<PersonalId>& personalids) {
     if (!m_personal_ids.empty()) {
         // warning, we're overwriting the container
     }
     m_personal_ids = personalids;
 }
-// cppcheck-suppress unusedFunction
+// cppcheck-suppress unusedFunction  ! remove this line when function is used
 void Person::setEmail(const std::string& email) {
     m_contact_details.email = email;
 }
-// cppcheck-suppress unusedFunction
+// cppcheck-suppress unusedFunction  ! remove this line when function is used
 void Person::setAddress(const Address& address) {
     m_address = address;
 }
