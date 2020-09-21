@@ -24,16 +24,54 @@
 */
 
 #include <iostream>
+#include <cstdlib>
 #include <domain/userlogin/authcontroller.hpp>
 #include <logger/loghelper.hpp>
 
+void showWelcomeScreen() {
+    std::cout << "******************************************************************" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
+    std::cout << "*\t\t\t\t PSCORE \t\t\t *" << std::endl;
+    std::cout << "*\t\t\t    Pointon Software  \t\t\t *" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
+    std::cout << "******************************************************************" << std::endl;
+    std::cout << "Hi there, Welcome to Core!" << std::endl;
+}
+
+void clearScreen() {
+#ifdef __WIN32__
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+}
+
+void showUserInfoScreen() {
+    std::cout << "******************************************************************" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
+    std::cout << "*\t\t\t\t PSCORE \t\t\t *" << std::endl;
+    std::cout << "*\t\t\t    Pointon Software  \t\t\t *" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
+    std::cout << "******************************************************************" << std::endl;
+    std::cout << "Hi dummy, what do you want to do today?" << std::endl;
+}
+
 int main() {
+    showWelcomeScreen();
+
     domain::authentication::AuthController auth(nullptr, nullptr);
-    std::string name;
+    std::string pin;
+    std::cout << "Input your PIN: ";
 
-    std::cout << "Hi there, Welcome to Core! What's your name?" << std::endl;
-    std::cin >> name;
+    std::cin >> pin;
 
-    LOG_DEBUG("Hello %s, I'm using the core logger to print this debug message!", name.c_str());
+    if (auth.loginWithPIN(pin)) {
+        clearScreen();
+        showUserInfoScreen();
+    } else {
+        std::cout << "Sorry, I can't find your info." << std::endl;
+    }
+
+
     return 0;
 }

@@ -54,14 +54,18 @@ constexpr char LOG_CONFIG[] = "pslog.cfg";
 /* todo (xxx) - this constructor is doing too much of work
  * might be a good idea to have a separate initialize() call
 */
-LogHelper::LogHelper() {
-    mConfig = std::make_unique<Config>(LOG_CONFIG);
+LogHelper::LogHelper()
+    : mConfig(std::make_unique<Config>(LOG_CONFIG)), mLogLevel(LogLevel::VERBOSE) {
     initializeLoggerType();
     initializeLogLevel();
 }
 
 void LogHelper::write(const std::string& logMode, const std::string& prettyFunction,
                       const std::string logFormat...) const {
+    if (!mLogger) {
+        // Dont proceed if mLogger is not initialized
+        return;
+    }
     if (isLogModeWritable(logMode)) {
         const std::string signature = getMethodName(prettyFunction);
         const std::string className = extractClassName(signature);

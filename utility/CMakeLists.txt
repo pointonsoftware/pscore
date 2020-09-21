@@ -4,6 +4,8 @@ project (utility)
 add_library (
     utility
     STATIC
+    # general utility
+    general.hpp
     # logger
     logger/loggeriface.hpp
     logger/loggeriface.cpp

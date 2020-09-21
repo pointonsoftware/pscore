@@ -20,8 +20,7 @@
 **************************************************************************************************/
 #include "person.hpp"
 
-namespace domain {
-namespace entities {
+namespace entity {
 
 Person::Person(const std::string& firstname,
                const std::string& middlename,
@@ -56,5 +55,4 @@ void Person::setAddress(const Address& address) {
     m_address = address;
 }
 
-}  // namespace entities
-}  // namespace domain
+}  // namespace entity

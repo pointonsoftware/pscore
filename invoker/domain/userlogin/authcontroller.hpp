@@ -34,11 +34,13 @@ class AuthController {
  public:
     explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
                             std::unique_ptr<AuthDataProviderIface>&& dataprovider);
-    bool login(const std::string& pin);
+    bool login(const std::string& username, const std::string& password);
+    bool loginWithPIN(const std::string& pin);
  private:
-    status::General authenticate(const std::string& pin);
     std::unique_ptr<AuthViewIface> mView;
     std::unique_ptr<AuthDataProviderIface> mDataProvider;
+    status::General authenticatePIN(const std::string& pin);
+    bool isPinValid(const std::string& pin);
 };
 
 }  // namespace authentication

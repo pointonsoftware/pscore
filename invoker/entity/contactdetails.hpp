@@ -24,8 +24,7 @@
 #include <string>
 #include <vector>
 
-namespace domain {
-namespace entities {
+namespace entity {
 
 struct ContactDetails {
     std::string name;
@@ -33,6 +32,5 @@ struct ContactDetails {
     std::vector<std::string> phone_number;
 };
 
-}  // namespace entities
-}  // namespace domain
+}  // namespace entity
 #endif  // INVOKER_ENTITY_CONTACTDETAILS_HPP_

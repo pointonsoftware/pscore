@@ -27,8 +27,7 @@
 #include "contactdetails.hpp"
 #include "personalid.hpp"
 
-namespace domain {
-namespace entities {
+namespace entity {
 
 class Person {
  public:
@@ -58,6 +57,5 @@ class Person {
     std::vector<PersonalId> m_personal_ids;
 };
 
-}  // namespace entities
-}  // namespace domain
+}  // namespace entity
 #endif  // INVOKER_ENTITY_PERSON_HPP_

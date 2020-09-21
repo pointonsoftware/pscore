@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include <gtest/gtest.h>
 #include <domain/userlogin/authcontroller.hpp>
+#include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
@@ -39,11 +40,33 @@ class TestAuth : public testing::Test {
 };
 
 TEST_F(TestAuth, LoginShouldSucceed) {
-    ASSERT_TRUE(authController.login("123"));
+    ASSERT_TRUE(authController.loginWithPIN("1234"));
 }
 
-TEST_F(TestAuth, DISABLED_LoginShouldFail) {
-    ASSERT_FALSE(authController.login("123"));
+TEST_F(TestAuth, LoginWithEmptyPIN) {
+    ASSERT_FALSE(authController.loginWithPIN(""));
+}
+
+TEST_F(TestAuth, LoginWithNonNumericPIN) {
+    ASSERT_FALSE(authController.loginWithPIN("abcd"));
+}
+
+TEST_F(TestAuth, LoginWithFewCharacterPIN) {
+    std::string dummyPIN;
+    const unsigned int dummyPinSize = entity::User::PIN_SIZE - 1;
+    std::fill(dummyPIN.begin(),
+              dummyPIN.begin() + dummyPinSize, '1');
+
+    ASSERT_FALSE(authController.loginWithPIN(dummyPIN));
+}
+
+TEST_F(TestAuth, LoginWithTooManyCharacterPIN) {
+    std::string dummyPIN;
+    const unsigned int dummyPinSize = entity::User::PIN_SIZE + 1;
+    std::fill(dummyPIN.begin(),
+              dummyPIN.begin() + dummyPinSize, '1');
+
+    ASSERT_FALSE(authController.loginWithPIN(dummyPIN));
 }
 
 }  // namespace test

@@ -26,6 +26,11 @@ add_library (
     entity/personalid.hpp
 )
 
+target_link_libraries (
+    invoker
+    utility
+)
+
 if (BUILD_UNITTEST)
     add_subdirectory (unittest)
 endif()

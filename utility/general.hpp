@@ -18,53 +18,18 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "authcontroller.hpp"
-#include <utility>  // std utility
-#include <entity/user.hpp>
-#include <logger/loghelper.hpp>
-#include <general.hpp>  // pscore utility
+#ifndef UTILITY_GENERAL_HPP_
+#define UTILITY_GENERAL_HPP_
 
-namespace domain {
-namespace authentication {
+#include <algorithm>
+#include <string>
 
-AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
-                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
-: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
-    // Empty for now
+namespace utility {
+
+bool isNumber(const std::string &str) {
+  return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
 }
 
-bool AuthController::login(const std::string& username, const std::string& password) {
-    return true;
-}
+}  // namespace utility
 
-bool AuthController::loginWithPIN(const std::string& pin) {
-    if (!isPinValid(pin)) {
-        return false;
-    }
-    // Call authenticate
-    return authenticatePIN(pin) == status::General::SUCCESS;
-}
-
-status::General AuthController::authenticatePIN(const std::string& pin) {
-    // Check if dataprovider is ready; else throw
-    // Check pin in dataprovider
-    return status::General::SUCCESS;
-}
-
-bool AuthController::isPinValid(const std::string& pin) {
-    if (pin.empty()) {
-        LOG_ERROR("PIN is empty");
-        return false;
-    }
-
-    // Check if its numeric and valid size
-    if (!utility::isNumber(pin) || pin.size() != entity::User::PIN_SIZE) {
-        LOG_ERROR("Invalid PIN: %s", pin.c_str());
-        return false;
-    }
-
-    return true;
-}
-
-}  // namespace authentication
-}  // namespace domain
+#endif  // UTILITY_GENERAL_HPP_

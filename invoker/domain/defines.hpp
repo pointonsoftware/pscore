@@ -33,8 +33,12 @@ enum class General {
     EMPTY    = 5,
     OCCUPIED = 6,
 };
-
 }  // namespace status
+
+namespace constants {
+
+}  // namespace constants
+
 }  // namespace domain
 
 #endif  // INVOKER_DOMAIN_DEFINES_HPP_

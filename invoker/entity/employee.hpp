@@ -24,8 +24,7 @@
 #include <string>
 #include "person.hpp"
 
-namespace domain {
-namespace entities {
+namespace entity {
 
 class Employee : public Person {
  public:
@@ -36,11 +35,10 @@ class Employee : public Person {
              const std::string& gender);
     Employee() = default;
     ~Employee() = default;
+
  private:
-    bool is_system_user;
     std::string position;
 };
 
-}  // namespace entities
-}  // namespace domain
+}  // namespace entity
 #endif  // INVOKER_ENTITY_EMPLOYEE_HPP_
