@@ -9,9 +9,9 @@ CORE is a software engine that houses common algorithms used for business manage
 
 ---
 
-## Technologies
+## Technical
 
-These are the tools used in this project:
+These are the tools and technology used in this project:
 - Language: C++17
 - Compiler: gcc-7
 - GUI: Qt Framework
@@ -86,7 +86,7 @@ After CORE v1.0.0 is released, it is planned that **console_app** will be upgrad
 
 ---
 
-## Authors
+## Author
  - Ben Ziv - <pointonsoftware@gmail.com>
 
 ---
