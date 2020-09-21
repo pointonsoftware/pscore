@@ -30,7 +30,7 @@ jobs:
     - name   : CppCheck
       install: sudo apt-get install cppcheck
       script : >-
-              cppcheck --quiet --error-exitcode=1 --enable=all
+              cppcheck --error-exitcode=1 --enable=all
               --suppress=missingIncludeSystem --inline-suppr
               application databoundary invoker utility -iinvoker/unittest
 
