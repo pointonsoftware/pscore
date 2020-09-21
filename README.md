@@ -1,7 +1,6 @@
 
 <p align="center">
-  <h2 align="center">CORE</h2>
-  <p align="center">Business Management Software engine</p>
+  <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
 </p>
 
 ---
