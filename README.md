@@ -1,18 +1,15 @@
 
 <p align="center">
-  <h2 align="center">CORE</h2>
-  <p align="center">Business Management Software engine</p>
+  <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
 </p>
-
----
 
 CORE is a software engine that houses common algorithms used for business management applications. CORE can be used as the processing module of a POS software, an inventory system, and more.
 
 ---
 
-## Technologies
+## Technical
 
-These are the tools used in this project:
+These are the tools and technology used in this project:
 - Language: C++17
 - Compiler: gcc-7
 - GUI: Qt Framework
@@ -87,7 +84,7 @@ After CORE v1.0.0 is released, it is planned that **console_app** will be upgrad
 
 ---
 
-## Authors
+## Author
  - Ben Ziv - <pointonsoftware@gmail.com>
 
 ---
