@@ -31,7 +31,7 @@ jobs:
       install: sudo apt-get install cppcheck
       script : >-
               cppcheck --quiet --error-exitcode=1 --enable=all
-              --suppress=missingIncludeSystem
+              --suppress=missingIncludeSystem --inline-suppr
               application databoundary invoker utility -iinvoker/unittest
 
     - stage  : Compile
