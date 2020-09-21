@@ -1,6 +1,6 @@
 
 <p align="center">
-   <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
+  <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
 </p>
 
 CORE is a software engine that houses common algorithms used for business management applications. CORE can be used as the processing module of a POS software, an inventory system, and more.
