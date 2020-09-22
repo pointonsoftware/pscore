@@ -63,6 +63,18 @@ These are the base requirements to build and use CORE.
 
 ---
 
+### Screenshot
+
+Unreleased version:
+
+<p align="center">
+  <img width="999" height="37" src="https://bit.ly/3j3WzWc">
+</p>
+
+**console_app** v0.0.1 asks for the user's name and print it in the console using the logger utility class.
+
+---
+
 ## Roadmap
 
 The initial version of CORE (v0.1.0) will contain the login and view personal information features.  
