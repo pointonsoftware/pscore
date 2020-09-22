@@ -43,14 +43,10 @@ class FileIo {
  public:
     /*!
      * Caller must provide the complete file path and file name
-     * Will create a new file if it doesn't exist
+     * Will create the file if it doesn't exist
     */
     explicit FileIo(const std::string& file);
-
-    /*!
-     * File stream will close upon destruction
-    */
-    ~FileIo();
+    ~FileIo() = default;
 
      /*!
      * FileOperationStatus read()
@@ -113,9 +109,21 @@ class FileIo {
  private:
     std::fstream mFile;
     const std::string mFileName;
+
+    /*!
+     * Opens the file
+    */
+    FileOperationStatus open();
+
+    /*!
+     * Close the file
+    */
+    void close();
+
+    /*!
+     * Check if file is open
+    */
     bool isFileOpen();
-    void openFile(const std::string& file);
-    void closeFile();
 
     /*!
      * VectorIterator overWriteFile()
