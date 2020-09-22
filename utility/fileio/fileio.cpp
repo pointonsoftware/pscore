@@ -25,11 +25,7 @@
 namespace utility {
 
 FileIo::FileIo(const std::string& file) : mFileName(file) {
-    openFile(file);
-}
-
-FileIo::~FileIo() {
-    closeFile();
+    open();  // We open the file right on object creation
 }
 
 FileOperationStatus FileIo::read(std::vector<std::string>* container) {
@@ -83,7 +79,7 @@ FileOperationStatus FileIo::find(const std::string& keyword, std::string* out) {
 
 FileOperationStatus FileIo::find_and_replace(const std::string& keyword,
                                              const std::string& newline) {
-     if (!isFileOpen()) {
+    if (!isFileOpen()) {
         return FileOperationStatus::FILE_NOT_FOUND;
     }
 
@@ -135,32 +131,29 @@ bool FileIo::isFileOpen() {
 
 FileOperationStatus FileIo::overWriteFile(const std::vector<std::string>& fileContents) {
     // temporarily close our member file for overwriting
-    closeFile();
+    close();
     // reopen the file as ostream (to overwrite!)
     std::ofstream newFile(mFileName);
     if (!newFile.is_open()) {
         // not sure what can cause us to fail reopening the file
         // maybe a race-condition? (future proofing)
         // anyhow, let's try to reopen through our member file to keep other operations running
-        openFile(mFileName);
-        return FileOperationStatus::FILE_NOT_FOUND;
+        return open();
     }
     // let's write!
     for (const std::string temp : fileContents) {
         newFile << temp << std::endl;
     }
     // make sure to reopen our member file
-    openFile(mFileName);
-    return FileOperationStatus::SUCCESS;
+    return open();
 }
 
-void FileIo::openFile(const std::string& file) {
-    mFile.open(file.c_str(), std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
-    // (todo) might have to return a status from this function
-    // Future callers might need to know if we have successfully created/opened the file
+FileOperationStatus FileIo::open() {
+    mFile.open(mFileName.c_str(), std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
+    return mFile.good() ? FileOperationStatus::SUCCESS : FileOperationStatus::FAILED;
 }
 
-void FileIo::closeFile() {
+void FileIo::close() {
     mFile.close();
 }
 
