@@ -23,8 +23,7 @@
 
 #include <string>
 
-namespace domain {
-namespace entities {
+namespace entity {
 
 struct Address {
     std::string housenumber;
@@ -40,6 +39,5 @@ struct Address {
     std::string zip;
 };
 
-}  // namespace entities
-}  // namespace domain
+}  // namespace entity
 #endif  // INVOKER_ENTITY_ADDRESS_HPP_

@@ -30,8 +30,8 @@ jobs:
     - name   : CppCheck
       install: sudo apt-get install cppcheck
       script : >-
-              cppcheck --quiet --error-exitcode=1 --enable=warning,performance,information,style
-              --suppress=missingIncludeSystem --check-config
+              cppcheck --std=c++11 --enable=warning,style,performance,portability,information
+              --suppress=missingIncludeSystem --error-exitcode=1 --inline-suppr
               application databoundary invoker utility -iinvoker/unittest
 
     - stage  : Compile

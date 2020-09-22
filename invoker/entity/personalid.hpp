@@ -23,14 +23,12 @@
 
 #include <string>
 
-namespace domain {
-namespace entities {
+namespace entity {
 
 struct PersonalId {
     std::string type;
     std::string id_number;
 };
 
-}  // namespace entities
-}  // namespace domain
+}  // namespace entity
 #endif  // INVOKER_ENTITY_PERSONALID_HPP_

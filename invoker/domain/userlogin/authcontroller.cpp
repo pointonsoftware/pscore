@@ -19,7 +19,10 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "authcontroller.hpp"
-#include <utility>
+#include <utility>  // std utility
+#include <entity/user.hpp>
+#include <logger/loghelper.hpp>
+#include <general.hpp>  // pscore utility
 
 namespace domain {
 namespace authentication {
@@ -30,17 +33,38 @@ AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
     // Empty for now
 }
 
-bool AuthController::login(const std::string& pin) {
-    // Check if pin is empty
-    // Check if pin is numeric
-    // Call authenticate
+// cppcheck-suppress unusedFunction  ! remove this line when function is used
+bool AuthController::login(const std::string& username, const std::string& password) {
     return true;
 }
 
-status::General AuthController::authenticate(const std::string& pin) {
+bool AuthController::loginWithPIN(const std::string& pin) {
+    if (!isPinValid(pin)) {
+        return false;
+    }
+    // Call authenticate
+    return authenticatePIN(pin) == status::General::SUCCESS;
+}
+
+status::General AuthController::authenticatePIN(const std::string& pin) {
     // Check if dataprovider is ready; else throw
     // Check pin in dataprovider
     return status::General::SUCCESS;
+}
+
+bool AuthController::isPinValid(const std::string& pin) {
+    if (pin.empty()) {
+        LOG_ERROR("PIN is empty");
+        return false;
+    }
+
+    // Check if its numeric and valid size
+    if (!utility::isNumber(pin) || pin.size() != entity::User::PIN_SIZE) {
+        LOG_ERROR("Invalid PIN: %s", pin.c_str());
+        return false;
+    }
+
+    return true;
 }
 
 }  // namespace authentication

@@ -20,8 +20,7 @@
 **************************************************************************************************/
 #include "employee.hpp"
 
-namespace domain {
-namespace entities {
+namespace entity {
 
 Employee::Employee(const std::string& firstname,
                    const std::string& middlename,
@@ -32,5 +31,4 @@ Employee::Employee(const std::string& firstname,
     // Empty for now
 }
 
-}  // namespace entities
-}  // namespace domain
+}  // namespace entity

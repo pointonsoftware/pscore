@@ -17,7 +17,8 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin CACHE INTERNAL "")
 
 # compiler options
 set (COMPILER_EXCEPTION
-    "-Wno-variadic-macros -Wno-long-long -Wno-shadow -Wno-unknown-pragmas")
+    "-Wno-variadic-macros -Wno-long-long -Wno-shadow -Wno-unknown-pragmas \
+     -Wno-unused-result")
 set (CMAKE_CXX_FLAGS "-Wall -pedantic -Werror ${COMPILER_EXCEPTION} -O2")
 
 if (NOT MINGW)
