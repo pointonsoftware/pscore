@@ -18,36 +18,16 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#include "stackdb.hpp"
 
-#include <string>
-#include "employee.hpp"
+namespace dataprovider {
+namespace db {
 
-namespace entity {
+std::vector<entity::User> StackDB::usersList;
 
-class User : public Employee {
- public:
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = "0000");
-    User();
-    ~User() = default;
+StackDB::StackDB() {
+    usersList.emplace_back(entity::User("Ben", "H", "Garcia","10/15/1994","Male","2020"));
+}
 
-    // Sorry to make this public :/
-    // But its const anyway
-    static const unsigned int PIN_SIZE = 4;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace db
+}  // namespace dataprovider

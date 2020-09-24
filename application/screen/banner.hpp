@@ -18,36 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#ifndef APPLICATION_SCREEN_BANNER_HPP_
+#define APPLICATION_SCREEN_BANNER_HPP_
+#include <iostream>
 
-#include <string>
-#include "employee.hpp"
+#define VERSION "0.0.1"
 
-namespace entity {
+namespace screen {
 
-class User : public Employee {
- public:
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = "0000");
-    User();
-    ~User() = default;
+std::string horizontalBorder() {
+    return "*********************************************************************************";
+}
+void showTopBanner() {
+    std::cout << horizontalBorder() << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\tConsole  Application\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
+    std::cout << horizontalBorder() << std::endl;
+}
 
-    // Sorry to make this public :/
-    // But its const anyway
-    static const unsigned int PIN_SIZE = 4;
+}  // namespace screen
 
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+#endif  // APPLICATION_SCREEN_BANNER_HPP_

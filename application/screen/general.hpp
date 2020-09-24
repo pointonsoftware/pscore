@@ -18,36 +18,28 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#ifndef APPLICATION_SCREEN_GENERAL_HPP_
+#define APPLICATION_SCREEN_GENERAL_HPP_
+#include "banner.hpp"
+#include <cstdlib>
 
-#include <string>
-#include "employee.hpp"
+namespace screen {
+namespace common {
 
-namespace entity {
+void showWelcomeScreen() {
+    screen::showTopBanner();
+    std::cout << "Hi there, Welcome to Core!" << std::endl;
+}
 
-class User : public Employee {
- public:
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = "0000");
-    User();
-    ~User() = default;
+void clearScreen() {
+#ifdef __WIN32__
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+}
 
-    // Sorry to make this public :/
-    // But its const anyway
-    static const unsigned int PIN_SIZE = 4;
+}  // namespace common
+}  // namespace screen
 
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+#endif  // APPLICATION_SCREEN_GENERAL_HPP_

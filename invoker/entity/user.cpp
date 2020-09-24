@@ -26,8 +26,15 @@ User::User(const std::string& firstname,
                    const std::string& middlename,
                    const std::string& lastname,
                    const std::string& birthdate,
-                   const std::string& gender)
-: Employee{firstname, middlename, lastname, birthdate, gender} {
+                   const std::string& gender,
+                   const std::string& pin)
+: Employee{firstname, middlename, lastname, birthdate, gender},
+  mPIN(pin) {
+    // Empty for now
+}
+
+User::User() : Employee{"", "", "", "", ""},
+               mPIN("0000") {
     // Empty for now
 }
 

@@ -9,7 +9,8 @@ add_executable (
 
 target_link_libraries (
     console_app
-    invoker
+    domain
     utility
+    databoundary
     ${STATIC_LIBS}
 )

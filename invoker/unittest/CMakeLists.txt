@@ -12,7 +12,7 @@ add_executable (
 
 target_link_libraries (
     domain_unittest
-    invoker
+    domain
     gtest
     ${STATIC_LIBS}
 )

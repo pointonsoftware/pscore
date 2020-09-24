@@ -18,36 +18,22 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#include "authdata.hpp"
+#include <stackdb.hpp>
 
-#include <string>
-#include "employee.hpp"
+namespace dataprovider {
+namespace authentication {
 
-namespace entity {
-
-class User : public Employee {
- public:
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = "0000");
-    User();
-    ~User() = default;
-
-    // Sorry to make this public :/
-    // But its const anyway
-    static const unsigned int PIN_SIZE = 4;
-
-    inline const std::string pin() const {
-        return mPIN;
+entity::User AuthDataProvider::findUserByPin(const std::string& inputPin) {
+    entity::User user;
+    for (const entity::User& temp : DATABASE().getUsersList()) {
+        if (temp.pin().find(inputPin) != std::string::npos) {
+            user = temp;
+            break;
+        }
     }
+    return user;
+}
 
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace authentication
+}  // namespace dataprovider

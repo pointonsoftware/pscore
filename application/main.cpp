@@ -24,50 +24,28 @@
 */
 
 #include <iostream>
-#include <cstdlib>
+// view
+#include "screen/general.hpp"
+#include "screen/userinfo.hpp"
+// domain
 #include <domain/userlogin/authcontroller.hpp>
+// data
+#include <logindata/authdata.hpp>
+// utility
 #include <logger/loghelper.hpp>
 
-void showWelcomeScreen() {
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t PSCORE \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t    Pointon Software  \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "Hi there, Welcome to Core!" << std::endl;
-}
-
-void clearScreen() {
-#ifdef __WIN32__
-    std::system("cls");
-#else
-    std::system("clear");
-#endif
-}
-
-void showUserInfoScreen() {
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t PSCORE \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t    Pointon Software  \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "Hi dummy, what do you want to do today?" << std::endl;
-}
-
 int main() {
-    showWelcomeScreen();
-
-    domain::authentication::AuthController auth(nullptr, nullptr);
+    domain::authentication::AuthController auth(nullptr, 
+                    std::make_unique<dataprovider::authentication::AuthDataProvider>());
     std::string pin;
+    
+    screen::common::showWelcomeScreen();
     std::cout << "Input your PIN: ";
-
     std::cin >> pin;
 
     if (auth.loginWithPIN(pin)) {
-        clearScreen();
-        showUserInfoScreen();
+        screen::common::clearScreen();
+        screen::userinfo::showUserInfoScreen();
     } else {
         std::cout << "Sorry, I can't find your info." << std::endl;
     }

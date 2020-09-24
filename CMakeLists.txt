@@ -37,6 +37,7 @@ endif ()
 # directories
 include_directories (invoker)
 include_directories (utility)
+include_directories (databoundary)
 add_subdirectory (invoker)
 add_subdirectory (utility)
 

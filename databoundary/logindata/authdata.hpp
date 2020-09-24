@@ -18,36 +18,20 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#ifndef DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_
+#define DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_
+#include <domain/userlogin/interface/authdataif.hpp>
 
-#include <string>
-#include "employee.hpp"
+namespace dataprovider {
+namespace authentication {
 
-namespace entity {
-
-class User : public Employee {
+class AuthDataProvider : public domain::authentication::AuthDataProviderIface {
  public:
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = "0000");
-    User();
-    ~User() = default;
-
-    // Sorry to make this public :/
-    // But its const anyway
-    static const unsigned int PIN_SIZE = 4;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
- private:
-    std::string mPIN;
+    AuthDataProvider() = default;
+    virtual ~AuthDataProvider() = default;
+    entity::User findUserByPin(const std::string& inputPin) override;
 };
 
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace authentication
+}  // namespace dataprovider
+#endif  // DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_

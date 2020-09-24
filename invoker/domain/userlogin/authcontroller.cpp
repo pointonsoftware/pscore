@@ -20,9 +20,10 @@
 **************************************************************************************************/
 #include "authcontroller.hpp"
 #include <utility>  // std utility
-#include <entity/user.hpp>
 #include <logger/loghelper.hpp>
 #include <general.hpp>  // pscore utility
+// Entity
+#include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
@@ -47,9 +48,11 @@ bool AuthController::loginWithPIN(const std::string& pin) {
 }
 
 status::General AuthController::authenticatePIN(const std::string& pin) {
-    // Check if dataprovider is ready; else throw
+    // todo (xxx) : Check if dataprovider is ready; else throw
     // Check pin in dataprovider
-    return status::General::SUCCESS;
+    entity::User temp = mDataProvider->findUserByPin(pin);
+    return temp.pin().find("0000") == std::string::npos ?
+           status::General::SUCCESS : status::General::FAILED;
 }
 
 bool AuthController::isPinValid(const std::string& pin) {
