@@ -22,8 +22,6 @@
 #include <utility>  // std utility
 #include <logger/loghelper.hpp>
 #include <general.hpp>  // pscore utility
-// Entity
-#include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
@@ -40,35 +38,59 @@ bool AuthController::login(const std::string& username, const std::string& passw
 }
 
 bool AuthController::loginWithPIN(const std::string& pin) {
-    if (!isPinValid(pin)) {
+    // Make sure view is valid
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
         return false;
     }
-    // Call authenticate
-    return authenticatePIN(pin) == status::General::SUCCESS;
+    if (!isPinValid(pin)) {
+        mView->showInvalidPINScreen();
+        return false;
+    }
+
+    // Get user info
+    entity::User userInfo = getUserWithPIN(pin);
+
+    // Validate
+    if (!isUserValid(userInfo)) {
+        LOG_INFO("User with PIN %s was not found", pin.c_str());
+        mView->showUserNotFoundScreen();
+        return false;
+    }
+
+    mView->loginSuccessful(userInfo);
+    return true;
 }
 
-status::General AuthController::authenticatePIN(const std::string& pin) {
+entity::User AuthController::getUserWithPIN(const std::string& pin) {
     // todo (xxx) : Check if dataprovider is ready; else throw
+    if (!mDataProvider) {
+        LOG_ERROR("Dataprovider is not initialized");
+        return entity::User();
+    }
     // Check pin in dataprovider
-    entity::User temp = mDataProvider->findUserByPin(pin);
-    return temp.pin().find("0000") == std::string::npos ?
-           status::General::SUCCESS : status::General::FAILED;
+    return mDataProvider->findUserByPin(pin);
 }
 
 bool AuthController::isPinValid(const std::string& pin) {
     if (pin.empty()) {
-        LOG_ERROR("PIN is empty");
+        LOG_WARN("PIN is empty");
         return false;
     }
 
     // Check if its numeric and valid size
     if (!utility::isNumber(pin) || pin.size() != entity::User::PIN_SIZE) {
-        LOG_ERROR("Invalid PIN: %s", pin.c_str());
+        LOG_WARN("Invalid PIN: %s", pin.c_str());
         return false;
     }
 
     return true;
 }
+bool AuthController::isUserValid(const entity::User& userInfo) {
+    // If default pin is found, that means the user data was not initialized
+    return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
+}
+
 
 }  // namespace authentication
 }  // namespace domain

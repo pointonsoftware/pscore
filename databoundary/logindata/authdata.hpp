@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_
 #define DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_
+#include <string>
 #include <domain/userlogin/interface/authdataif.hpp>
 
 namespace dataprovider {

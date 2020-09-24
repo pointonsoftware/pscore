@@ -18,18 +18,33 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_BANNER_HPP_
-#define APPLICATION_SCREEN_BANNER_HPP_
+#ifndef APPLICATION_SCREEN_COMMON_HPP_
+#define APPLICATION_SCREEN_COMMON_HPP_
+#include "viewcommon.hpp"
+#include <cstdlib>
 #include <iostream>
-
-#define VERSION "0.0.1"
 
 namespace screen {
 
-std::string horizontalBorder() {
-    return "*********************************************************************************";
+void ViewCommon::clearScreen() {
+#ifdef __WIN32__
+        std::system("cls");
+#else
+        std::system("clear");
+#endif
 }
-void showTopBanner() {
+
+void ViewCommon::showWelcomeScreen() {
+    clearScreen();
+    showTopBanner();
+    std::cout << "Hi there, Welcome to Core!" << std::endl;
+}
+
+const std::string ViewCommon::horizontalBorder() {
+        return "*********************************************************************************";
+}
+
+void ViewCommon::showTopBanner() {
     std::cout << horizontalBorder() << std::endl;
     std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
     std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;
@@ -39,5 +54,4 @@ void showTopBanner() {
 }
 
 }  // namespace screen
-
-#endif  // APPLICATION_SCREEN_BANNER_HPP_
+#endif  // APPLICATION_SCREEN_COMMON_HPP_

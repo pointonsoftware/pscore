@@ -18,20 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_USERINFO_HPP_
-#define APPLICATION_SCREEN_USERINFO_HPP_
-#include "banner.hpp"
-#include <cstdlib>
+#include "authview.hpp"
+#include <iostream>
+#include <viewcommon.hpp>
 
-namespace screen {
-namespace userinfo {
 
-void showUserInfoScreen() {
-    screen::showTopBanner();
+namespace view {
+namespace authentication {
+
+void AuthView::loginSuccessful(const entity::User& userInfo) {
+    SCREENCOMMON().clearScreen();
+    SCREENCOMMON().showTopBanner();
     std::cout << "Hi dummy, what do you want to do today?" << std::endl;
 }
+void AuthView::showInvalidPINScreen() {
+    std::cout << "PIN is invalid, please try again." << std::endl;
+}
 
-}  // namespace userinfo
-}  // namespace screen
+void AuthView::showUserNotFoundScreen() {
+    std::cout << "Sorry, I can't find that PIN." << std::endl;
+}
 
-#endif  // APPLICATION_SCREEN_USERINFO_HPP_
+}  // namespace authentication
+}  // namespace view

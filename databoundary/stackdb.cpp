@@ -26,7 +26,7 @@ namespace db {
 std::vector<entity::User> StackDB::usersList;
 
 StackDB::StackDB() {
-    usersList.emplace_back(entity::User("Ben", "H", "Garcia","10/15/1994","Male","2020"));
+    usersList.emplace_back(entity::User("Ben", "H", "Garcia", "10/15/1994", "Male", "2020"));
 }
 
 }  // namespace db

@@ -33,14 +33,14 @@ class User : public Employee {
              const std::string& lastname,
              const std::string& birthdate,
              const std::string& gender,
-             const std::string& pin = "0000");
+             const std::string& pin = DEFAULT_PIN);
     User();
     ~User() = default;
 
     // Sorry to make this public :/
     // But its const anyway
-    static const unsigned int PIN_SIZE = 4;
-
+    static constexpr unsigned int PIN_SIZE = 4;
+    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
     inline const std::string pin() const {
         return mPIN;
     }

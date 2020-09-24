@@ -23,9 +23,10 @@
 
 #include <string>
 #include <memory>
-#include <domain/defines.hpp>
 #include "interface/authviewif.hpp"
 #include "interface/authdataif.hpp"
+// Entity
+#include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
@@ -39,8 +40,9 @@ class AuthController {
  private:
     std::unique_ptr<AuthViewIface> mView;
     std::unique_ptr<AuthDataProviderIface> mDataProvider;
-    status::General authenticatePIN(const std::string& pin);
+    entity::User getUserWithPIN(const std::string& pin);
     bool isPinValid(const std::string& pin);
+    bool isUserValid(const entity::User& userInfo);
 };
 
 }  // namespace authentication

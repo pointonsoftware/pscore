@@ -25,8 +25,8 @@
 
 #include <iostream>
 // view
-#include "screen/general.hpp"
-#include "screen/userinfo.hpp"
+#include <viewcommon.hpp>
+#include <login/authview.hpp>
 // domain
 #include <domain/userlogin/authcontroller.hpp>
 // data
@@ -35,21 +35,17 @@
 #include <logger/loghelper.hpp>
 
 int main() {
-    domain::authentication::AuthController auth(nullptr, 
+    domain::authentication::AuthController auth(
+                    std::make_unique<view::authentication::AuthView>(),
                     std::make_unique<dataprovider::authentication::AuthDataProvider>());
     std::string pin;
-    
-    screen::common::showWelcomeScreen();
-    std::cout << "Input your PIN: ";
-    std::cin >> pin;
 
-    if (auth.loginWithPIN(pin)) {
-        screen::common::clearScreen();
-        screen::userinfo::showUserInfoScreen();
-    } else {
-        std::cout << "Sorry, I can't find your info." << std::endl;
-    }
+    SCREENCOMMON().showWelcomeScreen();
 
+    do {
+        std::cout << "Input your PIN: ";
+        std::cin >> pin;
+    } while (!auth.loginWithPIN(pin));
 
     return 0;
 }

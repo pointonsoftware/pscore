@@ -18,28 +18,24 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_GENERAL_HPP_
-#define APPLICATION_SCREEN_GENERAL_HPP_
-#include "banner.hpp"
-#include <cstdlib>
+#ifndef APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
+#define APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
+#include <string>
+#include <domain/userlogin/interface/authviewif.hpp>
 
-namespace screen {
-namespace common {
+namespace view {
+namespace authentication {
 
-void showWelcomeScreen() {
-    screen::showTopBanner();
-    std::cout << "Hi there, Welcome to Core!" << std::endl;
-}
+class AuthView : public domain::authentication::AuthViewIface {
+ public:
+    AuthView() = default;
+    ~AuthView() = default;
 
-void clearScreen() {
-#ifdef __WIN32__
-    std::system("cls");
-#else
-    std::system("clear");
-#endif
-}
+    void loginSuccessful(const entity::User& userInfo) override;
+    void showInvalidPINScreen() override;
+    void showUserNotFoundScreen() override;
+};
 
-}  // namespace common
-}  // namespace screen
-
-#endif  // APPLICATION_SCREEN_GENERAL_HPP_
+}  // namespace authentication
+}  // namespace view
+#endif  // APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_

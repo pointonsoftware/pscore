@@ -18,24 +18,29 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "user.hpp"
+#ifndef APPLICATION_SCREEN_VIEWCOMMON_HPP_
+#define APPLICATION_SCREEN_VIEWCOMMON_HPP_
+#include <string>
 
-namespace entity {
+#define VERSION "0.0.1"
+#define SCREENCOMMON() screen::ViewCommon::getInstance()
 
-User::User(const std::string& firstname,
-                   const std::string& middlename,
-                   const std::string& lastname,
-                   const std::string& birthdate,
-                   const std::string& gender,
-                   const std::string& pin)
-: Employee{firstname, middlename, lastname, birthdate, gender},
-  mPIN(pin) {
-    // Empty for now
-}
+namespace screen {
 
-User::User() : Employee{"", "", "", "", ""},
-               mPIN(DEFAULT_PIN) {
-    // Empty for now
-}
+class ViewCommon {
+ public:
+    ~ViewCommon() = default;
+    static ViewCommon& getInstance() {
+        static ViewCommon instance;
+        return instance;
+    }
 
-}  // namespace entity
+    void clearScreen();
+    void showWelcomeScreen();
+    const std::string horizontalBorder();
+    void showTopBanner();
+};
+
+}  // namespace screen
+
+#endif  // APPLICATION_SCREEN_VIEWCOMMON_HPP_

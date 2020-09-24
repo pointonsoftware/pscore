@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
 #define INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
+#include <string>
 #include <entity/user.hpp>
 
 namespace domain {
