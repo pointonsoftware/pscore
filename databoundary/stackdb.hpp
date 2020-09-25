@@ -46,7 +46,7 @@ class StackDB {
 
  private:
     StackDB();
-    // storage of users
+    // users storage
     static std::vector<entity::User> usersList;
 };
 

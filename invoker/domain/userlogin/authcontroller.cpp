@@ -19,9 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "authcontroller.hpp"
-#include <utility>  // std utility
-#include <logger/loghelper.hpp>
 #include <general.hpp>  // pscore utility
+#include <logger/loghelper.hpp>
 
 namespace domain {
 namespace authentication {
@@ -43,6 +42,8 @@ bool AuthController::loginWithPIN(const std::string& pin) {
         LOG_ERROR("View is not initialized");
         return false;
     }
+
+    // Validate the PIN
     if (!isPinValid(pin)) {
         mView->showInvalidPINScreen();
         return false;
@@ -55,7 +56,7 @@ bool AuthController::loginWithPIN(const std::string& pin) {
         return false;
     }
 
-    // Validate
+    // Validate user info
     if (!isUserValid(userInfo)) {
         LOG_INFO("User with PIN %s was not found", pin.c_str());
         mView->showUserNotFoundScreen();
@@ -82,7 +83,7 @@ status::General AuthController::getUserByPIN(const std::string& pin, entity::Use
     return status::General::SUCCESS;
 }
 
-bool AuthController::isPinValid(const std::string& pin) {
+bool AuthController::isPinValid(const std::string& pin) const {
     if (pin.empty()) {
         LOG_WARN("PIN is empty");
         return false;
@@ -96,7 +97,8 @@ bool AuthController::isPinValid(const std::string& pin) {
 
     return true;
 }
-bool AuthController::isUserValid(const entity::User& userInfo) {
+bool AuthController::isUserValid(const entity::User& userInfo) const {
+    // Todo, this function should be moved to authdata
     // If default pin is found, that means the user data was not initialized
     return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
 }

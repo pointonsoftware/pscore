@@ -33,8 +33,8 @@ class AuthDataProviderIface {
 
     /*!
      * entity::User findUserByPin(const std::string& pin)
-     * Finds a user that's assigned with the pin argument
-     * Will return user->pin = 0 if user is not found.
+     * Looks for the user that's assigned with the pin argument
+     * Will return user->pin = entity::User::DEFAULT_PIN if user is not found.
      *
      * [in] input pin
      * [return] user class

@@ -26,6 +26,7 @@ namespace db {
 std::vector<entity::User> StackDB::usersList;
 
 StackDB::StackDB() {
+    // If you want to add a user to our in-memory DB, put it here
     usersList.emplace_back(entity::User("Ben", "H", "Garcia", "10/15/1994", "Male", "2020"));
 }
 

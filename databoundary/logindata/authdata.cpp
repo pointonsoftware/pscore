@@ -25,13 +25,14 @@ namespace dataprovider {
 namespace authentication {
 
 entity::User AuthDataProvider::findUserByPin(const std::string& inputPin) {
-    entity::User user;
-    for (const entity::User& temp : DATABASE().getUsersList()) {
-        if (temp.pin().find(inputPin) != std::string::npos) {
-            user = temp;
-            break;
+    const entity::User user = [inputPin]() {
+        for (const entity::User& temp : DATABASE().getUsersList()) {
+            if (temp.pin().find(inputPin) != std::string::npos) {
+                return temp;
+            }
         }
-    }
+        return entity::User();
+    }();
     return user;
 }
 

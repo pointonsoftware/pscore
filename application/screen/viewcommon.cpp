@@ -28,23 +28,23 @@ namespace screen {
 
 void ViewCommon::clearScreen() {
 #ifdef __WIN32__
-        std::system("cls");
+    std::system("cls");
 #else
-        std::system("clear");
+    std::system("clear");
 #endif
 }
 
 void ViewCommon::showWelcomeScreen() {
-    clearScreen();
     showTopBanner();
     std::cout << "Hi there, Welcome to Core!" << std::endl;
 }
 
 const std::string ViewCommon::horizontalBorder() {
-        return "*********************************************************************************";
+    return "*********************************************************************************";
 }
 
 void ViewCommon::showTopBanner() {
+    clearScreen();
     std::cout << horizontalBorder() << std::endl;
     std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
     std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;

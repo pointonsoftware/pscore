@@ -22,16 +22,15 @@
 #include <iostream>
 #include <viewcommon.hpp>
 
-
 namespace view {
 namespace authentication {
 
 void AuthView::loginSuccessful(const entity::User& userInfo) {
-    SCREENCOMMON().clearScreen();
-    SCREENCOMMON().showTopBanner();
+    VIEWCOMMON().showTopBanner();
     // Todo, display user name here
     std::cout << "Hi dummy, what do you want to do today?" << std::endl;
 }
+
 void AuthView::showInvalidPINScreen() {
     std::cout << "PIN is invalid, please try again." << std::endl;
 }

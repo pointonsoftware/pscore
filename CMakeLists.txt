@@ -51,12 +51,12 @@ add_subdirectory (utility)
 
 # optional builds
 if (BUILD_ALL)
-    message(STATUS "All components enabled")
-    add_subdirectory (application)
-    add_subdirectory (databoundary)
+message(STATUS "All components enabled")
+add_subdirectory (application)
+add_subdirectory (databoundary)
 endif()
 
 if (BUILD_UNITTEST)
-    message(STATUS "Unittest enabled")
-    add_subdirectory (external/gtest)
+message(STATUS "Unittest enabled")
+add_subdirectory (external/gtest)
 endif()

@@ -4,7 +4,7 @@ project (domain)
 add_library (
     domain
     STATIC
-    # Root public
+    # Common
     defines.hpp
     # Views
     userlogin/interface/authviewif.hpp
