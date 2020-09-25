@@ -81,11 +81,11 @@ These are the base requirements to build and use CORE.
 
 ## Roadmap
 
-The initial version of CORE (v0.1.0) will contain the login and view personal information features.  
+The initial working version of CORE (v0.0.10) will include the login and view personal information features.
 
 Below are the planned releases in the future:  
 
- - **v0.1.0** - Admin login/logout
+ - **v0.1.0** - Full admin login/logout
  - **v0.2.0** - User CRUD
  - **v0.3.0** - Basic inventory operations
  - **v0.4.0** - Basic employee management
