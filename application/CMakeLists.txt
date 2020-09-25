@@ -15,8 +15,8 @@ add_executable (
 
 target_link_libraries (
     console_app
+    databoundary
     domain
     utility
-    databoundary
     ${STATIC_LIBS}
 )

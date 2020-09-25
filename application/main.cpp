@@ -24,13 +24,13 @@
 */
 
 #include <iostream>
+// data
+#include <logindata/authdata.hpp>
+// domain
+#include <domain/userlogin/authcontroller.hpp>
 // view
 #include <viewcommon.hpp>
 #include <login/authview.hpp>
-// domain
-#include <domain/userlogin/authcontroller.hpp>
-// data
-#include <logindata/authdata.hpp>
 // utility
 #include <logger/loghelper.hpp>
 
