@@ -63,15 +63,19 @@ These are the base requirements to build and use CORE.
 
 ---
 
-### Screenshot
+### Screenshots
 
-Unreleased version:
+- **Unreleased version** asks for the user's name and print it in the console using the logger utility class.
 
 <p align="center">
-  <img width="999" height="37" src="https://bit.ly/3j3WzWc">
+  <img width="999" height="38" src="https://bit.ly/3j3WzWc">
 </p>
 
-**console_app** v0.0.1 asks for the user's name and print it in the console using the logger utility class.
+- **console_app** v0.0.1 login screen:
+<p align="center">
+  <img width="570" height="131" src="https://bit.ly/3kKH3z6">
+</p>
+
 
 ---
 
