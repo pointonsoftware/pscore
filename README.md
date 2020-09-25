@@ -58,7 +58,7 @@ These are the base requirements to build and use CORE.
 
 ### Usage
 
-- The build generates the **domain** and **entity** libraies that contain the CORE use cases and can be linked to any executable.
+- The build generates **domain** and **entity** libraries that contain the CORE use cases. Both can be linked to any executable.
 - An application called **console_app** is also available and can be used to test the CORE APIs.
 
 ---
