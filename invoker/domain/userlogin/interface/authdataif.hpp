@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #ifndef INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
 #define INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
+#include <string>
+#include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
@@ -28,6 +30,16 @@ class AuthDataProviderIface {
  public:
     AuthDataProviderIface() = default;
     virtual ~AuthDataProviderIface() = default;
+
+    /*!
+     * entity::User findUserByPin(const std::string& pin)
+     * Looks for the user that's assigned with the pin argument
+     * Will return user->pin = entity::User::DEFAULT_PIN if user is not found.
+     *
+     * [in] input pin
+     * [return] user class
+    */
+    virtual entity::User findUserByPin(const std::string& inputPin) = 0;
 };
 
 }  // namespace authentication

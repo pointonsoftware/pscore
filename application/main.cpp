@@ -24,54 +24,31 @@
 */
 
 #include <iostream>
-#include <cstdlib>
+// data
+#include <logindata/authdata.hpp>
+// domain
 #include <domain/userlogin/authcontroller.hpp>
+// view
+#include <viewcommon.hpp>
+#include <login/authview.hpp>
+// utility
 #include <logger/loghelper.hpp>
 
-void showWelcomeScreen() {
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t PSCORE \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t    Pointon Software  \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "Hi there, Welcome to Core!" << std::endl;
-}
-
-void clearScreen() {
-#ifdef __WIN32__
-    std::system("cls");
-#else
-    std::system("clear");
-#endif
-}
-
-void showUserInfoScreen() {
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t PSCORE \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t    Pointon Software  \t\t\t *" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t *" << std::endl;
-    std::cout << "******************************************************************" << std::endl;
-    std::cout << "Hi dummy, what do you want to do today?" << std::endl;
-}
-
 int main() {
-    showWelcomeScreen();
+    // Welcome to Core!
+    VIEWCOMMON().showWelcomeScreen();
 
-    domain::authentication::AuthController auth(nullptr, nullptr);
+    domain::authentication::AuthController auth(
+                    std::make_shared<dataprovider::authentication::AuthDataProvider>(),
+                    std::make_shared<view::authentication::AuthView>());
+    // Todo, auth.loginScreen();
+    // Will display the login screen from view and asks for PIN input
+    // The same case as in a GUI, where we display a textbox and a button
     std::string pin;
-    std::cout << "Input your PIN: ";
-
-    std::cin >> pin;
-
-    if (auth.loginWithPIN(pin)) {
-        clearScreen();
-        showUserInfoScreen();
-    } else {
-        std::cout << "Sorry, I can't find your info." << std::endl;
-    }
-
+    do {
+        std::cout << "Input your PIN: ";
+        std::cin >> pin;
+    } while (!auth.loginWithPIN(pin));
 
     return 0;
 }

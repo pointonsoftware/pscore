@@ -21,26 +21,29 @@
 #ifndef INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
 #define INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
 
-#include <string>
 #include <memory>
+#include <string>
 #include <domain/defines.hpp>
 #include "interface/authviewif.hpp"
 #include "interface/authdataif.hpp"
+// Entity
+#include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
 
 class AuthController {
  public:
-    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
-                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
+    explicit AuthController(const std::shared_ptr<AuthDataProviderIface>& dataprovider,
+                            const std::shared_ptr<AuthViewIface>& view);
     bool login(const std::string& username, const std::string& password);
     bool loginWithPIN(const std::string& pin);
  private:
-    std::unique_ptr<AuthViewIface> mView;
-    std::unique_ptr<AuthDataProviderIface> mDataProvider;
-    status::General authenticatePIN(const std::string& pin);
-    bool isPinValid(const std::string& pin);
+    std::shared_ptr<AuthViewIface> mView;
+    std::shared_ptr<AuthDataProviderIface> mDataProvider;
+    status::General getUserByPIN(const std::string& pin, entity::User* user);
+    bool isPinValid(const std::string& pin) const;
+    bool isUserValid(const entity::User& userInfo) const;
 };
 
 }  // namespace authentication

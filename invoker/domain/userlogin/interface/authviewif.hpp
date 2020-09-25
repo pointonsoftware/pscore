@@ -21,6 +21,8 @@
 #ifndef INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
 #define INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
 #include <string>
+// Entity
+#include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
@@ -31,20 +33,24 @@ class AuthViewIface {
     virtual ~AuthViewIface() = default;
 
     /**
-    * showLoginScreen
-    */
-    virtual void showLoginScreen() = 0;
-
-    /**
-    * showLoginFailed
-    */
-    virtual void showLoginFailed() = 0;
-
-    /**
     * Will be called if user was found
-    * @param employee a JSON string containing employee details
     */
-    virtual void loginSuccessful(const std::string& employee) = 0;
+    virtual void loginSuccessful(const entity::User& userInfo) = 0;
+
+    /**
+    * invalid PIN!
+    */
+    virtual void showInvalidPINScreen() = 0;
+
+    /**
+    * user not found
+    */
+    virtual void showUserNotFoundScreen() = 0;
+
+    /**
+    * will be called if something went wrong with the database
+    */
+    virtual void showDataNotReadyScreen() = 0;
 };
 
 }  // namespace authentication

@@ -18,37 +18,38 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
-
+#ifndef DATABOUNDARY_STACKDB_HPP_
+#define DATABOUNDARY_STACKDB_HPP_
 #include <string>
-#include "employee.hpp"
+#include <vector>
 
-namespace entity {
+// entities
+#include <entity/user.hpp>
 
-class User : public Employee {
+#define DATABASE() dataprovider::db::StackDB::getDbInstance()
+
+namespace dataprovider {
+namespace db {
+
+class StackDB {
  public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
+    ~StackDB() = default;
 
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
+    static StackDB& getDbInstance() {
+        static StackDB instance;
+        return instance;
     }
 
-    // Todo: Add user.getFullName();
+    inline std::vector<entity::User>& getUsersList() const {
+        return usersList;
+    }
 
  private:
-    std::string mPIN;
+    StackDB();
+    // users storage
+    static std::vector<entity::User> usersList;
 };
 
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace db
+}  // namespace dataprovider
+#endif  // DATABOUNDARY_STACKDB_HPP_

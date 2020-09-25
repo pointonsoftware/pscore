@@ -18,37 +18,40 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#ifndef APPLICATION_SCREEN_COMMON_HPP_
+#define APPLICATION_SCREEN_COMMON_HPP_
+#include "viewcommon.hpp"
+#include <cstdlib>
+#include <iostream>
 
-#include <string>
-#include "employee.hpp"
+namespace screen {
 
-namespace entity {
+void ViewCommon::clearScreen() {
+#ifdef __WIN32__
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+}
 
-class User : public Employee {
- public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
+void ViewCommon::showWelcomeScreen() {
+    showTopBanner();
+    std::cout << "Hi there, Welcome to Core!" << std::endl;
+}
 
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
+const std::string ViewCommon::horizontalBorder() {
+    return "*********************************************************************************";
+}
 
-    inline const std::string pin() const {
-        return mPIN;
-    }
+void ViewCommon::showTopBanner() {
+    clearScreen();
+    std::cout << horizontalBorder() << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\tConsole  Application\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
+    std::cout << horizontalBorder() << std::endl;
+}
 
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace screen
+#endif  // APPLICATION_SCREEN_COMMON_HPP_

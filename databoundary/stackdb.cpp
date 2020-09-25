@@ -18,37 +18,17 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#include "stackdb.hpp"
 
-#include <string>
-#include "employee.hpp"
+namespace dataprovider {
+namespace db {
 
-namespace entity {
+std::vector<entity::User> StackDB::usersList;
 
-class User : public Employee {
- public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
+StackDB::StackDB() {
+    // If you want to add a user to our in-memory DB, put it here
+    usersList.emplace_back(entity::User("Ben", "H", "Garcia", "10/15/1994", "Male", "2020"));
+}
 
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace db
+}  // namespace dataprovider

@@ -18,37 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#include "authview.hpp"
+#include <iostream>
+#include <viewcommon.hpp>
 
-#include <string>
-#include "employee.hpp"
+namespace view {
+namespace authentication {
 
-namespace entity {
+void AuthView::loginSuccessful(const entity::User& userInfo) {
+    VIEWCOMMON().showTopBanner();
+    // Todo, display user name here
+    std::cout << "Hi dummy, what do you want to do today?" << std::endl;
+}
 
-class User : public Employee {
- public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
+void AuthView::showInvalidPINScreen() {
+    std::cout << "PIN is invalid, please try again." << std::endl;
+}
 
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
+void AuthView::showUserNotFoundScreen() {
+    std::cout << "User PIN not found." << std::endl;
+}
 
-    inline const std::string pin() const {
-        return mPIN;
-    }
+void AuthView::showDataNotReadyScreen() {
+    std::cout << "Database not ready." << std::endl;
+}
 
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace authentication
+}  // namespace view

@@ -18,37 +18,29 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
-
+#ifndef APPLICATION_SCREEN_VIEWCOMMON_HPP_
+#define APPLICATION_SCREEN_VIEWCOMMON_HPP_
 #include <string>
-#include "employee.hpp"
 
-namespace entity {
+#define VERSION "0.0.1"
+#define VIEWCOMMON() screen::ViewCommon::getInstance()
 
-class User : public Employee {
+namespace screen {
+
+class ViewCommon {
  public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
-
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
+    ~ViewCommon() = default;
+    static ViewCommon& getInstance() {
+        static ViewCommon instance;
+        return instance;
     }
 
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
+    void clearScreen();
+    void showWelcomeScreen();
+    const std::string horizontalBorder();
+    void showTopBanner();
 };
 
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace screen
+
+#endif  // APPLICATION_SCREEN_VIEWCOMMON_HPP_

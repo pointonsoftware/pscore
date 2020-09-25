@@ -19,17 +19,15 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "authcontroller.hpp"
-#include <utility>  // std utility
-#include <entity/user.hpp>
-#include <logger/loghelper.hpp>
 #include <general.hpp>  // pscore utility
+#include <logger/loghelper.hpp>
 
 namespace domain {
 namespace authentication {
 
-AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
-                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
-: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
+AuthController::AuthController(const std::shared_ptr<AuthDataProviderIface>& dataprovider,
+                               const std::shared_ptr<AuthViewIface>& view)
+: mView(view), mDataProvider(dataprovider) {
     // Empty for now
 }
 
@@ -39,33 +37,72 @@ bool AuthController::login(const std::string& username, const std::string& passw
 }
 
 bool AuthController::loginWithPIN(const std::string& pin) {
-    if (!isPinValid(pin)) {
+    // Make sure view is valid
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
         return false;
     }
-    // Call authenticate
-    return authenticatePIN(pin) == status::General::SUCCESS;
+
+    // Validate the PIN
+    if (!isPinValid(pin)) {
+        mView->showInvalidPINScreen();
+        return false;
+    }
+
+    // Get user info
+    entity::User userInfo;
+    if (getUserByPIN(pin, &userInfo) != status::General::SUCCESS) {
+        mView->showDataNotReadyScreen();
+        return false;
+    }
+
+    // Validate user info
+    if (!isUserValid(userInfo)) {
+        LOG_INFO("User with PIN %s was not found", pin.c_str());
+        mView->showUserNotFoundScreen();
+        return false;
+    }
+
+    mView->loginSuccessful(userInfo);
+    return true;
 }
 
-status::General AuthController::authenticatePIN(const std::string& pin) {
-    // Check if dataprovider is ready; else throw
+status::General AuthController::getUserByPIN(const std::string& pin, entity::User* user) {
+    if (!user) {
+        LOG_ERROR("Invalid user argument");
+        return status::General::FAILED;
+    }
+    if (!mDataProvider) {
+        LOG_ERROR("Dataprovider is not initialized");
+        return status::General::UNINITIALIZED;
+    }
+    // todo (xxx) : Check if dataprovider is ready; else throw
     // Check pin in dataprovider
+    *user = mDataProvider->findUserByPin(pin);
+
     return status::General::SUCCESS;
 }
 
-bool AuthController::isPinValid(const std::string& pin) {
+bool AuthController::isPinValid(const std::string& pin) const {
     if (pin.empty()) {
-        LOG_ERROR("PIN is empty");
+        LOG_WARN("PIN is empty");
         return false;
     }
 
     // Check if its numeric and valid size
     if (!utility::isNumber(pin) || pin.size() != entity::User::PIN_SIZE) {
-        LOG_ERROR("Invalid PIN: %s", pin.c_str());
+        LOG_WARN("Invalid PIN: %s", pin.c_str());
         return false;
     }
 
     return true;
 }
+bool AuthController::isUserValid(const entity::User& userInfo) const {
+    // Todo, this function should be moved to authdata
+    // If default pin is found, that means the user data was not initialized
+    return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
+}
+
 
 }  // namespace authentication
 }  // namespace domain

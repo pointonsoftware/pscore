@@ -18,37 +18,25 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
-
+#ifndef APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
+#define APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
 #include <string>
-#include "employee.hpp"
+#include <domain/userlogin/interface/authviewif.hpp>
 
-namespace entity {
+namespace view {
+namespace authentication {
 
-class User : public Employee {
+class AuthView : public domain::authentication::AuthViewIface {
  public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
+    AuthView() = default;
+    ~AuthView() = default;
 
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
+    void loginSuccessful(const entity::User& userInfo) override;
+    void showInvalidPINScreen() override;
+    void showUserNotFoundScreen() override;
+    void showDataNotReadyScreen() override;
 };
 
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace authentication
+}  // namespace view
+#endif  // APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_

@@ -18,37 +18,23 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#include "authdata.hpp"
+#include <stackdb.hpp>
 
-#include <string>
-#include "employee.hpp"
+namespace dataprovider {
+namespace authentication {
 
-namespace entity {
+entity::User AuthDataProvider::findUserByPin(const std::string& inputPin) {
+    const entity::User user = [inputPin]() {
+        for (const entity::User& temp : DATABASE().getUsersList()) {
+            if (temp.pin().find(inputPin) != std::string::npos) {
+                return temp;
+            }
+        }
+        return entity::User();
+    }();
+    return user;
+}
 
-class User : public Employee {
- public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
-
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace authentication
+}  // namespace dataprovider

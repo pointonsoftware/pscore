@@ -18,37 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
-
+#ifndef DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_
+#define DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_
 #include <string>
-#include "employee.hpp"
+#include <domain/userlogin/interface/authdataif.hpp>
 
-namespace entity {
+namespace dataprovider {
+namespace authentication {
 
-class User : public Employee {
+class AuthDataProvider : public domain::authentication::AuthDataProviderIface {
  public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
-
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
+    AuthDataProvider() = default;
+    virtual ~AuthDataProvider() = default;
+    entity::User findUserByPin(const std::string& inputPin) override;
 };
 
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace authentication
+}  // namespace dataprovider
+#endif  // DATABOUNDARY_LOGINDATA_AUTHDATA_HPP_

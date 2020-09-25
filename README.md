@@ -3,7 +3,7 @@
   <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
 </p>
 
-CORE is a software engine that houses common algorithms used for business management applications. CORE can be used as the processing module of a POS software, an inventory system, and more.
+CORE is a software engine that houses the common use-case algorithms used for business management applications. CORE can be used as a processing module of a POS software, an inventory system, and more.
 
 ---
 
@@ -58,7 +58,7 @@ These are the base requirements to build and use CORE.
 
 ### Usage
 
-- The build generates the **invoker** library that contains the CORE algorithms and can be linked to any executable.
+- The build generates the **domain** and **entity** libraies that contain the CORE use cases and can be linked to any executable.
 - An application called **console_app** is also available and can be used to test the CORE APIs.
 
 ---
