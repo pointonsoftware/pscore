@@ -58,30 +58,34 @@ These are the base requirements to build and use CORE.
 
 ### Usage
 
-- The build generates the **domain** and **entity** libraies that contain the CORE use cases and can be linked to any executable.
+- The build generates **domain** and **entity** libraries that contain the CORE use cases. Both can be linked to any executable.
 - An application called **console_app** is also available and can be used to test the CORE APIs.
 
 ---
 
-### Screenshot
+### Screenshots
 
-Unreleased version:
+- **Unreleased version** asks for the user's name and print it in the console using the logger utility class.
 
 <p align="center">
-  <img width="999" height="37" src="https://bit.ly/3j3WzWc">
+  <img width="999" height="45" src="https://bit.ly/3j3WzWc">
 </p>
 
-**console_app** v0.0.1 asks for the user's name and print it in the console using the logger utility class.
+- **console_app** v0.0.1 login screen:
+<p align="center">
+  <img width="571" height="136" src="https://bit.ly/2Ex0SKL">
+</p>
+
 
 ---
 
 ## Roadmap
 
-The initial version of CORE (v0.1.0) will contain the login and view personal information features.  
+The initial working version of CORE (v0.0.10) will include the login and view personal information features.
 
 Below are the planned releases in the future:  
 
- - **v0.1.0** - Admin login/logout
+ - **v0.1.0** - Full admin login/logout
  - **v0.2.0** - User CRUD
  - **v0.3.0** - Basic inventory operations
  - **v0.4.0** - Basic employee management
