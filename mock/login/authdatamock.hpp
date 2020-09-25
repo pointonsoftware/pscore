@@ -18,37 +18,25 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
-
+#ifndef MOCK_LOGIN_AUTHDATAMOCK_HPP_
+#define MOCK_LOGIN_AUTHDATAMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <string>
-#include "employee.hpp"
+#include <domain/userlogin/interface/authdataif.hpp>
+#include <entity/user.hpp>
 
-namespace entity {
+namespace domain {
+namespace authentication {
 
-class User : public Employee {
+class AuthDataMock : public AuthDataProviderIface {
  public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
-
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
+    AuthDataMock() = default;
+    ~AuthDataMock() = default;
+    MOCK_METHOD(entity::User, findUserByPin, (const std::string& inputPin));
 };
 
-}  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+}  // namespace authentication
+}  // namespace domain
+
+#endif  // MOCK_LOGIN_AUTHDATAMOCK_HPP_

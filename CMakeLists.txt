@@ -38,6 +38,13 @@ endif ()
 include_directories (invoker)
 include_directories (utility)
 include_directories (databoundary)
+
+if (BUILD_UNITTEST)
+include_directories (mock)
+include_directories (external/gtest/googletest/include)
+include_directories (external/gtest/googlemock/include)
+endif()
+
 add_subdirectory (invoker)
 add_subdirectory (utility)
 
@@ -51,6 +58,5 @@ endif()
 
 if (BUILD_UNITTEST)
     message(STATUS "Unittest enabled")
-    include_directories (external/gtest)
     add_subdirectory (external/gtest)
 endif()

@@ -26,9 +26,9 @@
 namespace domain {
 namespace authentication {
 
-AuthController::AuthController(std::unique_ptr<AuthViewIface>&& view,
-                               std::unique_ptr<AuthDataProviderIface>&& dataprovider)
-: mView(std::move(view)), mDataProvider(std::move(dataprovider)) {
+AuthController::AuthController(const std::shared_ptr<AuthDataProviderIface>& dataprovider,
+                               const std::shared_ptr<AuthViewIface>& view)
+: mView(view), mDataProvider(dataprovider) {
     // Empty for now
 }
 
@@ -49,7 +49,11 @@ bool AuthController::loginWithPIN(const std::string& pin) {
     }
 
     // Get user info
-    entity::User userInfo = getUserWithPIN(pin);
+    entity::User userInfo;
+    if (getUserByPIN(pin, &userInfo) != status::General::SUCCESS) {
+        mView->showDataNotReadyScreen();
+        return false;
+    }
 
     // Validate
     if (!isUserValid(userInfo)) {
@@ -62,14 +66,20 @@ bool AuthController::loginWithPIN(const std::string& pin) {
     return true;
 }
 
-entity::User AuthController::getUserWithPIN(const std::string& pin) {
-    // todo (xxx) : Check if dataprovider is ready; else throw
+status::General AuthController::getUserByPIN(const std::string& pin, entity::User* user) {
+    if (!user) {
+        LOG_ERROR("Invalid user argument");
+        return status::General::FAILED;
+    }
     if (!mDataProvider) {
         LOG_ERROR("Dataprovider is not initialized");
-        return entity::User();
+        return status::General::UNINITIALIZED;
     }
+    // todo (xxx) : Check if dataprovider is ready; else throw
     // Check pin in dataprovider
-    return mDataProvider->findUserByPin(pin);
+    *user = mDataProvider->findUserByPin(pin);
+
+    return status::General::SUCCESS;
 }
 
 bool AuthController::isPinValid(const std::string& pin) {

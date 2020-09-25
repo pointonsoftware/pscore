@@ -46,6 +46,11 @@ class AuthViewIface {
     * user not found
     */
     virtual void showUserNotFoundScreen() = 0;
+
+    /**
+    * will be called if something went wrong with the database
+    */
+    virtual void showDataNotReadyScreen() = 0;
 };
 
 }  // namespace authentication

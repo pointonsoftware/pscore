@@ -23,6 +23,7 @@
 
 #include <string>
 #include <memory>
+#include <domain/defines.hpp>
 #include "interface/authviewif.hpp"
 #include "interface/authdataif.hpp"
 // Entity
@@ -33,14 +34,14 @@ namespace authentication {
 
 class AuthController {
  public:
-    explicit AuthController(std::unique_ptr<AuthViewIface>&& view,
-                            std::unique_ptr<AuthDataProviderIface>&& dataprovider);
+    explicit AuthController(const std::shared_ptr<AuthDataProviderIface>& dataprovider,
+                            const std::shared_ptr<AuthViewIface>& view);
     bool login(const std::string& username, const std::string& password);
     bool loginWithPIN(const std::string& pin);
  private:
-    std::unique_ptr<AuthViewIface> mView;
-    std::unique_ptr<AuthDataProviderIface> mDataProvider;
-    entity::User getUserWithPIN(const std::string& pin);
+    std::shared_ptr<AuthViewIface> mView;
+    std::shared_ptr<AuthDataProviderIface> mDataProvider;
+    status::General getUserByPIN(const std::string& pin, entity::User* user);
     bool isPinValid(const std::string& pin);
     bool isUserValid(const entity::User& userInfo);
 };

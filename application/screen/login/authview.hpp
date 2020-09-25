@@ -34,6 +34,7 @@ class AuthView : public domain::authentication::AuthViewIface {
     void loginSuccessful(const entity::User& userInfo) override;
     void showInvalidPINScreen() override;
     void showUserNotFoundScreen() override;
+    void showDataNotReadyScreen() override;
 };
 
 }  // namespace authentication

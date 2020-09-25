@@ -35,13 +35,14 @@
 #include <logger/loghelper.hpp>
 
 int main() {
-    domain::authentication::AuthController auth(
-                    std::make_unique<view::authentication::AuthView>(),
-                    std::make_unique<dataprovider::authentication::AuthDataProvider>());
-    std::string pin;
-
     SCREENCOMMON().showWelcomeScreen();
 
+    domain::authentication::AuthController auth(
+                    std::make_shared<dataprovider::authentication::AuthDataProvider>(),
+                    std::make_shared<view::authentication::AuthView>());
+    // Todo, auth.loginScreen();
+    // Will display the login screen from view and asks for PIN input
+    std::string pin;
     do {
         std::cout << "Input your PIN: ";
         std::cin >> pin;

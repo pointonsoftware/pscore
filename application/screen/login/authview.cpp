@@ -29,6 +29,7 @@ namespace authentication {
 void AuthView::loginSuccessful(const entity::User& userInfo) {
     SCREENCOMMON().clearScreen();
     SCREENCOMMON().showTopBanner();
+    // Todo, display user name here
     std::cout << "Hi dummy, what do you want to do today?" << std::endl;
 }
 void AuthView::showInvalidPINScreen() {
@@ -36,7 +37,11 @@ void AuthView::showInvalidPINScreen() {
 }
 
 void AuthView::showUserNotFoundScreen() {
-    std::cout << "Sorry, I can't find that PIN." << std::endl;
+    std::cout << "User PIN not found." << std::endl;
+}
+
+void AuthView::showDataNotReadyScreen() {
+    std::cout << "Database not ready." << std::endl;
 }
 
 }  // namespace authentication

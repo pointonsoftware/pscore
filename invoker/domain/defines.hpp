@@ -25,13 +25,14 @@ namespace domain {
 namespace status {
 
 enum class General {
-    FAILED   = 0,
-    SUCCESS  = 1,
-    BUSY     = 2,
-    EXISTS   = 3,
-    OFFLINE  = 4,
-    EMPTY    = 5,
-    OCCUPIED = 6,
+    SUCCESS       = 0,
+    FAILED        = 1,
+    BUSY          = 2,
+    EXISTS        = 3,
+    OFFLINE       = 4,
+    EMPTY         = 5,
+    OCCUPIED      = 6,
+    UNINITIALIZED = 7
 };
 }  // namespace status
 
