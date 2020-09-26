@@ -18,27 +18,42 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "loginscreen.hpp"
+/* NOTE!
+ * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
+*/
+
+#include "flowcontroller.hpp"
+// std
 #include <iostream>
-#include <memory>
-// view
-#include <screencommon.hpp>
-#include <backoffice/dashboard.hpp>
-// core
-#include <domain/userlogin/logincontroller.hpp>
 // data
-#include <logindata.hpp>
+#include <logindata/authdata.hpp>
+// domain
+#include <domain/userlogin/authcontroller.hpp>
+// view
+#include <viewcommon.hpp>
+#include <login/authview.hpp>
+// utility
+#include <logger/loghelper.hpp>
 
 namespace view {
-namespace login {
 
-void LoginScreen::show() {
-    domain::login::LoginController auth(
-                    std::make_shared<dataprovider::login::LoginDataProvider>(),
-                    std::make_shared<login::LoginScreen>(*this));
+void FlowController::run() {
+    bool endRun = false;
+    do {
+        // Welcome to Core!
+        VIEWCOMMON().showWelcomeScreen();
+        showLoginScreen();
+        endRun = true;
+    } while (!endRun);
+}
+
+void FlowController::showLoginScreen() {
+    domain::authentication::AuthController auth(
+                        std::make_shared<dataprovider::authentication::AuthDataProvider>(),
+                        std::make_shared<view::authentication::AuthView>());
     // Todo, auth.loginScreen();
     // Will display the login screen from view and asks for PIN input
-    // The same case as in a GUI, where we display a textbox and a button
+    // The same case as in a GUI, where we display a textbox and a button    
     std::string pin;
     do {
         std::cout << "Input your PIN: ";
@@ -46,22 +61,4 @@ void LoginScreen::show() {
     } while (!auth.loginWithPIN(pin));
 }
 
-void LoginScreen::loginSuccessful(const entity::User& userInfo) {
-    backoffice::Dashboard dashboard;
-    dashboard.showUserInfo(userInfo);
-}
-
-void LoginScreen::showInvalidPINScreen() {
-    std::cout << "PIN is invalid, please try again." << std::endl;
-}
-
-void LoginScreen::showUserNotFoundScreen() {
-    std::cout << "User PIN not found." << std::endl;
-}
-
-void LoginScreen::showDataNotReadyScreen() {
-    std::cout << "Database not ready." << std::endl;
-}
-
-}  // namespace login
 }  // namespace view

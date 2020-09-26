@@ -18,50 +18,31 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "loginscreen.hpp"
-#include <iostream>
-#include <memory>
-// view
-#include <screencommon.hpp>
-#include <backoffice/dashboard.hpp>
-// core
-#include <domain/userlogin/logincontroller.hpp>
-// data
-#include <logindata.hpp>
+#ifndef APPLICATION_PRESENTER_FLOWCONTROLLER_HPP_
+#define APPLICATION_PRESENTER_FLOWCONTROLLER_HPP_
 
 namespace view {
-namespace login {
 
-void LoginScreen::show() {
-    domain::login::LoginController auth(
-                    std::make_shared<dataprovider::login::LoginDataProvider>(),
-                    std::make_shared<login::LoginScreen>(*this));
-    // Todo, auth.loginScreen();
-    // Will display the login screen from view and asks for PIN input
-    // The same case as in a GUI, where we display a textbox and a button
-    std::string pin;
-    do {
-        std::cout << "Input your PIN: ";
-        std::cin >> pin;
-    } while (!auth.loginWithPIN(pin));
-}
+#define FLOWCONTROLLER() FlowController::getInstance()
 
-void LoginScreen::loginSuccessful(const entity::User& userInfo) {
-    backoffice::Dashboard dashboard;
-    dashboard.showUserInfo(userInfo);
-}
+class FlowController {
+ public:
+    ~FlowController() = default;
 
-void LoginScreen::showInvalidPINScreen() {
-    std::cout << "PIN is invalid, please try again." << std::endl;
-}
+    static FlowController& getInstance() {
+        static FlowController instance;
+        return instance;
+    }
 
-void LoginScreen::showUserNotFoundScreen() {
-    std::cout << "User PIN not found." << std::endl;
-}
+    /*!
+     * Main execution
+    */
+    void run();
 
-void LoginScreen::showDataNotReadyScreen() {
-    std::cout << "Database not ready." << std::endl;
-}
+ private:
+    FlowController() = default;
+    void showLoginScreen();
+};
 
-}  // namespace login
 }  // namespace view
+#endif  // APPLICATION_PRESENTER_FLOWCONTROLLER_HPP_
