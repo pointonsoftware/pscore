@@ -18,30 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "authview.hpp"
-#include <iostream>
-#include <viewcommon.hpp>
-#include <backoffice/dashboard.hpp>
+#ifndef APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+#define APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+#include <entity/user.hpp>
 
 namespace view {
-namespace authentication {
+namespace backoffice {
 
-void AuthView::loginSuccessful(const entity::User& userInfo) {
-    backoffice::Dashboard dashboard;
-    dashboard.showUserInfo(userInfo);
-}
+class Dashboard {
+ public:
+    Dashboard() = default;
+    ~Dashboard() = default;
 
-void AuthView::showInvalidPINScreen() {
-    std::cout << "PIN is invalid, please try again." << std::endl;
-}
+    void showUserInfo(const entity::User& userInfo);
+};
 
-void AuthView::showUserNotFoundScreen() {
-    std::cout << "User PIN not found." << std::endl;
-}
-
-void AuthView::showDataNotReadyScreen() {
-    std::cout << "Database not ready." << std::endl;
-}
-
-}  // namespace authentication
+}  // namespace backoffice
 }  // namespace view
+#endif  // APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_

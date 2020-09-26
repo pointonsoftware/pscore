@@ -1,5 +1,6 @@
 project (application)
 
+include_directories(presenter)
 include_directories(screen)
 
 add_executable (
@@ -14,6 +15,9 @@ add_executable (
     # Login screen
     screen/login/authview.hpp
     screen/login/authview.cpp
+    # Back office screen
+    screen/backoffice/dashboard.hpp
+    screen/backoffice/dashboard.cpp
 )
 
 target_link_libraries (
