@@ -18,9 +18,47 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "presenter/flowcontroller.hpp"
+/* NOTE!
+ * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
+*/
 
-int main() {
-    view::FLOWCONTROLLER().run();
-    return 0;
+#include "flowcontroller.hpp"
+// std
+#include <iostream>
+// data
+#include <logindata/authdata.hpp>
+// domain
+#include <domain/userlogin/authcontroller.hpp>
+// view
+#include <viewcommon.hpp>
+#include <login/authview.hpp>
+// utility
+#include <logger/loghelper.hpp>
+
+namespace view {
+
+void FlowController::run() {
+    bool endRun = false;
+    do {
+        // Welcome to Core!
+        VIEWCOMMON().showWelcomeScreen();
+        showLoginScreen();
+        endRun = true;
+    } while (!endRun);
 }
+
+void FlowController::showLoginScreen() {
+    domain::authentication::AuthController auth(
+                        std::make_shared<dataprovider::authentication::AuthDataProvider>(),
+                        std::make_shared<view::authentication::AuthView>());
+    // Todo, auth.loginScreen();
+    // Will display the login screen from view and asks for PIN input
+    // The same case as in a GUI, where we display a textbox and a button    
+    std::string pin;
+    do {
+        std::cout << "Input your PIN: ";
+        std::cin >> pin;
+    } while (!auth.loginWithPIN(pin));
+}
+
+}  // namespace view

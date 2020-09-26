@@ -98,11 +98,9 @@ bool AuthController::isPinValid(const std::string& pin) const {
     return true;
 }
 bool AuthController::isUserValid(const entity::User& userInfo) const {
-    // Todo, this function should be moved to authdata
     // If default pin is found, that means the user data was not initialized
     return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
 }
-
 
 }  // namespace authentication
 }  // namespace domain

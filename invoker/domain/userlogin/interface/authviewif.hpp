@@ -21,12 +21,13 @@
 #ifndef INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
 #define INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
 #include <string>
-// Entity
 #include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
-
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
 class AuthViewIface {
  public:
     AuthViewIface() = default;

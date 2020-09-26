@@ -18,9 +18,31 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "presenter/flowcontroller.hpp"
+#ifndef APPLICATION_PRESENTER_FLOWCONTROLLER_HPP_
+#define APPLICATION_PRESENTER_FLOWCONTROLLER_HPP_
 
-int main() {
-    view::FLOWCONTROLLER().run();
-    return 0;
-}
+namespace view {
+
+#define FLOWCONTROLLER() FlowController::getInstance()
+
+class FlowController {
+ public:
+    ~FlowController() = default;
+
+    static FlowController& getInstance() {
+        static FlowController instance;
+        return instance;
+    }
+
+    /*!
+     * Main execution
+    */
+    void run();
+
+ private:
+    FlowController() = default;
+    void showLoginScreen();
+};
+
+}  // namespace view
+#endif  // APPLICATION_PRESENTER_FLOWCONTROLLER_HPP_

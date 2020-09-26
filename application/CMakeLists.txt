@@ -5,6 +5,9 @@ include_directories(screen)
 add_executable (
     console_app
     main.cpp
+    # Control
+    presenter/flowcontroller.hpp
+    presenter/flowcontroller.cpp
     # Common screens
     screen/viewcommon.hpp
     screen/viewcommon.cpp

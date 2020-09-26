@@ -25,7 +25,9 @@
 
 namespace domain {
 namespace authentication {
-
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
 class AuthDataProviderIface {
  public:
     AuthDataProviderIface() = default;
