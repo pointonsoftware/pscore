@@ -38,10 +38,10 @@ void LoginScreen::show() {
         std::cout << "Input your PIN: ";
         std::cin >> pin;
 
-        if(pin.find("x") != std::string::npos) {
+        if (pin.find("x") != std::string::npos) {
             break;
         }
-        if(onLogin(pin)) {
+        if (onLogin(pin)) {
             PIN = pin;
             break;
         }
