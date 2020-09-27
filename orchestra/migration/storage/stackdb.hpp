@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DATAMANAGER_STORAGE_STACKDB_HPP_
-#define DATAMANAGER_STORAGE_STACKDB_HPP_
+#ifndef ORCHESTRA_MIGRATION_STORAGE_STACKDB_HPP_
+#define ORCHESTRA_MIGRATION_STORAGE_STACKDB_HPP_
 #include <string>
 #include <vector>
 
@@ -52,4 +52,4 @@ class StackDB {
 
 }  // namespace db
 }  // namespace dataprovider
-#endif  // DATAMANAGER_STORAGE_STACKDB_HPP_
+#endif  // ORCHESTRA_MIGRATION_STORAGE_STACKDB_HPP_

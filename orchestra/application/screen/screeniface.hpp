@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_SCREENIFACE_HPP_
-#define APPLICATION_SCREEN_SCREENIFACE_HPP_
+#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
 
 namespace screen {
 
@@ -33,4 +33,4 @@ class ScreenInterface {
 
 }  // namespace screen
 
-#endif  // APPLICATION_SCREEN_SCREENIFACE_HPP_
+#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_

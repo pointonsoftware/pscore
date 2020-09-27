@@ -18,21 +18,25 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
-#define APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINDATAMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINDATAMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <string>
+#include <domain/userlogin/interface/logindataif.hpp>
 #include <entity/user.hpp>
 
-namespace view {
-namespace backoffice {
+namespace domain {
+namespace login {
 
-class Dashboard {
+class LoginDataMock : public LoginDataProviderIface {
  public:
-    Dashboard() = default;
-    ~Dashboard() = default;
-
-    void showUserInfo(const entity::User& userInfo);
+    LoginDataMock() = default;
+    ~LoginDataMock() = default;
+    MOCK_METHOD(entity::User, findUserByPin, (const std::string& inputPin));
 };
 
-}  // namespace backoffice
-}  // namespace view
-#endif  // APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+}  // namespace login
+}  // namespace domain
+
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINDATAMOCK_HPP_

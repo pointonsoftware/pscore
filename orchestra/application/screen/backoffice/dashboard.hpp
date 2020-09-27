@@ -18,31 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_SCREENCOMMON_HPP_
-#define APPLICATION_SCREEN_SCREENCOMMON_HPP_
-#include <string>
+#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+#include <entity/user.hpp>
 
-#define VERSION "0.0.1"
-#define SCREENCOMMON() screen::ScreenCommon::getInstance()
+namespace view {
+namespace backoffice {
 
-namespace screen {
-
-class ScreenCommon {
+class Dashboard {
  public:
-    ~ScreenCommon() = default;
-    static ScreenCommon& getInstance() {
-        static ScreenCommon instance;
-        return instance;
-    }
+    Dashboard() = default;
+    ~Dashboard() = default;
 
-    void clearScreen();
-    void showWelcomeScreen();
-    const std::string horizontalBorder();
-    void showTopBanner();
- private:
-    ScreenCommon() = default;
+    void showUserInfo(const entity::User& userInfo);
 };
 
-}  // namespace screen
-
-#endif  // APPLICATION_SCREEN_SCREENCOMMON_HPP_
+}  // namespace backoffice
+}  // namespace view
+#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_

@@ -22,8 +22,8 @@
 #include <entity/user.hpp>
 
 // mocks
-#include <login/logindatamock.hpp>
-#include <login/loginviewmock.hpp>
+#include "mock/login/logindatamock.hpp"
+#include "mock/login/loginviewmock.hpp"
 
 // code under test
 #include <domain/userlogin/logincontroller.hpp>

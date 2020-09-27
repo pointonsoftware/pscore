@@ -18,28 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef MOCK_LOGIN_LOGINVIEWMOCK_HPP_
-#define MOCK_LOGIN_LOGINVIEWMOCK_HPP_
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#ifndef ORCHESTRA_DATAMANAGER_LOGINDATA_HPP_
+#define ORCHESTRA_DATAMANAGER_LOGINDATA_HPP_
 #include <string>
-#include <domain/userlogin/interface/loginviewif.hpp>
-#include <entity/user.hpp>
+#include <domain/userlogin/interface/logindataif.hpp>
 
-namespace domain {
+namespace dataprovider {
 namespace login {
 
-class LoginViewMock : public LoginViewIface {
+class LoginDataProvider : public domain::login::LoginDataProviderIface {
  public:
-    LoginViewMock() = default;
-    ~LoginViewMock() = default;
-
-    MOCK_METHOD(void, loginSuccessful, (const entity::User& userInfo));
-    MOCK_METHOD(void, showInvalidPINScreen, ());
-    MOCK_METHOD(void, showUserNotFoundScreen, ());
-    MOCK_METHOD(void, showDataNotReadyScreen, ());
+    LoginDataProvider() = default;
+    virtual ~LoginDataProvider() = default;
+    entity::User findUserByPin(const std::string& inputPin) override;
 };
 
 }  // namespace login
-}  // namespace domain
-#endif  // MOCK_LOGIN_LOGINVIEWMOCK_HPP_
+}  // namespace dataprovider
+#endif  // ORCHESTRA_DATAMANAGER_LOGINDATA_HPP_

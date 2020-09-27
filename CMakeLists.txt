@@ -36,12 +36,11 @@ endif ()
 
 # directories
 include_directories (core)
-include_directories (datamanager)
-include_directories (migration)
+include_directories (orchestra/datamanager)
+include_directories (orchestra/migration)
 include_directories (utility)
 
 if (BUILD_UNITTEST)
-include_directories (mock)
 include_directories (external/gtest/googletest/include)
 include_directories (external/gtest/googlemock/include)
 endif()
@@ -54,9 +53,9 @@ add_subdirectory (utility)
 # optional builds
 if (BUILD_ALL)
 message(STATUS "All components enabled")
-add_subdirectory (application)
-add_subdirectory (datamanager)
-add_subdirectory (migration/storage)
+add_subdirectory (orchestra/application)
+add_subdirectory (orchestra/datamanager)
+add_subdirectory (orchestra/migration/storage)
 endif()
 
 if (BUILD_UNITTEST)

@@ -18,25 +18,27 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef MOCK_LOGIN_LOGINDATAMOCK_HPP_
-#define MOCK_LOGIN_LOGINDATAMOCK_HPP_
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#ifndef ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
 #include <string>
-#include <domain/userlogin/interface/logindataif.hpp>
-#include <entity/user.hpp>
+#include <domain/userlogin/interface/loginviewif.hpp>
+#include <screeniface.hpp>
 
-namespace domain {
+namespace view {
 namespace login {
 
-class LoginDataMock : public LoginDataProviderIface {
+class LoginScreen : public screen::ScreenInterface, public domain::login::LoginViewIface {
  public:
-    LoginDataMock() = default;
-    ~LoginDataMock() = default;
-    MOCK_METHOD(entity::User, findUserByPin, (const std::string& inputPin));
+    LoginScreen() = default;
+    ~LoginScreen() = default;
+
+    void show() override;
+    void loginSuccessful(const entity::User& userInfo) override;
+    void showInvalidPINScreen() override;
+    void showUserNotFoundScreen() override;
+    void showDataNotReadyScreen() override;
 };
 
 }  // namespace login
-}  // namespace domain
-
-#endif  // MOCK_LOGIN_LOGINDATAMOCK_HPP_
+}  // namespace view
+#endif  // ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_

@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_FLOWCONTROLLER_HPP_
-#define APPLICATION_FLOWCONTROLLER_HPP_
+#ifndef ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_
+#define ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_
 
 namespace view {
 
@@ -45,4 +45,4 @@ class FlowController {
 };
 
 }  // namespace view
-#endif  // APPLICATION_FLOWCONTROLLER_HPP_
+#endif  // ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_

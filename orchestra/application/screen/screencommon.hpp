@@ -18,27 +18,31 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
-#define APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
+#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
 #include <string>
-#include <domain/userlogin/interface/loginviewif.hpp>
-#include <screeniface.hpp>
 
-namespace view {
-namespace login {
+#define VERSION "0.0.1"
+#define SCREENCOMMON() screen::ScreenCommon::getInstance()
 
-class LoginScreen : public screen::ScreenInterface, public domain::login::LoginViewIface {
+namespace screen {
+
+class ScreenCommon {
  public:
-    LoginScreen() = default;
-    ~LoginScreen() = default;
+    ~ScreenCommon() = default;
+    static ScreenCommon& getInstance() {
+        static ScreenCommon instance;
+        return instance;
+    }
 
-    void show() override;
-    void loginSuccessful(const entity::User& userInfo) override;
-    void showInvalidPINScreen() override;
-    void showUserNotFoundScreen() override;
-    void showDataNotReadyScreen() override;
+    void clearScreen();
+    void showWelcomeScreen();
+    const std::string horizontalBorder();
+    void showTopBanner();
+ private:
+    ScreenCommon() = default;
 };
 
-}  // namespace login
-}  // namespace view
-#endif  // APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
+}  // namespace screen
+
+#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
