@@ -18,19 +18,42 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_VIEWIFACE_HPP_
-#define APPLICATION_SCREEN_VIEWIFACE_HPP_
+#ifndef DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_
+#define DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_
+#include <string>
+#include <entity/user.hpp>
 
-namespace screen {
-
-class ViewInterface {
+namespace domain {
+namespace login {
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
+class LoginViewIface {
  public:
-    ViewInterface() = default;
-    virtual ~ViewInterface() = default;
+    LoginViewIface() = default;
+    virtual ~LoginViewIface() = default;
 
-    virtual void show() = 0;
+    /**
+    * Will be called if user was found
+    */
+    virtual void loginSuccessful(const entity::User& userInfo) = 0;
+
+    /**
+    * invalid PIN!
+    */
+    virtual void showInvalidPINScreen() = 0;
+
+    /**
+    * user not found
+    */
+    virtual void showUserNotFoundScreen() = 0;
+
+    /**
+    * will be called if something went wrong with the database
+    */
+    virtual void showDataNotReadyScreen() = 0;
 };
 
-}  // namespace screen
-
-#endif  // APPLICATION_SCREEN_VIEWIFACE_HPP_
+}  // namespace authentication
+}  // namespace domain
+#endif  // DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_

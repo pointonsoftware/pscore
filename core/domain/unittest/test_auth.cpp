@@ -19,35 +19,40 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <gtest/gtest.h>
-#include <domain/userlogin/authcontroller.hpp>
 #include <entity/user.hpp>
-#include <login/authdatamock.hpp>
-#include <login/authviewmock.hpp>
+
+// mocks
+#include <login/logindatamock.hpp>
+#include <login/loginviewmock.hpp>
+
+// code under test
+#include <domain/userlogin/logincontroller.hpp>
+
 
 // Gmock
 using testing::_;
 using testing::Return;
 
 namespace domain {
-namespace authentication {
+namespace login {
 namespace test {
 
-class TestAuth : public testing::Test {
+class TestLogin : public testing::Test {
  public:
-    TestAuth() : authController(dpMock, viewMock) {
+    TestLogin() : loginController(dpMock, viewMock) {
         // Empty for now
     }
 
-    ~TestAuth() = default;
+    ~TestLogin() = default;
     void SetUp() {}
     void TearDown() {}
 
-    std::shared_ptr<AuthDataMock> dpMock  = std::make_shared<AuthDataMock>();
-    std::shared_ptr<AuthViewMock> viewMock = std::make_shared<AuthViewMock>();
-    AuthController authController;
+    std::shared_ptr<LoginDataMock> dpMock  = std::make_shared<LoginDataMock>();
+    std::shared_ptr<LoginViewMock> viewMock = std::make_shared<LoginViewMock>();
+    LoginController loginController;
 };
 
-TEST_F(TestAuth, LoginShouldSucceed) {
+TEST_F(TestLogin, LoginShouldSucceed) {
     const std::string dummyPin = "1234";
     // Calls findUser
     EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
@@ -55,10 +60,10 @@ TEST_F(TestAuth, LoginShouldSucceed) {
     // Calls loginSuccessfulScreen
     EXPECT_CALL(*viewMock, loginSuccessful(_));
     // Returns true
-    ASSERT_TRUE(authController.loginWithPIN(dummyPin));
+    ASSERT_TRUE(loginController.loginWithPIN(dummyPin));
 }
 
-TEST_F(TestAuth, LoginUserNotFound) {
+TEST_F(TestLogin, LoginUserNotFound) {
     const std::string dummyPin = "1234";
     // Calls findUser - fake that user was not found
     EXPECT_CALL(*dpMock, findUserByPin(_))
@@ -66,24 +71,24 @@ TEST_F(TestAuth, LoginUserNotFound) {
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showUserNotFoundScreen());
     // Returns false
-    ASSERT_FALSE(authController.loginWithPIN(dummyPin));
+    ASSERT_FALSE(loginController.loginWithPIN(dummyPin));
 }
 
-TEST_F(TestAuth, LoginWithEmptyPIN) {
+TEST_F(TestLogin, LoginWithEmptyPIN) {
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
     // Returns false
-    ASSERT_FALSE(authController.loginWithPIN(""));
+    ASSERT_FALSE(loginController.loginWithPIN(""));
 }
 
-TEST_F(TestAuth, LoginWithNonNumericPIN) {
+TEST_F(TestLogin, LoginWithNonNumericPIN) {
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
     // Returns false
-    ASSERT_FALSE(authController.loginWithPIN("abcd"));
+    ASSERT_FALSE(loginController.loginWithPIN("abcd"));
 }
 
-TEST_F(TestAuth, LoginWithFewCharacterPIN) {
+TEST_F(TestLogin, LoginWithFewCharacterPIN) {
     std::string dummyPIN;
     const unsigned int dummyPinSize = entity::User::PIN_SIZE - 1;
     for (unsigned int i = 0; i < dummyPinSize; ++i) {
@@ -92,10 +97,10 @@ TEST_F(TestAuth, LoginWithFewCharacterPIN) {
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
     // Returns false
-    ASSERT_FALSE(authController.loginWithPIN(dummyPIN));
+    ASSERT_FALSE(loginController.loginWithPIN(dummyPIN));
 }
 
-TEST_F(TestAuth, LoginWithTooManyCharacterPIN) {
+TEST_F(TestLogin, LoginWithTooManyCharacterPIN) {
     std::string dummyPIN;
     const unsigned int dummyPinSize = entity::User::PIN_SIZE + 1;
     for (unsigned int i = 0; i < dummyPinSize; ++i) {
@@ -104,17 +109,17 @@ TEST_F(TestAuth, LoginWithTooManyCharacterPIN) {
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
     // Returns false
-    ASSERT_FALSE(authController.loginWithPIN(dummyPIN));
+    ASSERT_FALSE(loginController.loginWithPIN(dummyPIN));
 }
 
-TEST_F(TestAuth, LoginWithViewNotInitialized) {
-    AuthController dummyController(dpMock, nullptr);
+TEST_F(TestLogin, LoginWithViewNotInitialized) {
+    LoginController dummyController(dpMock, nullptr);
     // Returns false
     ASSERT_FALSE(dummyController.loginWithPIN("1234"));
 }
 
-TEST_F(TestAuth, LoginWithDataProviderNotInitialized) {
-    AuthController dummyController(nullptr, viewMock);
+TEST_F(TestLogin, LoginWithDataProviderNotInitialized) {
+    LoginController dummyController(nullptr, viewMock);
     // Calls showDataNotReadyScreen
     EXPECT_CALL(*viewMock, showDataNotReadyScreen());
     // Returns false
@@ -122,5 +127,5 @@ TEST_F(TestAuth, LoginWithDataProviderNotInitialized) {
 }
 
 }  // namespace test
-}  // namespace authentication
+}  // namespace login
 }  // namespace domain

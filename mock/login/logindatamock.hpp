@@ -18,40 +18,25 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_COMMON_HPP_
-#define APPLICATION_SCREEN_COMMON_HPP_
-#include "viewcommon.hpp"
-#include <cstdlib>
-#include <iostream>
+#ifndef MOCK_LOGIN_LOGINDATAMOCK_HPP_
+#define MOCK_LOGIN_LOGINDATAMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <string>
+#include <domain/userlogin/interface/logindataif.hpp>
+#include <entity/user.hpp>
 
-namespace screen {
+namespace domain {
+namespace login {
 
-void ViewCommon::clearScreen() {
-#ifdef __WIN32__
-    std::system("cls");
-#else
-    std::system("clear");
-#endif
-}
+class LoginDataMock : public LoginDataProviderIface {
+ public:
+    LoginDataMock() = default;
+    ~LoginDataMock() = default;
+    MOCK_METHOD(entity::User, findUserByPin, (const std::string& inputPin));
+};
 
-void ViewCommon::showWelcomeScreen() {
-    showTopBanner();
-    std::cout << "Hi there, Welcome to Core!" << std::endl;
-}
+}  // namespace login
+}  // namespace domain
 
-const std::string ViewCommon::horizontalBorder() {
-    return "*********************************************************************************";
-}
-
-void ViewCommon::showTopBanner() {
-    clearScreen();
-    std::cout << horizontalBorder() << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t\tConsole  Application\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
-    std::cout << horizontalBorder() << std::endl;
-}
-
-}  // namespace screen
-#endif  // APPLICATION_SCREEN_COMMON_HPP_
+#endif  // MOCK_LOGIN_LOGINDATAMOCK_HPP_

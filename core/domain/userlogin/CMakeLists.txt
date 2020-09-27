@@ -2,21 +2,22 @@ project (userlogin)
 
 # domain lib
 add_library (
-    auth
+    logindomain
     STATIC
     # Common
     # defines.hpp
-    # Views
-    interface/authviewif.hpp
-    # Dataproviders
-    interface/authdataif.hpp
+    # View
+    interface/loginviewif.hpp
+    # Dataprovider
+    interface/logindataif.hpp
     # Controllers
-    authcontroller.hpp
-    authcontroller.cpp
+    interface/logincontrolif.hpp
+    logincontroller.hpp
+    logincontroller.cpp
 )
 
 target_link_libraries (
-    auth
+    logindomain
     entity
     utility
 )

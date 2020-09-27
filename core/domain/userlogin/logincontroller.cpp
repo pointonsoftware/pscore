@@ -18,25 +18,25 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "authcontroller.hpp"
+#include "logincontroller.hpp"
 #include <general.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
 
 namespace domain {
-namespace authentication {
+namespace login {
 
-AuthController::AuthController(const std::shared_ptr<AuthDataProviderIface>& dataprovider,
-                               const std::shared_ptr<AuthViewIface>& view)
-: mView(view), mDataProvider(dataprovider) {
+LoginController::LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
+                               const std::shared_ptr<LoginViewIface>& view)
+: mDataProvider(dataprovider), mView(view) {
     // Empty for now
 }
 
 // cppcheck-suppress unusedFunction  ! remove this line when function is used
-bool AuthController::login(const std::string& username, const std::string& password) {
+bool LoginController::login(const std::string& username, const std::string& password) {
     return true;
 }
 
-bool AuthController::loginWithPIN(const std::string& pin) {
+bool LoginController::loginWithPIN(const std::string& pin) {
     // Make sure view is valid
     if (!mView) {
         LOG_ERROR("View is not initialized");
@@ -67,7 +67,7 @@ bool AuthController::loginWithPIN(const std::string& pin) {
     return true;
 }
 
-AUTHSTATUS AuthController::getUserByPIN(const std::string& pin, entity::User* user) {
+AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* user) {
     if (!user) {
         LOG_ERROR("Invalid user argument");
         return AUTHSTATUS::FAILED;
@@ -83,7 +83,7 @@ AUTHSTATUS AuthController::getUserByPIN(const std::string& pin, entity::User* us
     return AUTHSTATUS::SUCCESS;
 }
 
-bool AuthController::isPinValid(const std::string& pin) const {
+bool LoginController::isPinValid(const std::string& pin) const {
     if (pin.empty()) {
         LOG_WARN("PIN is empty");
         return false;
@@ -97,10 +97,10 @@ bool AuthController::isPinValid(const std::string& pin) const {
 
     return true;
 }
-bool AuthController::isUserValid(const entity::User& userInfo) const {
+bool LoginController::isUserValid(const entity::User& userInfo) const {
     // If default pin is found, that means the user data was not initialized
     return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
 }
 
-}  // namespace authentication
+}  // namespace login
 }  // namespace domain

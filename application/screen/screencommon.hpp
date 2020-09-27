@@ -18,28 +18,31 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef MOCK_LOGIN_AUTHVIEWMOCK_HPP_
-#define MOCK_LOGIN_AUTHVIEWMOCK_HPP_
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#ifndef APPLICATION_SCREEN_SCREENCOMMON_HPP_
+#define APPLICATION_SCREEN_SCREENCOMMON_HPP_
 #include <string>
-#include <domain/userlogin/interface/authviewif.hpp>
-#include <entity/user.hpp>
 
-namespace domain {
-namespace authentication {
+#define VERSION "0.0.1"
+#define SCREENCOMMON() screen::ScreenCommon::getInstance()
 
-class AuthViewMock : public AuthViewIface {
+namespace screen {
+
+class ScreenCommon {
  public:
-    AuthViewMock() = default;
-    ~AuthViewMock() = default;
+    ~ScreenCommon() = default;
+    static ScreenCommon& getInstance() {
+        static ScreenCommon instance;
+        return instance;
+    }
 
-    MOCK_METHOD(void, loginSuccessful, (const entity::User& userInfo));
-    MOCK_METHOD(void, showInvalidPINScreen, ());
-    MOCK_METHOD(void, showUserNotFoundScreen, ());
-    MOCK_METHOD(void, showDataNotReadyScreen, ());
+    void clearScreen();
+    void showWelcomeScreen();
+    const std::string horizontalBorder();
+    void showTopBanner();
+ private:
+    ScreenCommon() = default;
 };
 
-}  // namespace authentication
-}  // namespace domain
-#endif  // MOCK_LOGIN_AUTHVIEWMOCK_HPP_
+}  // namespace screen
+
+#endif  // APPLICATION_SCREEN_SCREENCOMMON_HPP_

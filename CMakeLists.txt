@@ -37,6 +37,7 @@ endif ()
 # directories
 include_directories (core)
 include_directories (datamanager)
+include_directories (migration)
 include_directories (utility)
 
 if (BUILD_UNITTEST)
@@ -55,6 +56,7 @@ if (BUILD_ALL)
 message(STATUS "All components enabled")
 add_subdirectory (application)
 add_subdirectory (datamanager)
+add_subdirectory (migration/storage)
 endif()
 
 if (BUILD_UNITTEST)

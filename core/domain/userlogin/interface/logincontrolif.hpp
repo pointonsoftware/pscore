@@ -18,46 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "authview.hpp"
-#include <iostream>
-#include <viewcommon.hpp>
-#include <backoffice/dashboard.hpp>
-#include <domain/userlogin/authcontroller.hpp>
-#include <logindata/authdata.hpp>
+#ifndef DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#define DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#include <string>
+namespace domain {
+namespace login {
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
+enum class AUTHSTATUS {
+    SUCCESS       = 0,
+    FAILED        = 1,
+    UNINITIALIZED = 2
+};
 
-namespace view {
-namespace authentication {
+class LoginControlInterface {
+ public:
+    LoginControlInterface() = default;
+    virtual ~LoginControlInterface() = default;
+};
 
-void AuthView::show() {
-    domain::authentication::AuthController auth(
-                    std::make_shared<dataprovider::authentication::AuthDataProvider>(),
-                    std::make_shared<authentication::AuthView>(*this));
-    // Todo, auth.loginScreen();
-    // Will display the login screen from view and asks for PIN input
-    // The same case as in a GUI, where we display a textbox and a button
-    std::string pin;
-    do {
-        std::cout << "Input your PIN: ";
-        std::cin >> pin;
-    } while (!auth.loginWithPIN(pin));
-}
-
-void AuthView::loginSuccessful(const entity::User& userInfo) {
-    backoffice::Dashboard dashboard;
-    dashboard.showUserInfo(userInfo);
-}
-
-void AuthView::showInvalidPINScreen() {
-    std::cout << "PIN is invalid, please try again." << std::endl;
-}
-
-void AuthView::showUserNotFoundScreen() {
-    std::cout << "User PIN not found." << std::endl;
-}
-
-void AuthView::showDataNotReadyScreen() {
-    std::cout << "Database not ready." << std::endl;
-}
-
-}  // namespace authentication
-}  // namespace view
+}  // namespace login
+}  // namespace domain
+#endif  // DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_

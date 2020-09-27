@@ -18,34 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
-#define DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
-
-#include <memory>
+#ifndef DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
+#define DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
 #include <string>
-#include "interface/loginif.hpp"
-#include "interface/authviewif.hpp"
-#include "interface/authdataif.hpp"
-// Entity
-#include <entity/user.hpp>
+#include <domain/userlogin/interface/logindataif.hpp>
 
-namespace domain {
-namespace authentication {
+namespace dataprovider {
+namespace login {
 
-class AuthController {
+class LoginDataProvider : public domain::login::LoginDataProviderIface {
  public:
-    explicit AuthController(const std::shared_ptr<AuthDataProviderIface>& dataprovider,
-                            const std::shared_ptr<AuthViewIface>& view);
-    bool login(const std::string& username, const std::string& password);
-    bool loginWithPIN(const std::string& pin);
- private:
-    std::shared_ptr<AuthViewIface> mView;
-    std::shared_ptr<AuthDataProviderIface> mDataProvider;
-    AUTHSTATUS getUserByPIN(const std::string& pin, entity::User* user);
-    bool isPinValid(const std::string& pin) const;
-    bool isUserValid(const entity::User& userInfo) const;
+    LoginDataProvider() = default;
+    virtual ~LoginDataProvider() = default;
+    entity::User findUserByPin(const std::string& inputPin) override;
 };
 
-}  // namespace authentication
-}  // namespace domain
-#endif  // DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+}  // namespace login
+}  // namespace dataprovider
+#endif  // DATAMANAGER_LOGINDATA_AUTHDATA_HPP_

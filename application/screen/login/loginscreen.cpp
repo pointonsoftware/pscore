@@ -18,38 +18,49 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
-
-#include "flowcontroller.hpp"
-// std
+#include "loginscreen.hpp"
 #include <iostream>
-// data
-#include <logindata/authdata.hpp>
-// domain
-#include <domain/userlogin/authcontroller.hpp>
 // view
-#include <viewcommon.hpp>
-#include <login/authview.hpp>
-// utility
-#include <logger/loghelper.hpp>
+#include <screencommon.hpp>
+#include <backoffice/dashboard.hpp>
+// core
+#include <domain/userlogin/logincontroller.hpp>
+//data
+#include <logindata.hpp>
 
 namespace view {
+namespace login {
 
-void FlowController::run() {
-    bool endRun = false;
+void LoginScreen::show() {
+    domain::login::LoginController auth(
+                    std::make_shared<dataprovider::login::LoginDataProvider>(),
+                    std::make_shared<login::LoginScreen>(*this));
+    // Todo, auth.loginScreen();
+    // Will display the login screen from view and asks for PIN input
+    // The same case as in a GUI, where we display a textbox and a button
+    std::string pin;
     do {
-        // Welcome to Core!
-        VIEWCOMMON().showWelcomeScreen();
-        showLoginScreen();
-        endRun = true;
-    } while (!endRun);
+        std::cout << "Input your PIN: ";
+        std::cin >> pin;
+    } while (!auth.loginWithPIN(pin));
 }
 
-void FlowController::showLoginScreen() {
-    authentication::AuthView authView;
-    authView.show();
+void LoginScreen::loginSuccessful(const entity::User& userInfo) {
+    backoffice::Dashboard dashboard;
+    dashboard.showUserInfo(userInfo);
 }
 
+void LoginScreen::showInvalidPINScreen() {
+    std::cout << "PIN is invalid, please try again." << std::endl;
+}
+
+void LoginScreen::showUserNotFoundScreen() {
+    std::cout << "User PIN not found." << std::endl;
+}
+
+void LoginScreen::showDataNotReadyScreen() {
+    std::cout << "Database not ready." << std::endl;
+}
+
+}  // namespace login
 }  // namespace view

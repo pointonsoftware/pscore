@@ -18,23 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "authdata.hpp"
-#include <storage/stackdb.hpp>
+#ifndef APPLICATION_SCREEN_SCREENIFACE_HPP_
+#define APPLICATION_SCREEN_SCREENIFACE_HPP_
 
-namespace dataprovider {
-namespace authentication {
+namespace screen {
 
-entity::User AuthDataProvider::findUserByPin(const std::string& inputPin) {
-    const entity::User user = [inputPin]() {
-        for (const entity::User& temp : DATABASE().getUsersList()) {
-            if (temp.pin().find(inputPin) != std::string::npos) {
-                return temp;
-            }
-        }
-        return entity::User();
-    }();
-    return user;
-}
+class ScreenInterface {
+ public:
+    ScreenInterface() = default;
+    virtual ~ScreenInterface() = default;
 
-}  // namespace authentication
-}  // namespace dataprovider
+    virtual void show() = 0;
+};
+
+}  // namespace screen
+
+#endif  // APPLICATION_SCREEN_SCREENIFACE_HPP_

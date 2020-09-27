@@ -18,42 +18,40 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
-#define DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
-#include <string>
-#include <entity/user.hpp>
+#ifndef APPLICATION_SCREEN_COMMON_HPP_
+#define APPLICATION_SCREEN_COMMON_HPP_
+#include "screencommon.hpp"
+#include <cstdlib>
+#include <iostream>
 
-namespace domain {
-namespace authentication {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-class AuthViewIface {
- public:
-    AuthViewIface() = default;
-    virtual ~AuthViewIface() = default;
+namespace screen {
 
-    /**
-    * Will be called if user was found
-    */
-    virtual void loginSuccessful(const entity::User& userInfo) = 0;
+void ScreenCommon::clearScreen() {
+#ifdef __WIN32__
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+}
 
-    /**
-    * invalid PIN!
-    */
-    virtual void showInvalidPINScreen() = 0;
+void ScreenCommon::showWelcomeScreen() {
+    showTopBanner();
+    std::cout << "Hi there, Welcome to Core!" << std::endl;
+}
 
-    /**
-    * user not found
-    */
-    virtual void showUserNotFoundScreen() = 0;
+const std::string ScreenCommon::horizontalBorder() {
+    return "*********************************************************************************";
+}
 
-    /**
-    * will be called if something went wrong with the database
-    */
-    virtual void showDataNotReadyScreen() = 0;
-};
+void ScreenCommon::showTopBanner() {
+    clearScreen();
+    std::cout << horizontalBorder() << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\tConsole  Application\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
+    std::cout << horizontalBorder() << std::endl;
+}
 
-}  // namespace authentication
-}  // namespace domain
-#endif  // DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
+}  // namespace screen
+#endif  // APPLICATION_SCREEN_COMMON_HPP_

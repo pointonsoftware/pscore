@@ -18,31 +18,23 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_VIEWCOMMON_HPP_
-#define APPLICATION_SCREEN_VIEWCOMMON_HPP_
-#include <string>
+#include "logindata.hpp"
+#include <storage/stackdb.hpp>
 
-#define VERSION "0.0.1"
-#define VIEWCOMMON() screen::ViewCommon::getInstance()
+namespace dataprovider {
+namespace login {
 
-namespace screen {
+entity::User LoginDataProvider::findUserByPin(const std::string& inputPin) {
+    const entity::User user = [inputPin]() {
+        for (const entity::User& temp : DATABASE().getUsersList()) {
+            if (temp.pin().find(inputPin) != std::string::npos) {
+                return temp;
+            }
+        }
+        return entity::User();
+    }();
+    return user;
+}
 
-class ViewCommon {
- public:
-    ~ViewCommon() = default;
-    static ViewCommon& getInstance() {
-        static ViewCommon instance;
-        return instance;
-    }
-
-    void clearScreen();
-    void showWelcomeScreen();
-    const std::string horizontalBorder();
-    void showTopBanner();
- private:
-    ViewCommon() = default;
-};
-
-}  // namespace screen
-
-#endif  // APPLICATION_SCREEN_VIEWCOMMON_HPP_
+}  // namespace login
+}  // namespace dataprovider

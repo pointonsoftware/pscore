@@ -18,27 +18,32 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
-#define APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
+#ifndef DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
+#define DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
 #include <string>
-#include <domain/userlogin/interface/authviewif.hpp>
-#include <viewiface.hpp>
+#include <entity/user.hpp>
 
-namespace view {
-namespace authentication {
-
-class AuthView : public screen::ViewInterface, public domain::authentication::AuthViewIface {
+namespace domain {
+namespace login {
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
+class LoginDataProviderIface {
  public:
-    AuthView() = default;
-    ~AuthView() = default;
+    LoginDataProviderIface() = default;
+    virtual ~LoginDataProviderIface() = default;
 
-    void show() override;
-    void loginSuccessful(const entity::User& userInfo) override;
-    void showInvalidPINScreen() override;
-    void showUserNotFoundScreen() override;
-    void showDataNotReadyScreen() override;
+    /*!
+     * entity::User findUserByPin(const std::string& pin)
+     * Looks for the user that's assigned with the pin argument
+     * Will return user->pin = entity::User::DEFAULT_PIN if user is not found.
+     *
+     * [in] input pin
+     * [return] user class
+    */
+    virtual entity::User findUserByPin(const std::string& inputPin) = 0;
 };
 
-}  // namespace authentication
-}  // namespace view
-#endif  // APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
+}  // namespace login
+}  // namespace domain
+#endif  // DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_

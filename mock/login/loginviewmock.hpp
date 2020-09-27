@@ -18,32 +18,28 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
-#define DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
+#ifndef MOCK_LOGIN_LOGINVIEWMOCK_HPP_
+#define MOCK_LOGIN_LOGINVIEWMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <string>
+#include <domain/userlogin/interface/loginviewif.hpp>
 #include <entity/user.hpp>
 
 namespace domain {
-namespace authentication {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-class AuthDataProviderIface {
- public:
-    AuthDataProviderIface() = default;
-    virtual ~AuthDataProviderIface() = default;
+namespace login {
 
-    /*!
-     * entity::User findUserByPin(const std::string& pin)
-     * Looks for the user that's assigned with the pin argument
-     * Will return user->pin = entity::User::DEFAULT_PIN if user is not found.
-     *
-     * [in] input pin
-     * [return] user class
-    */
-    virtual entity::User findUserByPin(const std::string& inputPin) = 0;
+class LoginViewMock : public LoginViewIface {
+ public:
+    LoginViewMock() = default;
+    ~LoginViewMock() = default;
+
+    MOCK_METHOD(void, loginSuccessful, (const entity::User& userInfo));
+    MOCK_METHOD(void, showInvalidPINScreen, ());
+    MOCK_METHOD(void, showUserNotFoundScreen, ());
+    MOCK_METHOD(void, showDataNotReadyScreen, ());
 };
 
-}  // namespace authentication
+}  // namespace login
 }  // namespace domain
-#endif  // DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
+#endif  // MOCK_LOGIN_LOGINVIEWMOCK_HPP_

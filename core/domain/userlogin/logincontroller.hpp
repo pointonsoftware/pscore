@@ -18,26 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_USERLOGIN_INTERFACE_LOGINIF_HPP_
-#define DOMAIN_USERLOGIN_INTERFACE_LOGINIF_HPP_
+#ifndef DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#define DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+
+#include <memory>
 #include <string>
+#include "interface/logincontrolif.hpp"
+#include "interface/logindataif.hpp"
+#include "interface/loginviewif.hpp"
+
+// Entity
+#include <entity/user.hpp>
+
 namespace domain {
-namespace authentication {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class AUTHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
+namespace login {
 
-class LoginInterface {
+class LoginController {
  public:
-    LoginInterface() = default;
-    virtual ~LoginInterface() = default;
+    explicit LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
+                            const std::shared_ptr<LoginViewIface>& view);
+    bool login(const std::string& username, const std::string& password);
+    bool loginWithPIN(const std::string& pin);
+ private:
+    std::shared_ptr<LoginDataProviderIface> mDataProvider;
+    std::shared_ptr<LoginViewIface> mView;
+    AUTHSTATUS getUserByPIN(const std::string& pin, entity::User* user);
+    bool isPinValid(const std::string& pin) const;
+    bool isUserValid(const entity::User& userInfo) const;
 };
 
-}  // namespace authentication
+}  // namespace login
 }  // namespace domain
-#endif  // DOMAIN_USERLOGIN_INTERFACE_LOGINIF_HPP_
+#endif  // DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_

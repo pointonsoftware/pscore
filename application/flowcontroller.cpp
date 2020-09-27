@@ -18,21 +18,38 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
-#define DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
-#include <string>
-#include <domain/userlogin/interface/authdataif.hpp>
+/* NOTE!
+ * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
+*/
 
-namespace dataprovider {
-namespace authentication {
+#include "flowcontroller.hpp"
+// std
+#include <iostream>
+// data
+#include <logindata.hpp>
+// domain
+#include <domain/userlogin/logincontroller.hpp>
+// view
+#include <screencommon.hpp>
+#include <login/loginscreen.hpp>
+// utility
+#include <logger/loghelper.hpp>
 
-class AuthDataProvider : public domain::authentication::AuthDataProviderIface {
- public:
-    AuthDataProvider() = default;
-    virtual ~AuthDataProvider() = default;
-    entity::User findUserByPin(const std::string& inputPin) override;
-};
+namespace view {
 
-}  // namespace authentication
-}  // namespace dataprovider
-#endif  // DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
+void FlowController::run() {
+    bool endRun = false;
+    do {
+        // Welcome to Core!
+        SCREENCOMMON().showWelcomeScreen();
+        showLoginScreen();
+        endRun = true;
+    } while (!endRun);
+}
+
+void FlowController::showLoginScreen() {
+    login::LoginScreen loginScreen;
+    loginScreen.show();
+}
+
+}  // namespace view

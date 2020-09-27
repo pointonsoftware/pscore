@@ -18,7 +18,7 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "presenter/flowcontroller.hpp"
+#include "flowcontroller.hpp"
 
 int main() {
     view::FLOWCONTROLLER().run();
