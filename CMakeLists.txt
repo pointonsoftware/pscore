@@ -35,7 +35,7 @@ endif ()
 
 
 # directories
-include_directories (invoker)
+include_directories (core)
 include_directories (datamanager)
 include_directories (domain)
 include_directories (utility)
@@ -46,7 +46,7 @@ include_directories (external/gtest/googletest/include)
 include_directories (external/gtest/googlemock/include)
 endif()
 
-add_subdirectory (invoker)
+add_subdirectory (core/entity)
 add_subdirectory (domain)
 add_subdirectory (utility)
 

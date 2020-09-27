@@ -18,27 +18,17 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_EMPLOYEE_HPP_
-#define INVOKER_ENTITY_EMPLOYEE_HPP_
+#ifndef CORE_ENTITY_PERSONALID_HPP_
+#define CORE_ENTITY_PERSONALID_HPP_
 
 #include <string>
-#include "person.hpp"
 
 namespace entity {
 
-class Employee : public Person {
- public:
-    Employee(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender);
-    Employee() = default;
-    ~Employee() = default;
-
- private:
-    std::string position;
+struct PersonalId {
+    std::string type;
+    std::string id_number;
 };
 
 }  // namespace entity
-#endif  // INVOKER_ENTITY_EMPLOYEE_HPP_
+#endif  // CORE_ENTITY_PERSONALID_HPP_

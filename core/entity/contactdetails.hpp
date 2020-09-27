@@ -18,17 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_PERSONALID_HPP_
-#define INVOKER_ENTITY_PERSONALID_HPP_
+#ifndef CORE_ENTITY_CONTACTDETAILS_HPP_
+#define CORE_ENTITY_CONTACTDETAILS_HPP_
 
 #include <string>
+#include <vector>
 
 namespace entity {
 
-struct PersonalId {
-    std::string type;
-    std::string id_number;
+struct ContactDetails {
+    std::string name;
+    std::string email;
+    std::vector<std::string> phone_number;
 };
 
 }  // namespace entity
-#endif  // INVOKER_ENTITY_PERSONALID_HPP_
+#endif  // CORE_ENTITY_CONTACTDETAILS_HPP_

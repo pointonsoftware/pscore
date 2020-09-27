@@ -18,37 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_ENTITY_USER_HPP_
-#define INVOKER_ENTITY_USER_HPP_
+#ifndef CORE_ENTITY_ADDRESS_HPP_
+#define CORE_ENTITY_ADDRESS_HPP_
 
 #include <string>
-#include "employee.hpp"
 
 namespace entity {
 
-class User : public Employee {
- public:
-    static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
-
-    User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
-    User();
-    ~User() = default;
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-
-    // Todo: Add user.getFullName();
-
- private:
-    std::string mPIN;
+struct Address {
+    std::string housenumber;
+    std::string lot;
+    std::string block;
+    std::string street;
+    std::string subdivision;
+    std::string sitio;
+    std::string purok;
+    std::string barangay;
+    std::string city_town;
+    std::string province;
+    std::string zip;
 };
 
 }  // namespace entity
-#endif  // INVOKER_ENTITY_USER_HPP_
+#endif  // CORE_ENTITY_ADDRESS_HPP_
