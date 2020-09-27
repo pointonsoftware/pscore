@@ -18,38 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
-*/
+#ifndef APPLICATION_SCREEN_VIEWIFACE_HPP_
+#define APPLICATION_SCREEN_VIEWIFACE_HPP_
 
-#include "flowcontroller.hpp"
-// std
-#include <iostream>
-// data
-#include <logindata/authdata.hpp>
-// domain
-#include <domain/userlogin/authcontroller.hpp>
-// view
-#include <viewcommon.hpp>
-#include <login/authview.hpp>
-// utility
-#include <logger/loghelper.hpp>
+namespace screen {
 
-namespace view {
+class ViewInterface {
+ public:
+    ViewInterface() = default;
+    virtual ~ViewInterface() = default;
 
-void FlowController::run() {
-    bool endRun = false;
-    do {
-        // Welcome to Core!
-        VIEWCOMMON().showWelcomeScreen();
-        showLoginScreen();
-        endRun = true;
-    } while (!endRun);
-}
+    virtual void show() = 0;
+};
 
-void FlowController::showLoginScreen() {
-    authentication::AuthView authView;
-    authView.show();
-}
+}  // namespace screen
 
-}  // namespace view
+#endif  // APPLICATION_SCREEN_VIEWIFACE_HPP_

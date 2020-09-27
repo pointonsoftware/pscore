@@ -22,8 +22,8 @@ add_executable (
 
 target_link_libraries (
     console_app
+    auth
     databoundary
-    domain
     utility
     ${STATIC_LIBS}
 )
