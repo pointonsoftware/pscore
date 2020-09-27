@@ -37,7 +37,7 @@ endif ()
 # directories
 include_directories (invoker)
 include_directories (utility)
-include_directories (databoundary)
+include_directories (datamanager)
 
 if (BUILD_UNITTEST)
 include_directories (mock)
@@ -53,7 +53,7 @@ add_subdirectory (utility)
 if (BUILD_ALL)
 message(STATUS "All components enabled")
 add_subdirectory (application)
-add_subdirectory (databoundary)
+add_subdirectory (datamanager)
 endif()
 
 if (BUILD_UNITTEST)

@@ -18,23 +18,38 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "authdata.hpp"
-#include <stackdb.hpp>
+#ifndef DATAMANAGER_STORAGE_STACKDB_HPP_
+#define DATAMANAGER_STORAGE_STACKDB_HPP_
+#include <string>
+#include <vector>
+
+// entities
+#include <entity/user.hpp>
+
+#define DATABASE() dataprovider::db::StackDB::getDbInstance()
 
 namespace dataprovider {
-namespace authentication {
+namespace db {
 
-entity::User AuthDataProvider::findUserByPin(const std::string& inputPin) {
-    const entity::User user = [inputPin]() {
-        for (const entity::User& temp : DATABASE().getUsersList()) {
-            if (temp.pin().find(inputPin) != std::string::npos) {
-                return temp;
-            }
-        }
-        return entity::User();
-    }();
-    return user;
-}
+class StackDB {
+ public:
+    ~StackDB() = default;
 
-}  // namespace authentication
+    static StackDB& getDbInstance() {
+        static StackDB instance;
+        return instance;
+    }
+
+    inline std::vector<entity::User>& getUsersList() const {
+        return usersList;
+    }
+
+ private:
+    StackDB();
+    // users storage
+    static std::vector<entity::User> usersList;
+};
+
+}  // namespace db
 }  // namespace dataprovider
+#endif  // DATAMANAGER_STORAGE_STACKDB_HPP_
