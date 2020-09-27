@@ -57,8 +57,6 @@ TEST_F(TestLogin, LoginShouldSucceed) {
     // Calls findUser
     EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
             .WillOnce(Return(entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyPin)));
-    // Calls loginSuccessfulScreen
-    EXPECT_CALL(*viewMock, loginSuccessful(_));
     // Returns true
     ASSERT_TRUE(loginController.loginWithPIN(dummyPin));
 }

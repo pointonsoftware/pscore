@@ -34,7 +34,6 @@ class LoginViewMock : public LoginViewIface {
     LoginViewMock() = default;
     ~LoginViewMock() = default;
 
-    MOCK_METHOD(void, loginSuccessful, (const entity::User& userInfo));
     MOCK_METHOD(void, showInvalidPINScreen, ());
     MOCK_METHOD(void, showUserNotFoundScreen, ());
     MOCK_METHOD(void, showDataNotReadyScreen, ());

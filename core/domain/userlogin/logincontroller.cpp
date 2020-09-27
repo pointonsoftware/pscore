@@ -63,7 +63,6 @@ bool LoginController::loginWithPIN(const std::string& pin) {
         return false;
     }
 
-    mView->loginSuccessful(userInfo);
     return true;
 }
 

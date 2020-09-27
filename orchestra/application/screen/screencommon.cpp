@@ -48,8 +48,10 @@ void ScreenCommon::showTopBanner() {
     std::cout << horizontalBorder() << std::endl;
     std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
     std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
     std::cout << "*\t\t\t\tConsole  Application\t\t\t\t*" << std::endl;
     std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
+    std::cout << "*\t\t\t    Enter [x] if you want to exit\t\t\t*" << std::endl;
     std::cout << horizontalBorder() << std::endl;
 }
 

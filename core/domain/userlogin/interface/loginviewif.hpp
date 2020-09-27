@@ -34,11 +34,6 @@ class LoginViewIface {
     virtual ~LoginViewIface() = default;
 
     /**
-    * Will be called if user was found
-    */
-    virtual void loginSuccessful(const entity::User& userInfo) = 0;
-
-    /**
     * invalid PIN!
     */
     virtual void showInvalidPINScreen() = 0;
