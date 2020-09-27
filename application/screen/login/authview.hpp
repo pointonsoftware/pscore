@@ -21,7 +21,7 @@
 #ifndef APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
 #define APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
 #include <string>
-#include <domain/userlogin/interface/authviewif.hpp>
+#include <userlogin/interface/authviewif.hpp>
 #include <viewiface.hpp>
 
 namespace view {

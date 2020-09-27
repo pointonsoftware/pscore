@@ -23,7 +23,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <string>
-#include <domain/userlogin/interface/authviewif.hpp>
+#include <userlogin/interface/authviewif.hpp>
 #include <entity/user.hpp>
 
 namespace domain {

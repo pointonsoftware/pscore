@@ -19,7 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <gtest/gtest.h>
-#include <domain/userlogin/authcontroller.hpp>
+#include <userlogin/authcontroller.hpp>
 #include <entity/user.hpp>
 #include <login/authdatamock.hpp>
 #include <login/authviewmock.hpp>

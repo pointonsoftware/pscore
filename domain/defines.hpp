@@ -18,32 +18,28 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
-#define INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
-#include <string>
-#include <entity/user.hpp>
+#ifndef DOMAIN_DEFINES_HPP_
+#define DOMAIN_DEFINES_HPP_
 
 namespace domain {
-namespace authentication {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-class AuthDataProviderIface {
- public:
-    AuthDataProviderIface() = default;
-    virtual ~AuthDataProviderIface() = default;
+namespace status {
 
-    /*!
-     * entity::User findUserByPin(const std::string& pin)
-     * Looks for the user that's assigned with the pin argument
-     * Will return user->pin = entity::User::DEFAULT_PIN if user is not found.
-     *
-     * [in] input pin
-     * [return] user class
-    */
-    virtual entity::User findUserByPin(const std::string& inputPin) = 0;
+enum class General {
+    SUCCESS       = 0,
+    FAILED        = 1,
+    BUSY          = 2,
+    EXISTS        = 3,
+    OFFLINE       = 4,
+    EMPTY         = 5,
+    OCCUPIED      = 6,
+    UNINITIALIZED = 7
 };
+}  // namespace status
 
-}  // namespace authentication
+namespace constants {
+
+}  // namespace constants
+
 }  // namespace domain
-#endif  // INVOKER_DOMAIN_USERLOGIN_INTERFACE_AUTHDATAIF_HPP_
+
+#endif  // DOMAIN_DEFINES_HPP_

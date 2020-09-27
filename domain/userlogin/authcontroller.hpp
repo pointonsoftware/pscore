@@ -18,12 +18,12 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
-#define INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#ifndef DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#define DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
 
 #include <memory>
 #include <string>
-#include <domain/defines.hpp>
+#include <defines.hpp>
 #include "interface/authviewif.hpp"
 #include "interface/authdataif.hpp"
 // Entity
@@ -48,4 +48,4 @@ class AuthController {
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // INVOKER_DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#endif  // DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_

@@ -18,28 +18,42 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef INVOKER_DOMAIN_DEFINES_HPP_
-#define INVOKER_DOMAIN_DEFINES_HPP_
+#ifndef DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
+#define DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_
+#include <string>
+#include <entity/user.hpp>
 
 namespace domain {
-namespace status {
+namespace authentication {
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
+class AuthViewIface {
+ public:
+    AuthViewIface() = default;
+    virtual ~AuthViewIface() = default;
 
-enum class General {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    BUSY          = 2,
-    EXISTS        = 3,
-    OFFLINE       = 4,
-    EMPTY         = 5,
-    OCCUPIED      = 6,
-    UNINITIALIZED = 7
+    /**
+    * Will be called if user was found
+    */
+    virtual void loginSuccessful(const entity::User& userInfo) = 0;
+
+    /**
+    * invalid PIN!
+    */
+    virtual void showInvalidPINScreen() = 0;
+
+    /**
+    * user not found
+    */
+    virtual void showUserNotFoundScreen() = 0;
+
+    /**
+    * will be called if something went wrong with the database
+    */
+    virtual void showDataNotReadyScreen() = 0;
 };
-}  // namespace status
 
-namespace constants {
-
-}  // namespace constants
-
+}  // namespace authentication
 }  // namespace domain
-
-#endif  // INVOKER_DOMAIN_DEFINES_HPP_
+#endif  // DOMAIN_USERLOGIN_INTERFACE_AUTHVIEWIF_HPP_

@@ -21,7 +21,7 @@
 #ifndef DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
 #define DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
 #include <string>
-#include <domain/userlogin/interface/authdataif.hpp>
+#include <userlogin/interface/authdataif.hpp>
 
 namespace dataprovider {
 namespace authentication {
