@@ -26,13 +26,13 @@ jobs:
       script : >-
                travis_retry wget --quiet -O - https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py |
                python - --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11
-               --linelength=100 --recursive application databoundary invoker utility
+               --linelength=100 --recursive core orchestra mock utility
     - name   : CppCheck
       install: sudo apt-get install cppcheck
       script : >-
               cppcheck --std=c++11 --enable=warning,style,performance,portability,information
               --suppress=missingIncludeSystem --error-exitcode=1 --inline-suppr
-              application databoundary invoker utility -iinvoker/unittest
+              core orchestra mock utility -icore/domain/unittest
 
     - stage  : Compile
       name   : Build
