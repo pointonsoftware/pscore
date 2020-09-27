@@ -28,9 +28,14 @@ CORE is also designed so the user interface and database can be swapped with ano
 
 ## Getting Started
 
-Clone the repository to a local destination using git:
-
-`git clone git@github.com:pointonsoftware/pscore.git`
+The repository consists of three main folders and their subfolders:
+ - **core**
+    - domain - contains the business workflow and components
+    - entity - contains the business entities
+ - **orchestra**
+    - application - presentation layer
+    - datamanager - stores and retrieves to/from the database
+ - **utility** - helper classes like logger, fileio, etc.
 
 ---
 
@@ -39,6 +44,14 @@ Clone the repository to a local destination using git:
 These are the base requirements to build and use CORE.
  - Cmake
  - C++11-standard-compliant compiler
+
+---
+
+### Download
+
+Clone the repository to a local destination using git:
+
+`git clone git@github.com:pointonsoftware/pscore.git`
 
 ---
 
@@ -58,8 +71,13 @@ These are the base requirements to build and use CORE.
 
 ### Usage
 
-- The build generates **domain** and **entity** libraries that contain the CORE use cases. Both can be linked to any executable.
-- An application called **console_app** is also available and can be used to test the CORE APIs.
+#### Libraries
+- Go to your build directory
+- The build generates **domain** libraries that contain the CORE use cases. These libraries can be linked to any executable.
+#### Executable
+- Go to your build directory
+- Inside the **bin** folder, run **console_app**.
+- This application is used to test the CORE APIs.
 
 ---
 

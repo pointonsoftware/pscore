@@ -75,7 +75,9 @@ AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* u
         LOG_ERROR("Dataprovider is not initialized");
         return AUTHSTATUS::UNINITIALIZED;
     }
+
     // todo (xxx) : Check if dataprovider is ready; else throw
+
     // Check pin in dataprovider
     *user = mDataProvider->findUserByPin(pin);
 
