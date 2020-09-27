@@ -39,6 +39,8 @@ class ViewCommon {
     void showWelcomeScreen();
     const std::string horizontalBorder();
     void showTopBanner();
+ private:
+    ViewCommon() = default;
 };
 
 }  // namespace screen

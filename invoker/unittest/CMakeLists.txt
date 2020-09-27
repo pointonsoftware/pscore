@@ -13,7 +13,7 @@ add_executable (
 
 target_link_libraries (
     domain_unittest
-    domain
+    auth
     gtest
     gmock
     ${STATIC_LIBS}

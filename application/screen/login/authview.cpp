@@ -22,9 +22,25 @@
 #include <iostream>
 #include <viewcommon.hpp>
 #include <backoffice/dashboard.hpp>
+#include <domain/userlogin/authcontroller.hpp>
+#include <logindata/authdata.hpp>
 
 namespace view {
 namespace authentication {
+
+void AuthView::show() {
+    domain::authentication::AuthController auth(
+                    std::make_shared<dataprovider::authentication::AuthDataProvider>(),
+                    std::make_shared<authentication::AuthView>(*this));
+    // Todo, auth.loginScreen();
+    // Will display the login screen from view and asks for PIN input
+    // The same case as in a GUI, where we display a textbox and a button
+    std::string pin;
+    do {
+        std::cout << "Input your PIN: ";
+        std::cin >> pin;
+    } while (!auth.loginWithPIN(pin));
+}
 
 void AuthView::loginSuccessful(const entity::User& userInfo) {
     backoffice::Dashboard dashboard;

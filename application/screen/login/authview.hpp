@@ -22,15 +22,17 @@
 #define APPLICATION_SCREEN_LOGIN_AUTHVIEW_HPP_
 #include <string>
 #include <domain/userlogin/interface/authviewif.hpp>
+#include <viewiface.hpp>
 
 namespace view {
 namespace authentication {
 
-class AuthView : public domain::authentication::AuthViewIface {
+class AuthView : public screen::ViewInterface, public domain::authentication::AuthViewIface {
  public:
     AuthView() = default;
     ~AuthView() = default;
 
+    void show() override;
     void loginSuccessful(const entity::User& userInfo) override;
     void showInvalidPINScreen() override;
     void showUserNotFoundScreen() override;
