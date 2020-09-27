@@ -24,6 +24,5 @@ target_link_libraries (
     console_app
     auth
     logindata
-    utility
     ${STATIC_LIBS}
 )
