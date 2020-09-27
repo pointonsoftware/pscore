@@ -18,19 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_VIEWIFACE_HPP_
-#define APPLICATION_SCREEN_VIEWIFACE_HPP_
+#ifndef APPLICATION_SCREEN_SCREENIFACE_HPP_
+#define APPLICATION_SCREEN_SCREENIFACE_HPP_
 
 namespace screen {
 
-class ViewInterface {
+class ScreenInterface {
  public:
-    ViewInterface() = default;
-    virtual ~ViewInterface() = default;
+    ScreenInterface() = default;
+    virtual ~ScreenInterface() = default;
 
     virtual void show() = 0;
 };
 
 }  // namespace screen
 
-#endif  // APPLICATION_SCREEN_VIEWIFACE_HPP_
+#endif  // APPLICATION_SCREEN_SCREENIFACE_HPP_

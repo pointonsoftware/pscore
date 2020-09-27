@@ -7,14 +7,15 @@ add_executable (
     console_app
     main.cpp
     # Control
-    presenter/flowcontroller.hpp
-    presenter/flowcontroller.cpp
+    flowcontroller.hpp
+    flowcontroller.cpp
     # Common screens
-    screen/viewcommon.hpp
-    screen/viewcommon.cpp
+    screen/screeniface.hpp
+    screen/screencommon.hpp
+    screen/screencommon.cpp
     # Login screen
-    screen/login/authview.hpp
-    screen/login/authview.cpp
+    screen/login/loginscreen.hpp
+    screen/login/loginscreen.cpp
     # Back office screen
     screen/backoffice/dashboard.hpp
     screen/backoffice/dashboard.cpp
@@ -22,7 +23,7 @@ add_executable (
 
 target_link_libraries (
     console_app
-    auth
-    logindata
+    logindomain
+    datamanager
     ${STATIC_LIBS}
 )

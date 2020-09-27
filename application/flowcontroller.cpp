@@ -26,12 +26,12 @@
 // std
 #include <iostream>
 // data
-#include <logindata/authdata.hpp>
+#include <logindata.hpp>
 // domain
-#include <domain/userlogin/authcontroller.hpp>
+#include <domain/userlogin/logincontroller.hpp>
 // view
-#include <viewcommon.hpp>
-#include <login/authview.hpp>
+#include <screencommon.hpp>
+#include <login/loginscreen.hpp>
 // utility
 #include <logger/loghelper.hpp>
 
@@ -41,15 +41,15 @@ void FlowController::run() {
     bool endRun = false;
     do {
         // Welcome to Core!
-        VIEWCOMMON().showWelcomeScreen();
+        SCREENCOMMON().showWelcomeScreen();
         showLoginScreen();
         endRun = true;
     } while (!endRun);
 }
 
 void FlowController::showLoginScreen() {
-    authentication::AuthView authView;
-    authView.show();
+    login::LoginScreen loginScreen;
+    loginScreen.show();
 }
 
 }  // namespace view

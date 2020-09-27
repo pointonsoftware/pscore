@@ -20,13 +20,13 @@
 **************************************************************************************************/
 #include "dashboard.hpp"
 #include <iostream>
-#include <viewcommon.hpp>
+#include <screencommon.hpp>
 
 namespace view {
 namespace backoffice {
 
 void Dashboard::showUserInfo(const entity::User& userInfo) {
-    VIEWCOMMON().showTopBanner();
+    SCREENCOMMON().showTopBanner();
     // Todo, display user name here
     std::cout << "Hi dummy, what do you want to do today?" << std::endl;
 }
