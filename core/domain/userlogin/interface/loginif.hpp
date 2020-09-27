@@ -18,38 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-/* NOTE!
- * When updating the std::cin's of console_app, update ci/automation_input.txt as well.
+#ifndef DOMAIN_USERLOGIN_INTERFACE_LOGINIF_HPP_
+#define DOMAIN_USERLOGIN_INTERFACE_LOGINIF_HPP_
+#include <string>
+namespace domain {
+namespace authentication {
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
 */
+enum class AUTHSTATUS {
+    SUCCESS       = 0,
+    FAILED        = 1,
+    UNINITIALIZED = 2
+};
 
-#include "flowcontroller.hpp"
-// std
-#include <iostream>
-// data
-#include <logindata/authdata.hpp>
-// domain
-#include <domain/userlogin/authcontroller.hpp>
-// view
-#include <viewcommon.hpp>
-#include <login/authview.hpp>
-// utility
-#include <logger/loghelper.hpp>
+class LoginInterface {
+ public:
+    LoginInterface() = default;
+    virtual ~LoginInterface() = default;
+};
 
-namespace view {
-
-void FlowController::run() {
-    bool endRun = false;
-    do {
-        // Welcome to Core!
-        VIEWCOMMON().showWelcomeScreen();
-        showLoginScreen();
-        endRun = true;
-    } while (!endRun);
-}
-
-void FlowController::showLoginScreen() {
-    authentication::AuthView authView;
-    authView.show();
-}
-
-}  // namespace view
+}  // namespace authentication
+}  // namespace domain
+#endif  // DOMAIN_USERLOGIN_INTERFACE_LOGINIF_HPP_
