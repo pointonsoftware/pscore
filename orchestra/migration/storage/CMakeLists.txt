@@ -1,6 +1,6 @@
 project (storage)
 
-# Databoundary lib
+# dummy database lib
 add_library (
     dummydata
     STATIC

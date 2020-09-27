@@ -7,7 +7,7 @@ set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov --coverage ${
 add_executable (
     domain_unittest
     test_main.cpp
-    test_auth.cpp
+    test_login.cpp
 )
 
 

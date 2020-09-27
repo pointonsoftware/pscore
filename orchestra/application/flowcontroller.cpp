@@ -37,15 +37,53 @@
 
 namespace view {
 
+// todo (flow refactor):
+// define the screen enums
+// those screen enums will be returned by the view (thru std::future/promise)
+// the we go back to our switch where the screen enums are our keys/cases
+// This way the flow controller will decide which screen to go next
+
 void FlowController::run() {
     bool endRun = false;
     do {
         // Welcome to Core!
         SCREENCOMMON().showWelcomeScreen();
+        // todo (flow refactor):
+        // below must be spawned by a thread and must return
+        // let the flow controller decide which screen to go next
         showLoginScreen();
         endRun = true;
     } while (!endRun);
+
+    /*!
+     * Todo (flow refactor):
+     * screen_enum nextScreen = login_screen
+     * do {
+     *   nextScreen = [] () {
+     *      switch (nextScreen) {
+     *          case login_screen:
+     *             return = showLoginScreen()
+     *          case exit:
+     *            break;
+     *      }
+     *   }();
+     * } while ( nextScreen != screen_enum::exit);
+     *
+     *
+    */
 }
+
+// todo (flow refactor):
+// screen_enum FlowController::showLoginScreen() {
+//     std::promise<screen_enum> promiseObject;
+//     sd::future<screen_enum> futureObject = promiseObject.get_future();
+//     login::LoginScreen loginScreen;
+//     std::thread th(&loginScreen, show, (std::promise<screen_enum>* (&promiseObject));
+//     // the promise object must be set somewhere inside the loginScreen
+//     // thru promiseObject->set_value(screenvalue);
+//     th.join();
+//     return future.get()
+// }
 
 void FlowController::showLoginScreen() {
     login::LoginScreen loginScreen;
