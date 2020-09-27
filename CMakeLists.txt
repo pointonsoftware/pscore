@@ -37,7 +37,6 @@ endif ()
 # directories
 include_directories (core)
 include_directories (datamanager)
-include_directories (domain)
 include_directories (utility)
 
 if (BUILD_UNITTEST)
@@ -47,7 +46,7 @@ include_directories (external/gtest/googlemock/include)
 endif()
 
 add_subdirectory (core/entity)
-add_subdirectory (domain)
+add_subdirectory (core/domain)
 add_subdirectory (utility)
 
 

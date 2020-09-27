@@ -18,28 +18,34 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef MOCK_LOGIN_AUTHVIEWMOCK_HPP_
-#define MOCK_LOGIN_AUTHVIEWMOCK_HPP_
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#ifndef DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#define DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+
+#include <memory>
 #include <string>
-#include <domain/userlogin/interface/authviewif.hpp>
+#include "interface/loginif.hpp"
+#include "interface/authviewif.hpp"
+#include "interface/authdataif.hpp"
+// Entity
 #include <entity/user.hpp>
 
 namespace domain {
 namespace authentication {
 
-class AuthViewMock : public AuthViewIface {
+class AuthController {
  public:
-    AuthViewMock() = default;
-    ~AuthViewMock() = default;
-
-    MOCK_METHOD(void, loginSuccessful, (const entity::User& userInfo));
-    MOCK_METHOD(void, showInvalidPINScreen, ());
-    MOCK_METHOD(void, showUserNotFoundScreen, ());
-    MOCK_METHOD(void, showDataNotReadyScreen, ());
+    explicit AuthController(const std::shared_ptr<AuthDataProviderIface>& dataprovider,
+                            const std::shared_ptr<AuthViewIface>& view);
+    bool login(const std::string& username, const std::string& password);
+    bool loginWithPIN(const std::string& pin);
+ private:
+    std::shared_ptr<AuthViewIface> mView;
+    std::shared_ptr<AuthDataProviderIface> mDataProvider;
+    AUTHSTATUS getUserByPIN(const std::string& pin, entity::User* user);
+    bool isPinValid(const std::string& pin) const;
+    bool isUserValid(const entity::User& userInfo) const;
 };
 
 }  // namespace authentication
 }  // namespace domain
-#endif  // MOCK_LOGIN_AUTHVIEWMOCK_HPP_
+#endif  // DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_

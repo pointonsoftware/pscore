@@ -51,7 +51,7 @@ bool AuthController::loginWithPIN(const std::string& pin) {
 
     // Get user info
     entity::User userInfo;
-    if (getUserByPIN(pin, &userInfo) != status::General::SUCCESS) {
+    if (getUserByPIN(pin, &userInfo) != AUTHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return false;
     }
@@ -67,20 +67,20 @@ bool AuthController::loginWithPIN(const std::string& pin) {
     return true;
 }
 
-status::General AuthController::getUserByPIN(const std::string& pin, entity::User* user) {
+AUTHSTATUS AuthController::getUserByPIN(const std::string& pin, entity::User* user) {
     if (!user) {
         LOG_ERROR("Invalid user argument");
-        return status::General::FAILED;
+        return AUTHSTATUS::FAILED;
     }
     if (!mDataProvider) {
         LOG_ERROR("Dataprovider is not initialized");
-        return status::General::UNINITIALIZED;
+        return AUTHSTATUS::UNINITIALIZED;
     }
     // todo (xxx) : Check if dataprovider is ready; else throw
     // Check pin in dataprovider
     *user = mDataProvider->findUserByPin(pin);
 
-    return status::General::SUCCESS;
+    return AUTHSTATUS::SUCCESS;
 }
 
 bool AuthController::isPinValid(const std::string& pin) const {

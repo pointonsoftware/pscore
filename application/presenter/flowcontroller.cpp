@@ -28,7 +28,7 @@
 // data
 #include <logindata/authdata.hpp>
 // domain
-#include <userlogin/authcontroller.hpp>
+#include <domain/userlogin/authcontroller.hpp>
 // view
 #include <viewcommon.hpp>
 #include <login/authview.hpp>
