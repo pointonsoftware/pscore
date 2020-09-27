@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_LOGIN_LOGINVIEW_HPP_
-#define APPLICATION_SCREEN_LOGIN_LOGINVIEW_HPP_
+#ifndef APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
+#define APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
 #include <string>
 #include <domain/userlogin/interface/loginviewif.hpp>
 #include <screeniface.hpp>
@@ -41,4 +41,4 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
 
 }  // namespace login
 }  // namespace view
-#endif  // APPLICATION_SCREEN_LOGIN_LOGINVIEW_HPP_
+#endif  // APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_

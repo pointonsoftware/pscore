@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_
-#define DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_
+#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_
+#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_
 #include <string>
 #include <entity/user.hpp>
 
@@ -54,6 +54,6 @@ class LoginViewIface {
     virtual void showDataNotReadyScreen() = 0;
 };
 
-}  // namespace authentication
+}  // namespace login
 }  // namespace domain
-#endif  // DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_
+#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINVIEWIF_HPP_

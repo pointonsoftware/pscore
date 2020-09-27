@@ -20,12 +20,13 @@
 **************************************************************************************************/
 #include "loginscreen.hpp"
 #include <iostream>
+#include <memory>
 // view
 #include <screencommon.hpp>
 #include <backoffice/dashboard.hpp>
 // core
 #include <domain/userlogin/logincontroller.hpp>
-//data
+// data
 #include <logindata.hpp>
 
 namespace view {

@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_DEFINES_HPP_
-#define DOMAIN_DEFINES_HPP_
+#ifndef CORE_DOMAIN_DEFINES_HPP_
+#define CORE_DOMAIN_DEFINES_HPP_
 
 namespace domain {
 namespace status {
@@ -42,4 +42,4 @@ namespace constants {
 
 }  // namespace domain
 
-#endif  // DOMAIN_DEFINES_HPP_
+#endif  // CORE_DOMAIN_DEFINES_HPP_

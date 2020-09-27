@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
-#define DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#ifndef CORE_DOMAIN_USERLOGIN_LOGINCONTROLLER_HPP_
+#define CORE_DOMAIN_USERLOGIN_LOGINCONTROLLER_HPP_
 
 #include <memory>
 #include <string>
@@ -49,4 +49,4 @@ class LoginController {
 
 }  // namespace login
 }  // namespace domain
-#endif  // DOMAIN_USERLOGIN_AUTHCONTROLLER_HPP_
+#endif  // CORE_DOMAIN_USERLOGIN_LOGINCONTROLLER_HPP_

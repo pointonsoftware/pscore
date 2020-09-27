@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
-#define DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
+#ifndef DATAMANAGER_LOGINDATA_HPP_
+#define DATAMANAGER_LOGINDATA_HPP_
 #include <string>
 #include <domain/userlogin/interface/logindataif.hpp>
 
@@ -35,4 +35,4 @@ class LoginDataProvider : public domain::login::LoginDataProviderIface {
 
 }  // namespace login
 }  // namespace dataprovider
-#endif  // DATAMANAGER_LOGINDATA_AUTHDATA_HPP_
+#endif  // DATAMANAGER_LOGINDATA_HPP_

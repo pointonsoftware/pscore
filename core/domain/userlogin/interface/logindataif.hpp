@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
-#define DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
+#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
+#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
 #include <string>
 #include <entity/user.hpp>
 
@@ -46,4 +46,4 @@ class LoginDataProviderIface {
 
 }  // namespace login
 }  // namespace domain
-#endif  // DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
+#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
