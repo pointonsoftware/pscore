@@ -22,7 +22,7 @@ These are the tools and technology used in this project:
 - CI: travis-ci
 - Platform: Linux, Windows, MinGW
 
-CORE is also designed so the user interface and database can be swapped with another framework/dbms by implementing the domain provided interfaces.
+CORE is also designed to work in any GUI (mobile, desktop, web) and database.
 
 ---
 
@@ -30,11 +30,11 @@ CORE is also designed so the user interface and database can be swapped with ano
 
 The repository consists of three main folders and their subfolders:
  - **core**
-    - domain - contains the business workflow and components
-    - entity - contains the business entities
+    - domain - business workflow and components
+    - entity - business entities
  - **orchestra**
     - application - presentation layer
-    - datamanager - stores and retrieves to/from the database
+    - datamanager - data and database
  - **utility** - helper classes like logger, fileio, etc.
 
 ---
@@ -64,7 +64,7 @@ Clone the repository to a local destination using git:
 
 ### How to build in Windows
 
-- Open the root CMakeLists.txt file in your favorite IDE.
+- Open the root CMakeLists.txt file with your favorite IDE.
 - Hit Build!
 
 ---
@@ -99,7 +99,7 @@ Clone the repository to a local destination using git:
 
 ## Roadmap
 
-The initial working version of CORE (v0.0.10) will include the login and view personal information features.
+The initial CORE v0.0.10 includes the login and view personal information features.
 
 Below are the planned releases in the future:  
 
