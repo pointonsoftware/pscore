@@ -34,7 +34,8 @@ The repository consists of three main folders and their subfolders:
     - entity - business entities
  - **orchestra**
     - application - presentation layer
-    - datamanager - data and database
+    - datamanager - database queries
+    - migration   - stack database
  - **utility** - helper classes like logger, fileio, etc.
 
 ---
