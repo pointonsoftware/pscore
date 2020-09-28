@@ -29,6 +29,7 @@ namespace backoffice {
 Dashboard::Dashboard(const std::string& userID) : mUserID(userID) {
     // empty for now
 }
+
 void Dashboard::show(std::promise<screen::display>* promise) {
     SCREENCOMMON().showTopBanner();
     // Todo, display user name here

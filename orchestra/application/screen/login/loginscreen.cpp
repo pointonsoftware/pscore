@@ -44,7 +44,6 @@ void LoginScreen::show(std::promise<screen::display>* promise) {
             break;
         }
         if (onLogin(pin)) {
-            PIN = pin;
             // If login is successful, we show the dashboard
             promise->set_value(screen::display::DASHBOARD);
             break;
@@ -56,11 +55,14 @@ bool LoginScreen::onLogin(const std::string& pin) {
     domain::login::LoginController auth(
                     std::make_shared<dataprovider::login::LoginDataProvider>(),
                     std::make_shared<login::LoginScreen>(*this));
-    return auth.loginWithPIN(pin);
+    mUserID = auth.loginWithPIN(pin);
+    // If userID is empty, then the login attempt had failed
+    // The failure reason should be shown in the screen/logs
+    return mUserID.empty() ? false : true;
 }
 
-std::string LoginScreen::getEnteredPIN() const {
-    return PIN;
+std::string LoginScreen::getUserID() const {
+    return mUserID;
 }
 
 void LoginScreen::showInvalidPINScreen() {

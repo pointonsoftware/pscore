@@ -35,7 +35,11 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     ~LoginScreen() = default;
 
     // Public API
-    std::string getEnteredPIN() const;
+
+    /*!
+     * Returns the userID of the logged user
+    */
+    std::string getUserID() const;
 
     // ScreenInterface
     void show(std::promise<screen::display>* promise) override;
@@ -44,8 +48,9 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     void showInvalidPINScreen() override;
     void showUserNotFoundScreen() override;
     void showDataNotReadyScreen() override;
+
  private:
-    std::string PIN;
+    std::string mUserID;
     // Return true if successful
     bool onLogin(const std::string& pin);
 };

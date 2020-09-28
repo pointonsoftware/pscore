@@ -81,7 +81,7 @@ void FlowController::showLoginScreen(std::promise<screen::display>* promise) {
     std::thread spawnScreenProcess(&login::LoginScreen::show, &theScreen, promise);
     spawnScreenProcess.join();
     // todo, this must be getSuccssfulUserID
-    screenshared::currentUserId = theScreen.getEnteredPIN();
+    screenshared::currentUserId = theScreen.getUserID();
 }
 
 void FlowController::showDashboard(std::promise<screen::display>* promise) {

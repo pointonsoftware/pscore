@@ -57,8 +57,8 @@ TEST_F(TestLogin, LoginShouldSucceed) {
     // Calls findUser
     EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
             .WillOnce(Return(entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyPin)));
-    // Returns true
-    ASSERT_TRUE(loginController.loginWithPIN(dummyPin));
+    // Returns the userID
+    ASSERT_EQ(loginController.loginWithPIN(dummyPin), "userInfo");
 }
 
 TEST_F(TestLogin, LoginUserNotFound) {
@@ -68,22 +68,22 @@ TEST_F(TestLogin, LoginUserNotFound) {
             .WillOnce(Return(entity::User("", "", "", "", "", entity::User::DEFAULT_PIN)));
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showUserNotFoundScreen());
-    // Returns false
-    ASSERT_FALSE(loginController.loginWithPIN(dummyPin));
+    // Returns empty
+    ASSERT_EQ(loginController.loginWithPIN(dummyPin), "");
 }
 
 TEST_F(TestLogin, LoginWithEmptyPIN) {
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns false
-    ASSERT_FALSE(loginController.loginWithPIN(""));
+    // Returns empty
+    ASSERT_EQ(loginController.loginWithPIN(""), "");
 }
 
 TEST_F(TestLogin, LoginWithNonNumericPIN) {
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns false
-    ASSERT_FALSE(loginController.loginWithPIN("abcd"));
+    // Returns empty
+    ASSERT_EQ(loginController.loginWithPIN("abcd"), "");
 }
 
 TEST_F(TestLogin, LoginWithFewCharacterPIN) {
@@ -94,8 +94,8 @@ TEST_F(TestLogin, LoginWithFewCharacterPIN) {
     }
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns false
-    ASSERT_FALSE(loginController.loginWithPIN(dummyPIN));
+    // Returns empty
+    ASSERT_EQ(loginController.loginWithPIN(dummyPIN), "");
 }
 
 TEST_F(TestLogin, LoginWithTooManyCharacterPIN) {
@@ -106,22 +106,22 @@ TEST_F(TestLogin, LoginWithTooManyCharacterPIN) {
     }
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns false
-    ASSERT_FALSE(loginController.loginWithPIN(dummyPIN));
+    // Returns empty
+    ASSERT_EQ(loginController.loginWithPIN(dummyPIN), "");
 }
 
 TEST_F(TestLogin, LoginWithViewNotInitialized) {
     LoginController dummyController(dpMock, nullptr);
-    // Returns false
-    ASSERT_FALSE(dummyController.loginWithPIN("1234"));
+    // Returns empty
+    ASSERT_EQ(dummyController.loginWithPIN("1234"), "");
 }
 
 TEST_F(TestLogin, LoginWithDataProviderNotInitialized) {
     LoginController dummyController(nullptr, viewMock);
     // Calls showDataNotReadyScreen
     EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-    // Returns false
-    ASSERT_FALSE(dummyController.loginWithPIN("1234"));
+    // Returns empty
+    ASSERT_EQ(dummyController.loginWithPIN("1234"), "");
 }
 
 }  // namespace test
