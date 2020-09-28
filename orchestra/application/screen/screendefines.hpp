@@ -18,62 +18,17 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "loginscreen.hpp"
-#include <iostream>
-#include <memory>
-// view
-#include <screencommon.hpp>
-#include <backoffice/dashboard.hpp>
-// core
-#include <domain/userlogin/logincontroller.hpp>
-// data
-#include <logindata.hpp>
+#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
 
 namespace screen {
-namespace login {
 
-void LoginScreen::show(std::promise<screen::display>* promise) {
-    do {
-        std::string pin;
-        std::cout << "Input your PIN: ";
-        std::cin >> pin;
+enum class display {
+    EXIT      = 0x000,
+    LOGIN     = 0x101,
+    DASHBOARD = 0x214
+};
 
-        if (pin.find("x") != std::string::npos) {
-            // exit was pressed
-            promise->set_value(screen::display::EXIT);
-            break;
-        }
-        if (onLogin(pin)) {
-            PIN = pin;
-            // If login is successful, we show the dashboard
-            promise->set_value(screen::display::DASHBOARD);
-            break;
-        }
-    } while (1);
-}
-
-bool LoginScreen::onLogin(const std::string& pin) {
-    domain::login::LoginController auth(
-                    std::make_shared<dataprovider::login::LoginDataProvider>(),
-                    std::make_shared<login::LoginScreen>(*this));
-    return auth.loginWithPIN(pin);
-}
-
-std::string LoginScreen::getEnteredPIN() const {
-    return PIN;
-}
-
-void LoginScreen::showInvalidPINScreen() {
-    std::cout << "PIN is invalid, please try again." << std::endl;
-}
-
-void LoginScreen::showUserNotFoundScreen() {
-    std::cout << "User PIN not found." << std::endl;
-}
-
-void LoginScreen::showDataNotReadyScreen() {
-    std::cout << "Database not ready." << std::endl;
-}
-
-}  // namespace login
 }  // namespace screen
+
+#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_

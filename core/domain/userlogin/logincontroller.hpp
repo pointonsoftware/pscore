@@ -38,6 +38,7 @@ class LoginController {
     explicit LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
                             const std::shared_ptr<LoginViewIface>& view);
     bool login(const std::string& username, const std::string& password);
+    // todo, must return the userID
     bool loginWithPIN(const std::string& pin);
  private:
     std::shared_ptr<LoginDataProviderIface> mDataProvider;

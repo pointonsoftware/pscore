@@ -25,6 +25,8 @@
 #include "flowcontroller.hpp"
 // std
 #include <iostream>
+#include <string>
+#include <thread>
 // data
 #include <logindata.hpp>
 // domain
@@ -32,60 +34,60 @@
 // view
 #include <screencommon.hpp>
 #include <login/loginscreen.hpp>
+#include <backoffice/dashboard.hpp>
 // utility
 #include <logger/loghelper.hpp>
 
-namespace view {
+namespace screen {
 
-// todo (flow refactor):
-// define the screen enums
-// those screen enums will be returned by the view (thru std::future/promise)
-// the we go back to our switch where the screen enums are our keys/cases
-// This way the flow controller will decide which screen to go next
+namespace screenshared {
+    std::string currentUserId;
+}
 
 void FlowController::run() {
-    bool endRun = false;
+    // Welcome to Core!
+    SCREENCOMMON().showWelcomeScreen();
+
+    // After the welcome screen, we will display the login screen
+    screen::display nextScreen = screen::display::LOGIN;
+
     do {
-        // Welcome to Core!
-        SCREENCOMMON().showWelcomeScreen();
-        // todo (flow refactor):
-        // below must be spawned by a thread and must return
-        // let the flow controller decide which screen to go next
-        showLoginScreen();
-        endRun = true;
-    } while (!endRun);
-
-    /*!
-     * Todo (flow refactor):
-     * screen_enum nextScreen = login_screen
-     * std::string currentUserId;
-     * do {
-     *   nextScreen = [nextScreen] () {
-     *      std::promise<screen_enum> promiseObject;
-     *      sd::future<screen_enum> futureObject = promiseObject.get_future();
-     *      switch (nextScreen) {
-     *          case login_screen:
-     *            login::LoginScreen loginScreen;
-     *            std::thread th(&loginScreen, show, (std::promise<screen_enum>* (&promiseObject));
-     *            // the promise object must be set somewhere inside the loginScreen
-     *            // thru promiseObject->set_value(screenvalue);
-     *            th.join();
-     *            currentUserId = loginScreen.getUserID();
-     *            break;
-     *          case exit:
-     *            break;
-     *      }
-     *      return future.get();
-     *   }();
-     * } while ( nextScreen != screen_enum::exit);
-     *
-     *
-    */
+        std::promise<screen::display> promise;
+        std::future<screen::display> futureScreen = promise.get_future();
+        show(nextScreen, &promise);
+        nextScreen = futureScreen.get();
+    } while (nextScreen != screen::display::EXIT);
 }
 
-void FlowController::showLoginScreen() {
-    login::LoginScreen loginScreen;
-    loginScreen.show();
+void FlowController::show(const screen::display& screenToDisplay,
+                         std::promise<screen::display>* promise) {
+    switch (screenToDisplay) {
+        case screen::display::LOGIN:
+            showLoginScreen(promise);
+            break;
+        case screen::display::DASHBOARD:
+            showDashboard(promise);
+            break;
+        case screen::display::EXIT:  // fall-through
+        default:
+            // this case should not happen
+            promise->set_value(screen::display::EXIT);
+            break;
+    }
 }
 
-}  // namespace view
+void FlowController::showLoginScreen(std::promise<screen::display>* promise) {
+    login::LoginScreen theScreen;
+    std::thread spawnScreenProcess(&login::LoginScreen::show, &theScreen, promise);
+    spawnScreenProcess.join();
+    // todo, this must be getSuccssfulUserID
+    screenshared::currentUserId = theScreen.getEnteredPIN();
+}
+
+void FlowController::showDashboard(std::promise<screen::display>* promise) {
+    backoffice::Dashboard theScreen(screenshared::currentUserId);
+    std::thread spawnScreenProcess(&backoffice::Dashboard::show, &theScreen, promise);
+    spawnScreenProcess.join();
+}
+
+}  // namespace screen

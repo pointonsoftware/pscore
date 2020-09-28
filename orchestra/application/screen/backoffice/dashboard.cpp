@@ -20,16 +20,21 @@
 **************************************************************************************************/
 #include "dashboard.hpp"
 #include <iostream>
+#include <string>
 #include <screencommon.hpp>
 
-namespace view {
+namespace screen {
 namespace backoffice {
 
-void Dashboard::showUserInfo(const entity::User& userInfo) {
+Dashboard::Dashboard(const std::string& userID) : mUserID(userID) {
+    // empty for now
+}
+void Dashboard::show(std::promise<screen::display>* promise) {
     SCREENCOMMON().showTopBanner();
     // Todo, display user name here
-    std::cout << "Hi dummy, what do you want to do today?" << std::endl;
+    std::cout << "Hi " << mUserID << ", what do you want to do today?" << std::endl;
+    promise->set_value(screen::display::EXIT);
 }
 
 }  // namespace backoffice
-}  // namespace view
+}  // namespace screen

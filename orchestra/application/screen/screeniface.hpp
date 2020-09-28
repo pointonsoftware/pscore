@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
+#include <future>
+#include <screendefines.hpp>
 
 namespace screen {
 
@@ -28,7 +30,7 @@ class ScreenInterface {
     ScreenInterface() = default;
     virtual ~ScreenInterface() = default;
 
-    virtual void show() = 0;
+    virtual void show(std::promise<screen::display>* promise) = 0;
 };
 
 }  // namespace screen

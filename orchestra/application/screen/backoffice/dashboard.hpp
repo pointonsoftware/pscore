@@ -20,19 +20,25 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
-#include <entity/user.hpp>
+#include <string>
+#include <screendefines.hpp>
+#include <screeniface.hpp>
 
-namespace view {
+namespace screen {
 namespace backoffice {
 
-class Dashboard {
+class Dashboard : public ScreenInterface {
  public:
-    Dashboard() = default;
+    explicit Dashboard(const std::string& userID);
     ~Dashboard() = default;
 
-    void showUserInfo(const entity::User& userInfo);
+    // ScreenInterface
+    void show(std::promise<screen::display>* promise) override;
+
+ private:
+    std::string mUserID;
 };
 
 }  // namespace backoffice
-}  // namespace view
+}  // namespace screen
 #endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_

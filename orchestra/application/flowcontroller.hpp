@@ -20,8 +20,12 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_
 #define ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_
+#include <future>
+#include <screendefines.hpp>
 
-namespace view {
+class ScreenInterface;
+
+namespace screen {
 
 #define FLOWCONTROLLER() FlowController::getInstance()
 
@@ -41,8 +45,13 @@ class FlowController {
 
  private:
     FlowController() = default;
-    void showLoginScreen();
+
+    void show(const screen::display& screenToDisplay,
+              std::promise<screen::display>* promise);
+    // spawn screen
+    void showLoginScreen(std::promise<screen::display>* promise);
+    void showDashboard(std::promise<screen::display>* promise);
 };
 
-}  // namespace view
+}  // namespace screen
 #endif  // ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_
