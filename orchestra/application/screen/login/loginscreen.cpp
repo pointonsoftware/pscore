@@ -33,22 +33,31 @@ namespace view {
 namespace login {
 
 void LoginScreen::show() {
+    do {
+        std::string pin;
+        std::cout << "Input your PIN: ";
+        std::cin >> pin;
+
+        if (pin.find("x") != std::string::npos) {
+            break;
+        }
+        if (onLogin(pin)) {
+            PIN = pin;
+            break;
+        }
+    } while (1);
+    // Todo: return the inputed PIN to flow controller
+}
+
+bool LoginScreen::onLogin(const std::string& pin) {
     domain::login::LoginController auth(
                     std::make_shared<dataprovider::login::LoginDataProvider>(),
                     std::make_shared<login::LoginScreen>(*this));
-    // Todo, auth.loginScreen();
-    // Will display the login screen from view and asks for PIN input
-    // The same case as in a GUI, where we display a textbox and a button
-    std::string pin;
-    do {
-        std::cout << "Input your PIN: ";
-        std::cin >> pin;
-    } while (!auth.loginWithPIN(pin));
+    return auth.loginWithPIN(pin);
 }
 
-void LoginScreen::loginSuccessful(const entity::User& userInfo) {
-    backoffice::Dashboard dashboard;
-    dashboard.showUserInfo(userInfo);
+std::string LoginScreen::getPinEntered() const {
+    return PIN;
 }
 
 void LoginScreen::showInvalidPINScreen() {

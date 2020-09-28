@@ -33,10 +33,14 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     ~LoginScreen() = default;
 
     void show() override;
-    void loginSuccessful(const entity::User& userInfo) override;
     void showInvalidPINScreen() override;
     void showUserNotFoundScreen() override;
     void showDataNotReadyScreen() override;
+    std::string getPinEntered() const;
+ private:
+    std::string PIN;
+    // Return true if successful
+    bool onLogin(const std::string& pin);
 };
 
 }  // namespace login

@@ -22,15 +22,21 @@ These are the tools and technology used in this project:
 - CI: travis-ci
 - Platform: Linux, Windows, MinGW
 
-CORE is also designed so the user interface and database can be swapped with another framework/dbms by implementing the domain provided interfaces.
+CORE is also designed to work with any GUI framework and database.
 
 ---
 
 ## Getting Started
 
-Clone the repository to a local destination using git:
-
-`git clone git@github.com:pointonsoftware/pscore.git`
+The repository consists of three main folders and their subfolders:
+ - **core**
+    - domain - business workflow and components
+    - entity - business entities
+ - **orchestra**
+    - application - presentation layer
+    - datamanager - database queries
+    - migration   - stack database
+ - **utility** - helper classes like logger, fileio, etc.
 
 ---
 
@@ -39,6 +45,14 @@ Clone the repository to a local destination using git:
 These are the base requirements to build and use CORE.
  - Cmake
  - C++11-standard-compliant compiler
+
+---
+
+### Download
+
+Clone the repository to a local destination using git:
+
+`git clone git@github.com:pointonsoftware/pscore.git`
 
 ---
 
@@ -51,15 +65,21 @@ These are the base requirements to build and use CORE.
 
 ### How to build in Windows
 
-- Open the root CMakeLists.txt file in your favorite IDE.
+- Open the root CMakeLists.txt file with your favorite IDE.
 - Hit Build!
 
 ---
 
 ### Usage
 
-- The build generates **domain** and **entity** libraries that contain the CORE use cases. Both can be linked to any executable.
-- An application called **console_app** is also available and can be used to test the CORE APIs.
+#### Libraries
+- Go to your build directory
+- The build generates **domain** libraries that contain the CORE use cases. These libraries can be linked to any executable.
+
+#### Executable
+- Go to your build directory
+- Inside the **bin** folder, run **console_app**.
+- This application is used to test the CORE APIs.
 
 ---
 
@@ -81,7 +101,7 @@ These are the base requirements to build and use CORE.
 
 ## Roadmap
 
-The initial working version of CORE (v0.0.10) will include the login and view personal information features.
+The initial CORE v0.0.10 includes _login_ and _view personal information_ features.
 
 Below are the planned releases in the future:  
 

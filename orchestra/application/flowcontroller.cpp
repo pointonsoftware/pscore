@@ -58,32 +58,30 @@ void FlowController::run() {
     /*!
      * Todo (flow refactor):
      * screen_enum nextScreen = login_screen
+     * std::string currentUserId;
      * do {
-     *   nextScreen = [] () {
+     *   nextScreen = [nextScreen] () {
+     *      std::promise<screen_enum> promiseObject;
+     *      sd::future<screen_enum> futureObject = promiseObject.get_future();
      *      switch (nextScreen) {
      *          case login_screen:
-     *             return = showLoginScreen()
+     *            login::LoginScreen loginScreen;
+     *            std::thread th(&loginScreen, show, (std::promise<screen_enum>* (&promiseObject));
+     *            // the promise object must be set somewhere inside the loginScreen
+     *            // thru promiseObject->set_value(screenvalue);
+     *            th.join();
+     *            currentUserId = loginScreen.getUserID();
+     *            break;
      *          case exit:
      *            break;
      *      }
+     *      return future.get();
      *   }();
      * } while ( nextScreen != screen_enum::exit);
      *
      *
     */
 }
-
-// todo (flow refactor):
-// screen_enum FlowController::showLoginScreen() {
-//     std::promise<screen_enum> promiseObject;
-//     sd::future<screen_enum> futureObject = promiseObject.get_future();
-//     login::LoginScreen loginScreen;
-//     std::thread th(&loginScreen, show, (std::promise<screen_enum>* (&promiseObject));
-//     // the promise object must be set somewhere inside the loginScreen
-//     // thru promiseObject->set_value(screenvalue);
-//     th.join();
-//     return future.get()
-// }
 
 void FlowController::showLoginScreen() {
     login::LoginScreen loginScreen;
