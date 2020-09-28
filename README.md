@@ -22,7 +22,7 @@ These are the tools and technology used in this project:
 - CI: travis-ci
 - Platform: Linux, Windows, MinGW
 
-CORE is also designed to work in any GUI (mobile, desktop, web) and database.
+CORE is also designed to work with any GUI framework and database.
 
 ---
 
@@ -75,6 +75,7 @@ Clone the repository to a local destination using git:
 #### Libraries
 - Go to your build directory
 - The build generates **domain** libraries that contain the CORE use cases. These libraries can be linked to any executable.
+
 #### Executable
 - Go to your build directory
 - Inside the **bin** folder, run **console_app**.
@@ -100,7 +101,7 @@ Clone the repository to a local destination using git:
 
 ## Roadmap
 
-The initial CORE v0.0.10 includes the login and view personal information features.
+The initial CORE v0.0.10 includes _login_ and _view personal information_ features.
 
 Below are the planned releases in the future:  
 
