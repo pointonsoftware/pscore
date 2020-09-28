@@ -32,11 +32,13 @@ class User : public Employee {
     static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
 
     User(const std::string& firstname,
-             const std::string& middlename,
-             const std::string& lastname,
-             const std::string& birthdate,
-             const std::string& gender,
-             const std::string& pin = DEFAULT_PIN);
+         const std::string& middlename,
+         const std::string& lastname,
+         const std::string& birthdate,
+         const std::string& gender,
+         const std::string& employeeID,
+         const std::string& position,
+         const std::string& pin = DEFAULT_PIN);
     User();
     ~User() = default;
 
@@ -44,9 +46,9 @@ class User : public Employee {
         return mPIN;
     }
 
-    // Todo: Add user.getFullName();
+    // Todo: Add user.getFullName(); - must be in person class
 
- private:
+ protected:
     std::string mPIN;
 };
 

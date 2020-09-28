@@ -32,12 +32,19 @@ class Employee : public Person {
              const std::string& middlename,
              const std::string& lastname,
              const std::string& birthdate,
-             const std::string& gender);
+             const std::string& gender,
+             const std::string& employeeID,
+             const std::string& position);
     Employee() = default;
     ~Employee() = default;
 
- private:
-    std::string position;
+    inline const std::string getEmployeeID() const {
+        return mEmployeeID;
+    }
+
+ protected:
+    std::string mEmployeeID;
+    std::string mPosition;
 };
 
 }  // namespace entity
