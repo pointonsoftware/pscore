@@ -1,6 +1,5 @@
 project (application)
 
-include_directories(presenter)
 include_directories(screen)
 
 add_executable (

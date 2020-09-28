@@ -21,6 +21,6 @@
 #include "flowcontroller.hpp"
 
 int main() {
-    view::FLOWCONTROLLER().run();
+    screen::FLOWCONTROLLER().run();
     return 0;
 }

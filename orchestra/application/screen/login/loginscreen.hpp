@@ -21,10 +21,12 @@
 #ifndef ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
 #include <string>
+#include <future>
 #include <domain/userlogin/interface/loginviewif.hpp>
+#include <screendefines.hpp>
 #include <screeniface.hpp>
 
-namespace view {
+namespace screen {
 namespace login {
 
 class LoginScreen : public screen::ScreenInterface, public domain::login::LoginViewIface {
@@ -32,11 +34,16 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     LoginScreen() = default;
     ~LoginScreen() = default;
 
-    void show() override;
+    // Public API
+    std::string getEnteredPIN() const;
+
+    // ScreenInterface
+    void show(std::promise<screen::display>* promise) override;
+
+    // Domain interface implementation
     void showInvalidPINScreen() override;
     void showUserNotFoundScreen() override;
     void showDataNotReadyScreen() override;
-    std::string getPinEntered() const;
  private:
     std::string PIN;
     // Return true if successful
@@ -44,5 +51,5 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
 };
 
 }  // namespace login
-}  // namespace view
+}  // namespace screen
 #endif  // ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
