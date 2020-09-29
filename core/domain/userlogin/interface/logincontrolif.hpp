@@ -23,6 +23,12 @@
 #include <string>
 namespace domain {
 namespace login {
+
+/*!
+ * Todo, will be used as the public API of our login module
+ * Must provide getModuleInstance() and return a logincontroller object
+*/
+
 /*!
  * Note: If you add/update a function in this interface, please also update the mock class
 */

@@ -26,8 +26,11 @@ Employee::Employee(const std::string& firstname,
                    const std::string& middlename,
                    const std::string& lastname,
                    const std::string& birthdate,
-                   const std::string& gender)
-: Person{firstname, middlename, lastname, birthdate, gender} {
+                   const std::string& gender,
+                   const std::string& employeeID,
+                   const std::string& position)
+: Person{firstname, middlename, lastname, birthdate, gender},
+  mEmployeeID(employeeID), mPosition(position) {
     // Empty for now
 }
 
