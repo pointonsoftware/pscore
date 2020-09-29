@@ -39,7 +39,6 @@ void Dashboard::show(std::promise<screen::display>* promise) {
     std::cout << "Hi " << mUserID << ", what do you want to do today?" << std::endl;
 
     promise->set_value(screen::display::EXIT);
-
 }
 
 }  // namespace backoffice
