@@ -10,6 +10,6 @@ if (MINGW)
     target_link_libraries (
         log_client_app
         "-lws2_32"
-        ${STATIC_LIBS}
+        ${MINGW_DEPENDENCY}
     )
 endif ()

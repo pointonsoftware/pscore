@@ -25,5 +25,5 @@ target_link_libraries (
     logindomain
     datamanager
     dashboard
-    ${STATIC_LIBS}
+    ${MINGW_DEPENDENCY}
 )

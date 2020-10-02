@@ -16,5 +16,5 @@ target_link_libraries (
     logindomain
     gtest
     gmock
-    ${STATIC_LIBS}
+    ${MINGW_DEPENDENCY}
 )

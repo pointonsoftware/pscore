@@ -18,4 +18,5 @@ target_link_libraries (
     dashboard
     entity
     utility
+    ${MINGW_DEPENDENCY}
 )
