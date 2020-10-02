@@ -25,5 +25,4 @@ target_link_libraries (
     logindomain
     datamanager
     dashboard
-    ${MINGW_DEPENDENCY}
 )
