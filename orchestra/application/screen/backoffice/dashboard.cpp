@@ -20,8 +20,10 @@
 **************************************************************************************************/
 #include "dashboard.hpp"
 #include <iostream>
+#include <memory>
 #include <string>
 #include <screencommon.hpp>
+#include <domain/dashboard/interface/dashboardiface.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -36,7 +38,10 @@ void Dashboard::show(std::promise<screen::display>* promise) {
     // dashboardDataProvider->getUserInfo(mUserID);
 
     // Todo, show user's full name here
-    std::cout << "Hi " << mUserID << ", what do you want to do today?" << std::endl;
+    // Todo, provide dataiface and viewiface arguments
+    std::unique_ptr<domain::dashboard::DashboardControlInterface> p
+         = domain::dashboard::createDashboardModule();
+    p->PrintUser(mUserID);
 
     promise->set_value(screen::display::EXIT);
 }

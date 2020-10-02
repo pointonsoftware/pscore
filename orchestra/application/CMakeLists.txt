@@ -24,5 +24,6 @@ target_link_libraries (
     console_app
     logindomain
     datamanager
+    dashboard
     ${STATIC_LIBS}
 )
