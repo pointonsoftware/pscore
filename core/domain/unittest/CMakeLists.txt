@@ -10,6 +10,11 @@ add_executable (
     test_login.cpp
 )
 
+set (CONSOLE_APP_LINKER_EXCEPTION "")
+if (MINGW)
+# This is a temporary solution for now, so we can link with the dlls
+set (CONSOLE_APP_LINKER_EXCEPTION "-Wl,-allow-multiple-definition")
+endif ()
 
 target_link_libraries (
     domain_unittest
@@ -17,4 +22,5 @@ target_link_libraries (
     gtest
     gmock
     ${MINGW_DEPENDENCY}
+    ${CONSOLE_APP_LINKER_EXCEPTION}
 )
