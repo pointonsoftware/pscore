@@ -20,9 +20,17 @@ add_executable (
     screen/backoffice/dashboard.cpp
 )
 
+set (CONSOLE_APP_LINKER_EXCEPTION "")
+if (MINGW)
+# This is a temporary solution for now, so we can link with the dlls
+set (CONSOLE_APP_LINKER_EXCEPTION "-Wl,-allow-multiple-definition")
+endif ()
+
 target_link_libraries (
     console_app
     logindomain
     datamanager
-    ${STATIC_LIBS}
+    dashboard
+    ${MINGW_DEPENDENCY}
+    ${CONSOLE_APP_LINKER_EXCEPTION}
 )

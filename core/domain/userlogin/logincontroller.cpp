@@ -58,11 +58,12 @@ std::string LoginController::loginWithPIN(const std::string& pin) {
 
     // Validate user info
     if (!isUserValid(userInfo)) {
-        LOG_INFO("User with PIN %s was not found", pin.c_str());
+        LOG_WARN("User with PIN %s was not found", pin.c_str());
         mView->showUserNotFoundScreen();
         return "";
     }
 
+    LOG_INFO("User with PIN %s was found", pin.c_str());
     return userInfo.getEmployeeID();
 }
 

@@ -1,6 +1,7 @@
 project (domain)
 
 # Domains
+add_subdirectory (dashboard)
 add_subdirectory (userlogin)
 
 if (BUILD_UNITTEST)

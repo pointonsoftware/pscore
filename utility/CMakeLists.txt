@@ -27,7 +27,7 @@ add_library (
 )
 
 if (MINGW)
-    target_link_libraries (utility "-lws2_32")
+target_link_libraries (utility "-lws2_32")
 endif ()
 
 # Uncomment the condition below if we dont want to build the logclient always

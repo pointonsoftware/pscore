@@ -18,32 +18,22 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
-#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#include "dashboardcontroller.hpp"
+#include <iostream>
+#include <memory>
+#include <string>
 
 namespace domain {
-namespace login {
+namespace dashboard {
 
-/*!
- * Todo, will be used as the public API of our login module
- * Follow changes in dashboard module
-*/
+void DashboardController::PrintUser(const std::string& userID) {
+    std::cout << "Hi " << userID << ", what do you want to do today?" << std::endl;
+}
 
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class AUTHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
+std::unique_ptr<DashboardControlInterface> createDashboardModule() {
+    return std::make_unique<DashboardController>();
+}
 
-class LoginControlInterface {
- public:
-    LoginControlInterface() = default;
-    virtual ~LoginControlInterface() = default;
-};
-
-}  // namespace login
+}  // namespace dashboard
 }  // namespace domain
-#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+

@@ -22,15 +22,15 @@ set (COMPILER_EXCEPTION
 set (CMAKE_CXX_FLAGS "-Wall -pedantic -Werror ${COMPILER_EXCEPTION} -O2")
 
 if (NOT MINGW)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -pg")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -pg")
 endif ()
 
 
 # linker options
-set (STATIC_LIBS "")
+set (MINGW_DEPENDENCY "")
 if (MINGW)
-    # Warning! This bloats our binary, but we have no other option for mingw
-    set(STATIC_LIBS "-static-libgcc -static-libstdc++ -lstdc++ --static")
+# Warning! This bloats our binary, but we have no other option for mingw
+set(MINGW_DEPENDENCY "-static")
 endif ()
 
 

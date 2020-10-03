@@ -18,32 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
-#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#ifndef CORE_DOMAIN_LIBRARYCOMMON_HPP_
+#define CORE_DOMAIN_LIBRARYCOMMON_HPP_
 
-namespace domain {
-namespace login {
+#if defined(__GNUC__)
+    // Linux
+    #define CORE_API __attribute__ ((__visibility__("default")))
+#elif defined(WIN32)
+    // Windows
+    #ifdef BUILD_CORE_DLL
+        #define CORE_API __declspec(dllexport)
+    #else
+        #define CORE_API __declspec(dllimport)
+    #endif
+#endif
 
-/*!
- * Todo, will be used as the public API of our login module
- * Follow changes in dashboard module
-*/
-
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class AUTHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
-
-class LoginControlInterface {
- public:
-    LoginControlInterface() = default;
-    virtual ~LoginControlInterface() = default;
-};
-
-}  // namespace login
-}  // namespace domain
-#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#endif  // CORE_DOMAIN_LIBRARYCOMMON_HPP_
