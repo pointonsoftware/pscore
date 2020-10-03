@@ -18,17 +18,16 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
-#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
+#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
+#include <memory>
+#include <string>
+#include <domain/librarycommon.hpp>
+#include "logindataif.hpp"
+#include "loginviewif.hpp"
 
 namespace domain {
 namespace login {
-
-/*!
- * Todo, will be used as the public API of our login module
- * Follow changes in dashboard module
-*/
-
 /*!
  * Note: If you add/update a function in this interface, please also update the mock class
 */
@@ -42,8 +41,14 @@ class LoginControlInterface {
  public:
     LoginControlInterface() = default;
     virtual ~LoginControlInterface() = default;
+    virtual std::string loginWithPIN(const std::string& pin) = 0;
 };
+
+// Lib APIs
+extern "C" CORE_API std::unique_ptr<LoginControlInterface> createLoginModule(
+    const std::shared_ptr<LoginDataProviderIface>& dataprovider,
+    const std::shared_ptr<LoginViewIface>& view);
 
 }  // namespace login
 }  // namespace domain
-#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_

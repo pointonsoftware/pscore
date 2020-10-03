@@ -25,7 +25,7 @@
 #include <screencommon.hpp>
 #include <backoffice/dashboard.hpp>
 // core
-#include <domain/userlogin/logincontroller.hpp>
+#include <domain/userlogin/interface/loginiface.hpp>
 // data
 #include <logindata.hpp>
 
@@ -52,10 +52,12 @@ void LoginScreen::show(std::promise<screen::display>* promise) {
 }
 
 bool LoginScreen::onLogin(const std::string& pin) {
-    domain::login::LoginController auth(
+    std::unique_ptr<domain::login::LoginControlInterface> auth
+         = domain::login::createLoginModule(
                     std::make_shared<dataprovider::login::LoginDataProvider>(),
                     std::make_shared<login::LoginScreen>(*this));
-    mUserID = auth.loginWithPIN(pin);
+
+    mUserID = auth->loginWithPIN(pin);
     // If userID is empty, then the login attempt had failed
     // The failure reason should be shown in the screen/logs
     return mUserID.empty() ? false : true;

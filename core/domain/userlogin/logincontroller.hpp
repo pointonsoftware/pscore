@@ -23,7 +23,7 @@
 
 #include <memory>
 #include <string>
-#include "interface/logincontrolif.hpp"
+#include "interface/loginiface.hpp"
 #include "interface/logindataif.hpp"
 #include "interface/loginviewif.hpp"
 
@@ -33,13 +33,11 @@
 namespace domain {
 namespace login {
 
-class LoginController {
+class LoginController : public LoginControlInterface {
  public:
     explicit LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
                             const std::shared_ptr<LoginViewIface>& view);
-    bool login(const std::string& username, const std::string& password);
-    // todo, must return the userID
-    std::string loginWithPIN(const std::string& pin);
+    std::string loginWithPIN(const std::string& pin) override;
  private:
     std::shared_ptr<LoginDataProviderIface> mDataProvider;
     std::shared_ptr<LoginViewIface> mView;

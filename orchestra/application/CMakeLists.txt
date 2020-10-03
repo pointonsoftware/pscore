@@ -28,9 +28,9 @@ endif ()
 
 target_link_libraries (
     console_app
-    logindomain
-    datamanager
     dashboard
+    datamanager
+    loginmod
     ${MINGW_DEPENDENCY}
     ${CONSOLE_APP_LINKER_EXCEPTION}
 )

@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "logincontroller.hpp"
+#include <memory>
 #include <general.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
 
@@ -29,11 +30,6 @@ LoginController::LoginController(const std::shared_ptr<LoginDataProviderIface>& 
                                const std::shared_ptr<LoginViewIface>& view)
 : mDataProvider(dataprovider), mView(view) {
     // Empty for now
-}
-
-// cppcheck-suppress unusedFunction  ! remove this line when function is used
-bool LoginController::login(const std::string& username, const std::string& password) {
-    return true;
 }
 
 std::string LoginController::loginWithPIN(const std::string& pin) {
@@ -102,6 +98,12 @@ bool LoginController::isPinValid(const std::string& pin) const {
 bool LoginController::isUserValid(const entity::User& userInfo) const {
     // If default pin is found, that means the user data was not initialized
     return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
+}
+
+std::unique_ptr<LoginControlInterface> createLoginModule(
+    const std::shared_ptr<LoginDataProviderIface>& dataprovider,
+    const std::shared_ptr<LoginViewIface>& view) {
+    return std::make_unique<LoginController>(dataprovider, view);
 }
 
 }  // namespace login
