@@ -100,7 +100,7 @@ bool LoginController::isUserValid(const entity::User& userInfo) const {
     return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
 }
 
-std::unique_ptr<LoginControlInterface> createDashboardModule(
+std::unique_ptr<LoginControlInterface> createLoginModule(
     const std::shared_ptr<LoginDataProviderIface>& dataprovider,
     const std::shared_ptr<LoginViewIface>& view) {
     return std::make_unique<LoginController>(dataprovider, view);

@@ -21,18 +21,13 @@
 #ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
 #define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
 #include <memory>
+#include <string>
 #include <domain/librarycommon.hpp>
 #include "logindataif.hpp"
 #include "loginviewif.hpp"
 
 namespace domain {
 namespace login {
-
-/*!
- * Todo, will be used as the public API of our login module
- * Follow changes in dashboard module
-*/
-
 /*!
  * Note: If you add/update a function in this interface, please also update the mock class
 */
