@@ -9,7 +9,7 @@ add_library (
     # Dataprovider
     interface/logindataif.hpp
     # Controller
-    interface/logincontrolif.hpp
+    interface/loginiface.hpp
     logincontroller.hpp
     logincontroller.cpp
 )

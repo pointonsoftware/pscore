@@ -18,8 +18,12 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
-#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
+#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
+#include <memory>
+#include <domain/librarycommon.hpp>
+#include "logindataif.hpp"
+#include "loginviewif.hpp"
 
 namespace domain {
 namespace login {
@@ -42,8 +46,14 @@ class LoginControlInterface {
  public:
     LoginControlInterface() = default;
     virtual ~LoginControlInterface() = default;
+    virtual std::string loginWithPIN(const std::string& pin) = 0;
 };
+
+// Lib APIs
+extern "C" CORE_API std::unique_ptr<LoginControlInterface> createLoginModule(
+    const std::shared_ptr<LoginDataProviderIface>& dataprovider,
+    const std::shared_ptr<LoginViewIface>& view);
 
 }  // namespace login
 }  // namespace domain
-#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINCONTROLIF_HPP_
+#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
