@@ -2,8 +2,8 @@ project (userlogin)
 
 # domain lib
 add_library (
-    logindomain
-    STATIC
+    loginmod
+    SHARED
     # View
     interface/loginviewif.hpp
     # Dataprovider
@@ -14,8 +14,15 @@ add_library (
     logincontroller.cpp
 )
 
+if (MINGW)
+add_compile_definitions(BUILD_CORE_DLL)
+endif ()
+
+target_compile_options(loginmod PUBLIC "-fPIC")
+
 target_link_libraries (
-    logindomain
+    loginmod
     entity
     utility
+    ${MINGW_DEPENDENCY}
 )

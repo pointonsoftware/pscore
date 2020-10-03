@@ -15,3 +15,5 @@ add_library (
     user.hpp
     user.cpp
 )
+
+target_compile_options(entity PUBLIC "-fPIC")

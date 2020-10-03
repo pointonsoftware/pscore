@@ -26,6 +26,8 @@ add_library (
     cfg/config.cpp
 )
 
+target_compile_options(utility PUBLIC "-fPIC")
+
 if (MINGW)
 target_link_libraries (utility "-lws2_32")
 endif ()

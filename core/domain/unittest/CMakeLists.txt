@@ -13,7 +13,7 @@ add_executable (
 
 target_link_libraries (
     domain_unittest
-    logindomain
+    loginmod
     gtest
     gmock
     ${MINGW_DEPENDENCY}
