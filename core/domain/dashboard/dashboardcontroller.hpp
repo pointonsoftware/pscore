@@ -22,16 +22,22 @@
 #define CORE_DOMAIN_DASHBOARD_DASHBOARDCONTROLLER_HPP_
 #include <string>
 #include "interface/dashboardiface.hpp"
+#include <entity/user.hpp>
 
 namespace domain {
 namespace dashboard {
 
 class DashboardController : public DashboardControlInterface {
  public:
-    DashboardController() = default;
+    DashboardController();
     virtual ~DashboardController() = default;
 
-    void PrintUser(const std::string& userID) override;
+    void PrintUser() override;
+    void setCurrentUserId(const std::string& userID) override;
+    entity::User getCurrentUserInfo() override;
+ private:
+    std::string mCurrentUserID;
+    bool isUserValid(const entity::User& userInfo) const;
 };
 
 }  // namespace dashboard
