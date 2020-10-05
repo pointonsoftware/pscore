@@ -39,9 +39,11 @@ void Dashboard::show(std::promise<screen::display>* promise) {
 
     // Todo, show user's full name here
     // Todo, provide dataiface and viewiface arguments
-    std::unique_ptr<domain::dashboard::DashboardControlInterface> p
-         = domain::dashboard::createDashboardModule();
-    p->PrintUser(mUserID);
+    using domain::dashboard::DashboardControlInterface;
+    std::unique_ptr<DashboardControlInterface> coreDashboard
+                    = domain::dashboard::createDashboardModule();
+    coreDashboard->setCurrentUserId(mUserID);
+    coreDashboard->PrintUser();
 
     promise->set_value(screen::display::EXIT);
 }

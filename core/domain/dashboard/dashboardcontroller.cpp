@@ -22,12 +22,49 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <logger/loghelper.hpp>
 
 namespace domain {
 namespace dashboard {
 
-void DashboardController::PrintUser(const std::string& userID) {
-    std::cout << "Hi " << userID << ", what do you want to do today?" << std::endl;
+DashboardController::DashboardController() : mCurrentUserID("") {
+    // empty for now
+}
+void DashboardController::PrintUser() {
+    std::cout << "Hi " << mCurrentUserID << ", what do you want to do today?" << std::endl;
+}
+
+void DashboardController::setCurrentUserId(const std::string& userID) {
+    if (!userID.empty()) {
+        mCurrentUserID = userID;
+    }
+}
+
+entity::User DashboardController::getCurrentUserInfo() {
+    if (mCurrentUserID.empty()) {
+        LOG_ERROR("UserID was not set.");
+        // todo (view): display no current user is set
+        return entity::User();
+    }
+
+    const entity::User temp = []() {
+        // todo (data): find the user info
+        return entity::User();
+    }();
+
+    // Validate user info
+    if (!isUserValid(temp)) {
+        LOG_WARN("UserID %s was not found", mCurrentUserID.c_str());
+        // mView->showUserNotFoundScreen();
+        return entity::User();
+    }
+
+    return temp;
+}
+
+bool DashboardController::isUserValid(const entity::User& userInfo) const {
+    // If default pin is found, that means the user data was not initialized
+    return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
 }
 
 std::unique_ptr<DashboardControlInterface> createDashboardModule() {

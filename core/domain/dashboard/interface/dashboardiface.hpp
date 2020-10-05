@@ -23,6 +23,7 @@
 #include <memory>
 #include <string>
 #include <domain/librarycommon.hpp>
+#include <entity/user.hpp>
 
 namespace domain {
 namespace dashboard {
@@ -41,7 +42,17 @@ class DashboardControlInterface {
     virtual ~DashboardControlInterface() = default;
 
     // Public API
-    virtual void PrintUser(const std::string& userID) = 0;
+    virtual void PrintUser() = 0;
+    /*!
+     * Sets the current user ID
+     * Warning: it is the caller's responsibility to provide a valid userID
+    */
+    virtual void setCurrentUserId(const std::string& userID) = 0;
+    /*!
+     * Returns the current user info
+     * Note: Has to be paired with setCurrentUserId(), otherwise will return empty
+    */
+    virtual entity::User getCurrentUserInfo() = 0;
 };
 
 // Lib APIs

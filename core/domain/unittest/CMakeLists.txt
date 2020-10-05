@@ -7,6 +7,7 @@ set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov --coverage ${
 add_executable (
     domain_unittest
     test_main.cpp
+    test_dashboard.cpp
     test_login.cpp
 )
 
@@ -18,6 +19,7 @@ endif ()
 
 target_link_libraries (
     domain_unittest
+    dashboard
     loginmod
     gtest
     gmock
