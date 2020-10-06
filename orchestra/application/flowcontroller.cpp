@@ -34,7 +34,7 @@
 // view
 #include <screencommon.hpp>
 #include <login/loginscreen.hpp>
-#include <backoffice/dashboard.hpp>
+#include <backoffice/dashboardscreen.hpp>
 // utility
 #include <logger/loghelper.hpp>
 

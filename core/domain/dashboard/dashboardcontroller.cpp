@@ -47,6 +47,8 @@ entity::User DashboardController::getCurrentUserInfo() {
         return entity::User();
     }
 
+    // Todo, retrieve the userinfo from db using userID
+    // dashboardDataProvider->getUserInfo(mUserID);
     const entity::User temp = []() {
         // todo (data): find the user info
         return entity::User();

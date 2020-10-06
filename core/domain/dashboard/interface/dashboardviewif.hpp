@@ -18,27 +18,39 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
-#include <string>
-#include <screendefines.hpp>
-#include <screeniface.hpp>
+#ifndef CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDVIEWIF_HPP_
+#define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDVIEWIF_HPP_
 
-namespace screen {
-namespace backoffice {
+namespace domain {
+namespace dashboard {
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
 
-class Dashboard : public ScreenInterface {
+class DashboardViewInterface {
  public:
-    explicit Dashboard(const std::string& userID);
-    ~Dashboard() = default;
+    DashboardViewInterface() = default;
+    virtual ~DashboardViewInterface() = default;
 
-    // ScreenInterface
-    void show(std::promise<screen::display>* promise) override;
+    // Public API
 
- private:
-    std::string mUserID;
+    /*!
+     * showUserNotFound
+    */
+    virtual void showUserNotFound() = 0;
+    /*!
+     * showInvalidOptionPopup
+    */
+    virtual void showInvalidOptionPopup() = 0;
+    /*!
+     * showDataNotReadyScreen
+    */
+    virtual void showDataNotReadyScreen() = 0;
 };
 
-}  // namespace backoffice
-}  // namespace screen
-#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+}  // namespace dashboard
+}  // namespace domain
+
+
+
+#endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDVIEWIF_HPP_

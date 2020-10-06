@@ -23,7 +23,7 @@
 #include <entity/user.hpp>
 
 // mocks
-
+#include "mock/dashboard/dashboardviewmock.hpp"
 // code under test
 #include <domain/dashboard/dashboardcontroller.hpp>
 

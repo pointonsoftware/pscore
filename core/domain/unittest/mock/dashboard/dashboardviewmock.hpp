@@ -18,25 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINVIEWMOCK_HPP_
-#define CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINVIEWMOCK_HPP_
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDVIEWMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDVIEWMOCK_HPP_
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <domain/userlogin/interface/loginviewif.hpp>
+#include <domain/dashboard/interface/dashboardviewif.hpp>
 
 namespace domain {
-namespace login {
+namespace dashboard {
 
-class LoginViewMock : public LoginViewIface {
+class DashboardViewMock : public DashboardViewInterface {
  public:
-    LoginViewMock() = default;
-    ~LoginViewMock() = default;
+    DashboardViewMock() = default;
+    ~DashboardViewMock() = default;
 
-    MOCK_METHOD(void, showInvalidPINScreen, ());
-    MOCK_METHOD(void, showUserNotFoundScreen, ());
+    MOCK_METHOD(void, showUserNotFound, ());
+    MOCK_METHOD(void, showInvalidOptionPopup, ());
     MOCK_METHOD(void, showDataNotReadyScreen, ());
 };
 
-}  // namespace login
+}  // namespace dashboard
 }  // namespace domain
-#endif  // CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINVIEWMOCK_HPP_
+
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDVIEWMOCK_HPP_

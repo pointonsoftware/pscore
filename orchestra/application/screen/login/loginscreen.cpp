@@ -23,7 +23,6 @@
 #include <memory>
 // view
 #include <screencommon.hpp>
-#include <backoffice/dashboard.hpp>
 // core
 #include <domain/userlogin/interface/loginiface.hpp>
 // data

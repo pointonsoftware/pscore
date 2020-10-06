@@ -18,25 +18,32 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINVIEWMOCK_HPP_
-#define CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINVIEWMOCK_HPP_
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
-#include <domain/userlogin/interface/loginviewif.hpp>
+#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
+#include <string>
+#include <future>
+#include <domain/dashboard/interface/dashboardviewif.hpp>
+#include <screeniface.hpp>
 
-namespace domain {
-namespace login {
+namespace screen {
+namespace backoffice {
 
-class LoginViewMock : public LoginViewIface {
+class Dashboard : public ScreenInterface, public domain::dashboard::DashboardViewInterface {
  public:
-    LoginViewMock() = default;
-    ~LoginViewMock() = default;
+    explicit Dashboard(const std::string& userID);
+    ~Dashboard() = default;
 
-    MOCK_METHOD(void, showInvalidPINScreen, ());
-    MOCK_METHOD(void, showUserNotFoundScreen, ());
-    MOCK_METHOD(void, showDataNotReadyScreen, ());
+    // ScreenInterface
+    void show(std::promise<screen::display>* promise) override;
+
+    // Domain interface implementation
+    void showUserNotFound() override;
+    void showInvalidOptionPopup() override;
+    void showDataNotReadyScreen() override;
+ private:
+    std::string mUserID;
 };
 
-}  // namespace login
-}  // namespace domain
-#endif  // CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINVIEWMOCK_HPP_
+}  // namespace backoffice
+}  // namespace screen
+#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_

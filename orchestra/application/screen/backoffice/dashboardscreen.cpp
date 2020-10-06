@@ -18,7 +18,7 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "dashboard.hpp"
+#include "dashboardscreen.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -34,18 +34,26 @@ Dashboard::Dashboard(const std::string& userID) : mUserID(userID) {
 
 void Dashboard::show(std::promise<screen::display>* promise) {
     SCREENCOMMON().showTopBanner();
-    // Todo, retrieve the userinfo from db using userID
-    // dashboardDataProvider->getUserInfo(mUserID);
-
-    // Todo, show user's full name here
     // Todo, provide dataiface and viewiface arguments
     using domain::dashboard::DashboardControlInterface;
     std::unique_ptr<DashboardControlInterface> coreDashboard
                     = domain::dashboard::createDashboardModule();
     coreDashboard->setCurrentUserId(mUserID);
     coreDashboard->PrintUser();
-
+    // Todo, show user's full name here
     promise->set_value(screen::display::EXIT);
+}
+
+void Dashboard::showUserNotFound() {
+    std::cout << "Current user was not found." << std::endl;
+}
+
+void Dashboard::showInvalidOptionPopup() {
+    std::cout << "Sorry, that option is not yet available." << std::endl;
+}
+
+void Dashboard::showDataNotReadyScreen() {
+    std::cout << "Data is not ready." << std::endl;
 }
 
 }  // namespace backoffice
