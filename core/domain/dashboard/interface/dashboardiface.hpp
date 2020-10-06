@@ -22,6 +22,7 @@
 #define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
 #include <memory>
 #include <string>
+#include "dashboardviewif.hpp"
 #include <domain/librarycommon.hpp>
 #include <entity/user.hpp>
 
@@ -56,7 +57,8 @@ class DashboardControlInterface {
 };
 
 // Lib APIs
-extern "C" CORE_API std::unique_ptr<DashboardControlInterface> createDashboardModule();
+extern "C" CORE_API std::unique_ptr<DashboardControlInterface> createDashboardModule(
+    const std::shared_ptr<DashboardViewInterface>& view);
 
 }  // namespace dashboard
 }  // namespace domain

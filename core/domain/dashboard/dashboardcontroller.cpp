@@ -27,9 +27,11 @@
 namespace domain {
 namespace dashboard {
 
-DashboardController::DashboardController() : mCurrentUserID("") {
+DashboardController::DashboardController(const std::shared_ptr<DashboardViewInterface>& view)
+: mView(view), mCurrentUserID("") {
     // empty for now
 }
+
 void DashboardController::PrintUser() {
     std::cout << "Hi " << mCurrentUserID << ", what do you want to do today?" << std::endl;
 }
@@ -41,9 +43,16 @@ void DashboardController::setCurrentUserId(const std::string& userID) {
 }
 
 entity::User DashboardController::getCurrentUserInfo() {
+    // Make sure view is valid
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
+        return entity::User();
+    }
+
     if (mCurrentUserID.empty()) {
         LOG_ERROR("UserID was not set.");
-        // todo (view): display no current user is set
+        // Todo (spec), do we need a more specific popup here?
+        mView->showUserNotFound();
         return entity::User();
     }
 
@@ -57,7 +66,7 @@ entity::User DashboardController::getCurrentUserInfo() {
     // Validate user info
     if (!isUserValid(temp)) {
         LOG_WARN("UserID %s was not found", mCurrentUserID.c_str());
-        // mView->showUserNotFoundScreen();
+        mView->showUserNotFound();
         return entity::User();
     }
 
@@ -69,8 +78,9 @@ bool DashboardController::isUserValid(const entity::User& userInfo) const {
     return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
 }
 
-std::unique_ptr<DashboardControlInterface> createDashboardModule() {
-    return std::make_unique<DashboardController>();
+std::unique_ptr<DashboardControlInterface> createDashboardModule(
+            const std::shared_ptr<DashboardViewInterface>& view) {
+    return std::make_unique<DashboardController>(view);
 }
 
 }  // namespace dashboard

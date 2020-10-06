@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef CORE_DOMAIN_DASHBOARD_DASHBOARDCONTROLLER_HPP_
 #define CORE_DOMAIN_DASHBOARD_DASHBOARDCONTROLLER_HPP_
+#include <memory>
 #include <string>
 #include "interface/dashboardiface.hpp"
 #include <entity/user.hpp>
@@ -29,13 +30,14 @@ namespace dashboard {
 
 class DashboardController : public DashboardControlInterface {
  public:
-    DashboardController();
+    explicit DashboardController(const std::shared_ptr<DashboardViewInterface>& view);
     virtual ~DashboardController() = default;
 
     void PrintUser() override;
     void setCurrentUserId(const std::string& userID) override;
     entity::User getCurrentUserInfo() override;
  private:
+    std::shared_ptr<DashboardViewInterface> mView;
     std::string mCurrentUserID;
     bool isUserValid(const entity::User& userInfo) const;
 };

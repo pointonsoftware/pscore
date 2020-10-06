@@ -38,14 +38,14 @@ namespace test {
 
 class TestDashboard : public testing::Test {
  public:
-    TestDashboard() {
+    TestDashboard() : dashController(viewMock) {
         // Empty for now
     }
 
     ~TestDashboard() = default;
     void SetUp() {}
     void TearDown() {}
-
+    std::shared_ptr<DashboardViewMock> viewMock = std::make_shared<DashboardViewMock>();
     DashboardController dashController;
 };
 
