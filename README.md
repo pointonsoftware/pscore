@@ -1,3 +1,5 @@
+<!--          PSCORE README v4.5         -->
+<!-- Copyright (C) 2020 Pointon Software -->
 
 <p align="center">
   <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
@@ -127,9 +129,9 @@ After CORE v1.0.0 is released, it is planned that **console_app** will be upgrad
 
 ## Contributing
 
-A developer guide document is currently worked on and will be uploaded soon.  
+A developer guide document is available in the [doc folder](doc/Developer%20Guide.docx) and can be used to setup the project.  
  
- But even without it, you can already start contributing to the project! Once able to build, you can make your changes and submit a pull request.
+ Once able to build, you can make your changes and submit a pull request!
 
 ---
 
