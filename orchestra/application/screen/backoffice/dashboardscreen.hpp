@@ -28,10 +28,10 @@
 namespace screen {
 namespace backoffice {
 
-class Dashboard : public ScreenInterface, public domain::dashboard::DashboardViewInterface {
+class DashboardScreen : public ScreenInterface, public domain::dashboard::DashboardViewInterface {
  public:
-    explicit Dashboard(const std::string& userID);
-    ~Dashboard() = default;
+    explicit DashboardScreen(const std::string& userID);
+    ~DashboardScreen() = default;
 
     // ScreenInterface
     void show(std::promise<screen::display>* promise) override;

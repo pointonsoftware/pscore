@@ -85,8 +85,8 @@ void FlowController::showLoginScreen(std::promise<screen::display>* promise) {
 }
 
 void FlowController::showDashboard(std::promise<screen::display>* promise) {
-    backoffice::Dashboard theScreen(screenshared::currentUserId);
-    std::thread spawnScreenProcess(&backoffice::Dashboard::show, &theScreen, promise);
+    backoffice::DashboardScreen theScreen(screenshared::currentUserId);
+    std::thread spawnScreenProcess(&backoffice::DashboardScreen::show, &theScreen, promise);
     spawnScreenProcess.join();
 }
 
