@@ -41,6 +41,10 @@
 namespace screen {
 
 namespace screenshared {
+    /*!
+     * Add variables that are shared by different screens
+     * Can be used to pass parameter from one screen to next
+    */
     std::string currentUserId;
 }
 
