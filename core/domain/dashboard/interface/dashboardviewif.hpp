@@ -18,35 +18,39 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "dashboard.hpp"
-#include <iostream>
-#include <memory>
-#include <string>
-#include <screencommon.hpp>
-#include <domain/dashboard/interface/dashboardiface.hpp>
+#ifndef CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDVIEWIF_HPP_
+#define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDVIEWIF_HPP_
 
-namespace screen {
-namespace backoffice {
+namespace domain {
+namespace dashboard {
+/*!
+ * Note: If you add/update a function in this interface, please also update the mock class
+*/
 
-Dashboard::Dashboard(const std::string& userID) : mUserID(userID) {
-    // empty for now
-}
+class DashboardViewInterface {
+ public:
+    DashboardViewInterface() = default;
+    virtual ~DashboardViewInterface() = default;
 
-void Dashboard::show(std::promise<screen::display>* promise) {
-    SCREENCOMMON().showTopBanner();
-    // Todo, retrieve the userinfo from db using userID
-    // dashboardDataProvider->getUserInfo(mUserID);
+    // Public API
 
-    // Todo, show user's full name here
-    // Todo, provide dataiface and viewiface arguments
-    using domain::dashboard::DashboardControlInterface;
-    std::unique_ptr<DashboardControlInterface> coreDashboard
-                    = domain::dashboard::createDashboardModule();
-    coreDashboard->setCurrentUserId(mUserID);
-    coreDashboard->PrintUser();
+    /*!
+     * showUserNotFound
+    */
+    virtual void showUserNotFound() = 0;
+    /*!
+     * showInvalidOptionPopup
+    */
+    virtual void showInvalidOptionPopup() = 0;
+    /*!
+     * showDataNotReadyScreen
+    */
+    virtual void showDataNotReadyScreen() = 0;
+};
 
-    promise->set_value(screen::display::EXIT);
-}
+}  // namespace dashboard
+}  // namespace domain
 
-}  // namespace backoffice
-}  // namespace screen
+
+
+#endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDVIEWIF_HPP_

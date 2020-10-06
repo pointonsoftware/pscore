@@ -23,7 +23,6 @@
 #include <string>
 #include <future>
 #include <domain/userlogin/interface/loginviewif.hpp>
-#include <screendefines.hpp>
 #include <screeniface.hpp>
 
 namespace screen {

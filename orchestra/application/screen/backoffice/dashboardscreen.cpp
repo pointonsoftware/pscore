@@ -18,27 +18,44 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_
+#include "dashboardscreen.hpp"
+#include <iostream>
+#include <memory>
 #include <string>
-#include <screendefines.hpp>
-#include <screeniface.hpp>
+#include <screencommon.hpp>
+#include <domain/dashboard/interface/dashboardiface.hpp>
 
 namespace screen {
 namespace backoffice {
 
-class Dashboard : public ScreenInterface {
- public:
-    explicit Dashboard(const std::string& userID);
-    ~Dashboard() = default;
+DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
+    // empty for now
+}
 
-    // ScreenInterface
-    void show(std::promise<screen::display>* promise) override;
+void DashboardScreen::show(std::promise<screen::display>* promise) {
+    SCREENCOMMON().showTopBanner();
+    // Todo, provide dataiface and viewiface arguments
+    using domain::dashboard::DashboardControlInterface;
+    std::unique_ptr<DashboardControlInterface> coreDashboard
+        = domain::dashboard::createDashboardModule(
+                std::make_shared<DashboardScreen>(*this));
+    coreDashboard->setCurrentUserId(mUserID);
+    coreDashboard->PrintUser();
+    // Todo, show user's full name here
+    promise->set_value(screen::display::EXIT);
+}
 
- private:
-    std::string mUserID;
-};
+void DashboardScreen::showUserNotFound() {
+    std::cout << "Current user was not found." << std::endl;
+}
+
+void DashboardScreen::showInvalidOptionPopup() {
+    std::cout << "Sorry, that option is not yet available." << std::endl;
+}
+
+void DashboardScreen::showDataNotReadyScreen() {
+    std::cout << "Data is not ready." << std::endl;
+}
 
 }  // namespace backoffice
 }  // namespace screen
-#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARD_HPP_

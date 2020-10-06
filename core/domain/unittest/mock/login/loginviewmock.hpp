@@ -22,9 +22,7 @@
 #define CORE_DOMAIN_UNITTEST_MOCK_LOGIN_LOGINVIEWMOCK_HPP_
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <string>
 #include <domain/userlogin/interface/loginviewif.hpp>
-#include <entity/user.hpp>
 
 namespace domain {
 namespace login {

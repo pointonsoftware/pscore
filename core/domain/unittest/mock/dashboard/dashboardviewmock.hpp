@@ -18,71 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "dashboardcontroller.hpp"
-#include <iostream>
-#include <memory>
-#include <string>
-#include <logger/loghelper.hpp>
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDVIEWMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDVIEWMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <domain/dashboard/interface/dashboardviewif.hpp>
 
 namespace domain {
 namespace dashboard {
 
-DashboardController::DashboardController(const std::shared_ptr<DashboardViewInterface>& view)
-: mView(view), mCurrentUserID("") {
-    // empty for now
-}
+class DashboardViewMock : public DashboardViewInterface {
+ public:
+    DashboardViewMock() = default;
+    ~DashboardViewMock() = default;
 
-void DashboardController::PrintUser() {
-    std::cout << "Hi " << mCurrentUserID << ", what do you want to do today?" << std::endl;
-}
-
-void DashboardController::setCurrentUserId(const std::string& userID) {
-    if (!userID.empty()) {
-        mCurrentUserID = userID;
-    }
-}
-
-entity::User DashboardController::getCurrentUserInfo() {
-    // Make sure view is valid
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return entity::User();
-    }
-
-    if (mCurrentUserID.empty()) {
-        LOG_ERROR("UserID was not set.");
-        // Todo (spec), do we need a more specific popup here?
-        mView->showUserNotFound();
-        return entity::User();
-    }
-
-    // Todo, retrieve the userinfo from db using userID
-    // dashboardDataProvider->getUserInfo(mUserID);
-    const entity::User temp = []() {
-        // todo (data): find the user info
-        return entity::User();
-    }();
-
-    // Validate user info
-    if (!isUserValid(temp)) {
-        LOG_WARN("UserID %s was not found", mCurrentUserID.c_str());
-        mView->showUserNotFound();
-        return entity::User();
-    }
-
-    return temp;
-}
-
-bool DashboardController::isUserValid(const entity::User& userInfo) const {
-    // If default pin is found, that means the user data was not initialized
-    return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
-}
-
-std::unique_ptr<DashboardControlInterface> createDashboardModule(
-            const std::shared_ptr<DashboardViewInterface>& view) {
-    return std::make_unique<DashboardController>(view);
-}
+    MOCK_METHOD(void, showUserNotFound, ());
+    MOCK_METHOD(void, showInvalidOptionPopup, ());
+    MOCK_METHOD(void, showDataNotReadyScreen, ());
+};
 
 }  // namespace dashboard
 }  // namespace domain
 
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDVIEWMOCK_HPP_

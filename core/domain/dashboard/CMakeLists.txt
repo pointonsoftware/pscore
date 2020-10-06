@@ -5,6 +5,7 @@ add_library (
     dashboard
     SHARED
     # View
+    interface/dashboardviewif.hpp
     # Dataprovider
     # Controller
     interface/dashboardiface.hpp

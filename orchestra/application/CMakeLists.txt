@@ -16,8 +16,8 @@ add_executable (
     screen/login/loginscreen.hpp
     screen/login/loginscreen.cpp
     # Back office screen
-    screen/backoffice/dashboard.hpp
-    screen/backoffice/dashboard.cpp
+    screen/backoffice/dashboardscreen.hpp
+    screen/backoffice/dashboardscreen.cpp
 )
 
 set (CONSOLE_APP_LINKER_EXCEPTION "")

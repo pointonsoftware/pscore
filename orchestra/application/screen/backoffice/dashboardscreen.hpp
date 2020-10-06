@@ -18,71 +18,32 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "dashboardcontroller.hpp"
-#include <iostream>
-#include <memory>
+#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
 #include <string>
-#include <logger/loghelper.hpp>
+#include <future>
+#include <domain/dashboard/interface/dashboardviewif.hpp>
+#include <screeniface.hpp>
 
-namespace domain {
-namespace dashboard {
+namespace screen {
+namespace backoffice {
 
-DashboardController::DashboardController(const std::shared_ptr<DashboardViewInterface>& view)
-: mView(view), mCurrentUserID("") {
-    // empty for now
-}
+class DashboardScreen : public ScreenInterface, public domain::dashboard::DashboardViewInterface {
+ public:
+    explicit DashboardScreen(const std::string& userID);
+    ~DashboardScreen() = default;
 
-void DashboardController::PrintUser() {
-    std::cout << "Hi " << mCurrentUserID << ", what do you want to do today?" << std::endl;
-}
+    // ScreenInterface
+    void show(std::promise<screen::display>* promise) override;
 
-void DashboardController::setCurrentUserId(const std::string& userID) {
-    if (!userID.empty()) {
-        mCurrentUserID = userID;
-    }
-}
+    // Domain interface implementation
+    void showUserNotFound() override;
+    void showInvalidOptionPopup() override;
+    void showDataNotReadyScreen() override;
+ private:
+    std::string mUserID;
+};
 
-entity::User DashboardController::getCurrentUserInfo() {
-    // Make sure view is valid
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return entity::User();
-    }
-
-    if (mCurrentUserID.empty()) {
-        LOG_ERROR("UserID was not set.");
-        // Todo (spec), do we need a more specific popup here?
-        mView->showUserNotFound();
-        return entity::User();
-    }
-
-    // Todo, retrieve the userinfo from db using userID
-    // dashboardDataProvider->getUserInfo(mUserID);
-    const entity::User temp = []() {
-        // todo (data): find the user info
-        return entity::User();
-    }();
-
-    // Validate user info
-    if (!isUserValid(temp)) {
-        LOG_WARN("UserID %s was not found", mCurrentUserID.c_str());
-        mView->showUserNotFound();
-        return entity::User();
-    }
-
-    return temp;
-}
-
-bool DashboardController::isUserValid(const entity::User& userInfo) const {
-    // If default pin is found, that means the user data was not initialized
-    return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
-}
-
-std::unique_ptr<DashboardControlInterface> createDashboardModule(
-            const std::shared_ptr<DashboardViewInterface>& view) {
-    return std::make_unique<DashboardController>(view);
-}
-
-}  // namespace dashboard
-}  // namespace domain
-
+}  // namespace backoffice
+}  // namespace screen
+#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_

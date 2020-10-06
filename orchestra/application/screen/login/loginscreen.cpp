@@ -23,7 +23,6 @@
 #include <memory>
 // view
 #include <screencommon.hpp>
-#include <backoffice/dashboard.hpp>
 // core
 #include <domain/userlogin/interface/loginiface.hpp>
 // data
@@ -55,7 +54,7 @@ bool LoginScreen::onLogin(const std::string& pin) {
     std::unique_ptr<domain::login::LoginControlInterface> auth
          = domain::login::createLoginModule(
                     std::make_shared<dataprovider::login::LoginDataProvider>(),
-                    std::make_shared<login::LoginScreen>(*this));
+                    std::make_shared<LoginScreen>(*this));
 
     mUserID = auth->loginWithPIN(pin);
     // If userID is empty, then the login attempt had failed

@@ -34,13 +34,17 @@
 // view
 #include <screencommon.hpp>
 #include <login/loginscreen.hpp>
-#include <backoffice/dashboard.hpp>
+#include <backoffice/dashboardscreen.hpp>
 // utility
 #include <logger/loghelper.hpp>
 
 namespace screen {
 
 namespace screenshared {
+    /*!
+     * Add variables that are shared by different screens
+     * Can be used to pass parameter from one screen to next
+    */
     std::string currentUserId;
 }
 
@@ -52,9 +56,12 @@ void FlowController::run() {
     screen::display nextScreen = screen::display::LOGIN;
 
     do {
+        // This promise is used for setting the future screen
         std::promise<screen::display> promise;
         std::future<screen::display> futureScreen = promise.get_future();
+        // Display the queued screen, and send the promise
         show(nextScreen, &promise);
+        // Here, we set the next screen to whatever is returned from the promise
         nextScreen = futureScreen.get();
     } while (nextScreen != screen::display::EXIT);
 }
@@ -80,13 +87,12 @@ void FlowController::showLoginScreen(std::promise<screen::display>* promise) {
     login::LoginScreen theScreen;
     std::thread spawnScreenProcess(&login::LoginScreen::show, &theScreen, promise);
     spawnScreenProcess.join();
-    // todo, this must be getSuccssfulUserID
     screenshared::currentUserId = theScreen.getUserID();
 }
 
 void FlowController::showDashboard(std::promise<screen::display>* promise) {
-    backoffice::Dashboard theScreen(screenshared::currentUserId);
-    std::thread spawnScreenProcess(&backoffice::Dashboard::show, &theScreen, promise);
+    backoffice::DashboardScreen theScreen(screenshared::currentUserId);
+    std::thread spawnScreenProcess(&backoffice::DashboardScreen::show, &theScreen, promise);
     spawnScreenProcess.join();
 }
 

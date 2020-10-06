@@ -21,6 +21,9 @@
 #ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
 
+/*!
+ * Add the new screens here
+*/
 namespace screen {
 
 enum class display {
