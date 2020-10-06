@@ -37,8 +37,8 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
     // Todo, provide dataiface and viewiface arguments
     using domain::dashboard::DashboardControlInterface;
     std::unique_ptr<DashboardControlInterface> coreDashboard
-                    = domain::dashboard::createDashboardModule(
-                            std::make_shared<DashboardScreen>(*this));
+        = domain::dashboard::createDashboardModule(
+                std::make_shared<DashboardScreen>(*this));
     coreDashboard->setCurrentUserId(mUserID);
     coreDashboard->PrintUser();
     // Todo, show user's full name here
