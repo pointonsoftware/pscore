@@ -22,8 +22,13 @@
 #include <iostream>
 #include <memory>
 #include <string>
+// view
 #include <screencommon.hpp>
+// core
 #include <domain/dashboard/interface/dashboardiface.hpp>
+// data
+#include <dashboarddata.hpp>
+#include <entity/user.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -38,6 +43,7 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
     using domain::dashboard::DashboardControlInterface;
     std::unique_ptr<DashboardControlInterface> coreDashboard
         = domain::dashboard::createDashboardModule(
+                std::make_shared<dataprovider::dashboard::DashboardDataProvider>(),
                 std::make_shared<DashboardScreen>(*this));
     coreDashboard->setCurrentUserId(mUserID);
     coreDashboard->PrintUser();

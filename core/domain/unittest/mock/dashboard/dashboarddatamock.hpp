@@ -18,53 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#include <memory>
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDDATAMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDDATAMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <string>
-#include "dashboarddataif.hpp"
-#include "dashboardviewif.hpp"
-#include <domain/librarycommon.hpp>
+#include <domain/dashboard/interface/dashboarddataif.hpp>
 #include <entity/user.hpp>
 
 namespace domain {
 namespace dashboard {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class DASHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
 
-class DashboardControlInterface {
+class DashboardDataMock : public DashboardDataInterface {
  public:
-    DashboardControlInterface() = default;
-    virtual ~DashboardControlInterface() = default;
+    DashboardDataMock() = default;
+    ~DashboardDataMock() = default;
 
-    // Public API
-    virtual void PrintUser() = 0;
-    /*!
-     * Sets the current user ID
-     * Warning: it is the caller's responsibility to provide a valid userID
-    */
-    virtual void setCurrentUserId(const std::string& userID) = 0;
-    /*!
-     * Returns the current user info
-     * Note: Has to be paired with setCurrentUserId(), otherwise will return empty
-    */
-    virtual entity::User getCurrentUserInfo() = 0;
+    MOCK_METHOD(entity::User, getUserByID, (const std::string& userID));
 };
-
-// Lib APIs
-extern "C" CORE_API std::unique_ptr<DashboardControlInterface> createDashboardModule(
-    const std::shared_ptr<DashboardDataInterface>& data,
-    const std::shared_ptr<DashboardViewInterface>& view);
 
 }  // namespace dashboard
 }  // namespace domain
 
-
-
-#endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_DASHBOARD_DASHBOARDDATAMOCK_HPP_

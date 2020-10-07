@@ -18,53 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#include <memory>
+#ifndef ORCHESTRA_DATAMANAGER_DASHBOARDDATA_HPP_
+#define ORCHESTRA_DATAMANAGER_DASHBOARDDATA_HPP_
 #include <string>
-#include "dashboarddataif.hpp"
-#include "dashboardviewif.hpp"
-#include <domain/librarycommon.hpp>
-#include <entity/user.hpp>
+#include <domain/dashboard/interface/dashboarddataif.hpp>
 
-namespace domain {
+namespace dataprovider {
 namespace dashboard {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class DASHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
 
-class DashboardControlInterface {
+class DashboardDataProvider : public domain::dashboard::DashboardDataInterface {
  public:
-    DashboardControlInterface() = default;
-    virtual ~DashboardControlInterface() = default;
-
-    // Public API
-    virtual void PrintUser() = 0;
-    /*!
-     * Sets the current user ID
-     * Warning: it is the caller's responsibility to provide a valid userID
-    */
-    virtual void setCurrentUserId(const std::string& userID) = 0;
-    /*!
-     * Returns the current user info
-     * Note: Has to be paired with setCurrentUserId(), otherwise will return empty
-    */
-    virtual entity::User getCurrentUserInfo() = 0;
+    DashboardDataProvider() = default;
+    virtual ~DashboardDataProvider() = default;
+    entity::User getUserByID(const std::string& userID) override;
 };
-
-// Lib APIs
-extern "C" CORE_API std::unique_ptr<DashboardControlInterface> createDashboardModule(
-    const std::shared_ptr<DashboardDataInterface>& data,
-    const std::shared_ptr<DashboardViewInterface>& view);
 
 }  // namespace dashboard
-}  // namespace domain
-
-
-
-#endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
+}  // namespace dataprovider
+#endif  // ORCHESTRA_DATAMANAGER_DASHBOARDDATA_HPP_

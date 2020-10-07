@@ -23,6 +23,7 @@
 #include <entity/user.hpp>
 
 // mocks
+#include "mock/dashboard/dashboarddatamock.hpp"
 #include "mock/dashboard/dashboardviewmock.hpp"
 // code under test
 #include <domain/dashboard/dashboardcontroller.hpp>
@@ -38,13 +39,14 @@ namespace test {
 
 class TestDashboard : public testing::Test {
  public:
-    TestDashboard() : dashController(viewMock) {
+    TestDashboard() : dashController(dataMock, viewMock) {
         // Empty for now
     }
 
     ~TestDashboard() = default;
     void SetUp() {}
     void TearDown() {}
+    std::shared_ptr<DashboardDataMock> dataMock = std::make_shared<DashboardDataMock>();
     std::shared_ptr<DashboardViewMock> viewMock = std::make_shared<DashboardViewMock>();
     DashboardController dashController;
 };

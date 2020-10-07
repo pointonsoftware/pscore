@@ -30,15 +30,18 @@ namespace dashboard {
 
 class DashboardController : public DashboardControlInterface {
  public:
-    explicit DashboardController(const std::shared_ptr<DashboardViewInterface>& view);
+    explicit DashboardController(const std::shared_ptr<DashboardDataInterface>& data,
+                                 const std::shared_ptr<DashboardViewInterface>& view);
     virtual ~DashboardController() = default;
 
     void PrintUser() override;
     void setCurrentUserId(const std::string& userID) override;
     entity::User getCurrentUserInfo() override;
  private:
+    std::shared_ptr<DashboardDataInterface> mDataProvider;
     std::shared_ptr<DashboardViewInterface> mView;
     std::string mCurrentUserID;
+    DASHSTATUS getCurrentUserInfo(entity::User* userInfoContainer) const;
     bool isUserValid(const entity::User& userInfo) const;
 };
 
