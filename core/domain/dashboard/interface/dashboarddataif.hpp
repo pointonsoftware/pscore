@@ -28,13 +28,10 @@ namespace dashboard {
 /*!
  * Note: If you add/update a function in this interface, please also update the mock class
 */
-
 class DashboardDataInterface {
  public:
     DashboardDataInterface() = default;
     virtual ~DashboardDataInterface() = default;
-
-    // Public API
 
     /*!
      * entity::User getUserByID(const std::string& userID)

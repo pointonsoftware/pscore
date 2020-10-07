@@ -80,16 +80,14 @@ DASHSTATUS DashboardController::getCurrentUserInfo(entity::User* userInfoContain
         LOG_ERROR("Dataprovider is not initialized");
         return DASHSTATUS::UNINITIALIZED;
     }
-
     // todo (xxx) : Check if dataprovider is ready; else throw
     *userInfoContainer = mDataProvider->getUserByID(mCurrentUserID);
-
     return DASHSTATUS::SUCCESS;
 }
 
 bool DashboardController::isUserValid(const entity::User& userInfo) const {
-    // If default pin is found, that means the user data was not initialized
-    return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
+    // If employeeID is empty, that means the user data was not initialized
+    return !userInfo.getEmployeeID().empty();
 }
 
 std::unique_ptr<DashboardControlInterface> createDashboardModule(

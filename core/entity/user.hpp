@@ -49,6 +49,7 @@ class User : public Employee {
     // Todo: Add user.getFullName(); - must be in person class
 
     // Todo (spec): What is the business rule for user IDs?
+    // Here we're using employeeID as the userID (but this is subject to change)
  protected:
     std::string mPIN;
 };
