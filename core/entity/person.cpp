@@ -56,7 +56,7 @@ void Person::setAddress(const Address& address) {
 }
 
 std::string Person::getFullName() {
-    // Todo (code). There might be a better way for this
+    // Todo (code). There might be a fancier way than this
     return m_firstname + " " + m_middlename + " " + m_lastname;
 }
 
