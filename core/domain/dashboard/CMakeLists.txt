@@ -7,6 +7,7 @@ add_library (
     # View
     interface/dashboardviewif.hpp
     # Dataprovider
+    interface/dashboarddataif.hpp
     # Controller
     interface/dashboardiface.hpp
     dashboardcontroller.hpp

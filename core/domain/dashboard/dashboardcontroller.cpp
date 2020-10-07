@@ -27,8 +27,9 @@
 namespace domain {
 namespace dashboard {
 
-DashboardController::DashboardController(const std::shared_ptr<DashboardViewInterface>& view)
-: mView(view), mCurrentUserID("") {
+DashboardController::DashboardController(const std::shared_ptr<DashboardDataInterface>& data,
+                                         const std::shared_ptr<DashboardViewInterface>& view)
+: mDataProvider(data), mView(view), mCurrentUserID("") {
     // empty for now
 }
 
@@ -48,29 +49,42 @@ entity::User DashboardController::getCurrentUserInfo() {
         LOG_ERROR("View is not initialized");
         return entity::User();
     }
-
     if (mCurrentUserID.empty()) {
         LOG_ERROR("UserID was not set.");
         // Todo (spec), do we need a more specific popup here?
         mView->showUserNotFound();
         return entity::User();
     }
-
-    // Todo, retrieve the userinfo from db using userID
-    // dashboardDataProvider->getUserInfo(mUserID);
-    const entity::User temp = []() {
-        // todo (data): find the user info
+    // Retrieve the userinfo from db using userID
+    entity::User userInfo;
+    if (getCurrentUserInfo(&userInfo) != DASHSTATUS::SUCCESS) {
+        mView->showDataNotReadyScreen();
         return entity::User();
-    }();
-
+    }
     // Validate user info
-    if (!isUserValid(temp)) {
+    // Todo (controller), should we move this inside getCurrentUserInfo()?
+    if (!isUserValid(userInfo)) {
         LOG_WARN("UserID %s was not found", mCurrentUserID.c_str());
         mView->showUserNotFound();
         return entity::User();
     }
+    return userInfo;
+}
 
-    return temp;
+DASHSTATUS DashboardController::getCurrentUserInfo(entity::User* userInfoContainer) const {
+    if (!userInfoContainer) {
+        LOG_ERROR("Invalid user argument");
+        return DASHSTATUS::FAILED;
+    }
+    if (!mDataProvider) {
+        LOG_ERROR("Dataprovider is not initialized");
+        return DASHSTATUS::UNINITIALIZED;
+    }
+
+    // todo (xxx) : Check if dataprovider is ready; else throw
+    *userInfoContainer = mDataProvider->getUserByID(mCurrentUserID);
+
+    return DASHSTATUS::SUCCESS;
 }
 
 bool DashboardController::isUserValid(const entity::User& userInfo) const {
@@ -79,8 +93,9 @@ bool DashboardController::isUserValid(const entity::User& userInfo) const {
 }
 
 std::unique_ptr<DashboardControlInterface> createDashboardModule(
+            const std::shared_ptr<DashboardDataInterface>& data,
             const std::shared_ptr<DashboardViewInterface>& view) {
-    return std::make_unique<DashboardController>(view);
+    return std::make_unique<DashboardController>(data, view);
 }
 
 }  // namespace dashboard

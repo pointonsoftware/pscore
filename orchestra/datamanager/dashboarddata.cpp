@@ -18,53 +18,23 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#include <memory>
-#include <string>
-#include "dashboarddataif.hpp"
-#include "dashboardviewif.hpp"
-#include <domain/librarycommon.hpp>
-#include <entity/user.hpp>
+#include "dashboarddata.hpp"
+#include <storage/stackdb.hpp>
 
-namespace domain {
+namespace dataprovider {
 namespace dashboard {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class DASHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
 
-class DashboardControlInterface {
- public:
-    DashboardControlInterface() = default;
-    virtual ~DashboardControlInterface() = default;
-
-    // Public API
-    virtual void PrintUser() = 0;
-    /*!
-     * Sets the current user ID
-     * Warning: it is the caller's responsibility to provide a valid userID
-    */
-    virtual void setCurrentUserId(const std::string& userID) = 0;
-    /*!
-     * Returns the current user info
-     * Note: Has to be paired with setCurrentUserId(), otherwise will return empty
-    */
-    virtual entity::User getCurrentUserInfo() = 0;
-};
-
-// Lib APIs
-extern "C" CORE_API std::unique_ptr<DashboardControlInterface> createDashboardModule(
-    const std::shared_ptr<DashboardDataInterface>& data,
-    const std::shared_ptr<DashboardViewInterface>& view);
+entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
+    const entity::User user = [userID]() {
+        for (const entity::User& temp : DATABASE().getUsersList()) {
+            if (temp.pin().find(userID) != std::string::npos) {
+                return temp;
+            }
+        }
+        return entity::User();
+    }();
+    return user;
+}
 
 }  // namespace dashboard
-}  // namespace domain
-
-
-
-#endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
+}  // namespace dataprovider
