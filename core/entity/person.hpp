@@ -44,7 +44,8 @@ class Person {
     void setPersonalIds(const std::vector<PersonalId>& personalids);
     void setEmail(const std::string& email);
     void setAddress(const Address& address);
-    // Todo: Add user.getFullName();
+    std::string getFullName();
+
  protected:
     std::string m_firstname;
     std::string m_middlename;

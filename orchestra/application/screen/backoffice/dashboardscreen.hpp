@@ -40,8 +40,21 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     void showUserNotFound() override;
     void showInvalidOptionPopup() override;
     void showDataNotReadyScreen() override;
+
  private:
     std::string mUserID;
+    // Dashboard options - this represents the buttons in a GUI
+    enum class Options {
+        PERSONAL_INFORMATION = 0,
+        // add more enums here
+        LOGOUT,
+        APP_EXIT
+        // Warning! Don't add anything here.
+        // New enum values must be added before LOGOUT
+    };
+    void showOptions();
+    Options getUserSelection();
+    void processOption(Options option);
 };
 
 }  // namespace backoffice

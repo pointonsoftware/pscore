@@ -33,10 +33,6 @@ DashboardController::DashboardController(const std::shared_ptr<DashboardDataInte
     // empty for now
 }
 
-void DashboardController::PrintUser() {
-    std::cout << "Hi " << mCurrentUserID << ", what do you want to do today?" << std::endl;
-}
-
 void DashboardController::setCurrentUserId(const std::string& userID) {
     if (!userID.empty()) {
         mCurrentUserID = userID;

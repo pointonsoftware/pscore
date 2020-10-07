@@ -34,7 +34,6 @@ class DashboardController : public DashboardControlInterface {
                                  const std::shared_ptr<DashboardViewInterface>& view);
     virtual ~DashboardController() = default;
 
-    void PrintUser() override;
     void setCurrentUserId(const std::string& userID) override;
     entity::User getCurrentUserInfo() override;
  private:
