@@ -46,16 +46,20 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
     coreDashboard->setCurrentUserId(mUserID);
     entity::User user = coreDashboard->getCurrentUserInfo();
 
-    // Display
+    //--- Main Display
+
     SCREENCOMMON().showTopBanner();
     std::cout << "Hi " << user.getFullName() << ", what do you want to do today?" << std::endl;
     showOptions();
 
     Options userSelection;
     do {
+        // Getting user input
         userSelection = getUserSelection();
         processOption(userSelection);
     } while (userSelection != Options::LOGOUT && userSelection != Options::APP_EXIT);
+
+    //---
 
     // Setting the next screen
     promise->set_value(userSelection == Options::LOGOUT ? display::LOGIN : display::EXIT);
