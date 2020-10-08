@@ -48,7 +48,8 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
     //--- Main Display
 
     SCREENCOMMON().showTopBanner();
-    std::cout << "Hi " << mCurrentUser.getFullName() << ", what do you want to do today?" << std::endl;
+    std::cout << "Hi " << mCurrentUser.getFullName()
+              << ", please select an option below." << std::endl;
     showOptions();
 
     Options userSelection;
@@ -92,7 +93,7 @@ DashboardScreen::Options DashboardScreen::getUserSelection() const {
         return Options::LOGOUT;
     } else if (userInput.find("1") != std::string::npos) {
         return Options::PERSONAL_INFORMATION;
-    } // add more options here
+    }  // add more options here
 
     // Return exit by default
     return Options::APP_EXIT;
