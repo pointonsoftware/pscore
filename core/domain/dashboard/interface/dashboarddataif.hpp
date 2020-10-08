@@ -46,7 +46,4 @@ class DashboardDataInterface {
 
 }  // namespace dashboard
 }  // namespace domain
-
-
-
 #endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDDATAIF_HPP_

@@ -38,17 +38,61 @@ DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
 }
 
 void DashboardScreen::show(std::promise<screen::display>* promise) {
-    SCREENCOMMON().showTopBanner();
-    // Todo, provide dataiface and viewiface arguments
     using domain::dashboard::DashboardControlInterface;
     std::unique_ptr<DashboardControlInterface> coreDashboard
         = domain::dashboard::createDashboardModule(
                 std::make_shared<dataprovider::dashboard::DashboardDataProvider>(),
                 std::make_shared<DashboardScreen>(*this));
     coreDashboard->setCurrentUserId(mUserID);
-    coreDashboard->PrintUser();
-    // Todo, show user's full name here
-    promise->set_value(screen::display::EXIT);
+    entity::User user = coreDashboard->getCurrentUserInfo();
+
+    //--- Main Display
+
+    SCREENCOMMON().showTopBanner();
+    std::cout << "Hi " << user.getFullName() << ", what do you want to do today?" << std::endl;
+    showOptions();
+
+    Options userSelection;
+    do {
+        // Getting user input
+        userSelection = getUserSelection();
+        processOption(userSelection);
+    } while (userSelection != Options::LOGOUT && userSelection != Options::APP_EXIT);
+
+    //---
+
+    // Setting the next screen
+    promise->set_value(userSelection == Options::LOGOUT ? display::LOGIN : display::EXIT);
+}
+
+void DashboardScreen::showOptions() {
+    std::cout << "[1] Personal Information" << std::endl;
+    std::cout << "[0] Logout" << std::endl;
+}
+
+DashboardScreen::Options DashboardScreen::getUserSelection() {
+    std::string userInput;
+    std::cin >> userInput;
+
+    // Todo (code), there might be a better/more effecient way to parse the user input
+    if (userInput.find("x") != std::string::npos) {
+        return Options::APP_EXIT;
+    } else if (userInput.find("0") != std::string::npos) {
+        return Options::LOGOUT;
+    }  // add more options here
+
+    // Return exit by default
+    return Options::APP_EXIT;
+}
+
+void DashboardScreen::processOption(Options option) {
+    switch (option) {
+        case Options::LOGOUT:    // Fall-through
+        case Options::APP_EXIT:  // Fall-through
+        default:
+            // Do nothing
+            break;
+    }
 }
 
 void DashboardScreen::showUserNotFound() {

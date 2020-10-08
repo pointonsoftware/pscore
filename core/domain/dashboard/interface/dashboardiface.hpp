@@ -43,8 +43,6 @@ class DashboardControlInterface {
     DashboardControlInterface() = default;
     virtual ~DashboardControlInterface() = default;
 
-    // Public API
-    virtual void PrintUser() = 0;
     /*!
      * Sets the current user ID
      * Warning: it is the caller's responsibility to provide a valid userID
