@@ -39,12 +39,24 @@ class Person {
     Person() = default;
     virtual ~Person() = default;
 
+    // Getters
+    std::string getFullName() const;
+    std::string firstName() const;
+    std::string middleName() const;
+    std::string lastName() const;
+    std::string birthdate() const;
+    std::string gender() const;
+    std::string email() const;
+    Address address() const;
+    ContactDetails contactDetails() const;
+    std::vector<PersonalId> personalIds() const;
+
+    // Setters
     void addPhoneNumber(const std::string& phonenumber);
     void addPersonalId(const std::string& type, const std::string& number);
     void setPersonalIds(const std::vector<PersonalId>& personalids);
     void setEmail(const std::string& email);
     void setAddress(const Address& address);
-    std::string getFullName();
 
  protected:
     std::string m_firstname;

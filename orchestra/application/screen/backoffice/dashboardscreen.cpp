@@ -28,7 +28,6 @@
 #include <domain/dashboard/interface/dashboardiface.hpp>
 // data
 #include <dashboarddata.hpp>
-#include <entity/user.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -44,12 +43,12 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
                 std::make_shared<dataprovider::dashboard::DashboardDataProvider>(),
                 std::make_shared<DashboardScreen>(*this));
     coreDashboard->setCurrentUserId(mUserID);
-    entity::User user = coreDashboard->getCurrentUserInfo();
+    mCurrentUser = coreDashboard->getCurrentUserInfo();
 
     //--- Main Display
 
     SCREENCOMMON().showTopBanner();
-    std::cout << "Hi " << user.getFullName() << ", what do you want to do today?" << std::endl;
+    std::cout << "Hi " << mCurrentUser.getFullName() << ", what do you want to do today?" << std::endl;
     showOptions();
 
     Options userSelection;
@@ -65,28 +64,45 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
     promise->set_value(userSelection == Options::LOGOUT ? display::LOGIN : display::EXIT);
 }
 
-void DashboardScreen::showOptions() {
+void DashboardScreen::showOptions() const {
+    std::cout << std::endl;
     std::cout << "[1] Personal Information" << std::endl;
     std::cout << "[0] Logout" << std::endl;
 }
 
-DashboardScreen::Options DashboardScreen::getUserSelection() {
+void DashboardScreen::showUserInformation() const {
+    // Todo (code), this needs to be updated to have a proper console screen layout
+    std::cout << "First Name: "  << mCurrentUser.firstName() << std::endl;
+    std::cout << "Middle Name: " << mCurrentUser.middleName() << std::endl;
+    std::cout << "Last Name: "   << mCurrentUser.lastName() << std::endl;
+    std::cout << "Birthdate: "   << mCurrentUser.birthdate() << std::endl;
+    std::cout << "Gender: "      << mCurrentUser.gender() << std::endl;
+    std::cout << "Email: "       << mCurrentUser.email() << std::endl;
+    // Todo (code), add Contact details, address and personal ID
+}
+
+DashboardScreen::Options DashboardScreen::getUserSelection() const {
     std::string userInput;
-    std::cin >> userInput;
+    std::cout << std::endl << "Select: "; std::cin >> userInput;
 
     // Todo (code), there might be a better/more effecient way to parse the user input
     if (userInput.find("x") != std::string::npos) {
         return Options::APP_EXIT;
     } else if (userInput.find("0") != std::string::npos) {
         return Options::LOGOUT;
-    }  // add more options here
+    } else if (userInput.find("1") != std::string::npos) {
+        return Options::PERSONAL_INFORMATION;
+    } // add more options here
 
     // Return exit by default
     return Options::APP_EXIT;
 }
 
-void DashboardScreen::processOption(Options option) {
+void DashboardScreen::processOption(Options option) const {
     switch (option) {
+        case Options::PERSONAL_INFORMATION:
+            showUserInformation();
+            break;
         case Options::LOGOUT:    // Fall-through
         case Options::APP_EXIT:  // Fall-through
         default:

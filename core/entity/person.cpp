@@ -31,6 +31,48 @@ Person::Person(const std::string& firstname,
   m_birthdate(birthdate), m_gender(gender) {
     // Empty for now
 }
+
+std::string Person::getFullName() const {
+    // Todo (code). There might be a fancier way than this
+    return m_firstname + " " + m_middlename + " " + m_lastname;
+}
+
+std::string Person::firstName() const {
+    return m_firstname;
+}
+
+std::string Person::middleName() const {
+    return m_middlename;
+}
+
+std::string Person::lastName() const {
+    return m_lastname;
+}
+
+std::string Person::birthdate() const {
+    return m_birthdate;
+}
+
+std::string Person::gender() const {
+    return m_gender;
+}
+
+std::string Person::email() const {
+    return m_email;
+}
+
+Address Person::address() const {
+    return m_address;
+}
+
+ContactDetails Person::contactDetails() const {
+    return m_contact_details;
+}
+
+std::vector<PersonalId> Person::personalIds() const {
+    return m_personal_ids;
+}
+
 // cppcheck-suppress unusedFunction  ! remove this line when function is used
 void Person::addPhoneNumber(const std::string& phonenumber) {
     m_contact_details.phone_number.emplace_back(phonenumber);
@@ -53,11 +95,6 @@ void Person::setEmail(const std::string& email) {
 // cppcheck-suppress unusedFunction  ! remove this line when function is used
 void Person::setAddress(const Address& address) {
     m_address = address;
-}
-
-std::string Person::getFullName() {
-    // Todo (code). There might be a fancier way than this
-    return m_firstname + " " + m_middlename + " " + m_lastname;
 }
 
 }  // namespace entity
