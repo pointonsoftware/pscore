@@ -35,18 +35,20 @@ DashboardController::DashboardController(const std::shared_ptr<DashboardDataInte
 
 void DashboardController::setCurrentUserId(const std::string& userID) {
     if (!userID.empty()) {
+        LOG_INFO("Setting current user ID to: %s", userID.c_str());
         mCurrentUserID = userID;
     }
 }
 
 entity::User DashboardController::getCurrentUserInfo() {
+    LOG_DEBUG("Getting current user info");
     // Make sure view is valid
     if (!mView) {
         LOG_ERROR("View is not initialized");
         return entity::User();
     }
     if (mCurrentUserID.empty()) {
-        LOG_ERROR("UserID was not set.");
+        LOG_ERROR("UserID was not set");
         // Todo (spec), do we need a more specific popup here?
         mView->showUserNotFound();
         return entity::User();
@@ -59,10 +61,12 @@ entity::User DashboardController::getCurrentUserInfo() {
     }
     // Validate user info
     if (!isUserValid(userInfo)) {
-        LOG_WARN("UserID %s was not found", mCurrentUserID.c_str());
+        LOG_ERROR("UserID %s was not found", mCurrentUserID.c_str());
         mView->showUserNotFound();
         return entity::User();
     }
+
+    LOG_INFO("Current user with ID: %s was found", mCurrentUserID.c_str());
     return userInfo;
 }
 
@@ -75,12 +79,14 @@ DASHSTATUS DashboardController::getCurrentUserInfo(entity::User* userInfoContain
         LOG_ERROR("Dataprovider is not initialized");
         return DASHSTATUS::UNINITIALIZED;
     }
+    LOG_DEBUG("Retrieving user data");
     // todo (xxx) : Check if dataprovider is ready; else throw
     *userInfoContainer = mDataProvider->getUserByID(mCurrentUserID);
     return DASHSTATUS::SUCCESS;
 }
 
 bool DashboardController::isUserValid(const entity::User& userInfo) const {
+    LOG_DEBUG("Validating user data");
     // If employeeID is empty, that means the user data was not initialized
     return !userInfo.getEmployeeID().empty();
 }

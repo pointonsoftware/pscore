@@ -74,7 +74,7 @@ AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* u
     }
 
     // todo (xxx) : Check if dataprovider is ready; else throw
-
+    LOG_DEBUG("Retrieving user data");
     // Check pin in dataprovider
     *user = mDataProvider->findUserByPin(pin);
 
@@ -92,11 +92,12 @@ bool LoginController::isPinValid(const std::string& pin) const {
         LOG_WARN("Invalid PIN: %s", pin.c_str());
         return false;
     }
-
+    LOG_DEBUG("PIN is valid");
     return true;
 }
 
 bool LoginController::isUserValid(const entity::User& userInfo) const {
+    LOG_DEBUG("Validating user data");
     // If default pin is found, that means the user data was not initialized
     return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
 }
