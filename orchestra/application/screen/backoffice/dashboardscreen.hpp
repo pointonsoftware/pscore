@@ -57,6 +57,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     };
     void showOptions() const;
     void showUserInformation() const;
+    void invalidOptionSelected() const;
     Options getUserSelection() const;
     void processOption(Options option) const;
 };

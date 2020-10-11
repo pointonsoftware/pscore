@@ -82,6 +82,10 @@ void DashboardScreen::showUserInformation() const {
     // Todo (code), add Contact details, address and personal ID
 }
 
+void DashboardScreen::invalidOptionSelected() const {
+    std::cout << "Invalid option! Please select a number from the menu." << std::endl;
+}
+
 DashboardScreen::Options DashboardScreen::getUserSelection() const {
     std::string userInput;
     std::cout << std::endl << "Select: "; std::cin >> userInput;
@@ -104,7 +108,7 @@ void DashboardScreen::processOption(Options option) const {
             showUserInformation();
             break;
         case Options::INVALID:
-            std::cout << "Invalid option! Please select a number from the menu." << std::endl;
+            invalidOptionSelected();
             break;
         case Options::LOGOUT:    // Fall-through
         case Options::APP_EXIT:  // Fall-through
