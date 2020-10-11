@@ -82,27 +82,33 @@ void DashboardScreen::showUserInformation() const {
     // Todo (code), add Contact details, address and personal ID
 }
 
+void DashboardScreen::invalidOptionSelected() const {
+    std::cout << "Invalid option! Please select a number from the menu." << std::endl;
+}
+
 DashboardScreen::Options DashboardScreen::getUserSelection() const {
     std::string userInput;
     std::cout << std::endl << "Select: "; std::cin >> userInput;
 
-    // Todo (code), there might be a better/more effecient way to parse the user input
-    if (userInput.find("x") != std::string::npos) {
+    if (userInput == "x") {
         return Options::APP_EXIT;
-    } else if (userInput.find("0") != std::string::npos) {
+    } else if (userInput == "0") {
         return Options::LOGOUT;
-    } else if (userInput.find("1") != std::string::npos) {
+    } else if (userInput == "1") {
         return Options::PERSONAL_INFORMATION;
     }  // add more options here
 
-    // Return exit by default
-    return Options::APP_EXIT;
+    // Default invalid option
+    return Options::INVALID;
 }
 
 void DashboardScreen::processOption(Options option) const {
     switch (option) {
         case Options::PERSONAL_INFORMATION:
             showUserInformation();
+            break;
+        case Options::INVALID:
+            invalidOptionSelected();
             break;
         case Options::LOGOUT:    // Fall-through
         case Options::APP_EXIT:  // Fall-through
