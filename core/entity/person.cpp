@@ -97,9 +97,4 @@ void Person::setAddress(const Address& address) {
     m_address = address;
 }
 
-std::string Person::getFullName() {
-    // Todo (code). There might be a better way for this
-    return m_firstname + " " + m_middlename + " " + m_lastname;
-}
-
 }  // namespace entity
