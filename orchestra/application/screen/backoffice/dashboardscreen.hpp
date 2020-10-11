@@ -50,7 +50,8 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
         PERSONAL_INFORMATION = 0,
         // add more enums here
         LOGOUT,
-        APP_EXIT
+        APP_EXIT,
+        INVALID
         // Warning! Don't add anything here.
         // New enum values must be added before LOGOUT
     };
