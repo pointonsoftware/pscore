@@ -24,6 +24,7 @@
 #include <future>
 #include <domain/dashboard/interface/dashboardviewif.hpp>
 #include <screeniface.hpp>
+#include <entity/user.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -43,6 +44,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
 
  private:
     std::string mUserID;
+    entity::User mCurrentUser;
     // Dashboard options - this represents the buttons in a GUI
     enum class Options {
         PERSONAL_INFORMATION = 0,
@@ -52,9 +54,10 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
         // Warning! Don't add anything here.
         // New enum values must be added before LOGOUT
     };
-    void showOptions();
-    Options getUserSelection();
-    void processOption(Options option);
+    void showOptions() const;
+    void showUserInformation() const;
+    Options getUserSelection() const;
+    void processOption(Options option) const;
 };
 
 }  // namespace backoffice
