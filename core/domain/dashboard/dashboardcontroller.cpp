@@ -58,7 +58,6 @@ entity::User DashboardController::getCurrentUserInfo() {
         return entity::User();
     }
     // Validate user info
-    // Todo (controller), should we move this inside getCurrentUserInfo()?
     if (!isUserValid(userInfo)) {
         LOG_WARN("UserID %s was not found", mCurrentUserID.c_str());
         mView->showUserNotFound();

@@ -36,7 +36,7 @@ class DashboardDataInterface {
     /*!
      * entity::User getUserByID(const std::string& userID)
      * Looks for the user with userid
-     * Will return user->pin = entity::User::DEFAULT_PIN if user is not found.
+     * Will return user->employeeID = empty if user is not found.
      *
      * [in] input userID
      * [return] user class

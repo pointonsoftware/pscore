@@ -51,59 +51,81 @@ class TestDashboard : public testing::Test {
     DashboardController dashController;
 };
 
-TEST_F(TestDashboard, DISABLED_GetCurrentUserInfoSuccess) {
-    // const std::string dummyPin = "1234";
-    // const std::string dummyUID = "11111";
-    // // Calls findUser
-    // EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
-    //     .WillOnce(Return(
-    //     entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUID, "admin", dummyPin)));
-    // // Returns the userID
-    // ASSERT_EQ(loginController.loginWithPIN(dummyPin), dummyUID);
+TEST_F(TestDashboard, GetCurrentUserInfoSuccess) {
+    /* Pre-condition
+     * According to the API, we should set the current userID
+     * before calling getCurrentUserInfo()
+    */
+    const std::string dummyUserId = "1234";
+    dashController.setCurrentUserId(dummyUserId);
+
+    // We expect that data provider will perform getUserByID()
+    EXPECT_CALL(*dataMock, getUserByID(dummyUserId))
+    // Fake that we found a user
+        .WillOnce(Return(
+        entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUserId, "admin", "1111")));
+
+    entity::User dummyUser = dashController.getCurrentUserInfo();
+    // The employeeID must not be empty
+    ASSERT_NE(dummyUser.getEmployeeID(), "");
 }
 
-TEST_F(TestDashboard, DISABLED_GetCurrentUserInvalidUID) {
-    const std::string dummyPin = "1234";
-    // const std::string dummyUID = "11111";
-    // // Calls findUser
-    // EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
-    //     .WillOnce(Return(
-    //     entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUID, "admin", dummyPin)));
-    // // Returns the userID
-    // ASSERT_EQ(loginController.loginWithPIN(dummyPin), dummyUID);
+TEST_F(TestDashboard, GetCurrentUserNotFound) {
+    /* Pre-condition
+     * According to the API, we should set the current userID
+     * before calling getCurrentUserInfo()
+    */
+    const std::string dummyUserId = "1234";
+    dashController.setCurrentUserId(dummyUserId);
+
+    // We expect that data provider will perform getUserByID()
+    EXPECT_CALL(*dataMock, getUserByID(dummyUserId))
+    // Fake that we did NOT found a user by returning an empty User data
+        .WillOnce(Return(entity::User()));
+    // We should show an information in the screen
+    EXPECT_CALL(*viewMock, showUserNotFound());
+
+    entity::User dummyUser = dashController.getCurrentUserInfo();
+    // The employeeID must be empty
+    ASSERT_EQ(dummyUser.getEmployeeID(), "");
 }
 
-TEST_F(TestDashboard, DISABLED_GetCurrentUserNotFound) {
-    const std::string dummyPin = "1234";
-    // const std::string dummyUID = "11111";
-    // // Calls findUser
-    // EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
-    //     .WillOnce(Return(
-    //     entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUID, "admin", dummyPin)));
-    // // Returns the userID
-    // ASSERT_EQ(loginController.loginWithPIN(dummyPin), dummyUID);
+TEST_F(TestDashboard, GetCurrentUserWithEmptyUserID) {
+    /* This case generally happens because setCurrentUserId() was not
+     * used before calling getCurrentUserInfo()
+    */
+
+    // We should show an information in the screen
+    EXPECT_CALL(*viewMock, showUserNotFound());
+
+    entity::User dummyUser = dashController.getCurrentUserInfo();
+    // employeeID must be empty
+    ASSERT_EQ(dummyUser.getEmployeeID(), "");
 }
 
-TEST_F(TestDashboard, DISABLED_GetCurrentUserViewNotInitialized) {
-    const std::string dummyPin = "1234";
-    // const std::string dummyUID = "11111";
-    // // Calls findUser
-    // EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
-    //     .WillOnce(Return(
-    //     entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUID, "admin", dummyPin)));
-    // // Returns the userID
-    // ASSERT_EQ(loginController.loginWithPIN(dummyPin), dummyUID);
+TEST_F(TestDashboard, GetCurrentUserViewNotInitialized) {
+    DashboardController dashboardController(dataMock, nullptr);
+    entity::User dummyUser = dashboardController.getCurrentUserInfo();
+    // employeeID must be empty
+    ASSERT_EQ(dummyUser.getEmployeeID(), "");
 }
 
-TEST_F(TestDashboard, DISABLED_GetCurrentUserDpNotInitialized) {
-    const std::string dummyPin = "1234";
-    // const std::string dummyUID = "11111";
-    // // Calls findUser
-    // EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
-    //     .WillOnce(Return(
-    //     entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUID, "admin", dummyPin)));
-    // // Returns the userID
-    // ASSERT_EQ(loginController.loginWithPIN(dummyPin), dummyUID);
+TEST_F(TestDashboard, GetCurrentUserWithDataProviderNotInitialized) {
+    DashboardController dashboardController(nullptr, viewMock);
+
+    /* Pre-condition
+     * According to the API, we should set the current userID
+     * before calling getCurrentUserInfo()
+    */
+    const std::string dummyUserId = "1234";
+    dashboardController.setCurrentUserId(dummyUserId);
+
+    // We should inform the user
+    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
+
+    entity::User dummyUser = dashboardController.getCurrentUserInfo();
+    // employeeID must be empty
+    ASSERT_EQ(dummyUser.getEmployeeID(), "");
 }
 
 }  // namespace test
