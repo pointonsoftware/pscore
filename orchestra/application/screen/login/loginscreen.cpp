@@ -33,6 +33,9 @@ namespace login {
 
 void LoginScreen::show(std::promise<screen::display>* promise) {
     do {
+        // Welcome to Core!
+        SCREENCOMMON().showTopBanner("Login");
+        std::cout << "Hi there, Welcome to Core!" << std::endl;
         std::string pin;
         std::cout << "Input your PIN: ";
         std::cin >> pin;

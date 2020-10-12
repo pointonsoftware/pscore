@@ -35,12 +35,19 @@ class ScreenCommon {
         return instance;
     }
 
-    void clearScreen();
-    void showWelcomeScreen();
-    const std::string horizontalBorder();
-    void showTopBanner();
+    void clearScreen() const;
+    const std::string horizontalBorder() const;
+    void showTopBanner(const std::string& currentScreen) const;
  private:
     ScreenCommon() = default;
+    void printText(const std::string& text) const;
+
+    struct Indent {
+        std::string start;
+        std::string end;
+    };
+
+    Indent calculateIndents(const std::string& text) const;
 };
 
 }  // namespace screen

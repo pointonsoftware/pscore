@@ -23,10 +23,11 @@
 #include "screencommon.hpp"
 #include <cstdlib>
 #include <iostream>
+#include <iomanip>
 
 namespace screen {
 
-void ScreenCommon::clearScreen() {
+void ScreenCommon::clearScreen() const {
 #ifdef __WIN32__
     std::system("cls");
 #else
@@ -34,25 +35,37 @@ void ScreenCommon::clearScreen() {
 #endif
 }
 
-void ScreenCommon::showWelcomeScreen() {
-    showTopBanner();
-    std::cout << "Hi there, Welcome to Core!" << std::endl;
-}
-
-const std::string ScreenCommon::horizontalBorder() {
+const std::string ScreenCommon::horizontalBorder() const {
     return "*********************************************************************************";
 }
 
-void ScreenCommon::showTopBanner() {
+void ScreenCommon::printText(const std::string& text) const {
+    const Indent indents = calculateIndents(text);
+    std::cout << "*" << indents.start << text << indents.end << "*" << std::endl;
+}
+
+void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     clearScreen();
     std::cout << horizontalBorder() << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t\t---- CORE " << VERSION << " ----\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t\tConsole  Application\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t\t\t\t\t\t\t\t*" << std::endl;
-    std::cout << "*\t\t\t    Enter [x] if you want to exit\t\t\t*" << std::endl;
+    printText("");
+    printText(std::string("---- CORE "+ std::string(VERSION) +" ----"));
+    printText("");
+    printText("Console  Application");
+    printText("");
+    printText("Enter [x] if you want to exit");
     std::cout << horizontalBorder() << std::endl;
+    printText(currentScreen);
+    std::cout << horizontalBorder() << std::endl;
+}
+
+ScreenCommon::Indent ScreenCommon::calculateIndents(const std::string& text) const {
+    Indent indents;
+    indents.start = std::string((80 - text.size()) / 2, ' ');
+    indents.end = indents.start;
+    if (!(text.size() % 2)) {
+        indents.end = indents.start.substr(0, indents.start.size()-1);
+    }
+    return indents;
 }
 
 }  // namespace screen

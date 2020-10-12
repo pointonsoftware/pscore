@@ -47,7 +47,8 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     entity::User mCurrentUser;
     // Dashboard options - this represents the buttons in a GUI
     enum class Options {
-        PERSONAL_INFORMATION = 0,
+        LANDING,
+        USER_DETAILS,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -55,6 +56,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
         // Warning! Don't add anything here.
         // New enum values must be added before LOGOUT
     };
+    void showLandingScreen() const;
     void showOptions() const;
     void showUserInformation() const;
     void invalidOptionSelected() const;
