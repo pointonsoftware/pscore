@@ -36,7 +36,7 @@ DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
     // empty for now
 }
 
-void DashboardScreen::show(std::promise<screen::display>* promise) {
+void DashboardScreen::show(std::promise<defines::display>* promise) {
     using domain::dashboard::DashboardControlInterface;
     std::unique_ptr<DashboardControlInterface> coreDashboard
         = domain::dashboard::createDashboardModule(
@@ -59,7 +59,8 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
     //---
 
     // Setting the next screen
-    promise->set_value(userSelection == Options::LOGOUT ? display::LOGIN : display::EXIT);
+    promise->set_value(userSelection == Options::LOGOUT ?
+                                        defines::display::LOGIN : defines::display::EXIT);
 }
 
 void DashboardScreen::showLandingScreen() const {
@@ -75,16 +76,50 @@ void DashboardScreen::showOptions() const {
     std::cout << "[0] Logout" << std::endl;
 }
 
+void DashboardScreen::showContactDetails() const {
+    std::cout << std::endl << "Contact Details" << std::endl;
+    for (size_t count = 1; count <= mCurrentUser.contactDetails().phone_number.size(); ++count) {
+        SCREENCOMMON().printItemText("Phone " + std::to_string(count),
+                                      mCurrentUser.contactDetails().phone_number[count-1]);
+    }
+    std::cout << "Email       : " << mCurrentUser.contactDetails().email << std::endl;
+}
+
+void DashboardScreen::showUserAddress() const {
+    std::cout << std::endl << "Address" << std::endl;
+    SCREENCOMMON().printItemText("House No.", mCurrentUser.address().housenumber);
+    SCREENCOMMON().printItemText("Lot", mCurrentUser.address().lot);
+    SCREENCOMMON().printItemText("Block", mCurrentUser.address().block);
+    SCREENCOMMON().printItemText("Street", mCurrentUser.address().street);
+    SCREENCOMMON().printItemText("Subdivision", mCurrentUser.address().subdivision);
+    SCREENCOMMON().printItemText("Sitio", mCurrentUser.address().sitio);
+    SCREENCOMMON().printItemText("Purok", mCurrentUser.address().purok);
+    SCREENCOMMON().printItemText("Barangay", mCurrentUser.address().barangay);
+    SCREENCOMMON().printItemText("City/Town", mCurrentUser.address().city_town);
+    SCREENCOMMON().printItemText("Province", mCurrentUser.address().province);
+    SCREENCOMMON().printItemText("Zip Code", mCurrentUser.address().zip);
+}
+
+void DashboardScreen::showUserPersonalIds() const {
+    std::cout << std::endl << "IDs" << std::endl;
+    for (size_t count = 1; count <= mCurrentUser.personalIds().size(); ++count) {
+        const std::string details(mCurrentUser.personalIds()[count-1].type
+                               + defines::DELIMETER_DASH
+                               + mCurrentUser.personalIds()[count-1].id_number);
+        SCREENCOMMON().printItemText("ID " + std::to_string(count), details);
+    }
+}
+
 void DashboardScreen::showUserInformation() const {
     SCREENCOMMON().showTopBanner("User Information");
-    // Todo (code), this needs to be updated to have a proper console screen layout
-    std::cout << "First Name  : " << mCurrentUser.firstName() << std::endl;
-    std::cout << "Middle Name : " << mCurrentUser.middleName() << std::endl;
-    std::cout << "Last Name   : " << mCurrentUser.lastName() << std::endl;
-    std::cout << "Birthdate   : " << mCurrentUser.birthdate() << std::endl;
-    std::cout << "Gender      : " << mCurrentUser.gender() << std::endl;
-    std::cout << "Email       : " << mCurrentUser.email() << std::endl;
-    // Todo (code), add Contact details, address and personal ID
+    SCREENCOMMON().printItemText("First Name", mCurrentUser.firstName());
+    SCREENCOMMON().printItemText("Middle Name", mCurrentUser.middleName());
+    SCREENCOMMON().printItemText("Last Name", mCurrentUser.lastName());
+    SCREENCOMMON().printItemText("Birthdate", mCurrentUser.birthdate());
+    SCREENCOMMON().printItemText("Gender", mCurrentUser.gender());
+    showContactDetails();
+    showUserAddress();
+    showUserPersonalIds();
     std::cout << std::endl << std::endl;
     std::cout << "Enter [b] to go back." << std::endl;
 }

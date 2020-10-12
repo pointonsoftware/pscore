@@ -46,11 +46,11 @@ class FlowController {
  private:
     FlowController() = default;
 
-    void show(const screen::display& screenToDisplay,
-              std::promise<screen::display>* promise);
+    void show(const defines::display& screenToDisplay,
+              std::promise<defines::display>* promise);
     // spawn screen
-    void showLoginScreen(std::promise<screen::display>* promise);
-    void showDashboard(std::promise<screen::display>* promise);
+    void showLoginScreen(std::promise<defines::display>* promise);
+    void showDashboard(std::promise<defines::display>* promise);
 };
 
 }  // namespace screen

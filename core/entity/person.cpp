@@ -57,10 +57,6 @@ std::string Person::gender() const {
     return m_gender;
 }
 
-std::string Person::email() const {
-    return m_email;
-}
-
 Address Person::address() const {
     return m_address;
 }

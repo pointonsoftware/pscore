@@ -41,7 +41,7 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     std::string getUserID() const;
 
     // ScreenInterface
-    void show(std::promise<screen::display>* promise) override;
+    void show(std::promise<defines::display>* promise) override;
 
     // Domain interface implementation
     void showInvalidPINScreen() override;

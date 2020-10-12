@@ -21,17 +21,25 @@
 #ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
 
+namespace screen {
+namespace defines {
+
 /*!
  * Add the new screens here
 */
-namespace screen {
-
 enum class display {
     EXIT      = 0x000,
     LOGIN     = 0x101,
     DASHBOARD = 0x214
 };
 
+constexpr unsigned int SCREEN_WIDTH = 80;
+constexpr unsigned int LABEL_WIDTH = 12;
+constexpr char LABEL_BOUNDARY = ':';
+constexpr char DELIMETER_COMMA = ',';
+constexpr char DELIMETER_DASH = '-';
+
+}  // namespace defines
 }  // namespace screen
 
 #endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_

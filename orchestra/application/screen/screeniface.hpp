@@ -30,7 +30,7 @@ class ScreenInterface {
     ScreenInterface() = default;
     virtual ~ScreenInterface() = default;
 
-    virtual void show(std::promise<screen::display>* promise) = 0;
+    virtual void show(std::promise<defines::display>* promise) = 0;
 };
 
 }  // namespace screen
