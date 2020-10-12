@@ -77,7 +77,7 @@ void DashboardScreen::showOptions() const {
 }
 
 void DashboardScreen::showContactDetails() const {
-    std::cout << std::endl << "Contact Details" << std::endl;
+    std::cout << std::endl << "-- Contact Details --" << std::endl << std::endl;
     for (size_t count = 1; count <= mCurrentUser.contactDetails().phone_number.size(); ++count) {
         SCREENCOMMON().printItemText("Phone " + std::to_string(count),
                                       mCurrentUser.contactDetails().phone_number[count-1]);
@@ -86,7 +86,7 @@ void DashboardScreen::showContactDetails() const {
 }
 
 void DashboardScreen::showUserAddress() const {
-    std::cout << std::endl << "Address" << std::endl;
+    std::cout << std::endl << "-- Address --" << std::endl << std::endl;
     SCREENCOMMON().printItemText("House No.", mCurrentUser.address().housenumber);
     SCREENCOMMON().printItemText("Lot", mCurrentUser.address().lot);
     SCREENCOMMON().printItemText("Block", mCurrentUser.address().block);
@@ -101,7 +101,7 @@ void DashboardScreen::showUserAddress() const {
 }
 
 void DashboardScreen::showUserPersonalIds() const {
-    std::cout << std::endl << "IDs" << std::endl;
+    std::cout << std::endl << "-- Personal Identification --" << std::endl << std::endl;
     for (size_t count = 1; count <= mCurrentUser.personalIds().size(); ++count) {
         const std::string details(mCurrentUser.personalIds()[count-1].type
                                + defines::DELIMETER_DASH
@@ -112,6 +112,7 @@ void DashboardScreen::showUserPersonalIds() const {
 
 void DashboardScreen::showUserInformation() const {
     SCREENCOMMON().showTopBanner("User Information");
+    std::cout << std::endl << "-- Basic Info --" << std::endl << std::endl;
     SCREENCOMMON().printItemText("First Name", mCurrentUser.firstName());
     SCREENCOMMON().printItemText("Middle Name", mCurrentUser.middleName());
     SCREENCOMMON().printItemText("Last Name", mCurrentUser.lastName());

@@ -48,6 +48,7 @@ class StackDB {
     StackDB();
     // users storage
     static std::vector<entity::User> usersList;
+    void populateUsers();
 };
 
 }  // namespace db

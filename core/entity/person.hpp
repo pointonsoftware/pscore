@@ -52,11 +52,11 @@ class Person {
     std::vector<PersonalId> personalIds() const;
 
     // Setters
-    void addPhoneNumber(const std::string& phonenumber);
-    void addPersonalId(const std::string& type, const std::string& number);
-    void setPersonalIds(const std::vector<PersonalId>& personalids);
-    void setEmail(const std::string& email);
-    void setAddress(const Address& address);
+    Person& addPhoneNumber(const std::string& phonenumber);
+    Person& addPersonalId(const std::string& type, const std::string& number);
+    Person& setPersonalIds(const std::vector<PersonalId>& personalids);
+    Person& setEmail(const std::string& email);
+    Person& setAddress(const Address& address);
 
  protected:
     std::string m_firstname;
