@@ -69,28 +69,32 @@ std::vector<PersonalId> Person::personalIds() const {
     return m_personal_ids;
 }
 
-// cppcheck-suppress unusedFunction  ! remove this line when function is used
-void Person::addPhoneNumber(const std::string& phonenumber) {
+Person& Person::addPhoneNumber(const std::string& phonenumber) {
     m_contact_details.phone_number.emplace_back(phonenumber);
+    return *this;
 }
-// cppcheck-suppress unusedFunction  ! remove this line when function is used
-void Person::addPersonalId(const std::string& type, const std::string& number) {
+
+Person& Person::addPersonalId(const std::string& type, const std::string& number) {
     m_personal_ids.emplace_back(PersonalId{type, number});
+    return *this;
 }
 // cppcheck-suppress unusedFunction  ! remove this line when function is used
-void Person::setPersonalIds(const std::vector<PersonalId>& personalids) {
+Person& Person::setPersonalIds(const std::vector<PersonalId>& personalids) {
     if (!m_personal_ids.empty()) {
         // warning, we're overwriting the container
     }
     m_personal_ids = personalids;
+    return *this;
 }
-// cppcheck-suppress unusedFunction  ! remove this line when function is used
-void Person::setEmail(const std::string& email) {
+
+Person& Person::setEmail(const std::string& email) {
     m_contact_details.email = email;
+    return *this;
 }
-// cppcheck-suppress unusedFunction  ! remove this line when function is used
-void Person::setAddress(const Address& address) {
+
+Person& Person::setAddress(const Address& address) {
     m_address = address;
+    return *this;
 }
 
 }  // namespace entity
