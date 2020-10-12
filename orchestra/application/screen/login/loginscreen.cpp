@@ -31,7 +31,7 @@
 namespace screen {
 namespace login {
 
-void LoginScreen::show(std::promise<screen::display>* promise) {
+void LoginScreen::show(std::promise<defines::display>* promise) {
     do {
         // Welcome to Core!
         SCREENCOMMON().showTopBanner("Login");
@@ -42,12 +42,12 @@ void LoginScreen::show(std::promise<screen::display>* promise) {
 
         if (pin.find("x") != std::string::npos) {
             // exit was pressed
-            promise->set_value(screen::display::EXIT);
+            promise->set_value(defines::display::EXIT);
             break;
         }
         if (onLogin(pin)) {
             // If login is successful, we show the dashboard
-            promise->set_value(screen::display::DASHBOARD);
+            promise->set_value(defines::display::DASHBOARD);
             break;
         }
     } while (1);

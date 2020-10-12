@@ -38,10 +38,11 @@ class ScreenCommon {
     void clearScreen() const;
     const std::string horizontalBorder() const;
     void showTopBanner(const std::string& currentScreen) const;
+    void printTitleText(const std::string& text) const;
+    void printItemText(const std::string& label, const std::string& item) const;
 
  private:
     ScreenCommon() = default;
-    void printText(const std::string& text) const;
 
     struct Indent {
         std::string start;
@@ -49,8 +50,6 @@ class ScreenCommon {
     };
 
     Indent calculateIndents(const std::string& text) const;
-
-    const int SCREEN_WIDTH = 80;
 };
 
 }  // namespace screen

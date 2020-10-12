@@ -24,6 +24,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include "screendefines.hpp"
 
 namespace screen {
 
@@ -39,28 +40,34 @@ const std::string ScreenCommon::horizontalBorder() const {
     return "*********************************************************************************";
 }
 
-void ScreenCommon::printText(const std::string& text) const {
+void ScreenCommon::printTitleText(const std::string& text) const {
     const Indent indents = calculateIndents(text);
     std::cout << "*" << indents.start << text << indents.end << "*" << std::endl;
+}
+
+void ScreenCommon::printItemText(const std::string& label, const std::string& item) const {
+    std::cout << std::left << std::setw(defines::LABEL_WIDTH)
+              << label  << defines::LABEL_BOUNDARY << " "
+              << item   << std::endl;
 }
 
 void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     clearScreen();
     std::cout << horizontalBorder() << std::endl;
-    printText("");
-    printText(std::string("---- CORE "+ std::string(VERSION) +" ----"));
-    printText("");
-    printText("Console  Application");
-    printText("");
-    printText("Enter [x] if you want to exit");
+    printTitleText("");
+    printTitleText(std::string("---- CORE "+ std::string(VERSION) +" ----"));
+    printTitleText("");
+    printTitleText("Console  Application");
+    printTitleText("");
+    printTitleText("Enter [x] if you want to exit");
     std::cout << horizontalBorder() << std::endl;
-    printText(currentScreen);
+    printTitleText(currentScreen);
     std::cout << horizontalBorder() << std::endl;
 }
 
 ScreenCommon::Indent ScreenCommon::calculateIndents(const std::string& text) const {
     Indent indents;
-    indents.start = std::string((SCREEN_WIDTH - text.size()) / 2, ' ');
+    indents.start = std::string((defines::SCREEN_WIDTH - text.size()) / 2, ' ');
     indents.end = indents.start;
     if (!(text.size() % 2)) {
         indents.end = indents.start.substr(0, indents.start.size()-1);

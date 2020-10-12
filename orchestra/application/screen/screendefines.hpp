@@ -25,6 +25,7 @@
  * Add the new screens here
 */
 namespace screen {
+namespace defines {
 
 enum class display {
     EXIT      = 0x000,
@@ -32,6 +33,13 @@ enum class display {
     DASHBOARD = 0x214
 };
 
+constexpr unsigned int SCREEN_WIDTH = 80;
+constexpr unsigned int LABEL_WIDTH = 12;
+constexpr char LABEL_BOUNDARY = ':';
+constexpr char DELIMETER_COMMA = ',';
+constexpr char DELIMETER_DASH = '-';
+
+}  // namespace defines
 }  // namespace screen
 
 #endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_

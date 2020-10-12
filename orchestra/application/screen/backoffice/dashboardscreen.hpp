@@ -35,7 +35,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     ~DashboardScreen() = default;
 
     // ScreenInterface
-    void show(std::promise<screen::display>* promise) override;
+    void show(std::promise<defines::display>* promise) override;
 
     // Domain interface implementation
     void showUserNotFound() override;
@@ -62,6 +62,9 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     void invalidOptionSelected() const;
     Options getUserSelection() const;
     void processOption(Options option) const;
+    void showContactDetails() const;
+    void showUserAddress() const;
+    void showUserPersonalIds() const;
 };
 
 }  // namespace backoffice
