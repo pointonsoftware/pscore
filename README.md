@@ -103,7 +103,7 @@ Clone the repository to a local destination using git:
 
 ## Roadmap
 
-The initial CORE v0.0.10 includes _login_ and _view personal information_ features.
+The initial CORE v0.0.4 includes _login_ and _view personal information_ features.
 
 Below are the planned releases in the future:  
 
