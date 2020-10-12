@@ -37,9 +37,6 @@ DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
 }
 
 void DashboardScreen::show(std::promise<defines::display>* promise) {
-    // showLandingScreen() has to be called first so succeeding messages will not be overwritten
-    showLandingScreen();
-
     using domain::dashboard::DashboardControlInterface;
     std::unique_ptr<DashboardControlInterface> coreDashboard
         = domain::dashboard::createDashboardModule(
@@ -48,15 +45,26 @@ void DashboardScreen::show(std::promise<defines::display>* promise) {
     coreDashboard->setCurrentUserId(mUserID);
     mCurrentUser = coreDashboard->getCurrentUserInfo();
 
-    //--- Menu selection
+    if (!mCurrentUser.getEmployeeID().empty()) {
+        // Valid user, proceed to menu selection
+        menuSelection(promise);
+    } else {
+        // Current user was not found or has insufficient data
+        promise->set_value(defines::display::LOGIN);
+        // Wait for user confirmation before switching screen
+        std::cin.ignore(); std::cin.get();
+    }
+}
 
+void DashboardScreen::menuSelection(std::promise<defines::display>* promise) const {
+    showLandingScreen();
+    //--- Menu selection
     Options userSelection;
     do {
         // Getting user input
         userSelection = getUserSelection();
         processOption(userSelection);
     } while (userSelection != Options::LOGOUT && userSelection != Options::APP_EXIT);
-
     //---
 
     // Setting the next screen

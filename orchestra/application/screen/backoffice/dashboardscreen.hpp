@@ -56,6 +56,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
         // Warning! Don't add anything here.
         // New enum values must be added before LOGOUT
     };
+    void menuSelection(std::promise<defines::display>* promise) const;
     void showLandingScreen() const;
     void showOptions() const;
     void showUserInformation() const;
