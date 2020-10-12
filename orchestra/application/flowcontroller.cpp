@@ -49,9 +49,6 @@ namespace screenshared {
 }
 
 void FlowController::run() {
-    // Welcome to Core!
-    SCREENCOMMON().showWelcomeScreen();
-
     // After the welcome screen, we will display the login screen
     screen::display nextScreen = screen::display::LOGIN;
 

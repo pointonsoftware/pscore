@@ -47,10 +47,7 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
 
     //--- Main Display
 
-    SCREENCOMMON().showTopBanner();
-    std::cout << "Hi " << mCurrentUser.getFullName()
-              << ", please select an option below." << std::endl;
-    showOptions();
+    showLandingScreen();
 
     Options userSelection;
     do {
@@ -65,6 +62,13 @@ void DashboardScreen::show(std::promise<screen::display>* promise) {
     promise->set_value(userSelection == Options::LOGOUT ? display::LOGIN : display::EXIT);
 }
 
+void DashboardScreen::showLandingScreen() const {
+    SCREENCOMMON().showTopBanner("Dashboard");
+    std::cout << "Hi " << mCurrentUser.getFullName()
+              << ", please select an option below." << std::endl;
+    showOptions();
+}
+
 void DashboardScreen::showOptions() const {
     std::cout << std::endl;
     std::cout << "[1] Personal Information" << std::endl;
@@ -72,14 +76,17 @@ void DashboardScreen::showOptions() const {
 }
 
 void DashboardScreen::showUserInformation() const {
+    SCREENCOMMON().showTopBanner("User Information");
     // Todo (code), this needs to be updated to have a proper console screen layout
-    std::cout << "First Name: "  << mCurrentUser.firstName() << std::endl;
-    std::cout << "Middle Name: " << mCurrentUser.middleName() << std::endl;
-    std::cout << "Last Name: "   << mCurrentUser.lastName() << std::endl;
-    std::cout << "Birthdate: "   << mCurrentUser.birthdate() << std::endl;
-    std::cout << "Gender: "      << mCurrentUser.gender() << std::endl;
-    std::cout << "Email: "       << mCurrentUser.email() << std::endl;
+    std::cout << "First Name  : " << mCurrentUser.firstName() << std::endl;
+    std::cout << "Middle Name : " << mCurrentUser.middleName() << std::endl;
+    std::cout << "Last Name   : " << mCurrentUser.lastName() << std::endl;
+    std::cout << "Birthdate   : " << mCurrentUser.birthdate() << std::endl;
+    std::cout << "Gender      : " << mCurrentUser.gender() << std::endl;
+    std::cout << "Email       : " << mCurrentUser.email() << std::endl;
     // Todo (code), add Contact details, address and personal ID
+    std::cout << std::endl << std::endl;
+    std::cout << "Enter [b] to go back." << std::endl;
 }
 
 void DashboardScreen::invalidOptionSelected() const {
@@ -88,14 +95,16 @@ void DashboardScreen::invalidOptionSelected() const {
 
 DashboardScreen::Options DashboardScreen::getUserSelection() const {
     std::string userInput;
-    std::cout << std::endl << "Select: "; std::cin >> userInput;
+    std::cout << std::endl << "> "; std::cin >> userInput;
 
     if (userInput == "x") {
         return Options::APP_EXIT;
+    } else if (userInput == "b") {
+        return Options::LANDING;
     } else if (userInput == "0") {
         return Options::LOGOUT;
     } else if (userInput == "1") {
-        return Options::PERSONAL_INFORMATION;
+        return Options::USER_DETAILS;
     }  // add more options here
 
     // Default invalid option
@@ -104,7 +113,10 @@ DashboardScreen::Options DashboardScreen::getUserSelection() const {
 
 void DashboardScreen::processOption(Options option) const {
     switch (option) {
-        case Options::PERSONAL_INFORMATION:
+        case Options::LANDING:
+            showLandingScreen();
+            break;
+        case Options::USER_DETAILS:
             showUserInformation();
             break;
         case Options::INVALID:
