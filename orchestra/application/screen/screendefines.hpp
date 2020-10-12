@@ -21,12 +21,12 @@
 #ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
 
-/*!
- * Add the new screens here
-*/
 namespace screen {
 namespace defines {
 
+/*!
+ * Add the new screens here
+*/
 enum class display {
     EXIT      = 0x000,
     LOGIN     = 0x101,

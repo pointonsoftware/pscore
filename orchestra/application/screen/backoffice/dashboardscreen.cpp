@@ -28,7 +28,6 @@
 #include <domain/dashboard/interface/dashboardiface.hpp>
 // data
 #include <dashboarddata.hpp>
-#include <entity/contactdetails.hpp>
 
 namespace screen {
 namespace backoffice {
