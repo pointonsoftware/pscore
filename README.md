@@ -107,7 +107,7 @@ The initial CORE [v0.0.4](https://github.com/pointonsoftware/pscore/releases/tag
 
 Below are the planned releases in the future:  
 
- - [**v0.1.0**](https://github.com/pointonsoftware/pscore/tree/v0.1.0) - Full admin login/logout
+ - [**v0.1.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.1.0) - Full admin login/logout
  - **v0.2.0** - User CRUD
  - **v0.3.0** - Basic inventory operations
  - **v0.4.0** - Basic employee management
