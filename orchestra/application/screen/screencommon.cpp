@@ -60,7 +60,7 @@ void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
 
 ScreenCommon::Indent ScreenCommon::calculateIndents(const std::string& text) const {
     Indent indents;
-    indents.start = std::string((80 - text.size()) / 2, ' ');
+    indents.start = std::string((SCREEN_WIDTH - text.size()) / 2, ' ');
     indents.end = indents.start;
     if (!(text.size() % 2)) {
         indents.end = indents.start.substr(0, indents.start.size()-1);
