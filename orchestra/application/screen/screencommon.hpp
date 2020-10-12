@@ -22,7 +22,7 @@
 #define ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
 #include <string>
 
-#define VERSION "0.0.4"
+#define VERSION "0.1.0"
 #define SCREENCOMMON() screen::ScreenCommon::getInstance()
 
 namespace screen {
