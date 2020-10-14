@@ -18,49 +18,40 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
+#include "userscontroller.hpp"
 #include <memory>
-#include <string>
-#include "dashboarddataif.hpp"
-#include "dashboardviewif.hpp"
-#include <domain/librarycommon.hpp>
-#include <entity/user.hpp>
+#include <logger/loghelper.hpp>
 
 namespace domain {
-namespace dashboard {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class DASHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
+namespace usersmgmt {
 
-class DashboardControlInterface {
- public:
-    DashboardControlInterface() = default;
-    virtual ~DashboardControlInterface() = default;
+UsersMgmtController::UsersMgmtController() {
+    // empty for now
+}
 
-    /*!
-     * Sets the current user ID
-     * Warning: it is the caller's responsibility to provide a valid userID
-    */
-    virtual void setCurrentUserId(const std::string& userID) = 0;
-    /*!
-     * Returns the current user info
-     * Note: Has to be paired with setCurrentUserId(), otherwise will return empty
-    */
-    virtual entity::User getCurrentUserInfo() = 0;
-};
+std::vector<entity::User> UsersMgmtController::list() {
+    // PCOR-34
+    return {};
+}
 
-// Lib APIs
-extern "C" CORE_API std::unique_ptr<DashboardControlInterface> createDashboardModule(
-    const std::shared_ptr<DashboardDataInterface>& data,
-    const std::shared_ptr<DashboardViewInterface>& view);
+entity::User UsersMgmtController::get(const std::string& userID) {
+    // PCOR-36
+    return entity::User();
+}
 
-}  // namespace dashboard
+USERSMGMTSTATUS UsersMgmtController::save(const entity::User& userID) {
+    // PCOR-32
+    return USERSMGMTSTATUS::SUCCESS;
+}
+
+USERSMGMTSTATUS UsersMgmtController::remove(const std::string& userID) {
+    // PCOR-33
+    return USERSMGMTSTATUS::SUCCESS;
+}
+
+std::unique_ptr<UsersMgmtControlInterface> createUsersMgmtModule() {
+    return std::make_unique<UsersMgmtController>();
+}
+
+}  // namespace usersmgmt
 }  // namespace domain
-
-#endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
