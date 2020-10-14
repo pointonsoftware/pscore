@@ -14,12 +14,6 @@ add_library (
     dashboardcontroller.cpp
 )
 
-if (MINGW)
-add_compile_definitions(BUILD_CORE_DLL)
-endif ()
-
-target_compile_options(dashboard PUBLIC "-fPIC")
-
 target_link_libraries (
     dashboard
     entity
