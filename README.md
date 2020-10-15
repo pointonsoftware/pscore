@@ -128,7 +128,7 @@ After CORE v1.0.0 is released, it is planned that **console_app** will be upgrad
 
 ## Contributing
 
-A developer guide document is available in the [doc folder](doc/Developer%20Guide.docx) and can be used to setup the project.  
+A developer guide document is available in the [doc folder](doc/) and can be used to setup the project.  
  
  Once able to build, you can make your changes and submit a pull request!
 
