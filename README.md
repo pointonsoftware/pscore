@@ -1,4 +1,4 @@
-<!--          PSCORE README v4.8         -->
+<!--          PSCORE README v4.9         -->
 <!-- Copyright (C) 2020 Pointon Software -->
 
 <p align="center">
