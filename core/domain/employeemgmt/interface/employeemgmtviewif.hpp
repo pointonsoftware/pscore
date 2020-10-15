@@ -18,22 +18,22 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTVIEWIF_HPP_
-#define CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTVIEWIF_HPP_
+#ifndef CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTVIEWIF_HPP_
+#define CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTVIEWIF_HPP_
 #include <string>
 #include <entity/user.hpp>
 
 namespace domain {
-namespace usersmgmt {
+namespace empmgmt {
 /*!
  * Note: If you add/update a function in this interface, please also update the mock class
 */
-class UsersMgmtViewInterface {
+class EmployeeMgmtViewInterface {
  public:
-    UsersMgmtViewInterface() = default;
-    virtual ~UsersMgmtViewInterface() = default;
+    EmployeeMgmtViewInterface() = default;
+    virtual ~EmployeeMgmtViewInterface() = default;
 };
 
-}  // namespace usersmgmt
+}  // namespace empmgmt
 }  // namespace domain
-#endif  // CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTVIEWIF_HPP_
+#endif  // CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTVIEWIF_HPP_

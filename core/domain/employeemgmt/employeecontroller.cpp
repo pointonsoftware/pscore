@@ -18,22 +18,40 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTDATAIF_HPP_
-#define CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTDATAIF_HPP_
-#include <string>
-#include <entity/user.hpp>
+#include "employeecontroller.hpp"
+#include <memory>
+#include <logger/loghelper.hpp>
 
 namespace domain {
-namespace usersmgmt {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-class UsersMgmtDataInterface {
- public:
-    UsersMgmtDataInterface() = default;
-    virtual ~UsersMgmtDataInterface() = default;
-};
+namespace empmgmt {
 
-}  // namespace usersmgmt
+EmployeeMgmtController::EmployeeMgmtController() {
+    // empty for now
+}
+
+std::vector<entity::User> EmployeeMgmtController::list() {
+    // PCOR-34
+    return {};
+}
+
+entity::User EmployeeMgmtController::get(const std::string& userID) {
+    // PCOR-36
+    return entity::User();
+}
+
+USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& userID) {
+    // PCOR-32
+    return USERSMGMTSTATUS::SUCCESS;
+}
+
+USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& userID) {
+    // PCOR-33
+    return USERSMGMTSTATUS::SUCCESS;
+}
+
+std::unique_ptr<EmployeeMgmtControlInterface> createUsersMgmtModule() {
+    return std::make_unique<EmployeeMgmtController>();
+}
+
+}  // namespace empmgmt
 }  // namespace domain
-#endif  // CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTDATAIF_HPP_
