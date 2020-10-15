@@ -18,52 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTIFACE_HPP_
-#define CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTIFACE_HPP_
-#include <memory>
+#ifndef CORE_DOMAIN_EMPLOYEEMGMT_EMPLOYEECONTROLLER_HPP_
+#define CORE_DOMAIN_EMPLOYEEMGMT_EMPLOYEECONTROLLER_HPP_
 #include <string>
 #include <vector>
-#include <domain/librarycommon.hpp>
+#include "interface/employeemgmtiface.hpp"
+
+// Entity
 #include <entity/user.hpp>
 
 namespace domain {
-namespace usersmgmt {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class USERSMGMTSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
+namespace empmgmt {
 
-class UsersMgmtControlInterface {
+class EmployeeMgmtController : public EmployeeMgmtControlInterface {
  public:
-    UsersMgmtControlInterface() = default;
-    virtual ~UsersMgmtControlInterface() = default;
+    EmployeeMgmtController();
+    ~EmployeeMgmtController() = default;
 
-    /*!
-     * Gets the list of all users
-    */
-    virtual std::vector<entity::User> list() = 0;
-    /*!
-     * Returns the info of the requested user
-    */
-    virtual entity::User get(const std::string& userID) = 0;
-    /*!
-     * Creates the user if not exists, otherwise will update the user info
-    */
-    virtual USERSMGMTSTATUS save(const entity::User& userID) = 0;
-    /*!
-     * Deletes the user
-    */
-    virtual USERSMGMTSTATUS remove(const std::string& userID) = 0;
+    std::vector<entity::User> list() override;
+    entity::User get(const std::string& userID) override;
+    USERSMGMTSTATUS save(const entity::User& userID) override;
+    USERSMGMTSTATUS remove(const std::string& userID) override;
 };
 
-// Lib APIs
-extern "C" CORE_API std::unique_ptr<UsersMgmtControlInterface> createUsersMgmtModule();
-
-}  // namespace usersmgmt
+}  // namespace empmgmt
 }  // namespace domain
 
-#endif  // CORE_DOMAIN_USERSMGMT_INTERFACE_USERSMGMTIFACE_HPP_
+#endif  // CORE_DOMAIN_EMPLOYEEMGMT_EMPLOYEECONTROLLER_HPP_

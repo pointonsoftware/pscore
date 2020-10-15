@@ -3,7 +3,7 @@ project (domain)
 # Domains
 add_subdirectory (dashboard)
 add_subdirectory (userlogin)
-add_subdirectory (usersmgmt)
+add_subdirectory (employeemgmt)
 
 # Note: the unit test executable is affected by this flag
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
