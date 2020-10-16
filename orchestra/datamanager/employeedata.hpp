@@ -18,29 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
+#ifndef ORCHESTRA_DATAMANAGER_EMPLOYEEDATA_HPP_
+#define ORCHESTRA_DATAMANAGER_EMPLOYEEDATA_HPP_
+#include <domain/employeemgmt/interface/employeemgmtdataif.hpp>
 
-namespace screen {
-namespace defines {
+namespace dataprovider {
+namespace empmgmt {
 
-/*!
- * Add the new screens here
-*/
-enum class display {
-    EXIT      = 0x000,
-    LOGIN     = 0x101,
-    DASHBOARD = 0x214,
-    EMPMGMT   = 0x240
+class EmployeeDataProvider : public domain::empmgmt::EmployeeMgmtDataInterface {
+ public:
+    EmployeeDataProvider() = default;
+    virtual ~EmployeeDataProvider() = default;
 };
 
-constexpr unsigned int SCREEN_WIDTH = 80;
-constexpr unsigned int LABEL_WIDTH = 12;
-constexpr char LABEL_BOUNDARY = ':';
-constexpr char DELIMETER_COMMA = ',';
-constexpr char DELIMETER_DASH = '-';
-
-}  // namespace defines
-}  // namespace screen
-
-#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
+}  // namespace empmgmt
+}  // namespace dataprovider
+#endif  // ORCHESTRA_DATAMANAGER_EMPLOYEEDATA_HPP_

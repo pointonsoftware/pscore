@@ -7,6 +7,9 @@ add_library (
     # dashboard
     dashboarddata.hpp
     dashboarddata.cpp
+    # employee management
+    employeedata.hpp
+    employeedata.cpp
     # userlogin
     logindata.hpp
     logindata.cpp
