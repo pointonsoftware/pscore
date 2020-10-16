@@ -18,29 +18,25 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
+#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
+#include <future>
+#include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
+#include <screeniface.hpp>
 
 namespace screen {
-namespace defines {
+namespace backoffice {
 
-/*!
- * Add the new screens here
-*/
-enum class display {
-    EXIT      = 0x000,
-    LOGIN     = 0x101,
-    DASHBOARD = 0x214,
-    EMPMGMT   = 0x240
+class EmployeeMgmtScreen : public ScreenInterface,
+                           public domain::empmgmt::EmployeeMgmtViewInterface {
+ public:
+    EmployeeMgmtScreen() = default;
+    ~EmployeeMgmtScreen() = default;
+
+    // ScreenInterface
+    void show(std::promise<defines::display>* promise) override;
 };
 
-constexpr unsigned int SCREEN_WIDTH = 80;
-constexpr unsigned int LABEL_WIDTH = 12;
-constexpr char LABEL_BOUNDARY = ':';
-constexpr char DELIMETER_COMMA = ',';
-constexpr char DELIMETER_DASH = '-';
-
-}  // namespace defines
+}  // namespace backoffice
 }  // namespace screen
-
-#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
+#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_

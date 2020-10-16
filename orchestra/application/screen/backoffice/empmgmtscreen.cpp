@@ -18,29 +18,23 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_
+#include "empmgmtscreen.hpp"
+#include <iostream>
+#include <memory>
+// view
+#include <screencommon.hpp>
+// core
+#include <domain/employeemgmt/interface/employeemgmtiface.hpp>
 
 namespace screen {
-namespace defines {
+namespace backoffice {
 
-/*!
- * Add the new screens here
-*/
-enum class display {
-    EXIT      = 0x000,
-    LOGIN     = 0x101,
-    DASHBOARD = 0x214,
-    EMPMGMT   = 0x240
-};
+void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
+    std::cout << "Employee Management" << std::endl;
+    promise->set_value(defines::display::DASHBOARD);
+    // Wait for user confirmation before switching screen
+    std::cin.ignore(); std::cin.get();
+}
 
-constexpr unsigned int SCREEN_WIDTH = 80;
-constexpr unsigned int LABEL_WIDTH = 12;
-constexpr char LABEL_BOUNDARY = ':';
-constexpr char DELIMETER_COMMA = ',';
-constexpr char DELIMETER_DASH = '-';
-
-}  // namespace defines
+}  // namespace backoffice
 }  // namespace screen
-
-#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENDEFINES_HPP_

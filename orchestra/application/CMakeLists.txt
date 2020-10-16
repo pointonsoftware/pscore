@@ -18,6 +18,8 @@ add_executable (
     # Back office screen
     screen/backoffice/dashboardscreen.hpp
     screen/backoffice/dashboardscreen.cpp
+    screen/backoffice/empmgmtscreen.hpp
+    screen/backoffice/empmgmtscreen.cpp
 )
 
 set (CONSOLE_APP_LINKER_EXCEPTION "")
