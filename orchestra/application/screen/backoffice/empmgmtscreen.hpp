@@ -20,11 +20,9 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
-#include <string>
 #include <future>
 #include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
 #include <screeniface.hpp>
-#include <entity/user.hpp>
 
 namespace screen {
 namespace backoffice {
