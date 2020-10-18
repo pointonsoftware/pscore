@@ -59,7 +59,7 @@ void EmployeeMgmtScreen::showUsersList() const {
     SCREENCOMMON().printColumns(user1);
     std::vector<std::string> user2 {"[2] 10005", "Kaloy", "Ekame", "Cashier"};
     SCREENCOMMON().printColumns(user2);
-    std::cout << SCREENCOMMON().horizontalBorder(defines::BORDER_CHARACTER_2) << std::endl;
+    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void EmployeeMgmtScreen::showOptions() const {

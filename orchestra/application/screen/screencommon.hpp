@@ -41,7 +41,7 @@ class ScreenCommon {
     void printTitleText(const std::string& text) const;
     void printItemText(const std::string& label, const std::string& item) const;
     void printColumns(const std::vector<std::string>& columns, bool isHeader = false) const;
-    const std::string horizontalBorder(char borderCharacter) const;
+    void printHorizontalBorder(char borderCharacter) const;
 
  private:
     ScreenCommon() = default;

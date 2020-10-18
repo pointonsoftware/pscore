@@ -36,12 +36,12 @@ void ScreenCommon::clearScreen() const {
 #endif
 }
 
-const std::string ScreenCommon::horizontalBorder(char borderCharacter) const {
+void ScreenCommon::printHorizontalBorder(char borderCharacter) const {
     std::string borderString;
     for (unsigned int i = 0; i <= defines::SCREEN_WIDTH; ++i) {
         borderString += borderCharacter;
     }
-    return borderString;
+    std::cout << borderString << std::endl;
 }
 
 void ScreenCommon::printTitleText(const std::string& text) const {
@@ -60,16 +60,16 @@ void ScreenCommon::printItemText(const std::string& label, const std::string& it
 
 void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     clearScreen();
-    std::cout << horizontalBorder(defines::BORDER_CHARACTER_1) << std::endl;
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
     printTitleText("");
     printTitleText(std::string("---- CORE "+ std::string(VERSION) +" ----"));
     printTitleText("");
     printTitleText("Console  Application");
     printTitleText("");
     printTitleText("Enter [x] if you want to exit");
-    std::cout << horizontalBorder(defines::BORDER_CHARACTER_1) << std::endl;
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
     printTitleText(currentScreen);
-    std::cout << horizontalBorder(defines::BORDER_CHARACTER_1) << std::endl;
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
 }
 
 ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
@@ -101,7 +101,7 @@ void ScreenCommon::printColumns(const std::vector<std::string>& columns, bool is
     const unsigned columnWidth = defines::SCREEN_WIDTH / columns.size();
     if (isHeader) {
         // Print upper border
-        std::cout << horizontalBorder(defines::BORDER_CHARACTER_2) << std::endl;
+        printHorizontalBorder(defines::BORDER_CHARACTER_2);
     }
 
     for (std::string text : columns) {
@@ -118,7 +118,7 @@ void ScreenCommon::printColumns(const std::vector<std::string>& columns, bool is
 
     if (isHeader) {
         // Print bottom border
-        std::cout << horizontalBorder(defines::BORDER_CHARACTER_2) << std::endl;
+        printHorizontalBorder(defines::BORDER_CHARACTER_2);
     }
 }
 
