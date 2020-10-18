@@ -58,18 +58,8 @@ void DashboardScreen::show(std::promise<defines::display>* promise) {
 
 void DashboardScreen::menuSelection(std::promise<defines::display>* promise) const {
     showLandingScreen();
-    //--- Menu selection
-    Options userSelection;
-    do {
-        // Getting user input
-        userSelection = getUserSelection();
-        processOption(userSelection);
-    } while (userSelection != Options::LOGOUT && userSelection != Options::APP_EXIT);
-    //---
-
-    // Setting the next screen
-    promise->set_value(userSelection == Options::LOGOUT ?
-                                        defines::display::LOGIN : defines::display::EXIT);
+    // Stay in dashboard until action() returns false (i.e. switch screen is required)
+    do {} while (action(getUserSelection(), promise));
 }
 
 void DashboardScreen::showLandingScreen() const {
@@ -159,7 +149,8 @@ DashboardScreen::Options DashboardScreen::getUserSelection() const {
     return Options::INVALID;
 }
 
-void DashboardScreen::processOption(Options option) const {
+bool DashboardScreen::action(Options option, std::promise<defines::display>* nextScreen) const {
+    bool switchScreenIsRequired = false;
     switch (option) {
         case Options::LANDING:
             showLandingScreen();
@@ -170,12 +161,22 @@ void DashboardScreen::processOption(Options option) const {
         case Options::INVALID:
             invalidOptionSelected();
             break;
-        case Options::LOGOUT:    // Fall-through
+        case Options::EMPLOYEE_MGMT:
+            switchScreenIsRequired = true;
+            nextScreen->set_value(defines::display::EMPMGMT);
+            break;
+        case Options::LOGOUT:
+            switchScreenIsRequired = true;
+            nextScreen->set_value(defines::display::LOGIN);
+            break;
         case Options::APP_EXIT:  // Fall-through
         default:
-            // Do nothing
+            switchScreenIsRequired = true;
+            nextScreen->set_value(defines::display::EXIT);
             break;
     }
+    // Return "false" if switch screen is required so we can exit dashboard
+    return !switchScreenIsRequired;
 }
 
 void DashboardScreen::showUserNotFound() {

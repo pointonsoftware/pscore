@@ -30,7 +30,7 @@ namespace screen {
 namespace backoffice {
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
-    std::cout << "Employee Management" << std::endl;
+    SCREENCOMMON().showTopBanner("Employee Management");
     promise->set_value(defines::display::DASHBOARD);
     // Wait for user confirmation before switching screen
     std::cin.ignore(); std::cin.get();

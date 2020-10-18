@@ -63,7 +63,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     void showUserInformation() const;
     void invalidOptionSelected() const;
     Options getUserSelection() const;
-    void processOption(Options option) const;
+    bool action(Options option, std::promise<defines::display>* nextScreen) const;
     void showContactDetails() const;
     void showUserAddress() const;
     void showUserPersonalIds() const;
