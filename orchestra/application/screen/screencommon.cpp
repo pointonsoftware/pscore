@@ -36,13 +36,20 @@ void ScreenCommon::clearScreen() const {
 #endif
 }
 
-const std::string ScreenCommon::horizontalBorder() const {
-    return "*********************************************************************************";
+void ScreenCommon::printHorizontalBorder(char borderCharacter) const {
+    std::string borderString;
+    for (unsigned int i = 0; i <= defines::SCREEN_WIDTH; ++i) {
+        borderString += borderCharacter;
+    }
+    std::cout << borderString << std::endl;
 }
 
 void ScreenCommon::printTitleText(const std::string& text) const {
-    const Indent indents = calculateIndents(text);
-    std::cout << "*" << indents.start << text << indents.end << "*" << std::endl;
+    const Indent indents = calculateIndents(VerticalAlignment::CENTER,
+                                            defines::SCREEN_WIDTH, text);
+    std::cout << defines::BORDER_CHARACTER_1
+              << indents.start << text << indents.end
+              << defines::BORDER_CHARACTER_1 << std::endl;
 }
 
 void ScreenCommon::printItemText(const std::string& label, const std::string& item) const {
@@ -53,26 +60,66 @@ void ScreenCommon::printItemText(const std::string& label, const std::string& it
 
 void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     clearScreen();
-    std::cout << horizontalBorder() << std::endl;
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
     printTitleText("");
     printTitleText(std::string("---- CORE "+ std::string(VERSION) +" ----"));
     printTitleText("");
     printTitleText("Console  Application");
     printTitleText("");
     printTitleText("Enter [x] if you want to exit");
-    std::cout << horizontalBorder() << std::endl;
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
     printTitleText(currentScreen);
-    std::cout << horizontalBorder() << std::endl;
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
 }
 
-ScreenCommon::Indent ScreenCommon::calculateIndents(const std::string& text) const {
+ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
+                                                    unsigned int width,
+                                                    const std::string& text) const {
     Indent indents;
-    indents.start = std::string((defines::SCREEN_WIDTH - text.size()) / 2, ' ');
-    indents.end = indents.start;
-    if (!(text.size() % 2)) {
-        indents.end = indents.start.substr(0, indents.start.size()-1);
+    switch (vAlign) {
+        case VerticalAlignment::LEFT:
+            break;
+        case VerticalAlignment::CENTER:
+            indents.start = std::string((width - text.size()) / 2, ' ');
+            indents.end = indents.start;
+            if (!(text.size() % 2)) {
+                indents.end = indents.start.substr(0, indents.start.size()-1);
+            }
+            break;
+        case VerticalAlignment::RIGHT:
+            indents.start = " ";  // Left offset
+            indents.end = std::string((width - text.size() - 2), ' ');
+            break;
+        default:
+            break;
     }
+
     return indents;
+}
+
+void ScreenCommon::printColumns(const std::vector<std::string>& columns, bool isHeader) const {
+    const unsigned columnWidth = defines::SCREEN_WIDTH / columns.size();
+    if (isHeader) {
+        // Print upper border
+        printHorizontalBorder(defines::BORDER_CHARACTER_2);
+    }
+
+    for (std::string text : columns) {
+        const Indent indents = calculateIndents(isHeader ?
+                                                VerticalAlignment::CENTER :
+                                                VerticalAlignment::RIGHT,
+                                                columnWidth, text);
+        std::cout << defines::BORDER_CHARACTER_3
+                  << indents.start << text << indents.end;
+    }
+
+    // End column border
+    std::cout << defines::BORDER_CHARACTER_3; std::cout << std::endl;
+
+    if (isHeader) {
+        // Print bottom border
+        printHorizontalBorder(defines::BORDER_CHARACTER_2);
+    }
 }
 
 }  // namespace screen

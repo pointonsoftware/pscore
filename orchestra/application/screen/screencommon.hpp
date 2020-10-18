@@ -21,6 +21,7 @@
 #ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
 #include <string>
+#include <vector>
 
 #define VERSION "0.1.0"
 #define SCREENCOMMON() screen::ScreenCommon::getInstance()
@@ -36,10 +37,11 @@ class ScreenCommon {
     }
 
     void clearScreen() const;
-    const std::string horizontalBorder() const;
     void showTopBanner(const std::string& currentScreen) const;
     void printTitleText(const std::string& text) const;
     void printItemText(const std::string& label, const std::string& item) const;
+    void printColumns(const std::vector<std::string>& columns, bool isHeader = false) const;
+    void printHorizontalBorder(char borderCharacter) const;
 
  private:
     ScreenCommon() = default;
@@ -49,7 +51,15 @@ class ScreenCommon {
         std::string end;
     };
 
-    Indent calculateIndents(const std::string& text) const;
+    enum class VerticalAlignment {
+        LEFT,
+        CENTER,
+        RIGHT
+    };
+
+    Indent calculateIndents(VerticalAlignment vAlign,
+                            unsigned int width,
+                            const std::string& text) const;
 };
 
 }  // namespace screen

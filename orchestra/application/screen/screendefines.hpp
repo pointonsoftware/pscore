@@ -39,6 +39,9 @@ constexpr unsigned int LABEL_WIDTH = 12;
 constexpr char LABEL_BOUNDARY = ':';
 constexpr char DELIMETER_COMMA = ',';
 constexpr char DELIMETER_DASH = '-';
+constexpr char BORDER_CHARACTER_1 = '*';
+constexpr char BORDER_CHARACTER_2 = '-';
+constexpr char BORDER_CHARACTER_3 = '|';
 
 }  // namespace defines
 }  // namespace screen

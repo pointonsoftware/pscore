@@ -22,10 +22,13 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 // view
 #include <screencommon.hpp>
 // core
 #include <domain/employeemgmt/interface/employeemgmtiface.hpp>
+// data
+#include <employeedata.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -48,9 +51,15 @@ void EmployeeMgmtScreen::showUsersList() const {
     std::cout << std::endl;
     // Todo (code) - PCOR-34
     // Display the columns
+    std::vector<std::string> titleColumn {"Employee ID", "First Name", "Last Name", "Position"};
+    SCREENCOMMON().printColumns(titleColumn, true);
+
     // Get the vector of employees, iterate (increment [N] option)
-    std::cout << "[1] Id123 -- Dummy Dummy -- Foo Bar" << std::endl;
-    std::cout << "[2] Id456 -- Dummy Dummy -- Foo Bar" << std::endl;
+    std::vector<std::string> user1 {"[1] 10004", "Rodrigo", "Duterte", "Mananger"};
+    SCREENCOMMON().printColumns(user1);
+    std::vector<std::string> user2 {"[2] 10005", "Kaloy", "Ekame", "Cashier"};
+    SCREENCOMMON().printColumns(user2);
+    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void EmployeeMgmtScreen::showOptions() const {
@@ -58,7 +67,7 @@ void EmployeeMgmtScreen::showOptions() const {
     std::cout << "[b] Back" << std::endl;
     std::cout << "[0] Logout" << std::endl;
     std::cout << std::endl;
-    std::cout << "Select by entering [option]" << std::endl;
+    std::cout << "Select [option]" << std::endl;
 }
 
 EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() const {

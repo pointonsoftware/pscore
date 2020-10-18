@@ -184,7 +184,7 @@ void DashboardScreen::showUserNotFound() {
 }
 
 void DashboardScreen::showInvalidOptionPopup() {
-    std::cout << "Sorry, that option is not yet available." << std::endl;
+    std::cout << "Sorry, that option is not available." << std::endl;
 }
 
 void DashboardScreen::showDataNotReadyScreen() {
