@@ -20,8 +20,8 @@
 **************************************************************************************************/
 #ifndef CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTDATAIF_HPP_
 #define CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTDATAIF_HPP_
-#include <string>
-#include <entity/user.hpp>
+#include <vector>
+#include <entity/employee.hpp>
 
 namespace domain {
 namespace empmgmt {
@@ -32,6 +32,11 @@ class EmployeeMgmtDataInterface {
  public:
     EmployeeMgmtDataInterface() = default;
     virtual ~EmployeeMgmtDataInterface() = default;
+
+    /*!
+     * Retrieves the all the employees
+    */
+    virtual std::vector<entity::Employee> getEmployees() = 0;
 };
 
 }  // namespace empmgmt

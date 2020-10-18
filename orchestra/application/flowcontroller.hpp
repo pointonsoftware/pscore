@@ -51,6 +51,7 @@ class FlowController {
     // spawn screen
     void showLoginScreen(std::promise<defines::display>* promise);
     void showDashboard(std::promise<defines::display>* promise);
+    void showEmployeeMgmt(std::promise<defines::display>* promise);
 };
 
 }  // namespace screen

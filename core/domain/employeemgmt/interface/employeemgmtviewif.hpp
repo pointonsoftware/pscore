@@ -32,6 +32,19 @@ class EmployeeMgmtViewInterface {
  public:
     EmployeeMgmtViewInterface() = default;
     virtual ~EmployeeMgmtViewInterface() = default;
+
+    /*!
+     * showEmployeesEmpty
+    */
+    virtual void showEmployeesEmptyPopup() = 0;
+    /*!
+     * showInvalidOptionPopup
+    */
+    virtual void showInvalidOptionPopup() = 0;
+    /*!
+     * showDataNotReadyScreen
+    */
+    virtual void showDataNotReadyScreen() = 0;
 };
 
 }  // namespace empmgmt

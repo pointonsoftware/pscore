@@ -38,7 +38,7 @@ class User : public Employee {
          const std::string& gender,
          const std::string& employeeID,
          const std::string& position,
-         const std::string& pin = DEFAULT_PIN);
+         const std::string& pin);
     User();
     ~User() = default;
 

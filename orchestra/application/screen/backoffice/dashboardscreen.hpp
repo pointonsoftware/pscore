@@ -49,6 +49,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     enum class Options {
         LANDING,
         USER_DETAILS,
+        EMPLOYEE_MGMT,
         // add more enums here
         LOGOUT,
         APP_EXIT,

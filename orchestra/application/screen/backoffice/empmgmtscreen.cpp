@@ -36,5 +36,17 @@ void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
     std::cin.ignore(); std::cin.get();
 }
 
+void EmployeeMgmtScreen::showEmployeesEmptyPopup() {
+    std::cout << "Employees record is empty." << std::endl;
+}
+
+void EmployeeMgmtScreen::showInvalidOptionPopup() {
+    std::cout << "Sorry, that option is not yet available." << std::endl;
+}
+
+void EmployeeMgmtScreen::showDataNotReadyScreen() {
+    std::cout << "Data is not ready." << std::endl;
+}
+
 }  // namespace backoffice
 }  // namespace screen

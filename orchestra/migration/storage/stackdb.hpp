@@ -24,6 +24,7 @@
 #include <vector>
 
 // entities
+#include <entity/employee.hpp>
 #include <entity/user.hpp>
 
 #define DATABASE() dataprovider::db::StackDB::getDbInstance()
@@ -40,12 +41,19 @@ class StackDB {
         return instance;
     }
 
+    inline std::vector<entity::Employee>& getEmployeesList() const {
+        return employeesList;
+    }
+
     inline std::vector<entity::User>& getUsersList() const {
         return usersList;
     }
 
  private:
     StackDB();
+    // employees storage
+    static std::vector<entity::Employee> employeesList;
+    void populateEmployees();
     // users storage
     static std::vector<entity::User> usersList;
     void populateUsers();
