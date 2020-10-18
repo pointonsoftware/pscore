@@ -38,8 +38,28 @@ class EmployeeMgmtScreen : public ScreenInterface,
 
     // Domain interface implementation
     void showEmployeesEmptyPopup() override;
-    void showInvalidOptionPopup() override;
     void showDataNotReadyScreen() override;
+
+ private:
+     // Screen options - this represents the buttons in a GUI
+    enum class Options {
+        LANDING,
+        DASHBOARD,
+        EMPLOYEE_DETAILS,
+        // add more enums here
+        LOGOUT,
+        APP_EXIT,
+        INVALID
+        // Warning! Don't add anything here.
+        // New enum values must be added before LOGOUT
+    };
+    void showLandingScreen() const;
+    void showUsersList() const;
+    void showOptions() const;
+    Options getUserSelection() const;
+    bool action(Options option, std::promise<defines::display>* nextScreen) const;
+    void invalidOptionSelected() const;
+    void showEmployeeInformation() const;
 };
 
 }  // namespace backoffice

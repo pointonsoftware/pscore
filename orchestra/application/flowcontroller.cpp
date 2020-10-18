@@ -69,6 +69,7 @@ void FlowController::show(const defines::display& screenToDisplay,
                          std::promise<defines::display>* promise) {
     switch (screenToDisplay) {
         case defines::display::LOGIN:
+            screenshared::currentUserId = "";  // Reset the current userID
             showLoginScreen(promise);
             break;
         case defines::display::DASHBOARD:
