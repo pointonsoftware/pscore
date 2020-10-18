@@ -23,10 +23,12 @@
 namespace dataprovider {
 namespace db {
 
+std::vector<entity::Employee> StackDB::employeesList;
 std::vector<entity::User> StackDB::usersList;
 
 StackDB::StackDB() {
     populateUsers();
+    populateEmployees();
 }
 
 void StackDB::populateUsers() {
@@ -88,6 +90,39 @@ void StackDB::populateUsers() {
                                    "Davao",             // Province
                                    "6060"               // ZIP
     })));
+
+    // Always append users to employees list (as users are also employees)
+    employeesList.insert(std::end(employeesList), std::begin(usersList), std::end(usersList));
 }
+
+void StackDB::populateEmployees() {
+    // Add employee here
+    employeesList.emplace_back(
+            dynamic_cast<entity::Employee&>(
+             entity::Employee("Rodrigo",                // First name
+                          "Roa",                        // Middle name
+                          "Duterte",                    // Last name
+                          "10/17/1977",                 // B-date
+                          "Male",                       // Gender
+                          "10003",                      // Employee ID <!Make sure this is unique>
+                          "Manager")                    // Position
+                          .addPhoneNumber("09123334567")
+                          .addPersonalId("Driver's License", "N04-10-021355")
+                          .setEmail("duterte@gmail.com")
+                          .setAddress(
+                                  {"22",                // housenumber
+                                   "1",                 // lot
+                                   "21",                // block
+                                   "",                  // Street
+                                   "St. Andrews Hill",  // Subdivision
+                                   "",                  // Sitio
+                                   "",                  // Purok
+                                   "Poblacion",         // Barangay
+                                   "Davao City",        // City/Town
+                                   "Davao",             // Province
+                                   "6060"               // ZIP
+    })));
+}
+
 }  // namespace db
 }  // namespace dataprovider

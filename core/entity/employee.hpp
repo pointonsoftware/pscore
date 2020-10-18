@@ -34,7 +34,8 @@ class Employee : public Person {
              const std::string& birthdate,
              const std::string& gender,
              const std::string& employeeID,
-             const std::string& position);
+             const std::string& position,
+             const bool isSystemUser = false);
     Employee() = default;
     ~Employee() = default;
 
@@ -42,9 +43,14 @@ class Employee : public Person {
         return mEmployeeID;
     }
 
+    inline const bool isSystemUser() const {
+        return mIsSystemUser;
+    }
+
  protected:
     std::string mEmployeeID;
     std::string mPosition;
+    bool mIsSystemUser;
 };
 
 }  // namespace entity

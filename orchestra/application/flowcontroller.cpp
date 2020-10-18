@@ -33,8 +33,10 @@
 #include <domain/userlogin/logincontroller.hpp>
 // view
 #include <screencommon.hpp>
+// screens
 #include <login/loginscreen.hpp>
 #include <backoffice/dashboardscreen.hpp>
+#include <backoffice/empmgmtscreen.hpp>
 // utility
 #include <logger/loghelper.hpp>
 
@@ -72,6 +74,9 @@ void FlowController::show(const defines::display& screenToDisplay,
         case defines::display::DASHBOARD:
             showDashboard(promise);
             break;
+        case defines::display::EMPMGMT:
+            showEmployeeMgmt(promise);
+            break;
         case defines::display::EXIT:  // fall-through
         default:
             // this case should not happen
@@ -90,6 +95,12 @@ void FlowController::showLoginScreen(std::promise<defines::display>* promise) {
 void FlowController::showDashboard(std::promise<defines::display>* promise) {
     backoffice::DashboardScreen theScreen(screenshared::currentUserId);
     std::thread spawnScreenProcess(&backoffice::DashboardScreen::show, &theScreen, promise);
+    spawnScreenProcess.join();
+}
+
+void FlowController::showEmployeeMgmt(std::promise<defines::display>* promise) {
+    backoffice::EmployeeMgmtScreen theScreen;
+    std::thread spawnScreenProcess(&backoffice::EmployeeMgmtScreen::show, &theScreen, promise);
     spawnScreenProcess.join();
 }
 

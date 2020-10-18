@@ -35,6 +35,11 @@ class EmployeeMgmtScreen : public ScreenInterface,
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;
+
+    // Domain interface implementation
+    void showEmployeesEmptyPopup() override;
+    void showInvalidOptionPopup() override;
+    void showDataNotReadyScreen() override;
 };
 
 }  // namespace backoffice

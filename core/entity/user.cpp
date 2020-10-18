@@ -30,7 +30,7 @@ User::User(const std::string& firstname,
            const std::string& employeeID,
            const std::string& position,
            const std::string& pin)
-: Employee{firstname, middlename, lastname, birthdate, gender, employeeID, position},
+: Employee{firstname, middlename, lastname, birthdate, gender, employeeID, position, true},
   mPIN(pin) {
     // Empty for now
 }
