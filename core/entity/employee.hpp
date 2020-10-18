@@ -43,6 +43,10 @@ class Employee : public Person {
         return mEmployeeID;
     }
 
+    inline const std::string getPosition() const {
+        return mPosition;
+    }
+
     inline const bool isSystemUser() const {
         return mIsSystemUser;
     }
