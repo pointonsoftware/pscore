@@ -25,13 +25,33 @@
 namespace domain {
 namespace empmgmt {
 
-EmployeeMgmtController::EmployeeMgmtController() {
+EmployeeMgmtController::EmployeeMgmtController(
+                                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
+                                    const std::shared_ptr<EmployeeMgmtViewInterface>& view)
+: mDataProvider(data), mView(view) {
     // empty for now
 }
 
-std::vector<entity::User> EmployeeMgmtController::list() {
-    // PCOR-34
-    return {};
+std::vector<entity::Employee> EmployeeMgmtController::list() {
+    LOG_DEBUG("Getting the list of employees");
+    // Make sure view is valid
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
+        return {};
+    }
+    if (!mDataProvider) {
+        LOG_ERROR("Dataprovider is not initialized");
+        mView->showDataNotReadyScreen();
+        return {};
+    }
+    const std::vector<entity::Employee>& temp = mDataProvider->getEmployees();
+    if (temp.empty()) {
+        LOG_WARN("Employees list is empty");
+        mView->showEmployeesEmptyPopup();
+        return {};
+    }
+    LOG_INFO("Successfully retrieved employees list. Size: %d", temp.size());
+    return temp;
 }
 
 entity::User EmployeeMgmtController::get(const std::string& userID) {
@@ -49,8 +69,10 @@ USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& userID) {
     return USERSMGMTSTATUS::SUCCESS;
 }
 
-std::unique_ptr<EmployeeMgmtControlInterface> createUsersMgmtModule() {
-    return std::make_unique<EmployeeMgmtController>();
+std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
+                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
+                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
+    return std::make_unique<EmployeeMgmtController>(data, view);
 }
 
 }  // namespace empmgmt

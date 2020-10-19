@@ -39,11 +39,11 @@ class Employee : public Person {
     Employee() = default;
     ~Employee() = default;
 
-    inline const std::string getEmployeeID() const {
+    inline const std::string employeeID() const {
         return mEmployeeID;
     }
 
-    inline const std::string getPosition() const {
+    inline const std::string position() const {
         return mPosition;
     }
 

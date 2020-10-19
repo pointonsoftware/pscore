@@ -54,7 +54,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
         // New enum values must be added before LOGOUT
     };
     void showLandingScreen() const;
-    void showUsersList() const;
+    void showEmployees() const;
     void showOptions() const;
     Options getUserSelection() const;
     bool action(Options option, std::promise<defines::display>* nextScreen) const;

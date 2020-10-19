@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef CORE_DOMAIN_EMPLOYEEMGMT_EMPLOYEECONTROLLER_HPP_
 #define CORE_DOMAIN_EMPLOYEEMGMT_EMPLOYEECONTROLLER_HPP_
+#include <memory>
 #include <string>
 #include <vector>
 #include "interface/employeemgmtiface.hpp"
@@ -32,13 +33,18 @@ namespace empmgmt {
 
 class EmployeeMgmtController : public EmployeeMgmtControlInterface {
  public:
-    EmployeeMgmtController();
+    explicit EmployeeMgmtController(const std::shared_ptr<EmployeeMgmtDataInterface>& data,
+                                    const std::shared_ptr<EmployeeMgmtViewInterface>& view);
     ~EmployeeMgmtController() = default;
 
-    std::vector<entity::User> list() override;
+    std::vector<entity::Employee> list() override;
     entity::User get(const std::string& userID) override;
     USERSMGMTSTATUS save(const entity::User& userID) override;
     USERSMGMTSTATUS remove(const std::string& userID) override;
+
+ private:
+    std::shared_ptr<EmployeeMgmtDataInterface> mDataProvider;
+    std::shared_ptr<EmployeeMgmtViewInterface> mView;
 };
 
 }  // namespace empmgmt

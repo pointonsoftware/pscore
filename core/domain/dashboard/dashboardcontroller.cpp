@@ -88,7 +88,7 @@ DASHSTATUS DashboardController::getCurrentUserInfo(entity::User* userInfoContain
 bool DashboardController::isUserValid(const entity::User& userInfo) const {
     LOG_DEBUG("Validating user data");
     // If employeeID is empty, that means the user data was not initialized
-    return !userInfo.getEmployeeID().empty();
+    return !userInfo.employeeID().empty();
 }
 
 std::unique_ptr<DashboardControlInterface> createDashboardModule(

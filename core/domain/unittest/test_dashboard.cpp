@@ -67,7 +67,7 @@ TEST_F(TestDashboard, GetCurrentUserInfoSuccess) {
 
     entity::User dummyUser = dashController.getCurrentUserInfo();
     // The employeeID must not be empty
-    ASSERT_NE(dummyUser.getEmployeeID(), "");
+    ASSERT_NE(dummyUser.employeeID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserNotFound) {
@@ -87,7 +87,7 @@ TEST_F(TestDashboard, GetCurrentUserNotFound) {
 
     entity::User dummyUser = dashController.getCurrentUserInfo();
     // The employeeID must be empty
-    ASSERT_EQ(dummyUser.getEmployeeID(), "");
+    ASSERT_EQ(dummyUser.employeeID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserWithEmptyUserID) {
@@ -100,14 +100,14 @@ TEST_F(TestDashboard, GetCurrentUserWithEmptyUserID) {
 
     entity::User dummyUser = dashController.getCurrentUserInfo();
     // employeeID must be empty
-    ASSERT_EQ(dummyUser.getEmployeeID(), "");
+    ASSERT_EQ(dummyUser.employeeID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserViewNotInitialized) {
     DashboardController dashboardController(dataMock, nullptr);
     entity::User dummyUser = dashboardController.getCurrentUserInfo();
     // employeeID must be empty
-    ASSERT_EQ(dummyUser.getEmployeeID(), "");
+    ASSERT_EQ(dummyUser.employeeID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserWithDataProviderNotInitialized) {
@@ -125,7 +125,7 @@ TEST_F(TestDashboard, GetCurrentUserWithDataProviderNotInitialized) {
 
     entity::User dummyUser = dashboardController.getCurrentUserInfo();
     // employeeID must be empty
-    ASSERT_EQ(dummyUser.getEmployeeID(), "");
+    ASSERT_EQ(dummyUser.employeeID(), "");
 }
 
 }  // namespace test

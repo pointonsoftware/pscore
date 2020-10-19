@@ -27,7 +27,7 @@ namespace dashboard {
 entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
     const entity::User user = [userID]() {
         for (const entity::User& temp : DATABASE().getUsersList()) {
-            if (temp.getEmployeeID().find(userID) != std::string::npos) {
+            if (temp.employeeID().find(userID) != std::string::npos) {
                 return temp;
             }
         }

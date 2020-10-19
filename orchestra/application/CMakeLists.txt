@@ -32,6 +32,7 @@ target_link_libraries (
     console_app
     dashboard
     datamanager
+    empmgmt
     loginmod
     ${MINGW_DEPENDENCY}
     ${CONSOLE_APP_LINKER_EXCEPTION}

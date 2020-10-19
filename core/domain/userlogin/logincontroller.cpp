@@ -60,7 +60,7 @@ std::string LoginController::loginWithPIN(const std::string& pin) {
     }
 
     LOG_INFO("User with PIN %s was found", pin.c_str());
-    return userInfo.getEmployeeID();
+    return userInfo.employeeID();
 }
 
 AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* user) {

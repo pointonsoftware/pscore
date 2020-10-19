@@ -19,11 +19,15 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "employeedata.hpp"
+#include <vector>
+#include <storage/stackdb.hpp>
 
 namespace dataprovider {
 namespace empmgmt {
 
-// Empty for now
+std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
+    return DATABASE().getEmployeesList();
+}
 
 }  // namespace empmgmt
 }  // namespace dataprovider
