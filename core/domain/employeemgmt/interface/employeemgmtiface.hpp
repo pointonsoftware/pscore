@@ -23,6 +23,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "employeemgmtdataif.hpp"
+#include "employeemgmtviewif.hpp"
 #include <domain/librarycommon.hpp>
 #include <entity/user.hpp>
 
@@ -43,9 +45,9 @@ class EmployeeMgmtControlInterface {
     virtual ~EmployeeMgmtControlInterface() = default;
 
     /*!
-     * Gets the list of all users
+     * Gets the list of all employees
     */
-    virtual std::vector<entity::User> list() = 0;
+    virtual std::vector<entity::Employee> list() = 0;
     /*!
      * Returns the info of the requested user
     */
@@ -61,7 +63,9 @@ class EmployeeMgmtControlInterface {
 };
 
 // Lib APIs
-extern "C" CORE_API std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule();
+extern "C" CORE_API std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
+                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
+                    const std::shared_ptr<EmployeeMgmtViewInterface>& view);
 
 }  // namespace empmgmt
 }  // namespace domain

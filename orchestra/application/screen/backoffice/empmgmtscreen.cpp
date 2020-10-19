@@ -43,22 +43,29 @@ void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
 
 void EmployeeMgmtScreen::showLandingScreen() const {
     SCREENCOMMON().showTopBanner("Employee Management");
-    showUsersList();
+    showEmployees();
     showOptions();
 }
 
-void EmployeeMgmtScreen::showUsersList() const {
+void EmployeeMgmtScreen::showEmployees() const {
+    using domain::empmgmt::EmployeeMgmtControlInterface;
+    std::unique_ptr<EmployeeMgmtControlInterface> coreEmployeeMgmt
+        = domain::empmgmt::createEmployeeMgmtModule(
+                std::make_shared<dataprovider::empmgmt::EmployeeDataProvider>(),
+                std::make_shared<EmployeeMgmtScreen>(*this));
     std::cout << std::endl;
-    // Todo (code) - PCOR-34
     // Display the columns
-    std::vector<std::string> titleColumn {"Employee ID", "First Name", "Last Name", "Position"};
-    SCREENCOMMON().printColumns(titleColumn, true);
-
-    // Get the vector of employees, iterate (increment [N] option)
-    std::vector<std::string> user1 {"[1] 10004", "Rodrigo", "Duterte", "Mananger"};
-    SCREENCOMMON().printColumns(user1);
-    std::vector<std::string> user2 {"[2] 10005", "Kaloy", "Ekame", "Cashier"};
-    SCREENCOMMON().printColumns(user2);
+    SCREENCOMMON().printColumns({"Employee ID", "First Name", "Last Name", "Position"}, true);
+    // Display employees
+    std::vector<entity::Employee> employees = coreEmployeeMgmt->list();
+    for (unsigned int index = 0; index < employees.size(); ++index) {
+        SCREENCOMMON().printColumns({
+            std::string("[" + std::to_string(index + 1) + "] " + employees[index].employeeID()),
+            employees[index].firstName(),
+            employees[index].lastName(),
+            employees[index].position()
+        });
+    }
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
@@ -67,12 +74,11 @@ void EmployeeMgmtScreen::showOptions() const {
     std::cout << "[b] Back" << std::endl;
     std::cout << "[0] Logout" << std::endl;
     std::cout << std::endl;
-    std::cout << "Select [option]" << std::endl;
 }
 
 EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() const {
     std::string userInput;
-    std::cout << std::endl << "> "; std::cin >> userInput;
+    std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
 
     if (userInput == "x") {
         return Options::APP_EXIT;

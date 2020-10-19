@@ -39,17 +39,23 @@ class Employee : public Person {
     Employee() = default;
     ~Employee() = default;
 
-    inline const std::string getEmployeeID() const {
+    inline const std::string employeeID() const {
         return mEmployeeID;
     }
 
-    inline const std::string getPosition() const {
+    inline const std::string position() const {
         return mPosition;
     }
 
     inline const bool isSystemUser() const {
         return mIsSystemUser;
     }
+
+    /*!
+     * Generate employee ID
+     * Note: this should only be used when creating a new employee/user
+    */
+    std::string generateID() const;
 
  protected:
     std::string mEmployeeID;

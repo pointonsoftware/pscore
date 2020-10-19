@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_DATAMANAGER_EMPLOYEEDATA_HPP_
 #define ORCHESTRA_DATAMANAGER_EMPLOYEEDATA_HPP_
+#include <vector>
 #include <domain/employeemgmt/interface/employeemgmtdataif.hpp>
 
 namespace dataprovider {
@@ -29,6 +30,8 @@ class EmployeeDataProvider : public domain::empmgmt::EmployeeMgmtDataInterface {
  public:
     EmployeeDataProvider() = default;
     virtual ~EmployeeDataProvider() = default;
+
+    std::vector<entity::Employee> getEmployees() override;
 };
 
 }  // namespace empmgmt

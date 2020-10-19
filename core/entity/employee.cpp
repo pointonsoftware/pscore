@@ -35,4 +35,9 @@ Employee::Employee(const std::string& firstname,
     // Empty for now
 }
 
+std::string Employee::generateID() const {
+    // Todo (spec) - what is the business rule when creating employeeID?
+    return "";
+}
+
 }  // namespace entity

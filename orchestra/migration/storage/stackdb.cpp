@@ -91,6 +91,33 @@ void StackDB::populateUsers() {
                                    "6060"               // ZIP
     })));
 
+    usersList.emplace_back(
+            dynamic_cast<entity::User&>(
+             entity::User("Juana",                      // First name
+                          "Santos",                     // Middle name
+                          "Dela Cruz",                  // Last name
+                          "10/18/2020",                 // B-date
+                          "Female",                     // Gender
+                          "10003",                      // Employee ID <!Make sure this is unique>
+                          "Cashier",                    // Position
+                          "2022")                       // PIN <!Make sure this is unique>
+                          .addPhoneNumber("09123334567")
+                          .addPersonalId("Driver's License", "N04-10-021355")
+                          .setEmail("Juana@gmail.com")
+                          .setAddress(
+                                  {"",                  // housenumber
+                                   "2",                 // lot
+                                   "6",                 // block
+                                   "",                  // Street
+                                   "BF Homes",          // Subdivision
+                                   "",                  // Sitio
+                                   "",                  // Purok
+                                   "Agus",              // Barangay
+                                   "Lapu-Lapu City",    // City/Town
+                                   "Cebu",              // Province
+                                   "6015"               // ZIP
+    })));
+
     // Always append users to employees list (as users are also employees)
     employeesList.insert(std::end(employeesList), std::begin(usersList), std::end(usersList));
 }
@@ -104,8 +131,8 @@ void StackDB::populateEmployees() {
                           "Duterte",                    // Last name
                           "10/17/1977",                 // B-date
                           "Male",                       // Gender
-                          "10003",                      // Employee ID <!Make sure this is unique>
-                          "Manager")                    // Position
+                          "10004",                      // Employee ID <!Make sure this is unique>
+                          "Security Guard")             // Position
                           .addPhoneNumber("09123334567")
                           .addPersonalId("Driver's License", "N04-10-021355")
                           .setEmail("duterte@gmail.com")
@@ -121,6 +148,32 @@ void StackDB::populateEmployees() {
                                    "Davao City",        // City/Town
                                    "Davao",             // Province
                                    "6060"               // ZIP
+    })));
+
+    employeesList.emplace_back(
+            dynamic_cast<entity::Employee&>(
+             entity::Employee("Chris",                  // First name
+                          "White",                      // Middle name
+                          "Brown",                      // Last name
+                          "10/18/1977",                 // B-date
+                          "Male",                       // Gender
+                          "10005",                      // Employee ID <!Make sure this is unique>
+                          "Delivery Personel")          // Position
+                          .addPhoneNumber("09123334567")
+                          .addPersonalId("SSS", "014-135-188-813")
+                          .setEmail("Chris_123@gmail.com")
+                          .setAddress(
+                                  {"18",                // housenumber
+                                   "",                  // lot
+                                   "",                  // block
+                                   "Palermo St.",       // Street
+                                   "",                  // Subdivision
+                                   "Mahayahay",         // Sitio
+                                   "",                  // Purok
+                                   "Opon",              // Barangay
+                                   "Lapu-Lapu City",    // City/Town
+                                   "Cebu",              // Province
+                                   "6015"               // ZIP
     })));
 }
 

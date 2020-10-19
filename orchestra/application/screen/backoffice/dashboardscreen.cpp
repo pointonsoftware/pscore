@@ -45,7 +45,7 @@ void DashboardScreen::show(std::promise<defines::display>* promise) {
     coreDashboard->setCurrentUserId(mUserID);
     mCurrentUser = coreDashboard->getCurrentUserInfo();
 
-    if (!mCurrentUser.getEmployeeID().empty()) {
+    if (!mCurrentUser.employeeID().empty()) {
         // Valid user, proceed to menu selection
         menuSelection(promise);
     } else {
