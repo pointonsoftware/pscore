@@ -61,6 +61,7 @@ entity::User EmployeeMgmtController::get(const std::string& userID) {
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& userID) {
     // PCOR-32
+    // Generate employeeID from Employee entity if employee is new
     return USERSMGMTSTATUS::SUCCESS;
 }
 

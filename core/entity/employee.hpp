@@ -51,6 +51,12 @@ class Employee : public Person {
         return mIsSystemUser;
     }
 
+    /*!
+     * Generate employee ID
+     * Note: this should only be used when creating a new employee/user
+    */
+    std::string generateID() const;
+
  protected:
     std::string mEmployeeID;
     std::string mPosition;
