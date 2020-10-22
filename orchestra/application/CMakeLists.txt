@@ -9,6 +9,7 @@ add_executable (
     flowcontroller.hpp
     flowcontroller.cpp
     # Common screens
+    screen/informationscreen.hpp
     screen/screeniface.hpp
     screen/screencommon.hpp
     screen/screencommon.cpp

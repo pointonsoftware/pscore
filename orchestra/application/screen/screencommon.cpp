@@ -18,8 +18,6 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef APPLICATION_SCREEN_COMMON_HPP_
-#define APPLICATION_SCREEN_COMMON_HPP_
 #include "screencommon.hpp"
 #include <cstdlib>
 #include <iostream>
@@ -123,4 +121,3 @@ void ScreenCommon::printColumns(const std::vector<std::string>& columns, bool is
 }
 
 }  // namespace screen
-#endif  // APPLICATION_SCREEN_COMMON_HPP_
