@@ -48,7 +48,7 @@ class InformationScreen {
             SCREENCOMMON().printItemText("Phone " + std::to_string(count),
                                         mInfo->contactDetails().phone_number[count-1]);
         }
-        std::cout << "Email       : " << mInfo->contactDetails().email << std::endl;
+        SCREENCOMMON().printItemText("Email", mInfo->contactDetails().email);
         return *this;
     }
 
