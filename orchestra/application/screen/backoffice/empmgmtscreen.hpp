@@ -21,8 +21,12 @@
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
 #include <future>
+#include <memory>
+#include <vector>
 #include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
 #include <screeniface.hpp>
+// core
+#include <domain/employeemgmt/interface/employeemgmtiface.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -56,10 +60,13 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void showLandingScreen() const;
     void showEmployees() const;
     void showOptions() const;
-    Options getUserSelection() const;
+    Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen) const;
     void invalidOptionSelected() const;
     void showEmployeeInformation() const;
+    void queryEmployeesList();
+    std::vector<entity::Employee> mEmployees;  // Used to cache the list of employees
+    unsigned int mSelectedEmployeeIndex = 0;
 };
 
 }  // namespace backoffice

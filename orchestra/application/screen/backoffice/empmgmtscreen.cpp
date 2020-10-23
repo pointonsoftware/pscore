@@ -20,13 +20,12 @@
 **************************************************************************************************/
 #include "empmgmtscreen.hpp"
 #include <iostream>
-#include <memory>
 #include <string>
 #include <vector>
+#include <general.hpp>  // pscore utility
 // view
+#include <informationscreen.hpp>
 #include <screencommon.hpp>
-// core
-#include <domain/employeemgmt/interface/employeemgmtiface.hpp>
 // data
 #include <employeedata.hpp>
 
@@ -34,6 +33,9 @@ namespace screen {
 namespace backoffice {
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
+    // Get the employees from Core then cache the list
+    queryEmployeesList();
+    // Landing
     showLandingScreen();
     /*! Screen navigation
      * Stay in the current screen until action() returns false (i.e. switch screen is required)
@@ -47,23 +49,26 @@ void EmployeeMgmtScreen::showLandingScreen() const {
     showOptions();
 }
 
-void EmployeeMgmtScreen::showEmployees() const {
+void EmployeeMgmtScreen::queryEmployeesList() {
     using domain::empmgmt::EmployeeMgmtControlInterface;
     std::unique_ptr<EmployeeMgmtControlInterface> coreEmployeeMgmt
         = domain::empmgmt::createEmployeeMgmtModule(
                 std::make_shared<dataprovider::empmgmt::EmployeeDataProvider>(),
                 std::make_shared<EmployeeMgmtScreen>(*this));
+    mEmployees = coreEmployeeMgmt->list();
+}
+
+void EmployeeMgmtScreen::showEmployees() const {
     std::cout << std::endl;
     // Display the columns
     SCREENCOMMON().printColumns({"Employee ID", "First Name", "Last Name", "Position"}, true);
     // Display employees
-    std::vector<entity::Employee> employees = coreEmployeeMgmt->list();
-    for (unsigned int index = 0; index < employees.size(); ++index) {
+    for (unsigned int index = 0; index < mEmployees.size(); ++index) {
         SCREENCOMMON().printColumns({
-            std::string("[" + std::to_string(index + 1) + "] " + employees[index].employeeID()),
-            employees[index].firstName(),
-            employees[index].lastName(),
-            employees[index].position()
+            std::string("[" + std::to_string(index + 1) + "] " + mEmployees[index].employeeID()),
+            mEmployees[index].firstName(),
+            mEmployees[index].lastName(),
+            mEmployees[index].position()
         });
     }
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
@@ -76,7 +81,7 @@ void EmployeeMgmtScreen::showOptions() const {
     std::cout << std::endl;
 }
 
-EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() const {
+EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
     std::string userInput;
     std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
 
@@ -84,10 +89,17 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() const {
         return Options::APP_EXIT;
     } else if (userInput == "b") {
         // Todo (code) - we should return whatever was the previous screen
-        // return Options::LANDING;
-        return Options::DASHBOARD;
+        // For now, we will check if user has selected an index (i.e. info screen is shown)
+        if (mSelectedEmployeeIndex == 0) {
+            return Options::DASHBOARD;
+        }
+        mSelectedEmployeeIndex = 0;  // reset whenever we go to landing
+        return Options::LANDING;
     } else if (userInput == "0") {
         return Options::LOGOUT;
+    } else if (utility::isNumber(userInput)) {
+        mSelectedEmployeeIndex = std::stoi(userInput);
+        return Options::EMPLOYEE_DETAILS;
     }  // add more options here
 
     // Default invalid option
@@ -102,6 +114,10 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             break;
         case Options::INVALID:
             invalidOptionSelected();
+            break;
+        case Options::EMPLOYEE_DETAILS:
+            mSelectedEmployeeIndex > (mEmployees.size()) ?
+                invalidOptionSelected() : showEmployeeInformation();
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;
@@ -129,7 +145,20 @@ void EmployeeMgmtScreen::showEmployeeInformation() const {
     // Todo (code) - create an employee info screen, pass the info as parameter
     //             - it has to decide on wether user or employee will be displayed
     //             - pass a parameter of wether to display the CUD options
-    // Todo (code) - we will switch to the user/employee info screen
+
+    // mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
+    entity::Employee selectedEmployee = mEmployees[mSelectedEmployeeIndex - 1];
+    if (!selectedEmployee.employeeID().empty()) {
+        // Valid employee, show the information screen!
+        SCREENCOMMON().showTopBanner("Employee Information");
+        screen::InformationScreen<entity::Employee> infoScreen(selectedEmployee);
+        infoScreen.showBasicInformation();
+        infoScreen.showContactDetails();
+        infoScreen.showUserAddress();
+        infoScreen.showUserPersonalIds();
+        std::cout << std::endl << std::endl;
+        std::cout << "Enter [b] to go back." << std::endl;
+    }
 }
 
 void EmployeeMgmtScreen::showEmployeesEmptyPopup() {
