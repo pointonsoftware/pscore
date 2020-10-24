@@ -77,9 +77,12 @@ USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
 
-    //Todo (code) - should we should check if the id exists
+    // Todo (code) - we should check if the id exists
 
     mDataProvider->removeWithID(id);
+
+    // Todo (code) - check if mDataProvider successfully removed the employee
+    // E.g. failure: mDataprovider lost db connection
     mView->showSuccessfullyRemoved(id);
     LOG_INFO("Successfully removed employee with ID %s", id.c_str());
     return USERSMGMTSTATUS::SUCCESS;
