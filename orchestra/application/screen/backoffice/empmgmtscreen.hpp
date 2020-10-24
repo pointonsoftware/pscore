@@ -22,6 +22,7 @@
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
 #include <future>
 #include <memory>
+#include <string>
 #include <vector>
 #include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
 #include <screeniface.hpp>
@@ -43,6 +44,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     // Domain interface implementation
     void showEmployeesEmptyPopup() override;
     void showDataNotReadyScreen() override;
+    void showSuccessfullyRemoved(const std::string& id) override;
 
  private:
      // Screen options - this represents the buttons in a GUI
@@ -50,6 +52,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
         LANDING,
         DASHBOARD,
         EMPLOYEE_DETAILS,
+        EMPLOYEE_REMOVE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -61,12 +64,14 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void showEmployees() const;
     void showOptions() const;
     Options getUserSelection();
-    bool action(Options option, std::promise<defines::display>* nextScreen) const;
+    bool action(Options option, std::promise<defines::display>* nextScreen);
     void invalidOptionSelected() const;
     void showEmployeeInformation() const;
     void queryEmployeesList();
+    void removeEmployee();
     std::vector<entity::Employee> mEmployees;  // Used to cache the list of employees
-    unsigned int mSelectedEmployeeIndex = 0;
+    unsigned int mSelectedEmployeeIndex = 0;  // 1-based index
+    std::unique_ptr<domain::empmgmt::EmployeeMgmtControlInterface> mCoreEmployeeMgmt;
 };
 
 }  // namespace backoffice

@@ -65,8 +65,23 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& userID) {
     return USERSMGMTSTATUS::SUCCESS;
 }
 
-USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& userID) {
-    // PCOR-33
+USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
+        return USERSMGMTSTATUS::UNINITIALIZED;
+    }
+
+    if (!mDataProvider) {
+        LOG_ERROR("Dataprovider is not initialized");
+        mView->showDataNotReadyScreen();
+        return USERSMGMTSTATUS::UNINITIALIZED;
+    }
+
+    //Todo (code) - should we should check if the id exists
+
+    mDataProvider->removeWithID(id);
+    mView->showSuccessfullyRemoved(id);
+    LOG_INFO("Successfully removed employee with ID %s", id.c_str());
     return USERSMGMTSTATUS::SUCCESS;
 }
 

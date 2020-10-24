@@ -19,6 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "employeedata.hpp"
+#include <algorithm>
+#include <string>
 #include <vector>
 #include <storage/stackdb.hpp>
 
@@ -27,6 +29,14 @@ namespace empmgmt {
 
 std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
     return DATABASE().getEmployeesList();
+}
+
+void EmployeeDataProvider::removeWithID(const std::string& id) {
+    std::vector<entity::Employee>& employeeList = DATABASE().getEmployeesList();
+    employeeList.erase(
+        std::remove_if(employeeList.begin(), employeeList.end(), [&](const entity::Employee& e) {
+            return e.employeeID() == id;
+        }), employeeList.end());
 }
 
 }  // namespace empmgmt
