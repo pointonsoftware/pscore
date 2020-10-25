@@ -32,6 +32,12 @@
 namespace dataprovider {
 namespace db {
 
+/*!
+ * Todo - https://pointon.atlassian.net/browse/PCOR-39
+ * Mimic a database table
+ * - Create a struct that represents each items of that table
+ * - For queries, return a const reference vector of structs
+*/
 class StackDB {
  public:
     ~StackDB() = default;

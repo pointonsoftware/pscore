@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#define VERSION "0.1.1"
+#define VERSION "0.1.2"
 #define SCREENCOMMON() screen::ScreenCommon::getInstance()
 
 namespace screen {
@@ -40,7 +40,8 @@ class ScreenCommon {
     void showTopBanner(const std::string& currentScreen) const;
     void printTitleText(const std::string& text) const;
     void printItemText(const std::string& label, const std::string& item) const;
-    void printColumns(const std::vector<std::string>& columns, bool isHeader = false) const;
+    void printColumns(const std::vector<std::string>& columns,
+                      bool isHeader = false, bool showColumnBorders = true) const;
     void printHorizontalBorder(char borderCharacter) const;
 
  private:

@@ -32,28 +32,25 @@ class InformationScreen {
     explicit InformationScreen(const T& t) : mInfo(&t) {}
     ~InformationScreen() = default;
 
-    const InformationScreen& showBasicInformation() {
-        std::cout << std::endl << "Basic Info" << std::endl << std::endl;
+    void showBasicInformation() {
+        SCREENCOMMON().printColumns({"Basic Info"}, true);
         SCREENCOMMON().printItemText("First Name", mInfo->firstName());
         SCREENCOMMON().printItemText("Middle Name", mInfo->middleName());
         SCREENCOMMON().printItemText("Last Name", mInfo->lastName());
         SCREENCOMMON().printItemText("Birthdate", mInfo->birthdate());
-        SCREENCOMMON().printItemText("Gender", mInfo->gender());
-        return *this;
     }
 
-    const InformationScreen& showContactDetails() const {
-        std::cout << std::endl << std::endl  << "Contact Details" << std::endl << std::endl;
+    void showContactDetails() const {
+        SCREENCOMMON().printColumns({"Contact Details"}, true);
         for (size_t count = 1; count <= mInfo->contactDetails().phone_number.size(); ++count) {
             SCREENCOMMON().printItemText("Phone " + std::to_string(count),
                                         mInfo->contactDetails().phone_number[count-1]);
         }
         SCREENCOMMON().printItemText("Email", mInfo->contactDetails().email);
-        return *this;
     }
 
-    const InformationScreen& showUserAddress() const {
-        std::cout << std::endl << std::endl  << "Address" << std::endl << std::endl;
+    void showUserAddress() const {
+        SCREENCOMMON().printColumns({"Address"}, true);
         SCREENCOMMON().printItemText("House No.", mInfo->address().housenumber);
         SCREENCOMMON().printItemText("Lot", mInfo->address().lot);
         SCREENCOMMON().printItemText("Block", mInfo->address().block);
@@ -65,18 +62,22 @@ class InformationScreen {
         SCREENCOMMON().printItemText("City/Town", mInfo->address().city_town);
         SCREENCOMMON().printItemText("Province", mInfo->address().province);
         SCREENCOMMON().printItemText("Zip Code", mInfo->address().zip);
-        return *this;
     }
 
-    const InformationScreen& showUserPersonalIds() const {
-        std::cout << std::endl << std::endl  << "Personal Identification" << std::endl << std::endl;
+    void showUserPersonalIds() const {
+        SCREENCOMMON().printColumns({"Personal Identification"}, true);
         for (size_t count = 1; count <= mInfo->personalIds().size(); ++count) {
             const std::string details(mInfo->personalIds()[count-1].type
                                 + defines::DELIMETER_DASH
                                 + mInfo->personalIds()[count-1].id_number);
             SCREENCOMMON().printItemText("ID " + std::to_string(count), details);
         }
-        return *this;
+    }
+
+    void showOptions() const {
+        std::cout << std::endl << std::endl;
+        SCREENCOMMON().printColumns({"[u] - Update", "[d] - Delete", "[b] - Back"},
+                                    true, false);
     }
 
  private:

@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_DATAMANAGER_EMPLOYEEDATA_HPP_
 #define ORCHESTRA_DATAMANAGER_EMPLOYEEDATA_HPP_
+#include <string>
 #include <vector>
 #include <domain/employeemgmt/interface/employeemgmtdataif.hpp>
 
@@ -32,6 +33,7 @@ class EmployeeDataProvider : public domain::empmgmt::EmployeeMgmtDataInterface {
     virtual ~EmployeeDataProvider() = default;
 
     std::vector<entity::Employee> getEmployees() override;
+    void removeWithID(const std::string& userID) override;
 };
 
 }  // namespace empmgmt

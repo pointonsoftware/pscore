@@ -33,6 +33,9 @@ namespace screen {
 namespace backoffice {
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
+    mCoreEmployeeMgmt = domain::empmgmt::createEmployeeMgmtModule(
+                    std::make_shared<dataprovider::empmgmt::EmployeeDataProvider>(),
+                    std::make_shared<EmployeeMgmtScreen>());
     // Get the employees from Core then cache the list
     queryEmployeesList();
     // Landing
@@ -50,12 +53,19 @@ void EmployeeMgmtScreen::showLandingScreen() const {
 }
 
 void EmployeeMgmtScreen::queryEmployeesList() {
-    using domain::empmgmt::EmployeeMgmtControlInterface;
-    std::unique_ptr<EmployeeMgmtControlInterface> coreEmployeeMgmt
-        = domain::empmgmt::createEmployeeMgmtModule(
-                std::make_shared<dataprovider::empmgmt::EmployeeDataProvider>(),
-                std::make_shared<EmployeeMgmtScreen>(*this));
-    mEmployees = coreEmployeeMgmt->list();
+    mEmployees = mCoreEmployeeMgmt->list();
+}
+
+void EmployeeMgmtScreen::removeEmployee() {
+    /*!
+     * Todo - https://pointon.atlassian.net/browse/PCOR-39
+     * There's a bug in stackDB where the employee was removed from employeesList
+     * but it is still present in the users list
+     */
+    if (mCoreEmployeeMgmt->remove(mEmployees[mSelectedEmployeeIndex - 1].employeeID())
+          == domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+       mEmployees.erase(mEmployees.begin() + (mSelectedEmployeeIndex - 1));
+    }
 }
 
 void EmployeeMgmtScreen::showEmployees() const {
@@ -93,23 +103,26 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         if (mSelectedEmployeeIndex == 0) {
             return Options::DASHBOARD;
         }
-        mSelectedEmployeeIndex = 0;  // reset whenever we go to landing
         return Options::LANDING;
     } else if (userInput == "0") {
         return Options::LOGOUT;
     } else if (utility::isNumber(userInput)) {
+        // Store user input as the selected index
         mSelectedEmployeeIndex = std::stoi(userInput);
         return Options::EMPLOYEE_DETAILS;
+    } else if (userInput == "d") {
+        return Options::EMPLOYEE_REMOVE;
     }  // add more options here
 
     // Default invalid option
     return Options::INVALID;
 }
 
-bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* nextScreen) const {
+bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* nextScreen) {
     bool switchScreenIsRequired = false;
     switch (option) {
         case Options::LANDING:
+            mSelectedEmployeeIndex = 0;  // reset whenever we go to landing
             showLandingScreen();
             break;
         case Options::INVALID:
@@ -118,6 +131,15 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
         case Options::EMPLOYEE_DETAILS:
             mSelectedEmployeeIndex > (mEmployees.size()) ?
                 invalidOptionSelected() : showEmployeeInformation();
+            break;
+        case Options::EMPLOYEE_REMOVE:
+            mSelectedEmployeeIndex == 0 ?
+                invalidOptionSelected() : removeEmployee();
+            /*!
+             * Warning: recurssion here!!!
+             * This must be considered when doing changes for Options::LANDING
+             */
+            action(Options::LANDING, nextScreen);
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;
@@ -156,8 +178,7 @@ void EmployeeMgmtScreen::showEmployeeInformation() const {
         infoScreen.showContactDetails();
         infoScreen.showUserAddress();
         infoScreen.showUserPersonalIds();
-        std::cout << std::endl << std::endl;
-        std::cout << "Enter [b] to go back." << std::endl;
+        infoScreen.showOptions();
     }
 }
 
@@ -167,6 +188,10 @@ void EmployeeMgmtScreen::showEmployeesEmptyPopup() {
 
 void EmployeeMgmtScreen::showDataNotReadyScreen() {
     std::cout << "Data is not ready." << std::endl;
+}
+
+void EmployeeMgmtScreen::showSuccessfullyRemoved(const std::string& id) {
+    std::cout << "Successfully removed employee with ID " << id << std::endl;
 }
 
 }  // namespace backoffice

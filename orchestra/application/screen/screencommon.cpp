@@ -51,6 +51,10 @@ void ScreenCommon::printTitleText(const std::string& text) const {
 }
 
 void ScreenCommon::printItemText(const std::string& label, const std::string& item) const {
+    if (item.empty()) {
+        // Don't show anything if item is empty
+        return;
+    }
     std::cout << std::left << std::setw(defines::LABEL_WIDTH)
               << label  << defines::LABEL_BOUNDARY << " "
               << item   << std::endl;
@@ -76,17 +80,17 @@ ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
     Indent indents;
     switch (vAlign) {
         case VerticalAlignment::LEFT:
+            indents.start = " ";  // Left offset
+            indents.end = std::string((width - text.size() - 2), ' ');
             break;
         case VerticalAlignment::CENTER:
             indents.start = std::string((width - text.size()) / 2, ' ');
             indents.end = indents.start;
             if (!(text.size() % 2)) {
-                indents.end = indents.start.substr(0, indents.start.size()-1);
+                indents.end = indents.start.substr(0, indents.start.size() - 1);
             }
             break;
         case VerticalAlignment::RIGHT:
-            indents.start = " ";  // Left offset
-            indents.end = std::string((width - text.size() - 2), ' ');
             break;
         default:
             break;
@@ -95,25 +99,32 @@ ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
     return indents;
 }
 
-void ScreenCommon::printColumns(const std::vector<std::string>& columns, bool isHeader) const {
-    const unsigned columnWidth = defines::SCREEN_WIDTH / columns.size();
+void ScreenCommon::printColumns(const std::vector<std::string>& columns,
+                                bool isHeader, bool showColumnBorders) const {
+    const unsigned int columnWidth = defines::SCREEN_WIDTH / columns.size();
+    unsigned int modulo = defines::SCREEN_WIDTH % columns.size();
     if (isHeader) {
         // Print upper border
         printHorizontalBorder(defines::BORDER_CHARACTER_2);
     }
-
-    for (std::string text : columns) {
+    for (unsigned int i = 0; i < columns.size(); i++) {
         const Indent indents = calculateIndents(isHeader ?
                                                 VerticalAlignment::CENTER :
-                                                VerticalAlignment::RIGHT,
-                                                columnWidth, text);
-        std::cout << defines::BORDER_CHARACTER_3
-                  << indents.start << text << indents.end;
+                                                VerticalAlignment::LEFT,
+                                                columnWidth,
+                                                columns[i]);
+        /*!
+         * If showColumnBorders is true, print defines::BORDER_CHARACTER_3
+         * Else, we just print defines::BORDER_CHARACTER_3 on the first column
+        */
+        std::cout << (showColumnBorders ? defines::BORDER_CHARACTER_3 :
+                     (i == 0 ? defines::BORDER_CHARACTER_3 :  ' '))
+                  << indents.start << columns[i] << indents.end
+                  // If columns.size() is odd, do +1 space for each column width
+                  << [&modulo]() { return modulo > 0 ? (modulo--, " ") : ""; }();
     }
-
     // End column border
-    std::cout << defines::BORDER_CHARACTER_3; std::cout << std::endl;
-
+    std::cout << defines::BORDER_CHARACTER_3 << std::endl;
     if (isHeader) {
         // Print bottom border
         printHorizontalBorder(defines::BORDER_CHARACTER_2);

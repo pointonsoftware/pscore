@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTDATAIF_HPP_
 #define CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTDATAIF_HPP_
+#include <string>
 #include <vector>
 #include <entity/employee.hpp>
 
@@ -37,6 +38,10 @@ class EmployeeMgmtDataInterface {
      * Retrieves the all the employees
     */
     virtual std::vector<entity::Employee> getEmployees() = 0;
+    /*!
+     * Remove an employee with id
+    */
+    virtual void removeWithID(const std::string& id) = 0;
 };
 
 }  // namespace empmgmt
