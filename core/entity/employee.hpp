@@ -61,6 +61,9 @@ class Employee : public Person {
     std::string mEmployeeID;
     std::string mPosition;
     bool mIsSystemUser;
+
+    int makeUniqueNumber() const;
+    std::string getDate() const;
 };
 
 }  // namespace entity

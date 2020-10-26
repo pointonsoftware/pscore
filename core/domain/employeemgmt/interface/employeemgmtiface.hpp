@@ -36,7 +36,8 @@ namespace empmgmt {
 enum class USERSMGMTSTATUS {
     SUCCESS       = 0,
     FAILED        = 1,
-    UNINITIALIZED = 2
+    UNINITIALIZED = 2,
+    NOT_FOUND     = 3
 };
 
 class EmployeeMgmtControlInterface {
@@ -51,7 +52,7 @@ class EmployeeMgmtControlInterface {
     /*!
      * Returns the info of the requested user
     */
-    virtual entity::User get(const std::string& userID) = 0;
+    virtual entity::Employee get(const std::string& id) = 0;
     /*!
      * Creates the user if not exists, otherwise will update the user info
     */

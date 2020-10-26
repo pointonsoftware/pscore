@@ -38,13 +38,17 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
     ~EmployeeMgmtController() = default;
 
     std::vector<entity::Employee> list() override;
-    entity::User get(const std::string& userID) override;
+    entity::Employee get(const std::string& id) override;
     USERSMGMTSTATUS save(const entity::User& userID) override;
     USERSMGMTSTATUS remove(const std::string& id) override;
 
  private:
     std::shared_ptr<EmployeeMgmtDataInterface> mDataProvider;
     std::shared_ptr<EmployeeMgmtViewInterface> mView;
+    std::vector<entity::Employee> mCachedList;  // List of employees
+
+    bool isExists(const std::string& id);
+    std::vector<entity::Employee>::iterator find(const std::string& id);
 };
 
 }  // namespace empmgmt

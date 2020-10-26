@@ -168,8 +168,12 @@ void EmployeeMgmtScreen::showEmployeeInformation() const {
     //             - it has to decide on wether user or employee will be displayed
     //             - pass a parameter of wether to display the CUD options
 
-    // mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
-    entity::Employee selectedEmployee = mEmployees[mSelectedEmployeeIndex - 1];
+    /*!
+     * Get the employeeID from employee GUI table
+     * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
+    */
+    const std::string& employeeID = mEmployees[mSelectedEmployeeIndex - 1].employeeID();
+    const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->get(employeeID);
     if (!selectedEmployee.employeeID().empty()) {
         // Valid employee, show the information screen!
         SCREENCOMMON().showTopBanner("Employee Information");
@@ -188,6 +192,10 @@ void EmployeeMgmtScreen::showEmployeesEmptyPopup() {
 
 void EmployeeMgmtScreen::showDataNotReadyScreen() {
     std::cout << "Data is not ready." << std::endl;
+}
+
+void EmployeeMgmtScreen::showEmployeeNotFoundPopup() {
+    std::cout << "Something went wrong. Please try again." << std::endl;
 }
 
 void EmployeeMgmtScreen::showSuccessfullyRemoved(const std::string& id) {

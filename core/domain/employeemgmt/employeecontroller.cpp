@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "employeecontroller.hpp"
+#include <algorithm>
 #include <memory>
 #include <logger/loghelper.hpp>
 
@@ -44,19 +45,26 @@ std::vector<entity::Employee> EmployeeMgmtController::list() {
         mView->showDataNotReadyScreen();
         return {};
     }
-    const std::vector<entity::Employee>& temp = mDataProvider->getEmployees();
-    if (temp.empty()) {
+    mCachedList = mDataProvider->getEmployees();
+    if (mCachedList.empty()) {
         LOG_WARN("Employees list is empty");
         mView->showEmployeesEmptyPopup();
         return {};
     }
-    LOG_INFO("Successfully retrieved employees list. Size: %d", temp.size());
-    return temp;
+    LOG_INFO("Successfully retrieved employees list. Size: %d", mCachedList.size());
+    return mCachedList;
 }
 
-entity::User EmployeeMgmtController::get(const std::string& userID) {
-    // PCOR-36
-    return entity::User();
+entity::Employee EmployeeMgmtController::get(const std::string& id) {
+    LOG_DEBUG("Getting employee with ID %s", id.c_str());
+    const std::vector<entity::Employee>::iterator& iter = find(id);
+    if (iter != mCachedList.end()) {
+        LOG_INFO("Found employee with ID %s", id.c_str());
+        return *iter;
+    } else {
+        LOG_ERROR("Employee was not found");
+        return entity::Employee{};
+    }
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& userID) {
@@ -66,26 +74,37 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& userID) {
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
+    LOG_DEBUG("Removing employee with ID %s", id.c_str());
     if (!mView) {
         LOG_ERROR("View is not initialized");
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
-
     if (!mDataProvider) {
         LOG_ERROR("Dataprovider is not initialized");
         mView->showDataNotReadyScreen();
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
-
-    // Todo (code) - we should check if the id exists
-
+    if (!isExists(id)) {
+        LOG_ERROR("Employee with ID %s was not found in the cache list."), id.c_str();
+        mView->showDataNotReadyScreen();
+        return USERSMGMTSTATUS::NOT_FOUND;
+    }
     mDataProvider->removeWithID(id);
-
     // Todo (code) - check if mDataProvider successfully removed the employee
     // E.g. failure: mDataprovider lost db connection
     mView->showSuccessfullyRemoved(id);
     LOG_INFO("Successfully removed employee with ID %s", id.c_str());
     return USERSMGMTSTATUS::SUCCESS;
+}
+
+bool EmployeeMgmtController::isExists(const std::string& id) {
+    return find(id) != mCachedList.end();
+}
+
+std::vector<entity::Employee>::iterator EmployeeMgmtController::find(const std::string& id) {
+    return std::find_if(mCachedList.begin(), mCachedList.end(), [&id](const entity::Employee& e) {
+                return e.employeeID() == id;
+            });
 }
 
 std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
