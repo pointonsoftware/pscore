@@ -30,7 +30,6 @@ namespace empmgmt {
 std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
     // SELECT UNION(employeestable, addresstable, contactstable, personalIDtable)
     std::vector<entity::Employee> employees;
-    std::vector<entity::Employee>::iterator iterator;
 
     // Gather all employees
     for (const db::StackDB::EmployeeTableItem& temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
