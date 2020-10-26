@@ -44,6 +44,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     // Domain interface implementation
     void showEmployeesEmptyPopup() override;
     void showDataNotReadyScreen() override;
+    void showEmployeeNotFoundPopup() override;
     void showSuccessfullyRemoved(const std::string& id) override;
 
  private:
@@ -69,7 +70,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void showEmployeeInformation() const;
     void queryEmployeesList();
     void removeEmployee();
-    std::vector<entity::Employee> mEmployees;  // Used to cache the list of employees
+    std::vector<entity::Employee> mEmployees;  // Represents the GUI employees-table
     unsigned int mSelectedEmployeeIndex = 0;  // 1-based index
     std::unique_ptr<domain::empmgmt::EmployeeMgmtControlInterface> mCoreEmployeeMgmt;
 };

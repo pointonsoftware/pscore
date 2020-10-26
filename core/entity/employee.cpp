@@ -19,6 +19,10 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "employee.hpp"
+#include <chrono>
+#include <ctime>
+#include <random>
+#include <string>
 
 namespace entity {
 
@@ -36,8 +40,35 @@ Employee::Employee(const std::string& firstname,
 }
 
 std::string Employee::generateID() const {
-    // Todo (spec) - what is the business rule when creating employeeID?
-    return "";
+    /*!
+     * ID format - [YY][unique-five-digit-number]
+     * e.g. - 2021135
+     *
+     * But this may change depending on the system spec
+     * We either provide an API to specify the ID format
+     * or use a config file
+    */
+    // Substring the last two digit of the year + unique_number
+    return getDate().substr(2, 4) + std::to_string(makeUniqueNumber());
+}
+
+std::string Employee::getDate() const {
+    typedef std::chrono::system_clock Clock;
+    auto now = Clock::now();
+    std::time_t now_c = Clock::to_time_t(now);
+    struct tm *parts = std::localtime(&now_c);
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", parts->tm_year + 1900,
+                  parts->tm_mon + 1, parts->tm_mday);
+    return std::string(buff);
+}
+
+int Employee::makeUniqueNumber() const {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    // distribution in range [10000, 99999]
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(10000, 99999);
+    return dist6(rng);
 }
 
 }  // namespace entity

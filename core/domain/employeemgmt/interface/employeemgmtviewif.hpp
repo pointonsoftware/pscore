@@ -42,6 +42,10 @@ class EmployeeMgmtViewInterface {
     */
     virtual void showDataNotReadyScreen() = 0;
     /*!
+     * showEmployeeNotFoundPopup
+    */
+    virtual void showEmployeeNotFoundPopup() = 0;
+    /*!
      * showSuccessfullyRemoved
     */
     virtual void showSuccessfullyRemoved(const std::string& id) = 0;
