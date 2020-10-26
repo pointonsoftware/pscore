@@ -46,8 +46,10 @@ class User : public Employee {
         return mPIN;
     }
 
-    // Todo (spec): What is the business rule for user IDs?
-    // Here we're using employeeID as the userID (but this is subject to change)
+    /*!
+     * Todo (spec): What is the business rule for user IDs?
+     * Here we're using employeeID as the userID (but this is subject to change)
+    */
  protected:
     std::string mPIN;
 };
