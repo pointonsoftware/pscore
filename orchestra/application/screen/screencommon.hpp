@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#define VERSION "0.1.3"
+#define VERSION "0.1.4"
 #define SCREENCOMMON() screen::ScreenCommon::getInstance()
 
 namespace screen {

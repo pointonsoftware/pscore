@@ -32,12 +32,6 @@
 namespace dataprovider {
 namespace db {
 
-/*!
- * Todo - https://pointon.atlassian.net/browse/PCOR-39
- * Mimic a database table
- * - Create a struct that represents each items of that table
- * - For queries, return a const reference vector of structs
-*/
 class StackDB {
  public:
     ~StackDB() = default;
@@ -47,22 +41,71 @@ class StackDB {
         return instance;
     }
 
-    inline std::vector<entity::Employee>& getEmployeesList() const {
-        return employeesList;
+    struct EmployeeTableItem {
+        std::string employeeID;
+        std::string firstname;
+        std::string middlename;
+        std::string lastname;
+        std::string birthdate;
+        std::string gender;
+        std::string position;
+        std::string PIN;
+    };
+
+    struct AddressTableItem {
+        std::string ID;  // Links to person's ID
+        std::string housenumber;
+        std::string lot;
+        std::string block;
+        std::string street;
+        std::string subdivision;
+        std::string sitio;
+        std::string purok;
+        std::string barangay;
+        std::string city_town;
+        std::string province;
+        std::string zip;
+    };
+
+    struct ContactDetailsTableItem {
+        std::string ID;  // Links to person's ID
+        std::string email;
+        std::string phone_number;
+    };
+
+    struct PersonalIdTableItem {
+        std::string ID;  // Links to person's ID
+        std::string type;
+        std::string id_number;
+    };
+
+    inline std::vector<EmployeeTableItem>& SELECT_EMPLOYEES_TABLE() const {
+        return EMPLOYEES_TABLE;
     }
 
-    inline std::vector<entity::User>& getUsersList() const {
-        return usersList;
+    inline std::vector<AddressTableItem>& SELECT_ADDRESS_TABLE() const {
+        return ADDRESS_TABLE;
+    }
+
+    inline std::vector<ContactDetailsTableItem>& SELECT_CONTACTS_TABLE() const {
+        return CONTACTS_TABLE;
+    }
+
+    inline std::vector<PersonalIdTableItem>& SELECT_PERSONAL_ID_TABLE() const {
+        return PERSONAL_ID_TABLE;
     }
 
  private:
     StackDB();
     // employees storage
-    static std::vector<entity::Employee> employeesList;
+    static std::vector<EmployeeTableItem> EMPLOYEES_TABLE;
+    // address storage - of all persons
+    static std::vector<AddressTableItem> ADDRESS_TABLE;
+    // contacts storage - of all persons
+    static std::vector<ContactDetailsTableItem> CONTACTS_TABLE;
+    // personal ID storage - of all persons
+    static std::vector<PersonalIdTableItem> PERSONAL_ID_TABLE;
     void populateEmployees();
-    // users storage
-    static std::vector<entity::User> usersList;
-    void populateUsers();
 };
 
 }  // namespace db

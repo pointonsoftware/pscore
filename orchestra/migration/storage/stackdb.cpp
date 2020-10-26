@@ -23,158 +23,183 @@
 namespace dataprovider {
 namespace db {
 
-std::vector<entity::Employee> StackDB::employeesList;
-std::vector<entity::User> StackDB::usersList;
+std::vector<StackDB::EmployeeTableItem> StackDB::EMPLOYEES_TABLE;
+std::vector<StackDB::AddressTableItem> StackDB::ADDRESS_TABLE;
+std::vector<StackDB::ContactDetailsTableItem> StackDB::CONTACTS_TABLE;
+std::vector<StackDB::PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
 
 StackDB::StackDB() {
-    populateUsers();
     populateEmployees();
 }
 
-void StackDB::populateUsers() {
-    // If you want to add a user to our in-memory DB, put it here
+void StackDB::populateEmployees() {
+    // If you want to add a user/employee to our in-memory DB, put it here
 
     //------- Copy starting from the line below
-    usersList.emplace_back(
-            dynamic_cast<entity::User&>(
-             entity::User("BenZiv",                     // First name
-                          "H",                          // Middle name
-                          "Garcia",                     // Last name
-                          "10/15/2020",                 // B-date
-                          "Male",                       // Gender
-                          "10001",                      // Employee ID <!Make sure this is unique>
-                          "Admin",                      // Position
-                          "2020")                       // PIN <!Make sure this is unique>
-                          .addPhoneNumber("09123334567")
-                          .addPersonalId("SSS", "003-311-150-413")
-                          .addPersonalId("UMID", "04-1511167-8")
-                          .setEmail("test@gmail.com")
-                          .setAddress(
-                                  {"",                  // housenumber
-                                   "5",                 // lot
-                                   "10",                // block
-                                   "Petonia St.",       // Street
-                                   "Camella Homes",     // Subdivision
-                                   "",                  // Sitio
-                                   "",                  // Purok
-                                   "Basak",             // Barangay
-                                   "Lapu-Lapu City",    // City/Town
-                                   "Cebu",              // Province
-                                   "6015"               // ZIP
-    })));
+    EMPLOYEES_TABLE.emplace_back(EmployeeTableItem {
+            "2014566",                    // Employee ID <!Make sure this is unique>
+            "BenZiv",                     // First name
+            "Hero",                       // Middle name
+            "Garcia",                     // Last name
+            "10/15/2020",                 // B-date
+            "Male",                       // Gender
+            "Admin",                      // Position
+            "2020"});                     // PIN <!Unique> <!Empty if non-user>
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "2014566",                    // Employee ID <!Must be the same as above>
+            "",                           // housenumber
+            "5",                          // lot
+            "10",                         // block
+            "Petunia St.",                // Street
+            "Camella Homes",              // Subdivision
+            "",                           // Sitio
+            "",                           // Purok
+            "Basak",                      // Barangay
+            "Lapu-Lapu City",             // City/Town
+            "Cebu",                       // Province
+            "6015"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "2014566",                    // Employee ID <!Must be the same as above>
+            "test@gmail.com",             // Email
+            "09123334567"});              // Contact number
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "2014566",                    // Employee ID <!Must be the same as above>
+            "SSS",                        // Type
+            "003-311-150-413"});          // ID-number
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "2014566",                    // Employee ID <!Must be the same as above>
+            "UMID",                       // Type
+            "04-1511167-8"});             // ID-number
     //------- End here
 
-    usersList.emplace_back(
-            dynamic_cast<entity::User&>(
-             entity::User("Zandro",                     // First name
-                          "Midldle",                    // Middle name
-                          "Garcia",                     // Last name
-                          "10/10/2020",                 // B-date
-                          "Male",                       // Gender
-                          "10002",                      // Employee ID <!Make sure this is unique>
-                          "Manager",                    // Position
-                          "2021")                       // PIN <!Make sure this is unique>
-                          .addPhoneNumber("09123334567")
-                          .addPersonalId("Driver's License", "N04-10-021355")
-                          .setEmail("test2@gmail.com")
-                          .setAddress(
-                                  {"",                  // housenumber
-                                   "",                  // lot
-                                   "",                  // block
-                                   "",                  // Street
-                                   "",                  // Subdivision
-                                   "Bacbacan",          // Sitio
-                                   "",                  // Purok
-                                   "San Francisco",     // Barangay
-                                   "Malayong Dapit",    // City/Town
-                                   "Davao",             // Province
-                                   "6060"               // ZIP
-    })));
+    //------- 2019542
+    EMPLOYEES_TABLE.emplace_back(EmployeeTableItem {
+            "2019542",                    // Employee ID <!Make sure this is unique>
+            "Zandro",                     // First name
+            "Slardar",                    // Middle name
+            "Mage",                       // Last name
+            "10/10/2020",                 // B-date
+            "Male",                       // Gender
+            "Manager",                    // Position
+            "2021"});                     // PIN <!Unique> <!Empty if non-user>
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "2019542",                    // Employee ID <!Must be the same as above>
+            "",                           // housenumber
+            "",                           // lot
+            "",                           // block
+            "",                           // Street
+            "",                           // Subdivision
+            "Bacbacan",                   // Sitio
+            "",                           // Purok
+            "San Francisco",              // Barangay
+            "Malayong Dapit",             // City/Town
+            "Davao",                      // Province
+            "6060"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "2019542",                    // Employee ID <!Must be the same as above>
+            "zznn@gmail.com",             // Email
+            "09123334567"});              // Contact number
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "2019542",                    // Employee ID <!Must be the same as above>
+            "Driver's License",           // Type
+            "N04-10-021355"});            // ID-number
 
-    usersList.emplace_back(
-            dynamic_cast<entity::User&>(
-             entity::User("Juana",                      // First name
-                          "Santos",                     // Middle name
-                          "Dela Cruz",                  // Last name
-                          "10/18/2020",                 // B-date
-                          "Female",                     // Gender
-                          "10003",                      // Employee ID <!Make sure this is unique>
-                          "Cashier",                    // Position
-                          "2022")                       // PIN <!Make sure this is unique>
-                          .addPhoneNumber("09123334567")
-                          .addPersonalId("Driver's License", "N04-10-021355")
-                          .setEmail("Juana@gmail.com")
-                          .setAddress(
-                                  {"",                  // housenumber
-                                   "2",                 // lot
-                                   "6",                 // block
-                                   "",                  // Street
-                                   "BF Homes",          // Subdivision
-                                   "",                  // Sitio
-                                   "",                  // Purok
-                                   "Agus",              // Barangay
-                                   "Lapu-Lapu City",    // City/Town
-                                   "Cebu",              // Province
-                                   "6015"               // ZIP
-    })));
+    //------- 2098472
+    EMPLOYEES_TABLE.emplace_back(EmployeeTableItem {
+            "2098472",                    // Employee ID <!Make sure this is unique>
+            "Juana",                      // First name
+            "Santos",                     // Middle name
+            "Dela Cruz",                  // Last name
+            "10/18/2020",                 // B-date
+            "Female",                     // Gender
+            "Cashier",                    // Position
+            "2022"});                     // PIN <!Unique> <!Empty if non-user>
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "2098472",                    // Employee ID <!Must be the same as above>
+            "2",                          // housenumber
+            "6",                          // lot
+            "",                           // block
+            "",                           // Street
+            "BF Homes",                   // Subdivision
+            "Bacbacan",                   // Sitio
+            "",                           // Purok
+            "Agus",                       // Barangay
+            "Lapu-Lapu City",             // City/Town
+            "Cebu",                       // Province
+            "6015"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "2098472",                    // Employee ID <!Must be the same as above>
+            "juana@gmail.com",            // Email
+            "09123334567"});              // Contact number
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "2098472",                    // Employee ID <!Must be the same as above>
+            "Driver's License",           // Type
+            "N04-10-0215655"});           // ID-number
 
-    // Always append users to employees list (as users are also employees)
-    employeesList.insert(std::end(employeesList), std::begin(usersList), std::end(usersList));
-}
+    //------- 2054993
+    EMPLOYEES_TABLE.emplace_back(EmployeeTableItem {
+            "2054993",                    // Employee ID <!Make sure this is unique>
+            "Rodrigo",                    // First name
+            "Roa",                        // Middle name
+            "Duterte",                    // Last name
+            "10/17/1977",                 // B-date
+            "Male",                       // Gender
+            "Security Guard",             // Position
+            ""});                         // PIN <!Unique> <!Empty if non-user>
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "2054993",                    // Employee ID <!Must be the same as above>
+            "22",                         // housenumber
+            "1",                          // lot
+            "16",                         // block
+            "",                           // Street
+            "St. Andrews Hills",          // Subdivision
+            "",                           // Sitio
+            "",                           // Purok
+            "Poblacion",                  // Barangay
+            "Davao City",                 // City/Town
+            "Davao Del Sur",              // Province
+            "8080"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "2054993",                    // Employee ID <!Must be the same as above>
+            "",                           // Email
+            "09123334567"});              // Contact number
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "2054993",                    // Employee ID <!Must be the same as above>
+            "Driver's License",           // Type
+            "N04-10-0215655"});           // ID-number
 
-void StackDB::populateEmployees() {
-    // Add employee here
-    employeesList.emplace_back(
-            dynamic_cast<entity::Employee&>(
-             entity::Employee("Rodrigo",                // First name
-                          "Roa",                        // Middle name
-                          "Duterte",                    // Last name
-                          "10/17/1977",                 // B-date
-                          "Male",                       // Gender
-                          "10004",                      // Employee ID <!Make sure this is unique>
-                          "Security Guard")             // Position
-                          .addPhoneNumber("09123334567")
-                          .addPersonalId("Driver's License", "N04-10-021355")
-                          .setEmail("duterte@gmail.com")
-                          .setAddress(
-                                  {"22",                // housenumber
-                                   "1",                 // lot
-                                   "21",                // block
-                                   "",                  // Street
-                                   "St. Andrews Hill",  // Subdivision
-                                   "",                  // Sitio
-                                   "",                  // Purok
-                                   "Poblacion",         // Barangay
-                                   "Davao City",        // City/Town
-                                   "Davao",             // Province
-                                   "6060"               // ZIP
-    })));
-
-    employeesList.emplace_back(
-            dynamic_cast<entity::Employee&>(
-             entity::Employee("Chris",                  // First name
-                          "White",                      // Middle name
-                          "Brown",                      // Last name
-                          "10/18/1977",                 // B-date
-                          "Male",                       // Gender
-                          "10005",                      // Employee ID <!Make sure this is unique>
-                          "Delivery Personel")          // Position
-                          .addPhoneNumber("09123334567")
-                          .addPersonalId("SSS", "014-135-188-813")
-                          .setEmail("Chris_123@gmail.com")
-                          .setAddress(
-                                  {"18",                // housenumber
-                                   "",                  // lot
-                                   "",                  // block
-                                   "Palermo St.",       // Street
-                                   "",                  // Subdivision
-                                   "Mahayahay",         // Sitio
-                                   "",                  // Purok
-                                   "Opon",              // Barangay
-                                   "Lapu-Lapu City",    // City/Town
-                                   "Cebu",              // Province
-                                   "6015"               // ZIP
-    })));
+    //------- 2073155
+    EMPLOYEES_TABLE.emplace_back(EmployeeTableItem{
+            "2073155",                    // Employee ID <!Make sure this is unique>
+            "Chris",                      // First name
+            "White",                      // Middle name
+            "Brown",                      // Last name
+            "10/25/1988",                 // B-date
+            "Male",                       // Gender
+            "Delivery Personel",          // Position
+            ""});                         // PIN <!Unique> <!Empty if non-user>
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "2073155",                    // Employee ID <!Must be the same as above>
+            "18",                         // housenumber
+            "",                           // lot
+            "",                           // block
+            "Palermo St.",                // Street
+            "",                           // Subdivision
+            "Mahayahay",                  // Sitio
+            "",                           // Purok
+            "Opon",                       // Barangay
+            "Lapu-Lapu City",             // City/Town
+            "Cebu",                       // Province
+            "6015"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "2073155",                    // Employee ID <!Must be the same as above>
+            "",                           // Email
+            "09123334567"});              // Contact number
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "2073155",                    // Employee ID <!Must be the same as above>
+            "SSS",                        // Type
+            "014-135-188-813"});          // ID-number
+    //-------
 }
 
 }  // namespace db

@@ -19,18 +19,85 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "dashboarddata.hpp"
+#include <algorithm>
+#include <vector>
 #include <storage/stackdb.hpp>
 
 namespace dataprovider {
 namespace dashboard {
 
 entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
-    const entity::User user = [userID]() {
-        for (const entity::User& temp : DATABASE().getUsersList()) {
-            if (temp.employeeID().find(userID) != std::string::npos) {
-                return temp;
+    // SELECT UNION(employeestable, addresstable, contactstable, personalIDtable) WHERE ID = userID
+    entity::User user = [userID]() {
+        for (const db::StackDB::EmployeeTableItem& temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
+            if (temp.employeeID == userID) {
+                entity::User foundUser(
+                    temp.firstname,
+                    temp.middlename,
+                    temp.lastname,
+                    temp.birthdate,
+                    temp.gender,
+                    temp.employeeID,
+                    temp.position,
+                    temp.PIN);
+                // Get Address
+                [&foundUser]() {
+                    const std::vector<db::StackDB::AddressTableItem>::iterator it =
+                        std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
+                                    DATABASE().SELECT_ADDRESS_TABLE().end(),
+                                    [&foundUser](const db::StackDB::AddressTableItem& e) {
+                                        return e.ID == foundUser.employeeID();
+                                    });
+                    if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
+                        foundUser.setAddress({
+                            it->housenumber,
+                            it->lot,
+                            it->block,
+                            it->subdivision,
+                            it->sitio,
+                            it->purok,
+                            it->barangay,
+                            it->city_town,
+                            it->province,
+                            it->zip,
+                        });
+                    }
+                }();
+                // Get Contact details
+                [&foundUser]() {
+                    const std::vector<db::StackDB::ContactDetailsTableItem>::iterator it =
+                        std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
+                                    DATABASE().SELECT_CONTACTS_TABLE().end(),
+                                    [&foundUser](const db::StackDB::ContactDetailsTableItem& e) {
+                                        return e.ID == foundUser.employeeID();
+                                    });
+                    if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
+                        foundUser.addPhoneNumber(it->phone_number);
+                        /*!
+                         * Each user only have one email
+                         * Hence we have this if-checking so the email is not overwritten with empty string
+                        */
+                        if (!it->email.empty()) {
+                            foundUser.setEmail(it->email);
+                        }
+                    }
+                }();
+                // Get personal IDs
+                [&foundUser]() {
+                    const std::vector<db::StackDB::PersonalIdTableItem>::iterator it =
+                        std::find_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
+                                    DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
+                                    [&foundUser](const db::StackDB::PersonalIdTableItem& e) {
+                                        return e.ID == foundUser.employeeID();
+                                    });
+                    if (it != DATABASE().SELECT_PERSONAL_ID_TABLE().end()) {
+                        foundUser.addPersonalId(it->type, it->id_number);
+                    }
+                }();
+                return foundUser;
             }
         }
+        // Return empty if not found
         return entity::User();
     }();
     return user;

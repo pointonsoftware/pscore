@@ -84,14 +84,19 @@ USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
         mView->showDataNotReadyScreen();
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
-    if (!isExists(id)) {
-        LOG_ERROR("Employee with ID %s was not found in the cache list."), id.c_str();
+    const std::vector<entity::Employee>::iterator it = find(id);
+    if (it == mCachedList.end()) {
+        LOG_ERROR("Employee with ID %s was not found in the cache list", id.c_str());
         mView->showDataNotReadyScreen();
         return USERSMGMTSTATUS::NOT_FOUND;
     }
     mDataProvider->removeWithID(id);
-    // Todo (code) - check if mDataProvider successfully removed the employee
-    // E.g. failure: mDataprovider lost db connection
+    /*!
+     * Todo (code) - check if mDataProvider successfully removed the employee
+     * E.g. failure: mDataprovider lost db connection
+    */
+    // Remove from cache
+    mCachedList.erase(it);
     mView->showSuccessfullyRemoved(id);
     LOG_INFO("Successfully removed employee with ID %s", id.c_str());
     return USERSMGMTSTATUS::SUCCESS;

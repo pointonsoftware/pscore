@@ -27,7 +27,6 @@
 namespace entity {
 
 struct ContactDetails {
-    std::string name;
     std::string email;
     std::vector<std::string> phone_number;
 };

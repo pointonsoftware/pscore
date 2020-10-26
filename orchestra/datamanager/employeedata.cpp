@@ -28,17 +28,116 @@ namespace dataprovider {
 namespace empmgmt {
 
 std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
-    return DATABASE().getEmployeesList();
+    // SELECT UNION(employeestable, addresstable, contactstable, personalIDtable)
+    std::vector<entity::Employee> employees;
+
+    // Gather all employees
+    for (const db::StackDB::EmployeeTableItem& temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
+        entity::Employee employee(
+                temp.firstname,
+                temp.middlename,
+                temp.lastname,
+                temp.birthdate,
+                temp.gender,
+                temp.employeeID,
+                temp.position);
+        fillEmployeeDetails(&employee);
+        employees.emplace_back(employee);
+    }
+    return employees;
 }
 
 void EmployeeDataProvider::removeWithID(const std::string& id) {
-    std::vector<entity::Employee>& employeeList = DATABASE().getEmployeesList();
-    employeeList.erase(
-        std::remove_if(employeeList.begin(), employeeList.end(), [&](const entity::Employee& e) {
-            return e.employeeID() == id;
-        }), employeeList.end());
+    // Delete in EMPLOYEES
+    DATABASE().SELECT_EMPLOYEES_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
+                    DATABASE().SELECT_EMPLOYEES_TABLE().end(),
+                    [&](const db::StackDB::EmployeeTableItem& e) {
+                        return e.employeeID == id;
+                    }),
+        DATABASE().SELECT_EMPLOYEES_TABLE().end());
+    // Delete the Address
+    DATABASE().SELECT_ADDRESS_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
+                    DATABASE().SELECT_ADDRESS_TABLE().end(),
+                    [&](const db::StackDB::AddressTableItem& e) {
+                        return e.ID == id;
+                    }),
+        DATABASE().SELECT_ADDRESS_TABLE().end());
+    // Delete the Contacts
+    DATABASE().SELECT_CONTACTS_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
+                    DATABASE().SELECT_CONTACTS_TABLE().end(),
+                    [&](const db::StackDB::ContactDetailsTableItem& e) {
+                        return e.ID == id;
+                    }),
+        DATABASE().SELECT_CONTACTS_TABLE().end());
+    // Delete the Personal ID
+    DATABASE().SELECT_PERSONAL_ID_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
+                    DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
+                    [&](const db::StackDB::PersonalIdTableItem& e) {
+                        return e.ID == id;
+                    }),
+        DATABASE().SELECT_PERSONAL_ID_TABLE().end());
 }
 
+void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const {
+        // Get Address
+        [&employee]() {
+            const std::vector<db::StackDB::AddressTableItem>::iterator it =
+                    std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
+                            DATABASE().SELECT_ADDRESS_TABLE().end(),
+                            [&employee](const db::StackDB::AddressTableItem& e) {
+                               return e.ID == employee->employeeID();
+                            });
+            if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
+                employee->setAddress({
+                    it->housenumber,
+                    it->lot,
+                    it->block,
+                    it->subdivision,
+                    it->sitio,
+                    it->purok,
+                    it->barangay,
+                    it->city_town,
+                    it->province,
+                    it->zip,
+                });
+            }
+        }();
+        // Get Contact details
+        [&employee]() {
+            const std::vector<db::StackDB::ContactDetailsTableItem>::iterator it =
+                    std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
+                                DATABASE().SELECT_CONTACTS_TABLE().end(),
+                                [&employee](const db::StackDB::ContactDetailsTableItem& e) {
+                                    return e.ID == employee->employeeID();
+                                });
+            if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
+                employee->addPhoneNumber(it->phone_number);
+                /*!
+                 * Each user only have one email
+                 * Hence we have this if-checking so the email is not overwritten with empty string
+                */
+                if (!it->email.empty()) {
+                    employee->setEmail(it->email);
+                }
+            }
+        }();
+        // Get personal IDs
+        [&employee]() {
+            const std::vector<db::StackDB::PersonalIdTableItem>::iterator it =
+                    std::find_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
+                                DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
+                                [&employee](const db::StackDB::PersonalIdTableItem& e) {
+                                    return e.ID == employee->employeeID();
+                                });
+            if (it != DATABASE().SELECT_PERSONAL_ID_TABLE().end()) {
+                employee->addPersonalId(it->type, it->id_number);
+            }
+        }();
+}
 }  // namespace empmgmt
 }  // namespace dataprovider
 

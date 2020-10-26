@@ -53,18 +53,14 @@ void EmployeeMgmtScreen::showLandingScreen() const {
 }
 
 void EmployeeMgmtScreen::queryEmployeesList() {
-    mEmployees = mCoreEmployeeMgmt->list();
+    mEmployeesGUITable = mCoreEmployeeMgmt->list();
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
-    /*!
-     * Todo - https://pointon.atlassian.net/browse/PCOR-39
-     * There's a bug in stackDB where the employee was removed from employeesList
-     * but it is still present in the users list
-     */
-    if (mCoreEmployeeMgmt->remove(mEmployees[mSelectedEmployeeIndex - 1].employeeID())
+    if (mCoreEmployeeMgmt->remove(mEmployeesGUITable[mSelectedEmployeeIndex - 1].employeeID())
           == domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
-       mEmployees.erase(mEmployees.begin() + (mSelectedEmployeeIndex - 1));
+       // Remove the user form
+       mEmployeesGUITable.erase(mEmployeesGUITable.begin() + (mSelectedEmployeeIndex - 1));
     }
 }
 
@@ -73,12 +69,13 @@ void EmployeeMgmtScreen::showEmployees() const {
     // Display the columns
     SCREENCOMMON().printColumns({"Employee ID", "First Name", "Last Name", "Position"}, true);
     // Display employees
-    for (unsigned int index = 0; index < mEmployees.size(); ++index) {
+    for (unsigned int index = 0; index < mEmployeesGUITable.size(); ++index) {
         SCREENCOMMON().printColumns({
-            std::string("[" + std::to_string(index + 1) + "] " + mEmployees[index].employeeID()),
-            mEmployees[index].firstName(),
-            mEmployees[index].lastName(),
-            mEmployees[index].position()
+            std::string("[" + std::to_string(index + 1) + "] "
+                         + mEmployeesGUITable[index].employeeID()),
+            mEmployeesGUITable[index].firstName(),
+            mEmployeesGUITable[index].lastName(),
+            mEmployeesGUITable[index].position()
         });
     }
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
@@ -129,7 +126,7 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             invalidOptionSelected();
             break;
         case Options::EMPLOYEE_DETAILS:
-            mSelectedEmployeeIndex > (mEmployees.size()) ?
+            mSelectedEmployeeIndex > (mEmployeesGUITable.size()) ?
                 invalidOptionSelected() : showEmployeeInformation();
             break;
         case Options::EMPLOYEE_REMOVE:
@@ -164,15 +161,11 @@ void EmployeeMgmtScreen::invalidOptionSelected() const {
 }
 
 void EmployeeMgmtScreen::showEmployeeInformation() const {
-    // Todo (code) - create an employee info screen, pass the info as parameter
-    //             - it has to decide on wether user or employee will be displayed
-    //             - pass a parameter of wether to display the CUD options
-
     /*!
      * Get the employeeID from employee GUI table
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
     */
-    const std::string& employeeID = mEmployees[mSelectedEmployeeIndex - 1].employeeID();
+    const std::string& employeeID = mEmployeesGUITable[mSelectedEmployeeIndex - 1].employeeID();
     const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->get(employeeID);
     if (!selectedEmployee.employeeID().empty()) {
         // Valid employee, show the information screen!
