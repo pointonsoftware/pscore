@@ -72,14 +72,8 @@ entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
                                         return e.ID == foundUser.employeeID();
                                     });
                     if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
-                        foundUser.addPhoneNumber(it->phone_number);
-                        /*!
-                         * Each user only have one email
-                         * Hence we have this if-checking so the email is not overwritten with empty string
-                        */
-                        if (!it->email.empty()) {
-                            foundUser.setEmail(it->email);
-                        }
+                        foundUser.setPhoneNumbers(it->phone_number_1, it->phone_number_2);
+                        foundUser.setEmail(it->email);
                     }
                 }();
                 // Get personal IDs

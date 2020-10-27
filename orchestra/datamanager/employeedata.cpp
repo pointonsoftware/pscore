@@ -108,7 +108,8 @@ void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee
     DATABASE().SELECT_CONTACTS_TABLE().emplace_back(db::StackDB::ContactDetailsTableItem {
             employee.employeeID(),
             employee.contactDetails().email,
-            employee.contactDetails().phone_number[0]});
+            employee.contactDetails().phone_number_1,
+            employee.contactDetails().phone_number_2});
     for (unsigned int i = 0; i < employee.personalIds().size(); i++) {
         DATABASE().SELECT_PERSONAL_ID_TABLE().emplace_back(db::StackDB::PersonalIdTableItem {
                 employee.employeeID(),
@@ -185,14 +186,8 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
                                     return e.ID == employee->employeeID();
                                 });
             if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
-                employee->addPhoneNumber(it->phone_number);
-                /*!
-                 * Each user only have one email
-                 * Hence we have this if-checking so the email is not overwritten with empty string
-                */
-                if (!it->email.empty()) {
-                    employee->setEmail(it->email);
-                }
+                employee->setPhoneNumbers(it->phone_number_1, it->phone_number_2);
+                employee->setEmail(it->email);
             }
         }();
         // Get personal IDs

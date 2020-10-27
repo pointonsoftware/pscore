@@ -61,7 +61,8 @@ void StackDB::populateEmployees() {
     CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
             "2014566",                    // Employee ID <!Must be the same as above>
             "test@gmail.com",             // Email
-            "09123334567"});              // Contact number
+            "09123334567",                // Contact number 1
+            "09987654321"});              // Contact number 2
     PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
             "2014566",                    // Employee ID <!Must be the same as above>
             "SSS",                        // Type
@@ -98,7 +99,8 @@ void StackDB::populateEmployees() {
     CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
             "2019542",                    // Employee ID <!Must be the same as above>
             "zznn@gmail.com",             // Email
-            "09123334567"});              // Contact number
+            "09123334567",                // Contact number 1
+            ""});                         // Contact number 2
     PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
             "2019542",                    // Employee ID <!Must be the same as above>
             "Driver's License",           // Type
@@ -130,7 +132,8 @@ void StackDB::populateEmployees() {
     CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
             "2098472",                    // Employee ID <!Must be the same as above>
             "juana@gmail.com",            // Email
-            "09123334567"});              // Contact number
+            "09123334567",                // Contact number 1
+            ""});                         // Contact number 2
     PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
             "2098472",                    // Employee ID <!Must be the same as above>
             "Driver's License",           // Type
@@ -162,7 +165,8 @@ void StackDB::populateEmployees() {
     CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
             "2054993",                    // Employee ID <!Must be the same as above>
             "",                           // Email
-            "09123334567"});              // Contact number
+            "09123334567",                // Contact number 1
+            ""});                         // Contact number 2
     PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
             "2054993",                    // Employee ID <!Must be the same as above>
             "Driver's License",           // Type
@@ -194,7 +198,8 @@ void StackDB::populateEmployees() {
     CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
             "2073155",                    // Employee ID <!Must be the same as above>
             "",                           // Email
-            "09123334567"});              // Contact number
+            "09123334567",                // Contact number 1
+            ""});                         // Contact number 2
     PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
             "2073155",                    // Employee ID <!Must be the same as above>
             "SSS",                        // Type
