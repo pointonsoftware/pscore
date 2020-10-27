@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <entity/employee.hpp>
+#include <entity/user.hpp>
 
 namespace domain {
 namespace empmgmt {
@@ -38,6 +39,14 @@ class EmployeeMgmtDataInterface {
      * Retrieves the all the employees
     */
     virtual std::vector<entity::Employee> getEmployees() = 0;
+    /*!
+     * Create an employee
+    */
+    virtual void create(const entity::Employee& employee) = 0;
+    /*!
+     * Create a user
+    */
+    virtual void create(const entity::User& user) = 0;
     /*!
      * Remove an employee with id
     */

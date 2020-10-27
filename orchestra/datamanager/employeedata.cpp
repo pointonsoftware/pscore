@@ -47,6 +47,76 @@ std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
     return employees;
 }
 
+void EmployeeDataProvider::create(const entity::Employee& employee) {
+    if (std::find_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
+                            DATABASE().SELECT_EMPLOYEES_TABLE().end(),
+                            [&employee](const db::StackDB::EmployeeTableItem& e) {
+                               return e.employeeID == employee.employeeID();
+                            }) == DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
+        // If employee ID exists, don't proceed!
+        return;
+    }
+    DATABASE().SELECT_EMPLOYEES_TABLE().emplace_back(db::StackDB::EmployeeTableItem {
+            employee.employeeID(),
+            employee.firstName(),
+            employee.middleName(),
+            employee.lastName(),
+            employee.birthdate(),
+            employee.gender(),
+            employee.position(),
+            ""});
+
+    writeEmployeeDetails(employee);
+}
+
+void EmployeeDataProvider::create(const entity::User& user) {
+    if (std::find_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
+                            DATABASE().SELECT_EMPLOYEES_TABLE().end(),
+                            [&user](const db::StackDB::EmployeeTableItem& e) {
+                               return e.employeeID == user.employeeID();
+                            }) == DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
+        // If employee ID exists, don't proceed!
+        return;
+    }
+    DATABASE().SELECT_EMPLOYEES_TABLE().emplace_back(db::StackDB::EmployeeTableItem {
+            user.employeeID(),
+            user.firstName(),
+            user.middleName(),
+            user.lastName(),
+            user.birthdate(),
+            user.gender(),
+            user.position(),
+            user.pin()});
+
+    writeEmployeeDetails(dynamic_cast<const entity::Employee&>(user));
+}
+
+void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee) const {
+    DATABASE().SELECT_ADDRESS_TABLE().emplace_back(db::StackDB::AddressTableItem {
+            employee.employeeID(),
+            employee.address().housenumber,
+            employee.address().lot,
+            employee.address().block,
+            employee.address().street,
+            employee.address().subdivision,
+            employee.address().sitio,
+            employee.address().purok,
+            employee.address().barangay,
+            employee.address().city_town,
+            employee.address().province,
+            employee.address().zip});
+    DATABASE().SELECT_CONTACTS_TABLE().emplace_back(db::StackDB::ContactDetailsTableItem {
+            employee.employeeID(),
+            employee.contactDetails().email,
+            employee.contactDetails().phone_number[0]});
+    for (unsigned int i = 0; i < employee.personalIds().size(); i++) {
+        DATABASE().SELECT_PERSONAL_ID_TABLE().emplace_back(db::StackDB::PersonalIdTableItem {
+                employee.employeeID(),
+                employee.personalIds()[i].type,
+                employee.personalIds()[i].id_number});
+    }
+}
+
 void EmployeeDataProvider::removeWithID(const std::string& id) {
     // Delete in EMPLOYEES
     DATABASE().SELECT_EMPLOYEES_TABLE().erase(

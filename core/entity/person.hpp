@@ -46,7 +46,6 @@ class Person {
     std::string lastName() const;
     std::string birthdate() const;
     std::string gender() const;
-    std::string email() const;
     Address address() const;
     ContactDetails contactDetails() const;
     std::vector<PersonalId> personalIds() const;
