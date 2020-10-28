@@ -51,7 +51,7 @@ class Person {
     std::vector<PersonalId> personalIds() const;
 
     // Setters
-    Person& addPhoneNumber(const std::string& phonenumber);
+    Person& setPhoneNumbers(const std::string& phone_1, const std::string& phone_2);
     Person& addPersonalId(const std::string& type, const std::string& number);
     Person& setPersonalIds(const std::vector<PersonalId>& personalids);
     Person& setEmail(const std::string& email);

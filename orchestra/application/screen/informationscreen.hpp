@@ -42,10 +42,8 @@ class InformationScreen {
 
     void showContactDetails() const {
         SCREENCOMMON().printColumns({"Contact Details"}, true);
-        for (size_t count = 1; count <= mInfo->contactDetails().phone_number.size(); ++count) {
-            SCREENCOMMON().printItemText("Phone " + std::to_string(count),
-                                        mInfo->contactDetails().phone_number[count-1]);
-        }
+        SCREENCOMMON().printItemText("Phone", mInfo->contactDetails().phone_number_1);
+        SCREENCOMMON().printItemText("Phone 2", mInfo->contactDetails().phone_number_2);
         SCREENCOMMON().printItemText("Email", mInfo->contactDetails().email);
     }
 

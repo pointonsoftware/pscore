@@ -28,7 +28,8 @@ namespace entity {
 
 struct ContactDetails {
     std::string email;
-    std::vector<std::string> phone_number;
+    std::string phone_number_1;
+    std::string phone_number_2;
 };
 
 }  // namespace entity

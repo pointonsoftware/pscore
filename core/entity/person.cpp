@@ -69,8 +69,9 @@ std::vector<PersonalId> Person::personalIds() const {
     return m_personal_ids;
 }
 
-Person& Person::addPhoneNumber(const std::string& phonenumber) {
-    m_contact_details.phone_number.emplace_back(phonenumber);
+Person& Person::setPhoneNumbers(const std::string& phone_1, const std::string& phone_2) {
+    m_contact_details.phone_number_1 = phone_1;
+    m_contact_details.phone_number_2 = phone_2;
     return *this;
 }
 

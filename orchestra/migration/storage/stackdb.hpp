@@ -70,7 +70,8 @@ class StackDB {
     struct ContactDetailsTableItem {
         std::string ID;  // Links to person's ID
         std::string email;
-        std::string phone_number;
+        std::string phone_number_1;
+        std::string phone_number_2;
     };
 
     struct PersonalIdTableItem {
