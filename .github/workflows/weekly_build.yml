@@ -3,9 +3,15 @@
 # Proprietary and confidential
 # Written by Ben Ziv <pointonsoftware@gmail.com>, September 2020
 
-name: windows
+name: weekly
 
-on: [pull_request, release]
+# Run schedule every Friday 2am UTC
+# PH time     - 10am Friday
+# Canada time - 10pm Thrusday
+
+on:
+  schedule:
+  - cron: "0 3 * * 5"
 
 jobs:
   windows:
@@ -21,6 +27,7 @@ jobs:
     - name: Code checkout
       uses: actions/checkout@v2
       with:
+        ref: 'master'
         submodules: recursive
 
     - name: Build
