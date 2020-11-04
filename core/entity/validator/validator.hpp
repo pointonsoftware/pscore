@@ -18,64 +18,45 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_PERSON_HPP_
-#define CORE_ENTITY_PERSON_HPP_
-
-#include <string>
+#ifndef CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
+#define CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
+#include <functional>
 #include <vector>
-#include "address.hpp"
-#include "contactdetails.hpp"
-#include "personalid.hpp"
 
 namespace entity {
+namespace validator {
 
-class Person {
- public:
-    enum class STATUS {
-       S_OK = 0,
-       INVALID_DATA = 1
-    };
-
-    Person(const std::string& firstname,
-           const std::string& middlename,
-           const std::string& lastname,
-           const std::string& birthdate,
-           const std::string& gender);
-    Person() = default;
-    virtual ~Person() = default;
-
-    // Getters
-    std::string getFullName() const;
-    std::string firstName() const;
-    std::string middleName() const;
-    std::string lastName() const;
-    std::string birthdate() const;
-    std::string gender() const;
-    Address address() const;
-    ContactDetails contactDetails() const;
-    std::vector<PersonalId> personalIds() const;
-
-    // Setters
-    STATUS setfirstName(const std::string&);
-    STATUS setmiddleName();
-    STATUS setlastName();
-    STATUS setbirthdate();
-    STATUS setgender();
-    STATUS setPhoneNumbers(const std::string& phone_1, const std::string& phone_2);
-    STATUS addPersonalId(const std::string& type, const std::string& number);
-    STATUS setEmail(const std::string& email);
-    STATUS setAddress(const Address& address);
-
- protected:
-    std::string m_firstname;
-    std::string m_middlename;
-    std::string m_lastname;
-    std::string m_birthdate;
-    std::string m_gender;
-    Address m_address;
-    ContactDetails m_contact_details;
-    std::vector<PersonalId> m_personal_ids;
+enum ValidationResult {
+    S_OK             = 0,
+    S_INVALID_STRING = 1,
+    S_EMPTY          = 2,
+    S_TOO_LONG       = 3
 };
 
+class Validator {
+ public:
+    Validator() = default;
+    virtual ~Validator() = default;
+
+    inline ValidationResult result() {
+        return mResult;
+    }
+
+ protected:
+    std::vector<std::function<void()>> validationFunctions;
+    ValidationResult mResult;
+
+    inline void validate() {
+        for (const auto& func : validationFunctions) {
+            func();  // Run validator
+            if (mResult != ValidationResult::S_OK) {
+                // Break if result is not OK
+                break;
+            }
+        }
+    }
+};
+
+}  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_PERSON_HPP_
+#endif  // CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
