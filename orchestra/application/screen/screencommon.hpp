@@ -44,6 +44,9 @@ class ScreenCommon {
                       bool isHeader = false, bool showColumnBorders = true) const;
     void printHorizontalBorder(char borderCharacter) const;
 
+    std::string getInput(const std::string& label, unsigned int maxSize = 0) const;
+    std::string getYesNoInput(const std::string& label) const;
+
  private:
     ScreenCommon() = default;
 

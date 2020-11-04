@@ -131,4 +131,23 @@ void ScreenCommon::printColumns(const std::vector<std::string>& columns,
     }
 }
 
+std::string ScreenCommon::getInput(const std::string& label, unsigned int maxSize) const {
+    std::cout << label << " : ";
+    std::string userInput; std::cin >> userInput;
+    if (maxSize == 0) {
+        return userInput;
+    }
+    return userInput;
+}
+
+std::string ScreenCommon::getYesNoInput(const std::string& label) const {
+    std::string userInput;
+    do {
+        userInput.clear();
+        std::cout << label << " : ";
+        std::cin >> userInput;
+    } while (userInput != "y" && userInput != "n");
+    return userInput;
+}
+
 }  // namespace screen

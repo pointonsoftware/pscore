@@ -56,6 +56,18 @@ void EmployeeMgmtScreen::queryEmployeesList() {
     mEmployeesGUITable = mCoreEmployeeMgmt->list();
 }
 
+void EmployeeMgmtScreen::createEmployee() {
+    // entity::Employee newEmployee;
+    if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "y") {
+        // cast to user
+        // get PIN
+        // createUser
+        // SCREENCOMMON().getYesNoInput("System User (y/n)") == "y"
+    } else {
+        std::cout << "Is NOT a system user" << std::endl;
+    }
+}
+
 void EmployeeMgmtScreen::removeEmployee() {
     if (mCoreEmployeeMgmt->remove(mEmployeesGUITable[mSelectedEmployeeIndex - 1].employeeID())
           == domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
@@ -107,8 +119,12 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         // Store user input as the selected index
         mSelectedEmployeeIndex = std::stoi(userInput);
         return Options::EMPLOYEE_DETAILS;
+    } else if (userInput == "c") {
+        return Options::EMPLOYEE_CREATE;
     } else if (userInput == "d") {
         return Options::EMPLOYEE_REMOVE;
+    } else if (userInput == "u") {
+        return Options::EMPLOYEE_UPDATE;
     }  // add more options here
 
     // Default invalid option
@@ -128,6 +144,9 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
         case Options::EMPLOYEE_DETAILS:
             mSelectedEmployeeIndex > (mEmployeesGUITable.size()) ?
                 invalidOptionSelected() : showEmployeeInformation();
+            break;
+        case Options::EMPLOYEE_CREATE:
+            createEmployee();
             break;
         case Options::EMPLOYEE_REMOVE:
             mSelectedEmployeeIndex == 0 ?

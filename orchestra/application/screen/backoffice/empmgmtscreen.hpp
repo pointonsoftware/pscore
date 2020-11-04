@@ -53,7 +53,9 @@ class EmployeeMgmtScreen : public ScreenInterface,
         LANDING,
         DASHBOARD,
         EMPLOYEE_DETAILS,
+        EMPLOYEE_CREATE,
         EMPLOYEE_REMOVE,
+        EMPLOYEE_UPDATE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -69,6 +71,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void invalidOptionSelected() const;
     void showEmployeeInformation() const;
     void queryEmployeesList();
+    void createEmployee();
     void removeEmployee();
     std::vector<entity::Employee> mEmployeesGUITable;  // Represents the GUI employees-table
     unsigned int mSelectedEmployeeIndex = 0;  // 1-based index
