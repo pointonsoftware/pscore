@@ -38,9 +38,6 @@ jobs:
       with:
         name: library-artifact
         path: |
-          build/lib/libdashboard.so
-          build/lib/libempmgmt.so
-          build/lib/libloginmod.so
           build/lib/libdatamanager.a
           build/lib/libentity.a
           build/lib/libutility.a
