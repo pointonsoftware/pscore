@@ -18,64 +18,48 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_PERSON_HPP_
-#define CORE_ENTITY_PERSON_HPP_
-
+#ifndef CORE_ENTITY_VALIDATOR_ADDRESSVALIDATOR_HPP_
+#define CORE_ENTITY_VALIDATOR_ADDRESSVALIDATOR_HPP_
 #include <string>
-#include <vector>
-#include "address.hpp"
-#include "contactdetails.hpp"
-#include "personalid.hpp"
+// Parent
+#include "validator.hpp"
+// Entity
+#include <address.hpp>
 
 namespace entity {
+namespace validator {
 
-class Person {
+/*!
+ * Validation Rules:
+ * - Address can be empty
+ * - Address can only contain alphabet, numbers, dots and dashes
+*/
+
+constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-.]";
+
+class AddressValidator : public Validator {
  public:
-    enum class STATUS {
-       S_OK = 0,
-       INVALID_DATA = 1
-    };
+    explicit AddressValidator(const Address& address);
+    ~AddressValidator() = default;
 
-    Person(const std::string& firstname,
-           const std::string& middlename,
-           const std::string& lastname,
-           const std::string& birthdate,
-           const std::string& gender);
-    Person() = default;
-    virtual ~Person() = default;
+ private:
+    Address mAddress;
+    // Validation functions
+    void validateHouseNumber();
+    void validateLot();
+    void validateBlock();
+    void validateStreet();
+    void validateSubdivision();
+    void validateSitio();
+    void validatePurok();
+    void validateBarangay();
+    void validateCityTown();
+    void validateProvince();
+    void validateZipCode();
 
-    // Getters
-    std::string getFullName() const;
-    std::string firstName() const;
-    std::string middleName() const;
-    std::string lastName() const;
-    std::string birthdate() const;
-    std::string gender() const;
-    Address address() const;
-    ContactDetails contactDetails() const;
-    std::vector<PersonalId> personalIds() const;
-
-    // Setters
-    STATUS setfirstName(const std::string&);
-    STATUS setmiddleName();
-    STATUS setlastName();
-    STATUS setbirthdate();
-    STATUS setgender();
-    STATUS setPhoneNumbers(const std::string& phone_1, const std::string& phone_2);
-    STATUS addPersonalId(const std::string& type, const std::string& number);
-    STATUS setEmail(const std::string& email);
-    STATUS setAddress(const Address& address);
-
- protected:
-    std::string m_firstname;
-    std::string m_middlename;
-    std::string m_lastname;
-    std::string m_birthdate;
-    std::string m_gender;
-    Address m_address;
-    ContactDetails m_contact_details;
-    std::vector<PersonalId> m_personal_ids;
+    ValidationResult sanity(const std::string& str);
 };
 
+}  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_PERSON_HPP_
+#endif  // CORE_ENTITY_VALIDATOR_ADDRESSVALIDATOR_HPP_

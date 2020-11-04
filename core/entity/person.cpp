@@ -19,8 +19,13 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "person.hpp"
+#include <algorithm>
+#include "validator/addressvalidator.hpp"
+#include "validator/contactdetailsvalidator.hpp"
+#include "validator/personalidvalidator.hpp"
 
 namespace entity {
+
 
 Person::Person(const std::string& firstname,
                const std::string& middlename,
@@ -69,33 +74,43 @@ std::vector<PersonalId> Person::personalIds() const {
     return m_personal_ids;
 }
 
-Person& Person::setPhoneNumbers(const std::string& phone_1, const std::string& phone_2) {
+Person::STATUS Person::setPhoneNumbers(const std::string& phone_1, const std::string& phone_2) {
+    validator::ContactDetailsValidator validator(ContactDetails {"", phone_1, phone_2});
+    validator.validatePhoneNumbers();
+    if (validator.result() != validator::ValidationResult::S_OK) {
+        return STATUS::INVALID_DATA;
+    }
     m_contact_details.phone_number_1 = phone_1;
     m_contact_details.phone_number_2 = phone_2;
-    return *this;
+    return STATUS::S_OK;
 }
 
-Person& Person::addPersonalId(const std::string& type, const std::string& number) {
-    m_personal_ids.emplace_back(PersonalId{type, number});
-    return *this;
-}
-// cppcheck-suppress unusedFunction  ! remove this line when function is used
-Person& Person::setPersonalIds(const std::vector<PersonalId>& personalids) {
-    if (!m_personal_ids.empty()) {
-        // warning, we're overwriting the container
+Person::STATUS Person::addPersonalId(const std::string& type, const std::string& number) {
+    validator::PersonalIDValidator validator(PersonalId {type, number});
+    if (validator.result() != validator::ValidationResult::S_OK) {
+        return STATUS::INVALID_DATA;
     }
-    m_personal_ids = personalids;
-    return *this;
+    m_personal_ids.emplace_back(PersonalId{type, number});
+    return STATUS::S_OK;
 }
 
-Person& Person::setEmail(const std::string& email) {
+Person::STATUS Person::setEmail(const std::string& email) {
+    validator::ContactDetailsValidator validator(ContactDetails {email, "", ""});
+    validator.validateEmailAddress();
+    if (validator.result() != validator::ValidationResult::S_OK) {
+        return STATUS::INVALID_DATA;
+    }
     m_contact_details.email = email;
-    return *this;
+    return STATUS::S_OK;
 }
 
-Person& Person::setAddress(const Address& address) {
+Person::STATUS Person::setAddress(const Address& address) {
+    validator::AddressValidator validator(address);
+    if (validator.result() != validator::ValidationResult::S_OK) {
+        return STATUS::INVALID_DATA;
+    }
     m_address = address;
-    return *this;
+    return STATUS::S_OK;
 }
 
 }  // namespace entity
