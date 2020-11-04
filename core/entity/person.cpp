@@ -26,7 +26,6 @@
 
 namespace entity {
 
-
 Person::Person(const std::string& firstname,
                const std::string& middlename,
                const std::string& lastname,
