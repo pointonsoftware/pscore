@@ -35,7 +35,7 @@ namespace validator {
  * - Address can only contain alphabet, numbers, dots and dashes
 */
 
-constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-.]";
+constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-. ]";
 
 class AddressValidator : public Validator {
  public:

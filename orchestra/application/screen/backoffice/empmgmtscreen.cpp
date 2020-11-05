@@ -57,15 +57,23 @@ void EmployeeMgmtScreen::queryEmployeesList() {
 }
 
 void EmployeeMgmtScreen::createEmployee() {
-    // entity::Employee newEmployee;
-    if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "y") {
-        // cast to user
-        // get PIN
-        // createUser
-        // SCREENCOMMON().getYesNoInput("System User (y/n)") == "y"
+    entity::Employee* newEmployee = new entity::User();
+    newEmployee->setFirstName(SCREENCOMMON().getInput("First Name"));
+    newEmployee->setMiddleName(SCREENCOMMON().getInput("Middle Name"));
+    newEmployee->setLastName(SCREENCOMMON().getInput("Last Name"));
+    if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
+        // non-user, add the employee
+        entity::Employee employee = *newEmployee;
+        std::cout << "New employee " << employee.getFullName() << std::endl;
     } else {
-        std::cout << "Is NOT a system user" << std::endl;
+        // Employee is a system user
+        entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
+        // get PIN
+        newUser->setPIN(SCREENCOMMON().getInput("PIN"));
+        // createUser
+        std::cout << "New user " << newUser->getFullName() << " PIN: " << newUser->pin() << std::endl;
     }
+    delete newEmployee;
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
@@ -212,6 +220,11 @@ void EmployeeMgmtScreen::showEmployeeNotFoundPopup() {
 
 void EmployeeMgmtScreen::showSuccessfullyRemoved(const std::string& id) {
     std::cout << "Successfully removed employee with ID " << id << std::endl;
+}
+
+void EmployeeMgmtScreen::showEmployeeExists(const std::string& name) {
+    std::cout << "An employee with name: " << name << " also exists. " \
+     "Would you like to update that employee instead?" << std::endl;
 }
 
 }  // namespace backoffice

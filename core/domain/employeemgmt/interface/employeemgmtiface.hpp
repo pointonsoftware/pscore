@@ -61,6 +61,11 @@ class EmployeeMgmtControlInterface {
      * Deletes the user
     */
     virtual USERSMGMTSTATUS remove(const std::string& userID) = 0;
+    /*!
+     * Find the employees with first and last name
+    */
+    virtual std::vector<entity::Employee> findByName(const std::string& fname,
+                                                     const std::string& lname) = 0;
 };
 
 // Lib APIs

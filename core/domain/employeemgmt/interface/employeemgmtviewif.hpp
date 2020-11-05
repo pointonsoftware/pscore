@@ -49,6 +49,10 @@ class EmployeeMgmtViewInterface {
      * showSuccessfullyRemoved
     */
     virtual void showSuccessfullyRemoved(const std::string& id) = 0;
+    /*!
+     * showEmployeeExists
+    */
+    virtual void showEmployeeExists(const std::string& name) = 0;
 };
 
 }  // namespace empmgmt

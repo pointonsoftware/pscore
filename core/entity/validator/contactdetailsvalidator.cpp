@@ -35,7 +35,7 @@ ValidationResult ContactDetailsValidator::phoneNumberSanity(const std::string& n
         [](unsigned char c) { return !std::isdigit(c); }) != number.end()) {
         return ValidationResult::S_INVALID_STRING;
     }
-    if (number.size() != MAX_PHONE_NUMBER_LENGTH) {
+    if (number.size() == MAX_PHONE_NUMBER_LENGTH) {
         return ValidationResult::S_TOO_LONG;
     }
     return ValidationResult::S_OK;

@@ -102,6 +102,11 @@ USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
     return USERSMGMTSTATUS::SUCCESS;
 }
 
+std::vector<entity::Employee> EmployeeMgmtController::findByName(const std::string& fname,
+                                                                 const std::string& lname) {
+    return {};
+}
+
 bool EmployeeMgmtController::isExists(const std::string& id) {
     return find(id) != mCachedList.end();
 }
