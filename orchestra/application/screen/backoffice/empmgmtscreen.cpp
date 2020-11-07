@@ -159,8 +159,6 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         return Options::EMPLOYEE_CREATE;
     } else if (userInput == "d") {
         return Options::EMPLOYEE_REMOVE;
-    } else if (userInput == "u") {
-        return Options::EMPLOYEE_UPDATE;
     }  // add more options here
 
     // Default invalid option
