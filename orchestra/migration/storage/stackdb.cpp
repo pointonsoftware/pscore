@@ -41,8 +41,8 @@ void StackDB::populateEmployees() {
             "BenZiv",                     // First name
             "Hero",                       // Middle name
             "Garcia",                     // Last name
-            "10/15/2020",                 // B-date
-            "Male",                       // Gender
+            "15/10/2020",                 // B-date
+            "M",                          // Gender
             "Admin",                      // Position
             "2020"});                     // PIN <!Unique> <!Empty if non-user>
     ADDRESS_TABLE.emplace_back(AddressTableItem {
@@ -80,7 +80,7 @@ void StackDB::populateEmployees() {
             "Slardar",                    // Middle name
             "Mage",                       // Last name
             "10/10/2020",                 // B-date
-            "Male",                       // Gender
+            "M",                          // Gender
             "Manager",                    // Position
             "2021"});                     // PIN <!Unique> <!Empty if non-user>
     ADDRESS_TABLE.emplace_back(AddressTableItem {
@@ -112,8 +112,8 @@ void StackDB::populateEmployees() {
             "Juana",                      // First name
             "Santos",                     // Middle name
             "Dela Cruz",                  // Last name
-            "10/18/2020",                 // B-date
-            "Female",                     // Gender
+            "18/10/2020",                 // B-date
+            "F",                          // Gender
             "Cashier",                    // Position
             "2022"});                     // PIN <!Unique> <!Empty if non-user>
     ADDRESS_TABLE.emplace_back(AddressTableItem {
@@ -145,8 +145,8 @@ void StackDB::populateEmployees() {
             "Rodrigo",                    // First name
             "Roa",                        // Middle name
             "Duterte",                    // Last name
-            "10/17/1977",                 // B-date
-            "Male",                       // Gender
+            "17/10/1977",                 // B-date
+            "M",                          // Gender
             "Security Guard",             // Position
             ""});                         // PIN <!Unique> <!Empty if non-user>
     ADDRESS_TABLE.emplace_back(AddressTableItem {
@@ -178,8 +178,8 @@ void StackDB::populateEmployees() {
             "Chris",                      // First name
             "White",                      // Middle name
             "Brown",                      // Last name
-            "10/25/1988",                 // B-date
-            "Male",                       // Gender
+            "25/10/1988",                 // B-date
+            "M",                          // Gender
             "Delivery Personel",          // Position
             ""});                         // PIN <!Unique> <!Empty if non-user>
     ADDRESS_TABLE.emplace_back(AddressTableItem {

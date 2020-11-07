@@ -56,11 +56,11 @@ class Person {
     std::vector<PersonalId> personalIds() const;
 
     // Setters
-    STATUS setfirstName(const std::string&);
-    STATUS setmiddleName();
-    STATUS setlastName();
-    STATUS setbirthdate();
-    STATUS setgender();
+    STATUS setFirstName(const std::string& fname);
+    STATUS setMiddleName(const std::string& mname);
+    STATUS setLastName(const std::string& lname);
+    STATUS setBirthdate(const std::string& bdate);
+    STATUS setGender(const std::string& gender);
     STATUS setPhoneNumbers(const std::string& phone_1, const std::string& phone_2);
     STATUS addPersonalId(const std::string& type, const std::string& number);
     STATUS setEmail(const std::string& email);

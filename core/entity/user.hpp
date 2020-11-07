@@ -42,10 +42,14 @@ class User : public Employee {
     User();
     ~User() = default;
 
+    void setPIN(const std::string& pin) {
+        // Todo (code) - Add PIN validation here
+        mPIN = pin;
+    }
+
     inline const std::string pin() const {
         return mPIN;
     }
-
     /*!
      * Todo (spec): What is the business rule for user IDs?
      * Here we're using employeeID as the userID (but this is subject to change)

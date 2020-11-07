@@ -73,6 +73,31 @@ std::vector<PersonalId> Person::personalIds() const {
     return m_personal_ids;
 }
 
+Person::STATUS Person::setFirstName(const std::string& fname) {
+    m_firstname = fname;
+    return STATUS::S_OK;
+}
+
+Person::STATUS Person::setMiddleName(const std::string& mname) {
+    m_middlename = mname;
+    return STATUS::S_OK;
+}
+
+Person::STATUS Person::setLastName(const std::string& lname) {
+    m_lastname = lname;
+    return STATUS::S_OK;
+}
+
+Person::STATUS Person::setBirthdate(const std::string& bdate) {
+    m_birthdate = bdate;
+    return STATUS::S_OK;
+}
+
+Person::STATUS Person::setGender(const std::string& gender) {
+    m_gender = gender;
+    return STATUS::S_OK;
+}
+
 Person::STATUS Person::setPhoneNumbers(const std::string& phone_1, const std::string& phone_2) {
     validator::ContactDetailsValidator validator(ContactDetails {"", phone_1, phone_2});
     validator.validatePhoneNumbers();

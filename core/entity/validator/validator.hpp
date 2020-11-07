@@ -33,6 +33,11 @@ enum ValidationResult {
     S_TOO_LONG       = 3
 };
 
+/*
+ * Todo (code) - improve validator to know which member of the entity is invalid
+ * Might need to create a map [member, status]; and return this map from result()
+*/
+
 class Validator {
  public:
     Validator() = default;

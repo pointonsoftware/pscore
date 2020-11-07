@@ -102,6 +102,16 @@ USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
     return USERSMGMTSTATUS::SUCCESS;
 }
 
+std::vector<entity::Employee> EmployeeMgmtController::findByName(const std::string& fname,
+                                                                 const std::string& lname) {
+    /*
+     * Todo (code) - look for employees that matches fname
+     *             - then check if it matches lname and append to vector
+     *             - otherwise, return empty
+    */
+    return {};
+}
+
 bool EmployeeMgmtController::isExists(const std::string& id) {
     return find(id) != mCachedList.end();
 }

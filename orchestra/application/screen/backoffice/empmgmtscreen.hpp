@@ -46,6 +46,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void showDataNotReadyScreen() override;
     void showEmployeeNotFoundPopup() override;
     void showSuccessfullyRemoved(const std::string& id) override;
+    void showEmployeeExists(const std::string& name) override;
 
  private:
      // Screen options - this represents the buttons in a GUI
@@ -53,7 +54,9 @@ class EmployeeMgmtScreen : public ScreenInterface,
         LANDING,
         DASHBOARD,
         EMPLOYEE_DETAILS,
+        EMPLOYEE_CREATE,
         EMPLOYEE_REMOVE,
+        EMPLOYEE_UPDATE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -69,6 +72,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void invalidOptionSelected() const;
     void showEmployeeInformation() const;
     void queryEmployeesList();
+    void createEmployee();
     void removeEmployee();
     std::vector<entity::Employee> mEmployeesGUITable;  // Represents the GUI employees-table
     unsigned int mSelectedEmployeeIndex = 0;  // 1-based index

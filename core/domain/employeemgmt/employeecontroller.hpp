@@ -41,7 +41,8 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
     entity::Employee get(const std::string& id) override;
     USERSMGMTSTATUS save(const entity::User& userID) override;
     USERSMGMTSTATUS remove(const std::string& id) override;
-
+    std::vector<entity::Employee> findByName(const std::string& fname,
+                                             const std::string& lname) override;
  private:
     std::shared_ptr<EmployeeMgmtDataInterface> mDataProvider;
     std::shared_ptr<EmployeeMgmtViewInterface> mView;

@@ -26,7 +26,6 @@ add_library (
     validator/personalidvalidator.cpp
     validator/personvalidator.hpp
     validator/personvalidator.cpp
-
 )
 
 target_compile_options(entity PUBLIC "-fPIC")
