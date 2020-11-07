@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "empmgmtscreen.hpp"
+#include <functional>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -57,21 +58,48 @@ void EmployeeMgmtScreen::queryEmployeesList() {
 }
 
 void EmployeeMgmtScreen::createEmployee() {
+    std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
     entity::Employee* newEmployee = new entity::User();
-    newEmployee->setFirstName(SCREENCOMMON().getInput("First Name"));
-    newEmployee->setMiddleName(SCREENCOMMON().getInput("Middle Name"));
-    newEmployee->setLastName(SCREENCOMMON().getInput("Last Name"));
+
+    // Todo (code) - move this to a specific function
+    auto inputArea =
+    [](std::function<entity::Person::STATUS(const std::string&)> func,
+        const std::string& label) {
+        do {
+            if (func(SCREENCOMMON().getInput(label)) == entity::Person::STATUS::S_OK) {
+                // Success
+                break;
+            }
+            std::cout << "Error: Invalid input." << std::endl;
+        } while (1);
+    };
+
+    inputArea(std::bind(&entity::Employee::setFirstName, newEmployee,
+              std::placeholders::_1), "First Name");
+    inputArea(std::bind(&entity::Employee::setMiddleName, newEmployee,
+              std::placeholders::_1), "Middle Name");
+    inputArea(std::bind(&entity::Employee::setLastName, newEmployee,
+              std::placeholders::_1), "Last Name");
+    inputArea(std::bind(&entity::Employee::setBirthdate, newEmployee,
+              std::placeholders::_1), "Birthdate (dd/mm/yyyy)");
+    inputArea(std::bind(&entity::Employee::setGender, newEmployee,
+              std::placeholders::_1), "Gender (M/F)");
+
+    // Todo (code) - get Address and other details
+
     if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
         // non-user, add the employee
         entity::Employee employee = *newEmployee;
+        // Todo (code) - call core::createEmployee
         std::cout << "New employee " << employee.getFullName() << std::endl;
     } else {
         // Employee is a system user
         entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
         // get PIN
         newUser->setPIN(SCREENCOMMON().getInput("PIN"));
-        // createUser
-        std::cout << "New user " << newUser->getFullName() << " PIN: " << newUser->pin() << std::endl;
+        // Todo (code) - call core::createUser
+        std::cout << "New user " << newUser->getFullName() <<
+                     " PIN: " << newUser->pin() << std::endl;
     }
     delete newEmployee;
 }
@@ -102,9 +130,9 @@ void EmployeeMgmtScreen::showEmployees() const {
 }
 
 void EmployeeMgmtScreen::showOptions() const {
-    std::cout << std::endl;
-    std::cout << "[b] Back" << std::endl;
-    std::cout << "[0] Logout" << std::endl;
+    std::cout << std::endl << std::endl;
+    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"},
+                                 true, false);
     std::cout << std::endl;
 }
 

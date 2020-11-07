@@ -134,15 +134,18 @@ void ScreenCommon::printColumns(const std::vector<std::string>& columns,
 std::string ScreenCommon::getInput(const std::string& label, unsigned int maxSize) const {
     std::string userInput;
     do {
-        userInput.clear();
         std::cout << std::left << std::setw(defines::LABEL_WIDTH)
                   << label << defines::LABEL_BOUNDARY << " ";
-        std::cin.ignore();
+        if (std::iswspace(std::cin.peek())) {
+            // Ignore if cin is not empty
+            std::cin.ignore();
+        }
         std::getline(std::cin, userInput);
         if ((maxSize == 0) || (userInput.size() <= maxSize)) {
             break;
         }
         std::cout << "Error: Input is too long." << std::endl;
+        userInput.clear();
     } while (1);
     return userInput;
 }
@@ -152,7 +155,7 @@ std::string ScreenCommon::getYesNoInput(const std::string& label) const {
     do {
         userInput.clear();
         std::cout << std::left << std::setw(defines::LABEL_WIDTH)
-                  << label  << defines::LABEL_BOUNDARY;
+                  << label  << defines::LABEL_BOUNDARY << " ";
         std::cin >> userInput;
     } while (userInput != "y" && userInput != "n");
     return userInput;
