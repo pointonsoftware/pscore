@@ -23,9 +23,6 @@
 
 namespace domain {
 namespace dashboard {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
 
 class DashboardViewInterface {
  public:

@@ -28,14 +28,6 @@
 
 namespace domain {
 namespace login {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
-enum class AUTHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
 
 class LoginControlInterface {
  public:

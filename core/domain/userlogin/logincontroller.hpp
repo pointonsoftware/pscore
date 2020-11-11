@@ -33,6 +33,12 @@
 namespace domain {
 namespace login {
 
+enum class AUTHSTATUS {
+    SUCCESS       = 0,
+    FAILED        = 1,
+    UNINITIALIZED = 2
+};
+
 class LoginController : public LoginControlInterface {
  public:
     explicit LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
