@@ -28,6 +28,12 @@
 namespace domain {
 namespace dashboard {
 
+enum class DASHSTATUS {
+    SUCCESS       = 0,
+    FAILED        = 1,
+    UNINITIALIZED = 2
+};
+
 class DashboardController : public DashboardControlInterface {
  public:
     explicit DashboardController(const std::shared_ptr<DashboardDataInterface>& data,

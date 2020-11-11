@@ -30,9 +30,7 @@
 
 namespace domain {
 namespace empmgmt {
-/*!
- * Note: If you add/update a function in this interface, please also update the mock class
-*/
+
 enum class USERSMGMTSTATUS {
     SUCCESS       = 0,
     FAILED        = 1,
