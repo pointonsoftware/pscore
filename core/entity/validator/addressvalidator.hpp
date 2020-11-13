@@ -34,8 +34,20 @@ namespace validator {
  * - Address can be empty
  * - Address can only contain alphabet, numbers, dots and dashes
 */
-
 constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-. ]";
+
+// Fields
+constexpr char FIELD_ADDR_HNO[] = "housenumber";
+constexpr char FIELD_ADDR_LOT[] = "lot";
+constexpr char FIELD_ADDR_BLK[] = "block";
+constexpr char FIELD_ADDR_STR[] = "street";
+constexpr char FIELD_ADDR_SDV[] = "subdivision";
+constexpr char FIELD_ADDR_SIT[] = "sitio";
+constexpr char FIELD_ADDR_PRK[] = "purok";
+constexpr char FIELD_ADDR_BRG[] = "barangay";
+constexpr char FIELD_ADDR_CTY[] = "city_town";
+constexpr char FIELD_ADDR_PRV[] = "province";
+constexpr char FIELD_ADDR_ZIP[] = "zip";
 
 class AddressValidator : public Validator {
  public:
@@ -45,19 +57,19 @@ class AddressValidator : public Validator {
  private:
     Address mAddress;
     // Validation functions
-    void validateHouseNumber();
-    void validateLot();
-    void validateBlock();
-    void validateStreet();
-    void validateSubdivision();
-    void validateSitio();
-    void validatePurok();
-    void validateBarangay();
-    void validateCityTown();
-    void validateProvince();
-    void validateZipCode();
+    ValidationStatus validateHouseNumber();
+    ValidationStatus validateLot();
+    ValidationStatus validateBlock();
+    ValidationStatus validateStreet();
+    ValidationStatus validateSubdivision();
+    ValidationStatus validateSitio();
+    ValidationStatus validatePurok();
+    ValidationStatus validateBarangay();
+    ValidationStatus validateCityTown();
+    ValidationStatus validateProvince();
+    ValidationStatus validateZipCode();
 
-    ValidationResult sanity(const std::string& str);
+    ValidationStatus sanity(const std::string& str) const;
 };
 
 }  // namespace validator

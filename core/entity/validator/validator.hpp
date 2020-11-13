@@ -21,45 +21,49 @@
 #ifndef CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
 #define CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
 #include <functional>
+#include <string>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace entity {
 namespace validator {
 
-enum ValidationResult {
+enum ValidationStatus {
     S_OK             = 0,
     S_INVALID_STRING = 1,
     S_EMPTY          = 2,
-    S_TOO_LONG       = 3
+    S_INVALID_SIZE   = 3
 };
 
-/*
- * Todo (code) - improve validator to know which member of the entity is invalid
- * Might need to create a map [member, status]; and return this map from result()
-*/
+// map [field that failed, error message to display]
+typedef std::unordered_map<std::string, std::string> Errors;
 
 class Validator {
  public:
     Validator() = default;
     virtual ~Validator() = default;
 
-    inline ValidationResult result() {
-        return mResult;
+    inline Errors result() {
+        return errors;
     }
 
  protected:
-    std::vector<std::function<void()>> validationFunctions;
-    ValidationResult mResult;
+    std::vector<std::function<ValidationStatus()>> validationFunctions;
 
     inline void validate() {
         for (const auto& func : validationFunctions) {
             func();  // Run validator
-            if (mResult != ValidationResult::S_OK) {
-                // Break if result is not OK
-                break;
-            }
         }
     }
+
+    inline void addError(const std::string& field, const std::string& message) {
+        errors.insert(std::make_pair(field, message));
+    }
+
+ private:
+    // Populate this with errors
+    Errors errors;
 };
 
 }  // namespace validator

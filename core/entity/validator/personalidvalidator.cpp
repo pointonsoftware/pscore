@@ -30,25 +30,26 @@ PersonalIDValidator::PersonalIDValidator(const PersonalId& personalID) {
     validate();
 }
 
-void PersonalIDValidator::validatePersonalID() {
-    mResult = [this]() {
-        if (mPersonalID.type.empty()) {
-            return ValidationResult::S_OK;
-        }
-        if (mPersonalID.id_number.empty()) {
-            return ValidationResult::S_EMPTY;
-        }
-        if (std::find_if(mPersonalID.type.begin(), mPersonalID.type.end(),
-            [](unsigned char c) { return std::isdigit(c); }) != mPersonalID.type.end()) {
-            // Type must be alphabet
-            return ValidationResult::S_INVALID_STRING;
-        }
-        if (std::regex_search(mPersonalID.id_number, std::regex(INVALID_ID_CHARACTERS))) {
-            // ID number contains invalid characters
-            return ValidationResult::S_INVALID_STRING;
-        }
-        return ValidationResult::S_OK;
-    }();
+ValidationStatus PersonalIDValidator::validatePersonalID() {
+    if (mPersonalID.type.empty()) {
+        return ValidationStatus::S_OK;
+    }
+    if (mPersonalID.id_number.empty()) {
+        addError(FIELD_PNID_IDN, "ID Number must not be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
+    if (std::find_if(mPersonalID.type.begin(), mPersonalID.type.end(),
+        [](unsigned char c) { return std::isdigit(c); }) != mPersonalID.type.end()) {
+        // Type must be alphabet
+        addError(FIELD_PNID_IDT, "ID Type contains invalid character.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    if (std::regex_search(mPersonalID.id_number, std::regex(INVALID_ID_CHARACTERS))) {
+        // ID number contains invalid characters
+        addError(FIELD_PNID_IDT, "ID Number contains invalid character");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
 }
 
 }  // namespace validator
