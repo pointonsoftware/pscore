@@ -25,9 +25,6 @@
 namespace entity {
 namespace validator {
 
-// Address fields are the same as the Address struct variables
-#define GET_FIELD_NAME(variable) (#variable)
-
 AddressValidator::AddressValidator(const Address& address) {
     mAddress = address;
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateHouseNumber, this));
