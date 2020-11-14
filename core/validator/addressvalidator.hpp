@@ -24,7 +24,7 @@
 // Parent
 #include "validator.hpp"
 // Entity
-#include <address.hpp>
+#include <entity/address.hpp>
 
 namespace entity {
 namespace validator {

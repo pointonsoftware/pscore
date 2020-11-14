@@ -18,36 +18,40 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
+#ifndef CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
+#define CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
 // Parent
 #include "validator.hpp"
 // Entity
-#include <person.hpp>
+#include <entity/personalid.hpp>
 
 namespace entity {
 namespace validator {
 
-// Fields
-constexpr char FIELD_FNAME[] = "firstname";
-constexpr char FIELD_MNAME[] = "middlename";
-constexpr char FIELD_LNAME[] = "lastname";
-constexpr char FIELD_BDATE[] = "birthdate";
-constexpr char FIELD_POSITION[] = "position";
+/*!
+ * Validation Rules:
+ * - [type] can be empty
+ * - [type] must only contain alphabets
+ * - [ID number] must not be empty if [type] is not empty
+ * - [ID number] can be alphanumeric and with dashes
+*/
+constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
 
-class PersonValidator : public Validator {
+// Fields
+constexpr char FIELD_PNID_IDT[] = "idtype";
+constexpr char FIELD_PNID_IDN[] = "idnumber";
+
+class PersonalIDValidator : public Validator {
  public:
-    explicit PersonValidator(const Person& person);
-    ~PersonValidator() = default;
+    explicit PersonalIDValidator(const PersonalId& personalID);
+    ~PersonalIDValidator() = default;
 
  private:
-    Person mPerson;
+    PersonalId mPersonalID;
     // Validation functions
-    ValidationStatus validateFirstName() const;
-    ValidationStatus validateMiddleName() const;
-    ValidationStatus validateLastName() const;
+    ValidationStatus validatePersonalID();
 };
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
+#endif  // CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_

@@ -18,40 +18,48 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
+#ifndef CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
+#define CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
+#include <string>
 // Parent
 #include "validator.hpp"
 // Entity
-#include <personalid.hpp>
+#include <entity/contactdetails.hpp>
 
 namespace entity {
 namespace validator {
 
 /*!
- * Validation Rules:
- * - [type] can be empty
- * - [type] must only contain alphabets
- * - [ID number] must not be empty if [type] is not empty
- * - [ID number] can be alphanumeric and with dashes
+ * Email address validation rules:
+ * - must contain an "@" character
 */
-constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
+
+/*!
+ * Phone number validation rules:
+ * - phone numbers can be empty
+ * - phone number must only contain numbers
+ * - phone numbers should be 11 digits in length
+*/
+constexpr unsigned int PHONE_NUMBER_LENGTH = 11;
 
 // Fields
-constexpr char FIELD_PNID_IDT[] = "idtype";
-constexpr char FIELD_PNID_IDN[] = "idnumber";
+constexpr char FIELD_CONT_PH1[] = "phone1";
+constexpr char FIELD_CONT_PH2[] = "phone2";
+constexpr char FIELD_CONT_EML[] = "email";
 
-class PersonalIDValidator : public Validator {
+class ContactDetailsValidator : public Validator {
  public:
-    explicit PersonalIDValidator(const PersonalId& personalID);
-    ~PersonalIDValidator() = default;
+    explicit ContactDetailsValidator(const ContactDetails& contactDetails);
+    ~ContactDetailsValidator() = default;
 
  private:
-    PersonalId mPersonalID;
-    // Validation functions
-    ValidationStatus validatePersonalID();
+    ContactDetails mContactDetails;
+    ValidationStatus validatePhoneNumber1();
+    ValidationStatus validatePhoneNumber2();
+    ValidationStatus validateEmailAddress();
+    ValidationStatus phoneNumberSanity(const std::string& number) const;
 };
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
+#endif  // CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_

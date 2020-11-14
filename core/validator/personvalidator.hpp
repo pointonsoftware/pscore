@@ -18,48 +18,36 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
-#include <string>
+#ifndef CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
+#define CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
 // Parent
 #include "validator.hpp"
 // Entity
-#include <contactdetails.hpp>
+#include <entity/person.hpp>
 
 namespace entity {
 namespace validator {
 
-/*!
- * Email address validation rules:
- * - must contain an "@" character
-*/
-
-/*!
- * Phone number validation rules:
- * - phone numbers can be empty
- * - phone number must only contain numbers
- * - phone numbers should be 11 digits in length
-*/
-constexpr unsigned int PHONE_NUMBER_LENGTH = 11;
-
 // Fields
-constexpr char FIELD_CONT_PH1[] = "phone1";
-constexpr char FIELD_CONT_PH2[] = "phone2";
-constexpr char FIELD_CONT_EML[] = "email";
+constexpr char FIELD_FNAME[] = "firstname";
+constexpr char FIELD_MNAME[] = "middlename";
+constexpr char FIELD_LNAME[] = "lastname";
+constexpr char FIELD_BDATE[] = "birthdate";
+constexpr char FIELD_POSITION[] = "position";
 
-class ContactDetailsValidator : public Validator {
+class PersonValidator : public Validator {
  public:
-    explicit ContactDetailsValidator(const ContactDetails& contactDetails);
-    ~ContactDetailsValidator() = default;
+    explicit PersonValidator(const Person& person);
+    ~PersonValidator() = default;
 
  private:
-    ContactDetails mContactDetails;
-    ValidationStatus validatePhoneNumber1();
-    ValidationStatus validatePhoneNumber2();
-    ValidationStatus validateEmailAddress();
-    ValidationStatus phoneNumberSanity(const std::string& number) const;
+    Person mPerson;
+    // Validation functions
+    ValidationStatus validateFirstName() const;
+    ValidationStatus validateMiddleName() const;
+    ValidationStatus validateLastName() const;
 };
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
+#endif  // CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_

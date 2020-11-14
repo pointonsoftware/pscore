@@ -45,8 +45,9 @@ include_directories (external/gtest/googletest/include)
 include_directories (external/gtest/googlemock/include)
 endif()
 
-add_subdirectory (core/entity)
 add_subdirectory (core/domain)
+add_subdirectory (core/entity)
+add_subdirectory (core/validator)
 add_subdirectory (utility)
 
 
