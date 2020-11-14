@@ -31,14 +31,14 @@ PersonValidator::PersonValidator(const Person& person) {
     validate();
 }
 
-void PersonValidator::validateFirstName() {
-    mResult = ValidationResult::S_OK;
+ValidationStatus PersonValidator::validateFirstName() const {
+    return ValidationStatus::S_OK;
 }
-void PersonValidator::validateMiddleName() {
-    mResult = ValidationResult::S_OK;
+ValidationStatus PersonValidator::validateMiddleName() const {
+    return ValidationStatus::S_OK;
 }
-void PersonValidator::validateLastName() {
-    mResult = ValidationResult::S_OK;
+ValidationStatus PersonValidator::validateLastName() const {
+    return ValidationStatus::S_OK;
 }
 }  // namespace validator
 }  // namespace entity

@@ -28,6 +28,7 @@ namespace entity {
 
 class User : public Employee {
  public:
+    // Todo (code) - might have to move these consts to a validation class
     static constexpr unsigned int PIN_SIZE = 4;
     static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
 

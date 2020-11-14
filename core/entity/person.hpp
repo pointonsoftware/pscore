@@ -31,11 +31,6 @@ namespace entity {
 
 class Person {
  public:
-    enum class STATUS {
-       S_OK = 0,
-       INVALID_DATA = 1
-    };
-
     Person(const std::string& firstname,
            const std::string& middlename,
            const std::string& lastname,
@@ -56,15 +51,15 @@ class Person {
     std::vector<PersonalId> personalIds() const;
 
     // Setters
-    STATUS setFirstName(const std::string& fname);
-    STATUS setMiddleName(const std::string& mname);
-    STATUS setLastName(const std::string& lname);
-    STATUS setBirthdate(const std::string& bdate);
-    STATUS setGender(const std::string& gender);
-    STATUS setPhoneNumbers(const std::string& phone_1, const std::string& phone_2);
-    STATUS addPersonalId(const std::string& type, const std::string& number);
-    STATUS setEmail(const std::string& email);
-    STATUS setAddress(const Address& address);
+    void setFirstName(const std::string& fname);
+    void setMiddleName(const std::string& mname);
+    void setLastName(const std::string& lname);
+    void setBirthdate(const std::string& bdate);
+    void setGender(const std::string& gender);
+    void setPhoneNumbers(const std::string& phone_1, const std::string& phone_2);
+    void addPersonalId(const std::string& type, const std::string& number);
+    void setEmail(const std::string& email);
+    void setAddress(const Address& address);
 
  protected:
     std::string m_firstname;

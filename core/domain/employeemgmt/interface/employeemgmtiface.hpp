@@ -54,6 +54,10 @@ class EmployeeMgmtControlInterface {
     /*!
      * Creates the user if not exists, otherwise will update the user info
     */
+    /*!
+     * Todo (code) - add const std::unordered_map <std::string, std::string>
+     * - param [out]- map of [field, error message]
+    */
     virtual USERSMGMTSTATUS save(const entity::User& userID) = 0;
     /*!
      * Deletes the user

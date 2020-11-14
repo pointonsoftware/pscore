@@ -63,15 +63,9 @@ void EmployeeMgmtScreen::createEmployee() {
 
     // Todo (code) - move this to a specific function
     auto inputArea =
-    [](std::function<entity::Person::STATUS(const std::string&)> func,
+    [](std::function<void(const std::string&)> func,
         const std::string& label) {
-        do {
-            if (func(SCREENCOMMON().getInput(label)) == entity::Person::STATUS::S_OK) {
-                // Success
-                break;
-            }
-            std::cout << "Error: Invalid input." << std::endl;
-        } while (1);
+        func(SCREENCOMMON().getInput(label));
     };
 
     inputArea(std::bind(&entity::Employee::setFirstName, newEmployee,
@@ -87,6 +81,12 @@ void EmployeeMgmtScreen::createEmployee() {
 
     // Todo (code) - get Address and other details
 
+    /*!
+     * Todo (code)
+     * - do findByName(fname, lname) first
+     * - if found, show "An employee name Foo Bar with ID xxxx exists,
+     *                   do you want to update this employee instead?"
+    */
     if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
         // non-user, add the employee
         entity::Employee employee = *newEmployee;

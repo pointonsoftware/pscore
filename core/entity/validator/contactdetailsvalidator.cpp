@@ -25,39 +25,65 @@ namespace validator {
 
 ContactDetailsValidator::ContactDetailsValidator(const ContactDetails& contactDetails) {
     mContactDetails = contactDetails;
+    validationFunctions.emplace_back(
+                        std::bind(&ContactDetailsValidator::validatePhoneNumber1, this));
+    validationFunctions.emplace_back(
+                        std::bind(&ContactDetailsValidator::validatePhoneNumber2, this));
+    validationFunctions.emplace_back(
+                        std::bind(&ContactDetailsValidator::validateEmailAddress, this));
+    validate();
 }
 
-ValidationResult ContactDetailsValidator::phoneNumberSanity(const std::string& number) {
+ValidationStatus ContactDetailsValidator::phoneNumberSanity(const std::string& number) const {
     if (number.empty()) {
-        return ValidationResult::S_OK;
+        return ValidationStatus::S_OK;
     }
     if (std::find_if(number.begin(), number.end(),
         [](unsigned char c) { return !std::isdigit(c); }) != number.end()) {
-        return ValidationResult::S_INVALID_STRING;
+        return ValidationStatus::S_INVALID_STRING;
     }
-    if (number.size() == MAX_PHONE_NUMBER_LENGTH) {
-        return ValidationResult::S_TOO_LONG;
+    if (number.size() != PHONE_NUMBER_LENGTH) {
+        return ValidationStatus::S_INVALID_SIZE;
     }
-    return ValidationResult::S_OK;
+    return ValidationStatus::S_OK;
 }
 
-void ContactDetailsValidator::validatePhoneNumbers() {
-    mResult = phoneNumberSanity(mContactDetails.phone_number_1);
-    // Continue only if first phone number is valid
-    if (mResult != ValidationResult::S_OK) {
-        /*!
-        * Todo (spec)
-        * - why fail if phone # 1 is invalid? 
-        * - this rule might be too tight and needs updating
-        */
-        return;
+ValidationStatus ContactDetailsValidator::validatePhoneNumber1() {
+    ValidationStatus retVal = phoneNumberSanity(mContactDetails.phone_number_1);
+    switch (retVal) {
+        case ValidationStatus::S_INVALID_STRING:
+            addError(FIELD_CONT_PH1, "Phone number 1 contains invalid character.");
+            break;
+        case ValidationStatus::S_INVALID_SIZE:
+            addError(FIELD_CONT_PH1, "Phone number 1 is invalid.");
+            break;
+        default:
+            break;
     }
-    mResult = phoneNumberSanity(mContactDetails.phone_number_2);
+    return retVal;
 }
 
-void ContactDetailsValidator::validateEmailAddress() {
-    mResult = std::count(mContactDetails.email.begin(), mContactDetails.email.end(), '@') != 1 ?
-              ValidationResult::S_INVALID_STRING : ValidationResult::S_OK;
+ValidationStatus ContactDetailsValidator::validatePhoneNumber2() {
+    ValidationStatus retVal = phoneNumberSanity(mContactDetails.phone_number_2);
+    switch (retVal) {
+        case ValidationStatus::S_INVALID_STRING:
+            addError(FIELD_CONT_PH2, "Phone number 2 contains invalid character.");
+            break;
+        case ValidationStatus::S_INVALID_SIZE:
+            addError(FIELD_CONT_PH2, "Phone number 2 is invalid.");
+            break;
+        default:
+            break;
+    }
+    return retVal;
+}
+
+ValidationStatus ContactDetailsValidator::validateEmailAddress() {
+    if (std::count(mContactDetails.email.begin(), mContactDetails.email.end(), '@') != 1) {
+        addError(FIELD_CONT_EML, "Email address is invalid.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
 }
 
 }  // namespace validator

@@ -37,6 +37,10 @@ namespace validator {
 */
 constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
 
+// Fields
+constexpr char FIELD_PNID_IDT[] = "idtype";
+constexpr char FIELD_PNID_IDN[] = "idnumber";
+
 class PersonalIDValidator : public Validator {
  public:
     explicit PersonalIDValidator(const PersonalId& personalID);
@@ -45,7 +49,7 @@ class PersonalIDValidator : public Validator {
  private:
     PersonalId mPersonalID;
     // Validation functions
-    void validatePersonalID();
+    ValidationStatus validatePersonalID();
 };
 
 }  // namespace validator

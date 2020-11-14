@@ -28,6 +28,13 @@
 namespace entity {
 namespace validator {
 
+// Fields
+constexpr char FIELD_FNAME[] = "firstname";
+constexpr char FIELD_MNAME[] = "middlename";
+constexpr char FIELD_LNAME[] = "lastname";
+constexpr char FIELD_BDATE[] = "birthdate";
+constexpr char FIELD_POSITION[] = "position";
+
 class PersonValidator : public Validator {
  public:
     explicit PersonValidator(const Person& person);
@@ -36,9 +43,9 @@ class PersonValidator : public Validator {
  private:
     Person mPerson;
     // Validation functions
-    void validateFirstName();
-    void validateMiddleName();
-    void validateLastName();
+    ValidationStatus validateFirstName() const;
+    ValidationStatus validateMiddleName() const;
+    ValidationStatus validateLastName() const;
 };
 
 }  // namespace validator
