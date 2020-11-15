@@ -18,36 +18,60 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
+#ifndef CORE_VALIDATOR_ADDRESSVALIDATOR_HPP_
+#define CORE_VALIDATOR_ADDRESSVALIDATOR_HPP_
+#include <string>
 // Parent
 #include "validator.hpp"
 // Entity
-#include <person.hpp>
+#include <entity/address.hpp>
 
 namespace entity {
 namespace validator {
 
-// Fields
-constexpr char FIELD_FNAME[] = "firstname";
-constexpr char FIELD_MNAME[] = "middlename";
-constexpr char FIELD_LNAME[] = "lastname";
-constexpr char FIELD_BDATE[] = "birthdate";
-constexpr char FIELD_POSITION[] = "position";
+/*!
+ * Validation Rules:
+ * - Address can be empty
+ * - Address can only contain alphabet, numbers, dots and dashes
+*/
+constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-. ]";
 
-class PersonValidator : public Validator {
+// Fields
+constexpr char FIELD_ADDR_HNO[] = "housenumber";
+constexpr char FIELD_ADDR_LOT[] = "lot";
+constexpr char FIELD_ADDR_BLK[] = "block";
+constexpr char FIELD_ADDR_STR[] = "street";
+constexpr char FIELD_ADDR_SDV[] = "subdivision";
+constexpr char FIELD_ADDR_SIT[] = "sitio";
+constexpr char FIELD_ADDR_PRK[] = "purok";
+constexpr char FIELD_ADDR_BRG[] = "barangay";
+constexpr char FIELD_ADDR_CTY[] = "city_town";
+constexpr char FIELD_ADDR_PRV[] = "province";
+constexpr char FIELD_ADDR_ZIP[] = "zip";
+
+class AddressValidator : public Validator {
  public:
-    explicit PersonValidator(const Person& person);
-    ~PersonValidator() = default;
+    explicit AddressValidator(const Address& address);
+    ~AddressValidator() = default;
 
  private:
-    Person mPerson;
+    Address mAddress;
     // Validation functions
-    ValidationStatus validateFirstName() const;
-    ValidationStatus validateMiddleName() const;
-    ValidationStatus validateLastName() const;
+    ValidationStatus validateHouseNumber();
+    ValidationStatus validateLot();
+    ValidationStatus validateBlock();
+    ValidationStatus validateStreet();
+    ValidationStatus validateSubdivision();
+    ValidationStatus validateSitio();
+    ValidationStatus validatePurok();
+    ValidationStatus validateBarangay();
+    ValidationStatus validateCityTown();
+    ValidationStatus validateProvince();
+    ValidationStatus validateZipCode();
+
+    ValidationStatus sanity(const std::string& str) const;
 };
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
+#endif  // CORE_VALIDATOR_ADDRESSVALIDATOR_HPP_

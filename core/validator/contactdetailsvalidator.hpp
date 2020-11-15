@@ -18,13 +18,13 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
+#ifndef CORE_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
+#define CORE_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
 #include <string>
 // Parent
 #include "validator.hpp"
 // Entity
-#include <contactdetails.hpp>
+#include <entity/contactdetails.hpp>
 
 namespace entity {
 namespace validator {
@@ -62,4 +62,4 @@ class ContactDetailsValidator : public Validator {
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_
+#endif  // CORE_VALIDATOR_CONTACTDETAILSVALIDATOR_HPP_

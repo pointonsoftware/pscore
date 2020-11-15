@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
+#ifndef CORE_VALIDATOR_VALIDATOR_HPP_
+#define CORE_VALIDATOR_VALIDATOR_HPP_
 #include <functional>
 #include <string>
 #include <unordered_map>
@@ -68,4 +68,4 @@ class Validator {
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_VALIDATOR_HPP_
+#endif  // CORE_VALIDATOR_VALIDATOR_HPP_

@@ -18,40 +18,36 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
+#ifndef CORE_VALIDATOR_PERSONVALIDATOR_HPP_
+#define CORE_VALIDATOR_PERSONVALIDATOR_HPP_
 // Parent
 #include "validator.hpp"
 // Entity
-#include <personalid.hpp>
+#include <entity/person.hpp>
 
 namespace entity {
 namespace validator {
 
-/*!
- * Validation Rules:
- * - [type] can be empty
- * - [type] must only contain alphabets
- * - [ID number] must not be empty if [type] is not empty
- * - [ID number] can be alphanumeric and with dashes
-*/
-constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
-
 // Fields
-constexpr char FIELD_PNID_IDT[] = "idtype";
-constexpr char FIELD_PNID_IDN[] = "idnumber";
+constexpr char FIELD_FNAME[] = "firstname";
+constexpr char FIELD_MNAME[] = "middlename";
+constexpr char FIELD_LNAME[] = "lastname";
+constexpr char FIELD_BDATE[] = "birthdate";
+constexpr char FIELD_POSITION[] = "position";
 
-class PersonalIDValidator : public Validator {
+class PersonValidator : public Validator {
  public:
-    explicit PersonalIDValidator(const PersonalId& personalID);
-    ~PersonalIDValidator() = default;
+    explicit PersonValidator(const Person& person);
+    ~PersonValidator() = default;
 
  private:
-    PersonalId mPersonalID;
+    Person mPerson;
     // Validation functions
-    ValidationStatus validatePersonalID();
+    ValidationStatus validateFirstName() const;
+    ValidationStatus validateMiddleName() const;
+    ValidationStatus validateLastName() const;
 };
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_PERSONALIDVALIDATOR_HPP_
+#endif  // CORE_VALIDATOR_PERSONVALIDATOR_HPP_

@@ -18,60 +18,40 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_ADDRESSVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_ADDRESSVALIDATOR_HPP_
-#include <string>
+#ifndef CORE_VALIDATOR_PERSONALIDVALIDATOR_HPP_
+#define CORE_VALIDATOR_PERSONALIDVALIDATOR_HPP_
 // Parent
 #include "validator.hpp"
 // Entity
-#include <address.hpp>
+#include <entity/personalid.hpp>
 
 namespace entity {
 namespace validator {
 
 /*!
  * Validation Rules:
- * - Address can be empty
- * - Address can only contain alphabet, numbers, dots and dashes
+ * - [type] can be empty
+ * - [type] must only contain alphabets
+ * - [ID number] must not be empty if [type] is not empty
+ * - [ID number] can be alphanumeric and with dashes
 */
-constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-. ]";
+constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
 
 // Fields
-constexpr char FIELD_ADDR_HNO[] = "housenumber";
-constexpr char FIELD_ADDR_LOT[] = "lot";
-constexpr char FIELD_ADDR_BLK[] = "block";
-constexpr char FIELD_ADDR_STR[] = "street";
-constexpr char FIELD_ADDR_SDV[] = "subdivision";
-constexpr char FIELD_ADDR_SIT[] = "sitio";
-constexpr char FIELD_ADDR_PRK[] = "purok";
-constexpr char FIELD_ADDR_BRG[] = "barangay";
-constexpr char FIELD_ADDR_CTY[] = "city_town";
-constexpr char FIELD_ADDR_PRV[] = "province";
-constexpr char FIELD_ADDR_ZIP[] = "zip";
+constexpr char FIELD_PNID_IDT[] = "idtype";
+constexpr char FIELD_PNID_IDN[] = "idnumber";
 
-class AddressValidator : public Validator {
+class PersonalIDValidator : public Validator {
  public:
-    explicit AddressValidator(const Address& address);
-    ~AddressValidator() = default;
+    explicit PersonalIDValidator(const PersonalId& personalID);
+    ~PersonalIDValidator() = default;
 
  private:
-    Address mAddress;
+    PersonalId mPersonalID;
     // Validation functions
-    ValidationStatus validateHouseNumber();
-    ValidationStatus validateLot();
-    ValidationStatus validateBlock();
-    ValidationStatus validateStreet();
-    ValidationStatus validateSubdivision();
-    ValidationStatus validateSitio();
-    ValidationStatus validatePurok();
-    ValidationStatus validateBarangay();
-    ValidationStatus validateCityTown();
-    ValidationStatus validateProvince();
-    ValidationStatus validateZipCode();
-
-    ValidationStatus sanity(const std::string& str) const;
+    ValidationStatus validatePersonalID();
 };
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_ADDRESSVALIDATOR_HPP_
+#endif  // CORE_VALIDATOR_PERSONALIDVALIDATOR_HPP_
