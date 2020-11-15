@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
-#define CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
+#ifndef CORE_VALIDATOR_PERSONVALIDATOR_HPP_
+#define CORE_VALIDATOR_PERSONVALIDATOR_HPP_
 // Parent
 #include "validator.hpp"
 // Entity
@@ -50,4 +50,4 @@ class PersonValidator : public Validator {
 
 }  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_VALIDATOR_PERSONVALIDATOR_HPP_
+#endif  // CORE_VALIDATOR_PERSONVALIDATOR_HPP_
