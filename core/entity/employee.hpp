@@ -52,10 +52,19 @@ class Employee : public Person {
     }
 
     /*!
-     * Generate employee ID
-     * Note: this should only be used when creating a new employee/user
+     * Generate ID for the employee object
+     * Note: this should only be called when creating a new employee/user
+     *
+     * ID format - [YY][unique-five-digit-number]
+     * e.g. - 2021135
+     *
+     * But this may change depending on the system spec
+     * We either provide an API to specify the ID format
+     * or use a config file
+     *
+     * Return true if successful; false if employee ID was already set
     */
-    std::string generateID() const;
+    bool generateID();
 
  protected:
     std::string mEmployeeID;

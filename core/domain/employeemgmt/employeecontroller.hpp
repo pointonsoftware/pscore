@@ -22,6 +22,7 @@
 #define CORE_DOMAIN_EMPLOYEEMGMT_EMPLOYEECONTROLLER_HPP_
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include "interface/employeemgmtiface.hpp"
 
@@ -31,6 +32,8 @@
 namespace domain {
 namespace empmgmt {
 
+typedef std::unordered_map<std::string, std::string> ValidationErrors;
+
 class EmployeeMgmtController : public EmployeeMgmtControlInterface {
  public:
     explicit EmployeeMgmtController(const std::shared_ptr<EmployeeMgmtDataInterface>& data,
@@ -39,10 +42,14 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
 
     std::vector<entity::Employee> list() override;
     entity::Employee get(const std::string& id) override;
-    USERSMGMTSTATUS save(const entity::User& userID) override;
+    USERSMGMTSTATUS save(const entity::Employee& employee,
+                         ValidationErrors* validationErrors) override;
+    USERSMGMTSTATUS save(const entity::User& user,
+                         ValidationErrors* validationErrors) override;
     USERSMGMTSTATUS remove(const std::string& id) override;
     std::vector<entity::Employee> findByName(const std::string& fname,
                                              const std::string& lname) override;
+
  private:
     std::shared_ptr<EmployeeMgmtDataInterface> mDataProvider;
     std::shared_ptr<EmployeeMgmtViewInterface> mView;
@@ -50,6 +57,12 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
 
     bool isExists(const std::string& id);
     std::vector<entity::Employee>::iterator find(const std::string& id);
+    bool isInterfaceInitialized() const;
+    ValidationErrors validateDetails(const entity::Employee& employee) const;
+    void dumpValidationResult(const ValidationErrors& validationErrors) const;
+
+    USERSMGMTSTATUS create(const entity::Employee& employee) const;
+    USERSMGMTSTATUS update(const entity::Employee& employee) const;
 };
 
 }  // namespace empmgmt

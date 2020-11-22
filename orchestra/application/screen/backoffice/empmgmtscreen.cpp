@@ -22,6 +22,7 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
@@ -75,11 +76,44 @@ void EmployeeMgmtScreen::createEmployee() {
     inputArea(std::bind(&entity::Employee::setLastName, newEmployee,
               std::placeholders::_1), "Last Name");
     inputArea(std::bind(&entity::Employee::setBirthdate, newEmployee,
-              std::placeholders::_1), "Birthdate (dd/mm/yyyy)");
+              std::placeholders::_1), "Date of Birth (dd/mm/yyyy)");
     inputArea(std::bind(&entity::Employee::setGender, newEmployee,
               std::placeholders::_1), "Gender (M/F)");
 
-    // Todo (code) - get Address and other details
+    // Address
+    {
+        entity::Address address;
+        address.housenumber = SCREENCOMMON().getInput("House Number");
+        address.lot         = SCREENCOMMON().getInput("Lot Number");
+        address.block       = SCREENCOMMON().getInput("Block");
+        address.street      = SCREENCOMMON().getInput("Street");
+        address.subdivision = SCREENCOMMON().getInput("Subdivision");
+        address.sitio       = SCREENCOMMON().getInput("Sitio");
+        address.purok       = SCREENCOMMON().getInput("Purok");
+        address.barangay    = SCREENCOMMON().getInput("Barangay");
+        address.city_town   = SCREENCOMMON().getInput("City/Town");
+        address.province    = SCREENCOMMON().getInput("Province");
+        address.zip         = SCREENCOMMON().getInput("Zip");
+        newEmployee->setAddress(address);
+    }
+
+    // Contact details
+    {
+        entity::ContactDetails contactDetails;
+        contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
+        contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
+        contactDetails.email          = SCREENCOMMON().getInput("Email Address");
+        newEmployee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
+        newEmployee->setEmail(contactDetails.email);
+    }
+
+    // Ask if user wants to input a valid/government ID
+    if (SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y") {
+        entity::PersonalId personalId;
+        personalId.type      = SCREENCOMMON().getInput("ID Type");
+        personalId.id_number = SCREENCOMMON().getInput("ID Number");
+        newEmployee->addPersonalId(personalId.type, personalId.id_number);
+    }
 
     /*!
      * Todo (code)
@@ -89,9 +123,17 @@ void EmployeeMgmtScreen::createEmployee() {
     */
     if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
         // non-user, add the employee
-        entity::Employee employee = *newEmployee;
-        // Todo (code) - call core::createEmployee
-        std::cout << "New employee " << employee.getFullName() << std::endl;
+        std::unordered_map<std::string, std::string> validationResult;
+        domain::empmgmt::USERSMGMTSTATUS status =
+                 mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
+        if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+            for (auto const &result : validationResult) {
+                std::cout << result.first << " -> " << result.second << std::endl;
+            }
+        } else {
+            std::cout << "Employee " << newEmployee->getFullName()
+                      << " added successfully!" << std::endl;
+        }
     } else {
         // Employee is a system user
         entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);

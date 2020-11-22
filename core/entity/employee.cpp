@@ -39,17 +39,13 @@ Employee::Employee(const std::string& firstname,
     // Empty for now
 }
 
-std::string Employee::generateID() const {
-    /*!
-     * ID format - [YY][unique-five-digit-number]
-     * e.g. - 2021135
-     *
-     * But this may change depending on the system spec
-     * We either provide an API to specify the ID format
-     * or use a config file
-    */
+bool Employee::generateID() {
+    if (!mEmployeeID.empty()) {
+        return false;
+    }
     // Substring the last two digit of the year + unique_number
-    return getDate().substr(2, 4) + std::to_string(makeUniqueNumber());
+    mEmployeeID = getDate().substr(2, 4) + std::to_string(makeUniqueNumber());
+    return true;
 }
 
 std::string Employee::getDate() const {
