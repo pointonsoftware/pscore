@@ -133,7 +133,8 @@ void EmployeeMgmtScreen::createEmployee() {
             std::cin.ignore();
             std::cin.get();
         } else {
-            std::cout << "Employee " << newEmployee->getFullName() << " added successfully!" << std::endl;
+            std::cout << "Employee " << newEmployee->getFullName()
+                      << " added successfully!" << std::endl;
         }
     } else {
         // Employee is a system user
