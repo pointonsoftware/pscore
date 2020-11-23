@@ -23,7 +23,6 @@
 #include <string>
 #include <vector>
 
-#define VERSION "0.1.4"
 #define SCREENCOMMON() screen::ScreenCommon::getInstance()
 
 namespace screen {
@@ -48,8 +47,6 @@ class ScreenCommon {
     std::string getYesNoInput(const std::string& label) const;
 
  private:
-    ScreenCommon() = default;
-
     struct Indent {
         std::string start;
         std::string end;
@@ -61,9 +58,11 @@ class ScreenCommon {
         RIGHT
     };
 
+    ScreenCommon() = default;
     Indent calculateIndents(VerticalAlignment vAlign,
                             unsigned int width,
                             const std::string& text) const;
+    const std::string getCoreVersion() const;
 };
 
 }  // namespace screen

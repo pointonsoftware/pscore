@@ -23,6 +23,10 @@
 #include <iostream>
 #include <iomanip>
 #include "screendefines.hpp"
+#include <cfg/config.hpp>  // utility
+
+constexpr char CORE_CONFIG[] = "psinfo.cfg";
+constexpr char CORE_VERSION_MASK[] = "x.x.x";
 
 namespace screen {
 
@@ -32,6 +36,15 @@ void ScreenCommon::clearScreen() const {
 #else
     std::system("clear");
 #endif
+}
+
+const std::string ScreenCommon::getCoreVersion() const {
+    static std::string version = CORE_VERSION_MASK;
+    if (version == CORE_VERSION_MASK) {
+        utility::Config config(CORE_CONFIG);
+        version = config.get("version", CORE_VERSION_MASK);
+    }
+    return version;
 }
 
 void ScreenCommon::printHorizontalBorder(char borderCharacter) const {
@@ -64,7 +77,7 @@ void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     clearScreen();
     printHorizontalBorder(defines::BORDER_CHARACTER_1);
     printTitleText("");
-    printTitleText(std::string("---- CORE "+ std::string(VERSION) +" ----"));
+    printTitleText(std::string("---- CORE "+ std::string(getCoreVersion()) +" ----"));
     printTitleText("");
     printTitleText("Console  Application");
     printTitleText("");
