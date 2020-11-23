@@ -40,5 +40,8 @@ ValidationStatus PersonValidator::validateMiddleName() const {
 ValidationStatus PersonValidator::validateLastName() const {
     return ValidationStatus::S_OK;
 }
+
+// Todo (code) - validate birthdate
+
 }  // namespace validator
 }  // namespace entity

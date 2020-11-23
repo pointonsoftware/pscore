@@ -79,6 +79,9 @@ ValidationStatus ContactDetailsValidator::validatePhoneNumber2() {
 }
 
 ValidationStatus ContactDetailsValidator::validateEmailAddress() {
+    if (mContactDetails.email.empty()) {
+        return ValidationStatus::S_OK;
+    }
     if (std::count(mContactDetails.email.begin(), mContactDetails.email.end(), '@') != 1) {
         addError(FIELD_CONT_EML, "Email address is invalid.");
         return ValidationStatus::S_INVALID_STRING;

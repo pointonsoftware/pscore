@@ -18,5 +18,6 @@ target_link_libraries (
     empmgmt
     entity
     utility
+    validator
     ${MINGW_DEPENDENCY}
 )

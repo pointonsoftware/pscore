@@ -20,9 +20,6 @@
 **************************************************************************************************/
 #include "person.hpp"
 #include <algorithm>
-#include "validator/addressvalidator.hpp"
-#include "validator/contactdetailsvalidator.hpp"
-#include "validator/personalidvalidator.hpp"
 
 namespace entity {
 

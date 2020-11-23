@@ -52,7 +52,7 @@ void EmployeeDataProvider::create(const entity::Employee& employee) {
                             DATABASE().SELECT_EMPLOYEES_TABLE().end(),
                             [&employee](const db::StackDB::EmployeeTableItem& e) {
                                return e.employeeID == employee.employeeID();
-                            }) == DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
+                            }) != DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
         // If employee ID exists, don't proceed!
         return;
     }
@@ -74,7 +74,7 @@ void EmployeeDataProvider::create(const entity::User& user) {
                             DATABASE().SELECT_EMPLOYEES_TABLE().end(),
                             [&user](const db::StackDB::EmployeeTableItem& e) {
                                return e.employeeID == user.employeeID();
-                            }) == DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
+                            }) != DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
         // If employee ID exists, don't proceed!
         return;
     }

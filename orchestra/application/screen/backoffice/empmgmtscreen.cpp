@@ -22,6 +22,7 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
@@ -41,7 +42,8 @@ void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
     queryEmployeesList();
     // Landing
     showLandingScreen();
-    /*! Screen navigation
+    /*!
+     * Screen navigation
      * Stay in the current screen until action() returns false (i.e. switch screen is required)
     */
     do {} while (action(getUserSelection(), promise));
@@ -75,12 +77,43 @@ void EmployeeMgmtScreen::createEmployee() {
     inputArea(std::bind(&entity::Employee::setLastName, newEmployee,
               std::placeholders::_1), "Last Name");
     inputArea(std::bind(&entity::Employee::setBirthdate, newEmployee,
-              std::placeholders::_1), "Birthdate (dd/mm/yyyy)");
+              std::placeholders::_1), "Date of Birth (dd/mm/yyyy)");
     inputArea(std::bind(&entity::Employee::setGender, newEmployee,
               std::placeholders::_1), "Gender (M/F)");
-
-    // Todo (code) - get Address and other details
-
+    inputArea(std::bind(&entity::Employee::setPosition, newEmployee,
+              std::placeholders::_1), "Position");
+    // Address
+    {
+        entity::Address address;
+        address.housenumber = SCREENCOMMON().getInput("House Number");
+        address.lot         = SCREENCOMMON().getInput("Lot Number");
+        address.block       = SCREENCOMMON().getInput("Block");
+        address.street      = SCREENCOMMON().getInput("Street");
+        address.subdivision = SCREENCOMMON().getInput("Subdivision");
+        address.sitio       = SCREENCOMMON().getInput("Sitio");
+        address.purok       = SCREENCOMMON().getInput("Purok");
+        address.barangay    = SCREENCOMMON().getInput("Barangay");
+        address.city_town   = SCREENCOMMON().getInput("City/Town");
+        address.province    = SCREENCOMMON().getInput("Province");
+        address.zip         = SCREENCOMMON().getInput("Zip");
+        newEmployee->setAddress(address);
+    }
+    // Contact details
+    {
+        entity::ContactDetails contactDetails;
+        contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
+        contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
+        contactDetails.email          = SCREENCOMMON().getInput("Email Address");
+        newEmployee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
+        newEmployee->setEmail(contactDetails.email);
+    }
+    // Ask if user wants to input a valid/government ID
+    if (SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y") {
+        entity::PersonalId personalId;
+        personalId.type      = SCREENCOMMON().getInput("ID Type");
+        personalId.id_number = SCREENCOMMON().getInput("ID Number");
+        newEmployee->addPersonalId(personalId.type, personalId.id_number);
+    }
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
@@ -89,9 +122,20 @@ void EmployeeMgmtScreen::createEmployee() {
     */
     if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
         // non-user, add the employee
-        entity::Employee employee = *newEmployee;
-        // Todo (code) - call core::createEmployee
-        std::cout << "New employee " << employee.getFullName() << std::endl;
+        std::unordered_map<std::string, std::string> validationResult;
+        domain::empmgmt::USERSMGMTSTATUS status =
+                 mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
+        if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+            for (auto const &result : validationResult) {
+                std::cout << result.first << " -> " << result.second << std::endl;
+            }
+            // Let the user confirm after viewing the validation results
+            std::cin.ignore();
+            std::cin.get();
+        } else {
+            std::cout << "Employee " << newEmployee->getFullName()
+                      << " added successfully!" << std::endl;
+        }
     } else {
         // Employee is a system user
         entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
@@ -181,6 +225,9 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             break;
         case Options::EMPLOYEE_CREATE:
             createEmployee();
+            // Get the employees from Core then cache the list
+            queryEmployeesList();
+            showLandingScreen();
             break;
         case Options::EMPLOYEE_REMOVE:
             mSelectedEmployeeIndex == 0 ?

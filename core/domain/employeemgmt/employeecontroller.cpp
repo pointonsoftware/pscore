@@ -21,7 +21,12 @@
 #include "employeecontroller.hpp"
 #include <algorithm>
 #include <memory>
+#include <unordered_map>
 #include <logger/loghelper.hpp>
+#include <validator/addressvalidator.hpp>
+#include <validator/contactdetailsvalidator.hpp>
+#include <validator/personalidvalidator.hpp>
+#include <validator/personvalidator.hpp>
 
 namespace domain {
 namespace empmgmt {
@@ -35,14 +40,7 @@ EmployeeMgmtController::EmployeeMgmtController(
 
 std::vector<entity::Employee> EmployeeMgmtController::list() {
     LOG_DEBUG("Getting the list of employees");
-    // Make sure view is valid
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return {};
-    }
-    if (!mDataProvider) {
-        LOG_ERROR("Dataprovider is not initialized");
-        mView->showDataNotReadyScreen();
+    if (!isInterfaceInitialized()) {
         return {};
     }
     mCachedList = mDataProvider->getEmployees();
@@ -67,21 +65,58 @@ entity::Employee EmployeeMgmtController::get(const std::string& id) {
     }
 }
 
-USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& userID) {
+USERSMGMTSTATUS EmployeeMgmtController::save(const entity::Employee& employee,
+                std::unordered_map<std::string, std::string>* validationErrors) {
+    LOG_DEBUG("Saving employee information");
+    if (!isInterfaceInitialized()) {
+        return USERSMGMTSTATUS::UNINITIALIZED;
+    }
+    if (!validationErrors) {
+        LOG_ERROR("Validation-message container is not initialized");
+        mView->showDataNotReadyScreen();
+        return USERSMGMTSTATUS::UNINITIALIZED;
+    }
+    *validationErrors = validateDetails(employee);
+    if (!validationErrors->empty()) {
+        LOG_WARN("Entity contains invalid data. Returning validation results.");
+        dumpValidationResult(*validationErrors);
+        return USERSMGMTSTATUS::FAILED;
+    }
+    if (!employee.employeeID().empty()) {
+        LOG_DEBUG("EmployeeID is not empty");
+        if (isExists(employee.employeeID())) {
+            // Todo (code) - add Update
+            LOG_INFO("Employee %s %s updated", employee.firstName().c_str(),
+                     employee.lastName().c_str());
+            return USERSMGMTSTATUS::SUCCESS;
+        }
+    }
+    // Generate ID for the new employee
+    entity::Employee newEmployee = employee;
+    newEmployee.generateID();
+    LOG_INFO("EmployeeID %s generated", employee.employeeID().c_str());
+    mDataProvider->create(newEmployee);
+    /*!
+     * Todo (code) - add checking if create is successful from dataprovider
+     * before updating the cache
+    */
+    mCachedList.emplace_back(newEmployee);
+    LOG_INFO("Employee %s %s added", employee.firstName().c_str(), employee.lastName().c_str());
+    return USERSMGMTSTATUS::SUCCESS;
+}
+
+USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& user,
+                std::unordered_map<std::string, std::string>* validationErrors) {
     // PCOR-32
+    // Validate personal data
+    // Validate PIN
     // Generate employeeID from Employee entity if employee is new
     return USERSMGMTSTATUS::SUCCESS;
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
     LOG_DEBUG("Removing employee with ID %s", id.c_str());
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return USERSMGMTSTATUS::UNINITIALIZED;
-    }
-    if (!mDataProvider) {
-        LOG_ERROR("Dataprovider is not initialized");
-        mView->showDataNotReadyScreen();
+    if (!isInterfaceInitialized()) {
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
     const std::vector<entity::Employee>::iterator it = find(id);
@@ -128,5 +163,52 @@ std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
     return std::make_unique<EmployeeMgmtController>(data, view);
 }
 
+bool EmployeeMgmtController::isInterfaceInitialized() const {
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
+        return false;
+    }
+    if (!mDataProvider) {
+        LOG_ERROR("Dataprovider is not initialized");
+        mView->showDataNotReadyScreen();
+        return false;
+    }
+    return true;
+}
+
+std::unordered_map<std::string, std::string>
+    EmployeeMgmtController::validateDetails(const entity::Employee& employee) const {
+    std::unordered_map<std::string, std::string> validationErrors;
+    // validate basic information
+    {
+        entity::validator::PersonValidator validator(employee);
+        validationErrors.insert(validator.result().begin(), validator.result().end());
+    }
+    // validate address
+    {
+        entity::validator::AddressValidator validator(employee.address());
+        validationErrors.insert(validator.result().begin(), validator.result().end());
+    }
+    // validate contact information
+    {
+        entity::validator::ContactDetailsValidator validator(employee.contactDetails());
+        validationErrors.insert(validator.result().begin(), validator.result().end());
+    }
+    // validate ID
+    {
+        for (const entity::PersonalId& personalId : employee.personalIds()) {
+            entity::validator::PersonalIDValidator validator(personalId);
+            validationErrors.insert(validator.result().begin(), validator.result().end());
+        }
+    }
+    return validationErrors;
+}
+
+void EmployeeMgmtController::dumpValidationResult(const ValidationErrors& validationErrors) const {
+    LOG_DEBUG("Dumping validation result");
+    for (auto const &result : validationErrors) {
+        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
+    }
+}
 }  // namespace empmgmt
 }  // namespace domain
