@@ -44,7 +44,7 @@ bool Employee::generateID() {
         return false;
     }
     // Substring the last two digit of the year + unique_number
-    mEmployeeID = getDate().substr(2, 4) + std::to_string(makeUniqueNumber());
+    mEmployeeID = getDate().substr(2, 2) + std::to_string(makeUniqueNumber());
     return true;
 }
 

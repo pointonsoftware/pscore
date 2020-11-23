@@ -31,6 +31,7 @@ namespace validator {
 
 /*!
  * Email address validation rules:
+ * - email address can be empty
  * - must contain an "@" character
 */
 

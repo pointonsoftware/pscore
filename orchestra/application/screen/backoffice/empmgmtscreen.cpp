@@ -42,7 +42,8 @@ void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
     queryEmployeesList();
     // Landing
     showLandingScreen();
-    /*! Screen navigation
+    /*!
+     * Screen navigation
      * Stay in the current screen until action() returns false (i.e. switch screen is required)
     */
     do {} while (action(getUserSelection(), promise));
@@ -128,9 +129,11 @@ void EmployeeMgmtScreen::createEmployee() {
             for (auto const &result : validationResult) {
                 std::cout << result.first << " -> " << result.second << std::endl;
             }
+            // Let the user confirm after viewing the validation results
+            std::cin.ignore();
+            std::cin.get();
         } else {
-            std::cout << "Employee " << newEmployee->getFullName()
-                      << " added successfully!" << std::endl;
+            std::cout << "Employee " << newEmployee->getFullName() << " added successfully!" << std::endl;
         }
     } else {
         // Employee is a system user
@@ -221,6 +224,8 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             break;
         case Options::EMPLOYEE_CREATE:
             createEmployee();
+            // Get the employees from Core then cache the list
+            queryEmployeesList();
             showLandingScreen();
             break;
         case Options::EMPLOYEE_REMOVE:
