@@ -79,7 +79,8 @@ void EmployeeMgmtScreen::createEmployee() {
               std::placeholders::_1), "Date of Birth (dd/mm/yyyy)");
     inputArea(std::bind(&entity::Employee::setGender, newEmployee,
               std::placeholders::_1), "Gender (M/F)");
-
+    inputArea(std::bind(&entity::Employee::setPosition, newEmployee,
+              std::placeholders::_1), "Position");
     // Address
     {
         entity::Address address;
@@ -96,7 +97,6 @@ void EmployeeMgmtScreen::createEmployee() {
         address.zip         = SCREENCOMMON().getInput("Zip");
         newEmployee->setAddress(address);
     }
-
     // Contact details
     {
         entity::ContactDetails contactDetails;
@@ -106,7 +106,6 @@ void EmployeeMgmtScreen::createEmployee() {
         newEmployee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
         newEmployee->setEmail(contactDetails.email);
     }
-
     // Ask if user wants to input a valid/government ID
     if (SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y") {
         entity::PersonalId personalId;
@@ -114,7 +113,6 @@ void EmployeeMgmtScreen::createEmployee() {
         personalId.id_number = SCREENCOMMON().getInput("ID Number");
         newEmployee->addPersonalId(personalId.type, personalId.id_number);
     }
-
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
@@ -223,6 +221,7 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             break;
         case Options::EMPLOYEE_CREATE:
             createEmployee();
+            showLandingScreen();
             break;
         case Options::EMPLOYEE_REMOVE:
             mSelectedEmployeeIndex == 0 ?

@@ -43,6 +43,10 @@ class Employee : public Person {
         return mEmployeeID;
     }
 
+    inline void setPosition(const std::string& position) {
+        mPosition = position;
+    }
+
     inline const std::string position() const {
         return mPosition;
     }

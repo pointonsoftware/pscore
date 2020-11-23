@@ -86,27 +86,30 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const entity::Employee& employee,
         LOG_DEBUG("EmployeeID is not empty");
         if (isExists(employee.employeeID())) {
             // Todo (code) - add Update
-            LOG_INFO("Employee %s %s updated", employee.firstName(), employee.lastName());
+            LOG_INFO("Employee %s %s updated", employee.firstName().c_str(),
+                     employee.lastName().c_str());
             return USERSMGMTSTATUS::SUCCESS;
         }
     }
     // Generate ID for the new employee
     entity::Employee newEmployee = employee;
     newEmployee.generateID();
+    LOG_INFO("EmployeeID %s generated", employee.employeeID().c_str());
     mDataProvider->create(newEmployee);
     /*!
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
     */
     mCachedList.emplace_back(newEmployee);
-    LOG_INFO("Employee %s %s added", employee.firstName(), employee.lastName());
+    LOG_INFO("Employee %s %s added", employee.firstName().c_str(), employee.lastName().c_str());
     return USERSMGMTSTATUS::SUCCESS;
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& user,
                 std::unordered_map<std::string, std::string>* validationErrors) {
     // PCOR-32
-    // Validate
+    // Validate personal data
+    // Validate PIN
     // Generate employeeID from Employee entity if employee is new
     return USERSMGMTSTATUS::SUCCESS;
 }
@@ -204,7 +207,7 @@ std::unordered_map<std::string, std::string>
 void EmployeeMgmtController::dumpValidationResult(const ValidationErrors& validationErrors) const {
     LOG_DEBUG("Dumping validation result");
     for (auto const &result : validationErrors) {
-        LOG_DEBUG(std::string(result.first + " -> " + result.second));
+        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
     }
 }
 }  // namespace empmgmt
