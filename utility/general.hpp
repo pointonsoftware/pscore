@@ -29,7 +29,11 @@ namespace utility {
 /*!
  * Checks if the string argument is a number
 */
-extern bool isNumber(const std::string &str);
+extern bool isNumber(const std::string& str);
+/*!
+ * Checks if the string argument contains a number
+*/
+extern bool hasNumber(const std::string& str);
 /*!
  * Generates random integer from inclusive-range [low : high]
 */

@@ -26,6 +26,11 @@ bool isNumber(const std::string &str) {
   return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
 }
 
+bool hasNumber(const std::string &str) {
+  return std::find_if(str.begin(), str.end(),
+        [](unsigned char c) { return std::isdigit(c); }) != str.end();
+}
+
 unsigned randomNumber(unsigned int low, unsigned int high) {
     std::random_device dev;
     std::mt19937 rng(dev());
