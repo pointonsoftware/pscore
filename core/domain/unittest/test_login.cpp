@@ -50,6 +50,7 @@ class TestLogin : public testing::Test {
     std::shared_ptr<LoginDataMock> dpMock  = std::make_shared<LoginDataMock>();
     std::shared_ptr<LoginViewMock> viewMock = std::make_shared<LoginViewMock>();
     LoginController loginController;
+    const uint8_t PIN_SIZE = 4;
 };
 
 TEST_F(TestLogin, LoginShouldSucceed) {
@@ -68,7 +69,7 @@ TEST_F(TestLogin, LoginUserNotFound) {
     // Calls findUser - fake that user was not found
     EXPECT_CALL(*dpMock, findUserByPin(_))
             .WillOnce(Return(
-                entity::User("", "", "", "", "", "", "", entity::User::DEFAULT_PIN)));
+                entity::User("", "", "", "", "", "", "", "")));
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showUserNotFoundScreen());
     // Returns empty
@@ -91,7 +92,7 @@ TEST_F(TestLogin, LoginWithNonNumericPIN) {
 
 TEST_F(TestLogin, LoginWithFewCharacterPIN) {
     std::string dummyPIN;
-    const unsigned int dummyPinSize = entity::User::PIN_SIZE - 1;
+    const unsigned int dummyPinSize = PIN_SIZE - 1;
     for (unsigned int i = 0; i < dummyPinSize; ++i) {
         dummyPIN.append("1");
     }
@@ -103,7 +104,7 @@ TEST_F(TestLogin, LoginWithFewCharacterPIN) {
 
 TEST_F(TestLogin, LoginWithTooManyCharacterPIN) {
     std::string dummyPIN;
-    const unsigned int dummyPinSize = entity::User::PIN_SIZE + 1;
+    const unsigned int dummyPinSize = PIN_SIZE + 1;
     for (unsigned int i = 0; i < dummyPinSize; ++i) {
         dummyPIN.append("1");
     }

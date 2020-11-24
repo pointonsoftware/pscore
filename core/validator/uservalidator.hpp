@@ -18,41 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_USER_HPP_
-#define CORE_ENTITY_USER_HPP_
-
-#include <string>
-#include "employee.hpp"
+#ifndef CORE_VALIDATOR_USERVALIDATOR_HPP_
+#define CORE_VALIDATOR_USERVALIDATOR_HPP_
+// Parent
+#include "validator.hpp"
+// Entity
+#include <entity/user.hpp>
 
 namespace entity {
+namespace validator {
+/*!
+ * Validation Rules:
+ * - PIN must only be a four digit numeric value
+*/
+constexpr unsigned int PIN_SIZE = 4;
 
-class User : public Employee {
+// Fields
+constexpr char FIELD_PIN[] = "pin";
+
+class UserValidator : public Validator {
  public:
-    User(const std::string& firstname,
-         const std::string& middlename,
-         const std::string& lastname,
-         const std::string& birthdate,
-         const std::string& gender,
-         const std::string& employeeID,
-         const std::string& position,
-         const std::string& pin);
-    User() = default;
-    ~User() = default;
+    explicit UserValidator(const User& user);
+    ~UserValidator() = default;
 
-    void setPIN(const std::string& pin) {
-        mPIN = pin;
-    }
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-    /*!
-     * Todo (spec): What is the business rule for user IDs?
-     * Here we're using employeeID as the userID (but this is subject to change)
-    */
- protected:
-    std::string mPIN;
+ private:
+    User mUser;
+    // Validation functions
+    ValidationStatus validatePIN();
 };
 
+}  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_USER_HPP_
+#endif  // CORE_VALIDATOR_USERVALIDATOR_HPP_

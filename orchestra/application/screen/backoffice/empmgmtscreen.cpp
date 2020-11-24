@@ -120,30 +120,30 @@ void EmployeeMgmtScreen::createEmployee() {
      * - if found, show "An employee name Foo Bar with ID xxxx exists,
      *                   do you want to update this employee instead?"
     */
-    if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
-        // non-user, add the employee
-        std::unordered_map<std::string, std::string> validationResult;
-        domain::empmgmt::USERSMGMTSTATUS status =
-                 mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
-        if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
-            for (auto const &result : validationResult) {
-                std::cout << result.first << " -> " << result.second << std::endl;
-            }
-            // Let the user confirm after viewing the validation results
-            std::cin.ignore();
-            std::cin.get();
+    std::unordered_map<std::string, std::string> validationResult;
+    const domain::empmgmt::USERSMGMTSTATUS status = [this, &newEmployee, &validationResult]() {
+        if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
+            // non-user, add the employee
+            return mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
         } else {
-            std::cout << "Employee " << newEmployee->getFullName()
-                      << " added successfully!" << std::endl;
+            // Employee is a system user
+            entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
+            // get PIN
+            newUser->setPIN(SCREENCOMMON().getInput("PIN"));
+            return mCoreEmployeeMgmt->save(*newUser, &validationResult);
         }
+    }();
+
+    if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+        for (auto const &result : validationResult) {
+            std::cout << result.first << " -> " << result.second << std::endl;
+        }
+        // Let the user confirm after viewing the validation results
+        std::cin.ignore();
+        std::cin.get();
     } else {
-        // Employee is a system user
-        entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
-        // get PIN
-        newUser->setPIN(SCREENCOMMON().getInput("PIN"));
-        // Todo (code) - call core::createUser
-        std::cout << "New user " << newUser->getFullName() <<
-                     " PIN: " << newUser->pin() << std::endl;
+        std::cout << "Employee " << newEmployee->getFullName()
+                  << " added successfully!" << std::endl;
     }
     delete newEmployee;
 }

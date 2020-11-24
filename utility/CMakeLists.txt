@@ -6,6 +6,7 @@ add_library (
     STATIC
     # common utility
     general.hpp
+    general.cpp
     # logger
     logger/loggeriface.hpp
     logger/loggeriface.cpp

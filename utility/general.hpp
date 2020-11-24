@@ -26,19 +26,18 @@
 #include <string>
 
 namespace utility {
-
-bool isNumber(const std::string &str) {
-  return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
-}
-
-int randomNumber(unsigned int low, unsigned int high) {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    // low = 0 ; high = 9  -  generates number for 0 to 9
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
-    return dist6(rng);
-}
-
+/*!
+ * Checks if the string argument is a number
+*/
+extern bool isNumber(const std::string& str);
+/*!
+ * Checks if the string argument contains a number
+*/
+extern bool hasNumber(const std::string& str);
+/*!
+ * Generates random integer from inclusive-range [low : high]
+*/
+extern unsigned int randomNumber(unsigned int low, unsigned int high);
 }  // namespace utility
 
 #endif  // UTILITY_GENERAL_HPP_

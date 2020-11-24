@@ -18,41 +18,29 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_USER_HPP_
-#define CORE_ENTITY_USER_HPP_
-
-#include <string>
-#include "employee.hpp"
+#include "uservalidator.hpp"
+#include <general.hpp>  // pscore utility
 
 namespace entity {
+namespace validator {
 
-class User : public Employee {
- public:
-    User(const std::string& firstname,
-         const std::string& middlename,
-         const std::string& lastname,
-         const std::string& birthdate,
-         const std::string& gender,
-         const std::string& employeeID,
-         const std::string& position,
-         const std::string& pin);
-    User() = default;
-    ~User() = default;
+UserValidator::UserValidator(const User& user) {
+    mUser = user;
+    validationFunctions.emplace_back(std::bind(&UserValidator::validatePIN, this));
+    validate();
+}
 
-    void setPIN(const std::string& pin) {
-        mPIN = pin;
+ValidationStatus UserValidator::validatePIN() {
+    if (!utility::isNumber(mUser.pin())) {
+        addError(FIELD_PIN, " PIN contains invalid character.");
+        return ValidationStatus::S_INVALID_STRING;
     }
-
-    inline const std::string pin() const {
-        return mPIN;
+    if (mUser.pin().size() != PIN_SIZE) {
+        addError(FIELD_PIN, "PIN character length is invalid.");
+        return ValidationStatus::S_INVALID_SIZE;
     }
-    /*!
-     * Todo (spec): What is the business rule for user IDs?
-     * Here we're using employeeID as the userID (but this is subject to change)
-    */
- protected:
-    std::string mPIN;
-};
+    return ValidationStatus::S_OK;
+}
 
+}  // namespace validator
 }  // namespace entity
-#endif  // CORE_ENTITY_USER_HPP_

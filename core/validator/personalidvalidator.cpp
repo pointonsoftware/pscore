@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include "personalidvalidator.hpp"
 #include <regex>
+#include <general.hpp>  // pscore utility
 
 namespace entity {
 namespace validator {
@@ -38,8 +39,7 @@ ValidationStatus PersonalIDValidator::validatePersonalID() {
         addError(FIELD_PNID_IDN, "ID Number must not be empty.");
         return ValidationStatus::S_EMPTY;
     }
-    if (std::find_if(mPersonalID.type.begin(), mPersonalID.type.end(),
-        [](unsigned char c) { return std::isdigit(c); }) != mPersonalID.type.end()) {
+    if (utility::hasNumber(mPersonalID.type)) {
         // Type must be alphabet
         addError(FIELD_PNID_IDT, "ID Type contains invalid character.");
         return ValidationStatus::S_INVALID_STRING;

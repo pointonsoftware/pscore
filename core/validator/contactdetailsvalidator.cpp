@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "contactdetailsvalidator.hpp"
+#include <general.hpp>  // pscore utility
 
 namespace entity {
 namespace validator {
@@ -38,8 +39,7 @@ ValidationStatus ContactDetailsValidator::phoneNumberSanity(const std::string& n
     if (number.empty()) {
         return ValidationStatus::S_OK;
     }
-    if (std::find_if(number.begin(), number.end(),
-        [](unsigned char c) { return !std::isdigit(c); }) != number.end()) {
+    if (!utility::isNumber(number)) {
         return ValidationStatus::S_INVALID_STRING;
     }
     if (number.size() != PHONE_NUMBER_LENGTH) {
