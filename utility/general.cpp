@@ -18,41 +18,20 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_USER_HPP_
-#define CORE_ENTITY_USER_HPP_
+#include "general.hpp"
 
-#include <string>
-#include "employee.hpp"
+namespace utility {
 
-namespace entity {
+bool isNumber(const std::string &str) {
+  return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
+}
 
-class User : public Employee {
- public:
-    User(const std::string& firstname,
-         const std::string& middlename,
-         const std::string& lastname,
-         const std::string& birthdate,
-         const std::string& gender,
-         const std::string& employeeID,
-         const std::string& position,
-         const std::string& pin);
-    User() = default;
-    ~User() = default;
+unsigned randomNumber(unsigned int low, unsigned int high) {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    // low = 0 ; high = 9  -  generates number for 0 to 9
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
+    return dist6(rng);
+}
 
-    void setPIN(const std::string& pin) {
-        mPIN = pin;
-    }
-
-    inline const std::string pin() const {
-        return mPIN;
-    }
-    /*!
-     * Todo (spec): What is the business rule for user IDs?
-     * Here we're using employeeID as the userID (but this is subject to change)
-    */
- protected:
-    std::string mPIN;
-};
-
-}  // namespace entity
-#endif  // CORE_ENTITY_USER_HPP_
+}  // namespace utility

@@ -22,6 +22,7 @@
 #include <memory>
 #include <general.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
+#include <validator/uservalidator.hpp>
 
 namespace domain {
 namespace login {
@@ -86,11 +87,14 @@ bool LoginController::isPinValid(const std::string& pin) const {
         LOG_WARN("PIN is empty");
         return false;
     }
-
-    // Check if its numeric and valid size
-    if (!utility::isNumber(pin) || pin.size() != entity::User::PIN_SIZE) {
-        LOG_WARN("Invalid PIN: %s", pin.c_str());
-        return false;
+    {
+        entity::User userInfo("", "", "", "", "", "", "", pin);
+        entity::validator::UserValidator validator(userInfo);
+        // Check if its numeric and valid size
+        if (!validator.result().empty()) {
+            LOG_WARN("Invalid PIN: %s", pin.c_str());
+            return false;
+        }
     }
     LOG_DEBUG("PIN is valid");
     return true;

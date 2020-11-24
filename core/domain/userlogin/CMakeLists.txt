@@ -18,5 +18,6 @@ target_link_libraries (
     loginmod
     entity
     utility
+    validator
     ${MINGW_DEPENDENCY}
 )

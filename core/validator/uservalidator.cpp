@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "uservalidator.hpp"
+#include <general.hpp>  // pscore utility
 
 namespace entity {
 namespace validator {
@@ -30,9 +31,7 @@ UserValidator::UserValidator(const User& user) {
 }
 
 ValidationStatus UserValidator::validatePIN() {
-    const std::string& pin = mUser.pin();
-    if (std::find_if(pin.begin(), pin.end(),
-        [](unsigned char c) {  return !std::isdigit(c); }) != pin.end()) {
+    if (!utility::isNumber(mUser.pin())) {
         addError(FIELD_PIN, " PIN contains invalid character.");
         return ValidationStatus::S_INVALID_STRING;
     }
