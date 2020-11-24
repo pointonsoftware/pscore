@@ -99,7 +99,7 @@ bool LoginController::isPinValid(const std::string& pin) const {
 bool LoginController::isUserValid(const entity::User& userInfo) const {
     LOG_DEBUG("Validating user data");
     // If default pin is found, that means the user data was not initialized
-    return userInfo.pin().find(entity::User::DEFAULT_PIN) == std::string::npos;
+    return !userInfo.employeeID().empty();
 }
 
 std::unique_ptr<LoginControlInterface> createLoginModule(

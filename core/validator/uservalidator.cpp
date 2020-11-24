@@ -30,9 +30,10 @@ UserValidator::UserValidator(const User& user) {
 }
 
 ValidationStatus UserValidator::validatePIN() {
-    if (std::find_if(mUser.pin().begin(), mUser.pin().end(),
-        [](unsigned char c) { return !std::isdigit(c); }) != mUser.pin().end()) {
-        addError(FIELD_PIN, "PIN contains invalid character.");
+    const std::string& pin = mUser.pin();
+    if (std::find_if(pin.begin(), pin.end(),
+        [](unsigned char c) {  return !std::isdigit(c); }) != pin.end()) {
+        addError(FIELD_PIN, " PIN contains invalid character.");
         return ValidationStatus::S_INVALID_STRING;
     }
     if (mUser.pin().size() != PIN_SIZE) {

@@ -35,8 +35,4 @@ User::User(const std::string& firstname,
     // Empty for now
 }
 
-User::User() : Employee{"", "", "", "", "", "", ""}, mPIN(DEFAULT_PIN) {
-    // Empty for now
-}
-
 }  // namespace entity

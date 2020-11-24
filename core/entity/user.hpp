@@ -30,7 +30,6 @@ class User : public Employee {
  public:
     // Todo (code) - might have to move these consts to a validation class
     static constexpr unsigned int PIN_SIZE = 4;
-    static constexpr char DEFAULT_PIN[PIN_SIZE + 1] = "0000";
 
     User(const std::string& firstname,
          const std::string& middlename,
@@ -40,11 +39,10 @@ class User : public Employee {
          const std::string& employeeID,
          const std::string& position,
          const std::string& pin);
-    User();
+    User() = default;
     ~User() = default;
 
     void setPIN(const std::string& pin) {
-        // Todo (code) - Add PIN validation here
         mPIN = pin;
     }
 
