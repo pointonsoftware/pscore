@@ -18,4 +18,10 @@ add_library (
     validator.hpp
 )
 
+target_link_libraries (
+    validator
+    utility
+    ${MINGW_DEPENDENCY}
+)
+
 target_compile_options(validator PUBLIC "-fPIC")
