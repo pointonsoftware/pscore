@@ -23,8 +23,7 @@
 namespace entity {
 namespace validator {
 
-PersonValidator::PersonValidator(const Person& person) {
-    mPerson = person;
+PersonValidator::PersonValidator(const Person& person) : mPerson(person) {
     validationFunctions.emplace_back(std::bind(&PersonValidator::validateFirstName, this));
     validationFunctions.emplace_back(std::bind(&PersonValidator::validateMiddleName, this));
     validationFunctions.emplace_back(std::bind(&PersonValidator::validateLastName, this));
@@ -54,6 +53,10 @@ ValidationStatus PersonValidator::validateGender() {
     if (mPerson.gender().empty()) {
         addError(FIELD_GENDER, "Gender cannot be empty.");
         return ValidationStatus::S_EMPTY;
+    }
+    if (mPerson.gender() != "M" && mPerson.gender() != "F") {
+        addError(FIELD_GENDER, "Gender is invalid.");
+        return ValidationStatus::S_INVALID_STRING;
     }
     return ValidationStatus::S_OK;
 }

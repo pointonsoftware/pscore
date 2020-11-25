@@ -147,22 +147,31 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     }
     // Ask if user wants to input a valid/government ID
     if (requires("Entity.Field.IdType") || requires("Entity.Field.IdNumber")) {
+        entity::PersonalId personalId;
         bool idFieldsRequired = true;
+        bool updateFields = false;
+
         if (isAllFieldsRequired) {
+            // Ask if user has a Valid ID
             idFieldsRequired = SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y";
+        } else {
+            // todo (code) - this is assumming we're updating the first element of personalIds
+            personalId = employee->personalIds()[0];
+            updateFields = true;
         }
+
         if (idFieldsRequired) {
-            // todo (code) - this is assumming we're editing the first element of personalIds
-            entity::PersonalId personalId = employee->personalIds()[0];
             if (requires("Entity.Field.IdType")) {
                 personalId.type = SCREENCOMMON().getInput("ID Type");
             }
             if (requires("Entity.Field.IdNumber")) {
                 personalId.id_number = SCREENCOMMON().getInput("ID Number");
             }
-            // Delete the old id
-            employee->deletePersonalId(0);
-            // Add the new one
+            if (updateFields) {
+                // Delete the old id
+                employee->deletePersonalId(0);
+            }
+            // Add a new one
             employee->addPersonalId(personalId.type, personalId.id_number);
         }
     }
@@ -170,8 +179,10 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
 
 void EmployeeMgmtScreen::createEmployee() {
     std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
+    // Todo (code) - make validation result an std::map instead of unordered_map
+    std::unordered_map<std::string, std::string> validationResult;
+    std::vector<std::string> failedFields;  // Used to request re-input of failed fields
     entity::Employee* newEmployee = new entity::User();
-    fillEmployeeInformation(newEmployee);
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
@@ -179,9 +190,22 @@ void EmployeeMgmtScreen::createEmployee() {
      *                   do you want to update this employee instead?"
     */
     do {
-        std::unordered_map<std::string, std::string> validationResult;
-        const domain::empmgmt::USERSMGMTSTATUS status = [this, &newEmployee, &validationResult]() {
-            if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
+        fillEmployeeInformation(newEmployee, failedFields);
+        const domain::empmgmt::USERSMGMTSTATUS status =
+            [this, &newEmployee, &validationResult, &failedFields]() {
+            const bool isSystemUser = [&failedFields]() {
+                if (failedFields.empty()) {
+                    // We're not editing the PIN field, ask if employee is a system user
+                    return SCREENCOMMON().getYesNoInput("System User (y/n)") == "y";
+                } else {
+                    // Check if we require re-input for PIN field
+                    // If so, we're editing a system user entity
+                    return std::find(failedFields.begin(), failedFields.end(),
+                                        "Entity.Field.Pin") != failedFields.end();
+                }
+            }();
+
+            if (!isSystemUser) {
                 // non-user, add the employee
                 return mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
             } else {
@@ -192,21 +216,25 @@ void EmployeeMgmtScreen::createEmployee() {
                 return mCoreEmployeeMgmt->save(*newUser, &validationResult);
             }
         }();
+
+        // Reset after filling the fields
+        failedFields.clear();
+
         if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
-            std::vector<std::string> failedFields;  // Used to request re-input of failed fields
+            std::cout << "Invalid inputs:" << std::endl;
             for (auto const &result : validationResult) {
-                std::cout << result.first << " -> " << result.second << std::endl;
+                std::cout << "- " << result.second << std::endl;
                 failedFields.emplace_back(result.first);
             }
             // Let the user confirm after viewing the validation results
+            std::cout << "Press [Enter] to continue..." << std::endl;
             std::cin.ignore();
             std::cin.get();
-            fillEmployeeInformation(newEmployee, failedFields);
         } else {
             std::cout << "Employee " << newEmployee->getFullName()
                     << " added successfully!" << std::endl;
         }
-    } while(newEmployee->employeeID().empty());  // repeat input until new employee is created
+    } while (!failedFields.empty());  // repeat input until new employee is created
     // delete the heap object
     delete newEmployee;
 }

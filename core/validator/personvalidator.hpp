@@ -47,7 +47,7 @@ class PersonValidator : public Validator {
     ~PersonValidator() = default;
 
  private:
-    Person mPerson;
+    const Person mPerson;
     // Validation functions
     ValidationStatus validateFirstName();
     ValidationStatus validateMiddleName();

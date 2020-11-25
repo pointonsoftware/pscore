@@ -88,6 +88,9 @@ void Person::setBirthdate(const std::string& bdate) {
 
 void Person::setGender(const std::string& gender) {
     m_gender = gender;
+    // M or F
+    std::transform(m_gender.begin(), m_gender.end(), m_gender.begin(),
+                   [](unsigned char c){ return std::toupper(c); });
 }
 
 void Person::setPhoneNumbers(const std::string& phone_1, const std::string& phone_2) {
@@ -100,7 +103,7 @@ void Person::addPersonalId(const std::string& type, const std::string& number) {
 }
 
 void Person::deletePersonalId(const uint8_t& index) {
-    if(index < m_personal_ids.size()) {
+    if (index < m_personal_ids.size()) {
         m_personal_ids.erase(m_personal_ids.begin() + index);
     }
 }

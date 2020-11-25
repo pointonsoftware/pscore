@@ -30,7 +30,7 @@ namespace validator {
 
 /*!
  * Validation Rules:
- * - [type] can be empty
+ * - [type] cannot be empty
  * - [type] must only contain alphabets
  * - [ID number] must not be empty if [type] is not empty
  * - [ID number] can be alphanumeric and with dashes
@@ -49,7 +49,8 @@ class PersonalIDValidator : public Validator {
  private:
     PersonalId mPersonalID;
     // Validation functions
-    ValidationStatus validatePersonalID();
+    ValidationStatus validateIDType();
+    ValidationStatus validateIDNumber();
 };
 
 }  // namespace validator
