@@ -32,8 +32,8 @@ namespace validator {
  * Validation Rules:
  * - [type] cannot be empty
  * - [type] must only contain alphabets
- * - [ID number] must not be empty if [type] is not empty
- * - [ID number] can be alphanumeric and with dashes
+ * - [ID number] cannot be empty
+ * - [ID number] must be alphanumeric and can contain dashes
 */
 constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
 
