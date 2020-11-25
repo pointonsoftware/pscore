@@ -94,7 +94,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
               std::placeholders::_1), "Position", requires("Entity.Field.Position"));
     // Address
     {
-        entity::Address address;
+        entity::Address address = employee->address();
         if (requires("Entity.Field.HouseNumber")) {
             address.housenumber = SCREENCOMMON().getInput("House Number");
         }
@@ -132,7 +132,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     }
     // Contact details
     {
-        entity::ContactDetails contactDetails;
+        entity::ContactDetails contactDetails = employee->contactDetails();
         if (requires("Entity.Field.Phone1")) {
             contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
         }
@@ -146,15 +146,25 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
         employee->setEmail(contactDetails.email);
     }
     // Ask if user wants to input a valid/government ID
-    if (SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y") {
-        entity::PersonalId personalId;
-        if (requires("Entity.Field.IdType")) {
-            personalId.type = SCREENCOMMON().getInput("ID Type");
+    if (requires("Entity.Field.IdType") || requires("Entity.Field.IdNumber")) {
+        bool idFieldsRequired = true;
+        if (isAllFieldsRequired) {
+            idFieldsRequired = SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y";
         }
-        if (requires("Entity.Field.IdNumber")) {
-            personalId.id_number = SCREENCOMMON().getInput("ID Number");
+        if (idFieldsRequired) {
+            // todo (code) - this is assumming we're editing the first element of personalIds
+            entity::PersonalId personalId = employee->personalIds()[0];
+            if (requires("Entity.Field.IdType")) {
+                personalId.type = SCREENCOMMON().getInput("ID Type");
+            }
+            if (requires("Entity.Field.IdNumber")) {
+                personalId.id_number = SCREENCOMMON().getInput("ID Number");
+            }
+            // Delete the old id
+            employee->deletePersonalId(0);
+            // Add the new one
+            employee->addPersonalId(personalId.type, personalId.id_number);
         }
-        employee->addPersonalId(personalId.type, personalId.id_number);
     }
 }
 

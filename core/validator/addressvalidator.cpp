@@ -38,7 +38,6 @@ AddressValidator::AddressValidator(const Address& address) {
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateCityTown, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateProvince, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateZipCode, this));
-
     validate();
 }
 

@@ -99,6 +99,12 @@ void Person::addPersonalId(const std::string& type, const std::string& number) {
     m_personal_ids.emplace_back(PersonalId{type, number});
 }
 
+void Person::deletePersonalId(const uint8_t& index) {
+    if(index < m_personal_ids.size()) {
+        m_personal_ids.erase(m_personal_ids.begin() + index);
+    }
+}
+
 void Person::setEmail(const std::string& email) {
     m_contact_details.email = email;
 }
