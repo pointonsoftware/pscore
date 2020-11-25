@@ -38,8 +38,8 @@ namespace validator {
 constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
 
 // Fields
-constexpr char FIELD_PNID_IDT[] = "idtype";
-constexpr char FIELD_PNID_IDN[] = "idnumber";
+constexpr char FIELD_PNID_IDT[] = "Entity.Field.IdType";
+constexpr char FIELD_PNID_IDN[] = "Entity.Field.IdNumber";
 
 class PersonalIDValidator : public Validator {
  public:

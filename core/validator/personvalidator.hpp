@@ -28,12 +28,18 @@
 namespace entity {
 namespace validator {
 
+/*!
+ * Validation Rules:
+ * - Person fields can be empty, except for First Name, Last Name and Gender
+*/
+
 // Fields
-constexpr char FIELD_FNAME[] = "firstname";
-constexpr char FIELD_MNAME[] = "middlename";
-constexpr char FIELD_LNAME[] = "lastname";
-constexpr char FIELD_BDATE[] = "birthdate";
-constexpr char FIELD_POSITION[] = "position";
+constexpr char FIELD_FNAME[] = "Entity.Field.FirstName";
+constexpr char FIELD_MNAME[] = "Entity.Field.MiddleName";
+constexpr char FIELD_LNAME[] = "Entity.Field.LastName";
+constexpr char FIELD_BDATE[] = "Entity.Field.Birthdate";
+constexpr char FIELD_GENDER[] = "Entity.Field.Gender";
+constexpr char FIELD_POSITION[] = "Entity.Field.Position";
 
 class PersonValidator : public Validator {
  public:
@@ -43,9 +49,11 @@ class PersonValidator : public Validator {
  private:
     Person mPerson;
     // Validation functions
-    ValidationStatus validateFirstName() const;
-    ValidationStatus validateMiddleName() const;
-    ValidationStatus validateLastName() const;
+    ValidationStatus validateFirstName();
+    ValidationStatus validateMiddleName();
+    ValidationStatus validateLastName();
+    ValidationStatus validateGender();
+    ValidationStatus validateBirthdate();
 };
 
 }  // namespace validator

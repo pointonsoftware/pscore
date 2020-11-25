@@ -74,6 +74,9 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void queryEmployeesList();
     void createEmployee();
     void removeEmployee();
+    void fillEmployeeInformation(entity::Employee* employee,
+                                 const std::vector<std::string>& requiredFields = {}) const;
+
     std::vector<entity::Employee> mEmployeesGUITable;  // Represents the GUI employees-table
     unsigned int mSelectedEmployeeIndex = 0;  // 1-based index
     std::unique_ptr<domain::empmgmt::EmployeeMgmtControlInterface> mCoreEmployeeMgmt;

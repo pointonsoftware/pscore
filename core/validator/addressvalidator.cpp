@@ -21,6 +21,7 @@
 #include "addressvalidator.hpp"
 #include <regex>
 #include <string>
+#include <iostream>
 
 namespace entity {
 namespace validator {
@@ -108,6 +109,10 @@ ValidationStatus AddressValidator::validateBarangay() {
     return retVal;
 }
 ValidationStatus AddressValidator::validateCityTown() {
+    if (mAddress.city_town.empty()) {
+        addError(FIELD_ADDR_CTY, "City/Town cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
     ValidationStatus retVal = sanity(mAddress.city_town);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_CTY, "City/Town contains invalid character.");
@@ -115,6 +120,10 @@ ValidationStatus AddressValidator::validateCityTown() {
     return retVal;
 }
 ValidationStatus AddressValidator::validateProvince() {
+    if (mAddress.province.empty()) {
+        addError(FIELD_ADDR_PRV, "Province cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
     ValidationStatus retVal = sanity(mAddress.province);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_PRV, "Province contains invalid character.");
