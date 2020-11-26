@@ -47,7 +47,7 @@ class PersonalIDValidator : public Validator {
     ~PersonalIDValidator() = default;
 
  private:
-    PersonalId mPersonalID;
+    const PersonalId mPersonalID;
     // Validation functions
     ValidationStatus validateIDType();
     ValidationStatus validateIDNumber();

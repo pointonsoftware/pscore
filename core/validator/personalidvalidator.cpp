@@ -25,8 +25,7 @@
 namespace entity {
 namespace validator {
 
-PersonalIDValidator::PersonalIDValidator(const PersonalId& personalID) {
-    mPersonalID = personalID;
+PersonalIDValidator::PersonalIDValidator(const PersonalId& personalID) : mPersonalID(personalID) {
     validationFunctions.emplace_back(std::bind(&PersonalIDValidator::validateIDType, this));
     validationFunctions.emplace_back(std::bind(&PersonalIDValidator::validateIDNumber, this));
     validate();

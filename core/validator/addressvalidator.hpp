@@ -55,7 +55,7 @@ class AddressValidator : public Validator {
     ~AddressValidator() = default;
 
  private:
-    Address mAddress;
+    const Address mAddress;
     // Validation functions
     ValidationStatus validateHouseNumber();
     ValidationStatus validateLot();

@@ -54,7 +54,7 @@ class ContactDetailsValidator : public Validator {
     ~ContactDetailsValidator() = default;
 
  private:
-    ContactDetails mContactDetails;
+    const ContactDetails mContactDetails;
     ValidationStatus validatePhoneNumber1();
     ValidationStatus validatePhoneNumber2();
     ValidationStatus validateEmailAddress();

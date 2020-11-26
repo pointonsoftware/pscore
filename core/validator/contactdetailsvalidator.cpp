@@ -24,8 +24,8 @@
 namespace entity {
 namespace validator {
 
-ContactDetailsValidator::ContactDetailsValidator(const ContactDetails& contactDetails) {
-    mContactDetails = contactDetails;
+ContactDetailsValidator::ContactDetailsValidator(const ContactDetails& contactDetails)
+                                                 : mContactDetails(contactDetails) {
     validationFunctions.emplace_back(
                         std::bind(&ContactDetailsValidator::validatePhoneNumber1, this));
     validationFunctions.emplace_back(

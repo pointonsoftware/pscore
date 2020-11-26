@@ -42,7 +42,7 @@ class UserValidator : public Validator {
     ~UserValidator() = default;
 
  private:
-    User mUser;
+    const User mUser;
     // Validation functions
     ValidationStatus validatePIN();
 };

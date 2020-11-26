@@ -21,13 +21,11 @@
 #include "addressvalidator.hpp"
 #include <regex>
 #include <string>
-#include <iostream>
 
 namespace entity {
 namespace validator {
 
-AddressValidator::AddressValidator(const Address& address) {
-    mAddress = address;
+AddressValidator::AddressValidator(const Address& address) : mAddress(address) {
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateHouseNumber, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateLot, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateBlock, this));

@@ -63,7 +63,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
                          const std::vector<std::string>& requiredFields) const {
     // All fields are required by default
     const bool isAllFieldsRequired = requiredFields.empty();
-    // Find the fild from the "requiredFields" vector
+    // Find the field from the "requiredFields" vector
     auto requires = [requiredFields, isAllFieldsRequired](const std::string& field) {
         if (!isAllFieldsRequired) {
             return std::find(requiredFields.begin(), requiredFields.end(), field)
@@ -155,7 +155,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
             // Ask if user has a Valid ID
             idFieldsRequired = SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y";
         } else {
-            // todo (code) - this is assumming we're updating the first element of personalIds
+            // WARNING! - this is assumming we're updating the first element of personalIds
             personalId = employee->personalIds()[0];
             updateFields = true;
         }
@@ -169,6 +169,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
             }
             if (updateFields) {
                 // Delete the old id
+                // WARNING! - this is assumming we're updating the first element of personalIds
                 employee->deletePersonalId(0);
             }
             // Add a new one
