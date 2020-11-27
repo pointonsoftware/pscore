@@ -8,6 +8,9 @@ done
 cd "$(dirname $0)" || exit 1
 CORE_CMAKE_FLAGS="-DBUILD_UNITTEST=ON -DBUILD_ALL=ON $CORE_CMAKE_FLAGS"
 
+# Debug mode
+CORE_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Debug -DBUILD_ALL=ON $CORE_CMAKE_FLAGS"
+
 rm -rf build
 mkdir build || exit 1
 cd build || exit 1
