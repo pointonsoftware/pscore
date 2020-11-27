@@ -59,92 +59,184 @@ void EmployeeMgmtScreen::queryEmployeesList() {
     mEmployeesGUITable = mCoreEmployeeMgmt->list();
 }
 
-void EmployeeMgmtScreen::createEmployee() {
-    std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
-    entity::Employee* newEmployee = new entity::User();
-
-    // Todo (code) - move this to a specific function
-    auto inputArea =
-    [](std::function<void(const std::string&)> func,
-        const std::string& label) {
-        func(SCREENCOMMON().getInput(label));
+void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
+                         const std::vector<std::string>& requiredFields) const {
+    // All fields are required by default
+    const bool isAllFieldsRequired = requiredFields.empty();
+    // Find the field from the "requiredFields" vector
+    auto requires = [requiredFields, isAllFieldsRequired](const std::string& field) {
+        if (!isAllFieldsRequired) {
+            return std::find(requiredFields.begin(), requiredFields.end(), field)
+                != requiredFields.end();
+        }
+        return true;
     };
-
-    inputArea(std::bind(&entity::Employee::setFirstName, newEmployee,
-              std::placeholders::_1), "First Name");
-    inputArea(std::bind(&entity::Employee::setMiddleName, newEmployee,
-              std::placeholders::_1), "Middle Name");
-    inputArea(std::bind(&entity::Employee::setLastName, newEmployee,
-              std::placeholders::_1), "Last Name");
-    inputArea(std::bind(&entity::Employee::setBirthdate, newEmployee,
-              std::placeholders::_1), "Date of Birth (dd/mm/yyyy)");
-    inputArea(std::bind(&entity::Employee::setGender, newEmployee,
-              std::placeholders::_1), "Gender (M/F)");
-    inputArea(std::bind(&entity::Employee::setPosition, newEmployee,
-              std::placeholders::_1), "Position");
+    // Simulate an input area or text box of GUI
+    auto inputArea = [isAllFieldsRequired] (std::function<void(const std::string&)> func,
+                                            const std::string& label, bool fieldIsRequired) {
+        if (fieldIsRequired) {
+            func(SCREENCOMMON().getInput(label));
+        }
+    };
+    // Basic info
+    inputArea(std::bind(&entity::Employee::setFirstName, employee,
+              std::placeholders::_1), "First Name", requires("Entity.Field.FirstName"));
+    inputArea(std::bind(&entity::Employee::setMiddleName, employee,
+              std::placeholders::_1), "Middle Name", requires("Entity.Field.MiddleName"));
+    inputArea(std::bind(&entity::Employee::setLastName, employee,
+              std::placeholders::_1), "Last Name", requires("Entity.Field.LastName"));
+    inputArea(std::bind(&entity::Employee::setBirthdate, employee,
+              std::placeholders::_1), "Date of Birth (dd/mm/yyyy)",
+                                      requires("Entity.Field.Birthdate"));
+    inputArea(std::bind(&entity::Employee::setGender, employee,
+              std::placeholders::_1), "Gender (M/F)", requires("Entity.Field.Gender"));
+    inputArea(std::bind(&entity::Employee::setPosition, employee,
+              std::placeholders::_1), "Position", requires("Entity.Field.Position"));
     // Address
     {
-        entity::Address address;
-        address.housenumber = SCREENCOMMON().getInput("House Number");
-        address.lot         = SCREENCOMMON().getInput("Lot Number");
-        address.block       = SCREENCOMMON().getInput("Block");
-        address.street      = SCREENCOMMON().getInput("Street");
-        address.subdivision = SCREENCOMMON().getInput("Subdivision");
-        address.sitio       = SCREENCOMMON().getInput("Sitio");
-        address.purok       = SCREENCOMMON().getInput("Purok");
-        address.barangay    = SCREENCOMMON().getInput("Barangay");
-        address.city_town   = SCREENCOMMON().getInput("City/Town");
-        address.province    = SCREENCOMMON().getInput("Province");
-        address.zip         = SCREENCOMMON().getInput("Zip");
-        newEmployee->setAddress(address);
+        entity::Address address = employee->address();
+        if (requires("Entity.Field.HouseNumber")) {
+            address.housenumber = SCREENCOMMON().getInput("House Number");
+        }
+        if (requires("Entity.Field.Lot")) {
+            address.lot = SCREENCOMMON().getInput("Lot Number");
+        }
+        if (requires("Entity.Field.Block")) {
+            address.block = SCREENCOMMON().getInput("Block");
+        }
+        if (requires("Entity.Field.Street")) {
+            address.street = SCREENCOMMON().getInput("Street");
+        }
+        if (requires("Entity.Field.Subdivision")) {
+            address.subdivision = SCREENCOMMON().getInput("Subdivision");
+        }
+        if (requires("Entity.Field.Sitio")) {
+            address.sitio = SCREENCOMMON().getInput("Sitio");
+        }
+        if (requires("Entity.Field.Purok")) {
+            address.purok = SCREENCOMMON().getInput("Purok");
+        }
+        if (requires("Entity.Field.Barangay")) {
+            address.barangay = SCREENCOMMON().getInput("Barangay");
+        }
+        if (requires("Entity.Field.CityTown")) {
+            address.city_town = SCREENCOMMON().getInput("City/Town");
+        }
+        if (requires("Entity.Field.Province")) {
+            address.province = SCREENCOMMON().getInput("Province");
+        }
+        if (requires("Entity.Field.Zip")) {
+            address.zip = SCREENCOMMON().getInput("Zip");
+        }
+        employee->setAddress(address);
     }
     // Contact details
     {
-        entity::ContactDetails contactDetails;
-        contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
-        contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
-        contactDetails.email          = SCREENCOMMON().getInput("Email Address");
-        newEmployee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
-        newEmployee->setEmail(contactDetails.email);
+        entity::ContactDetails contactDetails = employee->contactDetails();
+        if (requires("Entity.Field.Phone1")) {
+            contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
+        }
+        if (requires("Entity.Field.Phone2")) {
+            contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
+        }
+        if (requires("Entity.Field.Email")) {
+            contactDetails.email = SCREENCOMMON().getInput("Email Address");
+        }
+        employee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
+        employee->setEmail(contactDetails.email);
     }
     // Ask if user wants to input a valid/government ID
-    if (SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y") {
+    if (requires("Entity.Field.IdType") || requires("Entity.Field.IdNumber")) {
         entity::PersonalId personalId;
-        personalId.type      = SCREENCOMMON().getInput("ID Type");
-        personalId.id_number = SCREENCOMMON().getInput("ID Number");
-        newEmployee->addPersonalId(personalId.type, personalId.id_number);
+        bool idFieldsRequired = true;
+        bool updateFields = false;
+
+        if (isAllFieldsRequired) {
+            // Ask if user has a Valid ID
+            idFieldsRequired = SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y";
+        } else {
+            // WARNING! - this is assumming we're updating the first element of personalIds
+            personalId = employee->personalIds()[0];
+            updateFields = true;
+        }
+
+        if (idFieldsRequired) {
+            if (requires("Entity.Field.IdType")) {
+                personalId.type = SCREENCOMMON().getInput("ID Type");
+            }
+            if (requires("Entity.Field.IdNumber")) {
+                personalId.id_number = SCREENCOMMON().getInput("ID Number");
+            }
+            if (updateFields) {
+                // Delete the old id
+                // WARNING! - this is assumming we're updating the first element of personalIds
+                employee->deletePersonalId(0);
+            }
+            // Add a new one
+            employee->addPersonalId(personalId.type, personalId.id_number);
+        }
     }
+}
+
+void EmployeeMgmtScreen::createEmployee() {
+    std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
+    // Todo (code) - make validation result an std::map instead of unordered_map
+    std::unordered_map<std::string, std::string> validationResult;
+    std::vector<std::string> failedFields;  // Used to request re-input of failed fields
+    entity::Employee* newEmployee = new entity::User();
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
      * - if found, show "An employee name Foo Bar with ID xxxx exists,
      *                   do you want to update this employee instead?"
     */
-    std::unordered_map<std::string, std::string> validationResult;
-    const domain::empmgmt::USERSMGMTSTATUS status = [this, &newEmployee, &validationResult]() {
-        if (SCREENCOMMON().getYesNoInput("System User (y/n)") == "n") {
-            // non-user, add the employee
-            return mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
-        } else {
-            // Employee is a system user
-            entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
-            // get PIN
-            newUser->setPIN(SCREENCOMMON().getInput("PIN"));
-            return mCoreEmployeeMgmt->save(*newUser, &validationResult);
-        }
-    }();
+    do {
+        fillEmployeeInformation(newEmployee, failedFields);
+        const domain::empmgmt::USERSMGMTSTATUS status =
+            [this, &newEmployee, &validationResult, &failedFields]() {
+            const bool isSystemUser = [&failedFields]() {
+                if (failedFields.empty()) {
+                    // We're not editing the PIN field, ask if employee is a system user
+                    return SCREENCOMMON().getYesNoInput("System User (y/n)") == "y";
+                } else {
+                    // Check if we require re-input for PIN field
+                    // If so, we're editing a system user entity
+                    return std::find(failedFields.begin(), failedFields.end(),
+                                        "Entity.Field.Pin") != failedFields.end();
+                }
+            }();
 
-    if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
-        for (auto const &result : validationResult) {
-            std::cout << result.first << " -> " << result.second << std::endl;
+            if (!isSystemUser) {
+                // non-user, add the employee
+                return mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
+            } else {
+                // Employee is a system user
+                entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
+                // get PIN
+                newUser->setPIN(SCREENCOMMON().getInput("PIN"));
+                return mCoreEmployeeMgmt->save(*newUser, &validationResult);
+            }
+        }();
+
+        // Reset after filling the fields
+        failedFields.clear();
+
+        if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+            std::cout << "Invalid inputs:" << std::endl;
+            for (auto const &result : validationResult) {
+                std::cout << "- " << result.second << std::endl;
+                failedFields.emplace_back(result.first);
+            }
+            // Let the user confirm after viewing the validation results
+            std::cout << "Press [Enter] to continue..." << std::endl;
+            std::cin.ignore();
+            std::cin.get();
+        } else {
+            std::cout << "Employee " << newEmployee->getFullName()
+                    << " added successfully!" << std::endl;
         }
-        // Let the user confirm after viewing the validation results
-        std::cin.ignore();
-        std::cin.get();
-    } else {
-        std::cout << "Employee " << newEmployee->getFullName()
-                  << " added successfully!" << std::endl;
-    }
+    } while (!failedFields.empty());  // repeat input until new employee is created
+    // delete the heap object
     delete newEmployee;
 }
 

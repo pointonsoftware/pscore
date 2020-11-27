@@ -58,6 +58,7 @@ class Person {
     void setGender(const std::string& gender);
     void setPhoneNumbers(const std::string& phone_1, const std::string& phone_2);
     void addPersonalId(const std::string& type, const std::string& number);
+    void deletePersonalId(const uint8_t& index);
     void setEmail(const std::string& email);
     void setAddress(const Address& address);
 

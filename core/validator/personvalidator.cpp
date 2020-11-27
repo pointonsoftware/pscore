@@ -23,25 +23,46 @@
 namespace entity {
 namespace validator {
 
-PersonValidator::PersonValidator(const Person& person) {
-    mPerson = person;
+PersonValidator::PersonValidator(const Person& person) : mPerson(person) {
     validationFunctions.emplace_back(std::bind(&PersonValidator::validateFirstName, this));
     validationFunctions.emplace_back(std::bind(&PersonValidator::validateMiddleName, this));
     validationFunctions.emplace_back(std::bind(&PersonValidator::validateLastName, this));
+    validationFunctions.emplace_back(std::bind(&PersonValidator::validateGender, this));
+    validationFunctions.emplace_back(std::bind(&PersonValidator::validateBirthdate, this));
     validate();
 }
 
-ValidationStatus PersonValidator::validateFirstName() const {
+ValidationStatus PersonValidator::validateFirstName() {
+    if (mPerson.firstName().empty()) {
+        addError(FIELD_FNAME, "First Name cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
     return ValidationStatus::S_OK;
 }
-ValidationStatus PersonValidator::validateMiddleName() const {
+ValidationStatus PersonValidator::validateMiddleName() {
     return ValidationStatus::S_OK;
 }
-ValidationStatus PersonValidator::validateLastName() const {
+ValidationStatus PersonValidator::validateLastName() {
+    if (mPerson.lastName().empty()) {
+        addError(FIELD_LNAME, "Last Name cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
     return ValidationStatus::S_OK;
 }
-
-// Todo (code) - validate birthdate
-
+ValidationStatus PersonValidator::validateGender() {
+    if (mPerson.gender().empty()) {
+        addError(FIELD_GENDER, "Gender cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
+    if (mPerson.gender() != "M" && mPerson.gender() != "F") {
+        addError(FIELD_GENDER, "Gender is invalid.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
+}
+ValidationStatus PersonValidator::validateBirthdate() {
+    // Todo (code) - validate birthdate
+    return ValidationStatus::S_OK;
+}
 }  // namespace validator
 }  // namespace entity

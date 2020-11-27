@@ -24,8 +24,7 @@
 namespace entity {
 namespace validator {
 
-UserValidator::UserValidator(const User& user) {
-    mUser = user;
+UserValidator::UserValidator(const User& user) : mUser(user) {
     validationFunctions.emplace_back(std::bind(&UserValidator::validatePIN, this));
     validate();
 }

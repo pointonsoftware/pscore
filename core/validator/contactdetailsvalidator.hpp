@@ -44,9 +44,9 @@ namespace validator {
 constexpr unsigned int PHONE_NUMBER_LENGTH = 11;
 
 // Fields
-constexpr char FIELD_CONT_PH1[] = "phone1";
-constexpr char FIELD_CONT_PH2[] = "phone2";
-constexpr char FIELD_CONT_EML[] = "email";
+constexpr char FIELD_CONT_PH1[] = "Entity.Field.Phone1";
+constexpr char FIELD_CONT_PH2[] = "Entity.Field.Phone2";
+constexpr char FIELD_CONT_EML[] = "Entity.Field.Email";
 
 class ContactDetailsValidator : public Validator {
  public:
@@ -54,7 +54,7 @@ class ContactDetailsValidator : public Validator {
     ~ContactDetailsValidator() = default;
 
  private:
-    ContactDetails mContactDetails;
+    const ContactDetails mContactDetails;
     ValidationStatus validatePhoneNumber1();
     ValidationStatus validatePhoneNumber2();
     ValidationStatus validateEmailAddress();

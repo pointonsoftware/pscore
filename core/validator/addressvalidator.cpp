@@ -25,8 +25,7 @@
 namespace entity {
 namespace validator {
 
-AddressValidator::AddressValidator(const Address& address) {
-    mAddress = address;
+AddressValidator::AddressValidator(const Address& address) : mAddress(address) {
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateHouseNumber, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateLot, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateBlock, this));
@@ -37,7 +36,6 @@ AddressValidator::AddressValidator(const Address& address) {
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateCityTown, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateProvince, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateZipCode, this));
-
     validate();
 }
 
@@ -108,6 +106,10 @@ ValidationStatus AddressValidator::validateBarangay() {
     return retVal;
 }
 ValidationStatus AddressValidator::validateCityTown() {
+    if (mAddress.city_town.empty()) {
+        addError(FIELD_ADDR_CTY, "City/Town cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
     ValidationStatus retVal = sanity(mAddress.city_town);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_CTY, "City/Town contains invalid character.");
@@ -115,6 +117,10 @@ ValidationStatus AddressValidator::validateCityTown() {
     return retVal;
 }
 ValidationStatus AddressValidator::validateProvince() {
+    if (mAddress.province.empty()) {
+        addError(FIELD_ADDR_PRV, "Province cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
     ValidationStatus retVal = sanity(mAddress.province);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_PRV, "Province contains invalid character.");

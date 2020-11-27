@@ -34,7 +34,7 @@ namespace validator {
 constexpr unsigned int PIN_SIZE = 4;
 
 // Fields
-constexpr char FIELD_PIN[] = "pin";
+constexpr char FIELD_PIN[] = "Entity.Field.Pin";
 
 class UserValidator : public Validator {
  public:
@@ -42,7 +42,7 @@ class UserValidator : public Validator {
     ~UserValidator() = default;
 
  private:
-    User mUser;
+    const User mUser;
     // Validation functions
     ValidationStatus validatePIN();
 };

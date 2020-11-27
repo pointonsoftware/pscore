@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "screencommon.hpp"
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
@@ -155,6 +156,11 @@ std::string ScreenCommon::getInput(const std::string& label, unsigned int maxSiz
         }
         std::getline(std::cin, userInput);
         if ((maxSize == 0) || (userInput.size() <= maxSize)) {
+            if (!userInput.empty() &&
+                std::all_of(userInput.begin(), userInput.end(), ::isspace)) {
+                // Clear if input only contains whitespaces
+                userInput.clear();
+            }
             break;
         }
         std::cout << "Error: Input is too long." << std::endl;
@@ -170,6 +176,8 @@ std::string ScreenCommon::getYesNoInput(const std::string& label) const {
         std::cout << std::left << std::setw(defines::LABEL_WIDTH)
                   << label  << defines::LABEL_BOUNDARY << " ";
         std::cin >> userInput;
+        std::transform(userInput.begin(), userInput.end(), userInput.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
     } while (userInput != "y" && userInput != "n");
     return userInput;
 }

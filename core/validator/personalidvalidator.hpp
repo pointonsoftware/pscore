@@ -30,16 +30,16 @@ namespace validator {
 
 /*!
  * Validation Rules:
- * - [type] can be empty
+ * - [type] cannot be empty
  * - [type] must only contain alphabets
- * - [ID number] must not be empty if [type] is not empty
- * - [ID number] can be alphanumeric and with dashes
+ * - [ID number] cannot be empty
+ * - [ID number] must be alphanumeric and can contain dashes
 */
 constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
 
 // Fields
-constexpr char FIELD_PNID_IDT[] = "idtype";
-constexpr char FIELD_PNID_IDN[] = "idnumber";
+constexpr char FIELD_PNID_IDT[] = "Entity.Field.IdType";
+constexpr char FIELD_PNID_IDN[] = "Entity.Field.IdNumber";
 
 class PersonalIDValidator : public Validator {
  public:
@@ -47,9 +47,10 @@ class PersonalIDValidator : public Validator {
     ~PersonalIDValidator() = default;
 
  private:
-    PersonalId mPersonalID;
+    const PersonalId mPersonalID;
     // Validation functions
-    ValidationStatus validatePersonalID();
+    ValidationStatus validateIDType();
+    ValidationStatus validateIDNumber();
 };
 
 }  // namespace validator

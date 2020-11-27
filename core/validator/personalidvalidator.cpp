@@ -25,18 +25,15 @@
 namespace entity {
 namespace validator {
 
-PersonalIDValidator::PersonalIDValidator(const PersonalId& personalID) {
-    mPersonalID = personalID;
-    validationFunctions.emplace_back(std::bind(&PersonalIDValidator::validatePersonalID, this));
+PersonalIDValidator::PersonalIDValidator(const PersonalId& personalID) : mPersonalID(personalID) {
+    validationFunctions.emplace_back(std::bind(&PersonalIDValidator::validateIDType, this));
+    validationFunctions.emplace_back(std::bind(&PersonalIDValidator::validateIDNumber, this));
     validate();
 }
 
-ValidationStatus PersonalIDValidator::validatePersonalID() {
+ValidationStatus PersonalIDValidator::validateIDType() {
     if (mPersonalID.type.empty()) {
-        return ValidationStatus::S_OK;
-    }
-    if (mPersonalID.id_number.empty()) {
-        addError(FIELD_PNID_IDN, "ID Number must not be empty.");
+        addError(FIELD_PNID_IDT, "ID Type must not be empty.");
         return ValidationStatus::S_EMPTY;
     }
     if (utility::hasNumber(mPersonalID.type)) {
@@ -44,9 +41,17 @@ ValidationStatus PersonalIDValidator::validatePersonalID() {
         addError(FIELD_PNID_IDT, "ID Type contains invalid character.");
         return ValidationStatus::S_INVALID_STRING;
     }
+    return ValidationStatus::S_OK;
+}
+
+ValidationStatus PersonalIDValidator::validateIDNumber() {
+    if (mPersonalID.id_number.empty()) {
+        addError(FIELD_PNID_IDN, "ID Number must not be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
     if (std::regex_search(mPersonalID.id_number, std::regex(INVALID_ID_CHARACTERS))) {
         // ID number contains invalid characters
-        addError(FIELD_PNID_IDT, "ID Number contains invalid character");
+        addError(FIELD_PNID_IDN, "ID Number contains invalid character");
         return ValidationStatus::S_INVALID_STRING;
     }
     return ValidationStatus::S_OK;
