@@ -29,6 +29,14 @@
 
 namespace entity {
 
+// Fields
+constexpr char FIELD_FNAME[] = "Entity.Field.FirstName";
+constexpr char FIELD_MNAME[] = "Entity.Field.MiddleName";
+constexpr char FIELD_LNAME[] = "Entity.Field.LastName";
+constexpr char FIELD_BDATE[] = "Entity.Field.Birthdate";
+constexpr char FIELD_GENDER[] = "Entity.Field.Gender";
+constexpr char FIELD_POSITION[] = "Entity.Field.Position";
+
 class Person {
  public:
     Person(const std::string& firstname,

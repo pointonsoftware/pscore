@@ -43,11 +43,6 @@ namespace validator {
 */
 constexpr unsigned int PHONE_NUMBER_LENGTH = 11;
 
-// Fields
-constexpr char FIELD_CONT_PH1[] = "Entity.Field.Phone1";
-constexpr char FIELD_CONT_PH2[] = "Entity.Field.Phone2";
-constexpr char FIELD_CONT_EML[] = "Entity.Field.Email";
-
 class ContactDetailsValidator : public Validator {
  public:
     explicit ContactDetailsValidator(const ContactDetails& contactDetails);

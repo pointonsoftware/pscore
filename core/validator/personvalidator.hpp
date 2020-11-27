@@ -35,14 +35,6 @@ namespace validator {
  * - Gender must only be M/F
 */
 
-// Fields
-constexpr char FIELD_FNAME[] = "Entity.Field.FirstName";
-constexpr char FIELD_MNAME[] = "Entity.Field.MiddleName";
-constexpr char FIELD_LNAME[] = "Entity.Field.LastName";
-constexpr char FIELD_BDATE[] = "Entity.Field.Birthdate";
-constexpr char FIELD_GENDER[] = "Entity.Field.Gender";
-constexpr char FIELD_POSITION[] = "Entity.Field.Position";
-
 class PersonValidator : public Validator {
  public:
     explicit PersonValidator(const Person& person);
