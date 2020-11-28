@@ -36,19 +36,6 @@ namespace validator {
 */
 constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-. ]";
 
-// Fields
-constexpr char FIELD_ADDR_HNO[] = "Entity.Field.HouseNumber";
-constexpr char FIELD_ADDR_LOT[] = "Entity.Field.Lot";
-constexpr char FIELD_ADDR_BLK[] = "Entity.Field.Block";
-constexpr char FIELD_ADDR_STR[] = "Entity.Field.Street";
-constexpr char FIELD_ADDR_SDV[] = "Entity.Field.Subdivision";
-constexpr char FIELD_ADDR_SIT[] = "Entity.Field.Sitio";
-constexpr char FIELD_ADDR_PRK[] = "Entity.Field.Purok";
-constexpr char FIELD_ADDR_BRG[] = "Entity.Field.Barangay";
-constexpr char FIELD_ADDR_CTY[] = "Entity.Field.CityTown";
-constexpr char FIELD_ADDR_PRV[] = "Entity.Field.Province";
-constexpr char FIELD_ADDR_ZIP[] = "Entity.Field.Zip";
-
 class AddressValidator : public Validator {
  public:
     explicit AddressValidator(const Address& address);

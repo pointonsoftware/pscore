@@ -25,6 +25,19 @@
 
 namespace entity {
 
+// Fields
+constexpr char FIELD_ADDR_HNO[] = "Entity.Field.HouseNumber";
+constexpr char FIELD_ADDR_LOT[] = "Entity.Field.Lot";
+constexpr char FIELD_ADDR_BLK[] = "Entity.Field.Block";
+constexpr char FIELD_ADDR_STR[] = "Entity.Field.Street";
+constexpr char FIELD_ADDR_SDV[] = "Entity.Field.Subdivision";
+constexpr char FIELD_ADDR_SIT[] = "Entity.Field.Sitio";
+constexpr char FIELD_ADDR_PRK[] = "Entity.Field.Purok";
+constexpr char FIELD_ADDR_BRG[] = "Entity.Field.Barangay";
+constexpr char FIELD_ADDR_CTY[] = "Entity.Field.CityTown";
+constexpr char FIELD_ADDR_PRV[] = "Entity.Field.Province";
+constexpr char FIELD_ADDR_ZIP[] = "Entity.Field.Zip";
+
 struct Address {
     std::string housenumber;
     std::string lot;

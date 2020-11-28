@@ -33,9 +33,6 @@ namespace validator {
 */
 constexpr unsigned int PIN_SIZE = 4;
 
-// Fields
-constexpr char FIELD_PIN[] = "Entity.Field.Pin";
-
 class UserValidator : public Validator {
  public:
     explicit UserValidator(const User& user);

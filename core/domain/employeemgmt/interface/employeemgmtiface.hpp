@@ -22,7 +22,7 @@
 #define CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTIFACE_HPP_
 #include <memory>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include "employeemgmtdataif.hpp"
 #include "employeemgmtviewif.hpp"
@@ -57,13 +57,13 @@ class EmployeeMgmtControlInterface {
      * - param [out]- map of [field, error message]
     */
     virtual USERSMGMTSTATUS save(const entity::Employee& employee,
-                                std::unordered_map<std::string, std::string>* validationError) = 0;
+                                std::map<std::string, std::string>* validationError) = 0;
     /*!
      * Creates the user if not exists, otherwise will update the user info
      * - param [out]- map of [field, error message]
     */
     virtual USERSMGMTSTATUS save(const entity::User& user,
-                                std::unordered_map<std::string, std::string>* validationError) = 0;
+                                std::map<std::string, std::string>* validationError) = 0;
     /*!
      * Deletes the user
     */

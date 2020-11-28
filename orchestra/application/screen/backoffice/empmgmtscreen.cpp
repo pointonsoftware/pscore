@@ -22,7 +22,7 @@
 #include <functional>
 #include <iostream>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
@@ -180,8 +180,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
 
 void EmployeeMgmtScreen::createEmployee() {
     std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
-    // Todo (code) - make validation result an std::map instead of unordered_map
-    std::unordered_map<std::string, std::string> validationResult;
+    std::map<std::string, std::string> validationResult;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
     entity::Employee* newEmployee = new entity::User();
     /*!

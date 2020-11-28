@@ -21,7 +21,7 @@
 #include "employeecontroller.hpp"
 #include <algorithm>
 #include <memory>
-#include <unordered_map>
+#include <map>
 #include <logger/loghelper.hpp>
 #include <validator/addressvalidator.hpp>
 #include <validator/contactdetailsvalidator.hpp>
@@ -67,7 +67,7 @@ entity::Employee EmployeeMgmtController::get(const std::string& id) {
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const entity::Employee& employee,
-                std::unordered_map<std::string, std::string>* validationErrors) {
+                                             ValidationErrors* validationErrors) {
     LOG_DEBUG("Saving employee information");
     if (!isInterfaceInitialized()) {
         return USERSMGMTSTATUS::UNINITIALIZED;
@@ -107,7 +107,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const entity::Employee& employee,
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& user,
-                std::unordered_map<std::string, std::string>* validationErrors) {
+                                             ValidationErrors* validationErrors) {
     LOG_DEBUG("Saving employee information");
     if (!isInterfaceInitialized()) {
         return USERSMGMTSTATUS::UNINITIALIZED;
@@ -213,9 +213,8 @@ bool EmployeeMgmtController::isInterfaceInitialized() const {
     return true;
 }
 
-std::unordered_map<std::string, std::string>
-    EmployeeMgmtController::validateDetails(const entity::Employee& employee) const {
-    std::unordered_map<std::string, std::string> validationErrors;
+ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee& employee) const {
+    ValidationErrors validationErrors;
     // validate basic information
     {
         entity::validator::PersonValidator validator(employee);

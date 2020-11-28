@@ -22,7 +22,7 @@
 #define CORE_DOMAIN_EMPLOYEEMGMT_EMPLOYEECONTROLLER_HPP_
 #include <memory>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include "interface/employeemgmtiface.hpp"
 
@@ -32,7 +32,7 @@
 namespace domain {
 namespace empmgmt {
 
-typedef std::unordered_map<std::string, std::string> ValidationErrors;
+typedef std::map<std::string, std::string> ValidationErrors;
 
 class EmployeeMgmtController : public EmployeeMgmtControlInterface {
  public:

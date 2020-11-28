@@ -26,6 +26,9 @@
 
 namespace entity {
 
+// Fields
+constexpr char FIELD_PIN[] = "Entity.Field.Pin";
+
 class User : public Employee {
  public:
     User(const std::string& firstname,
