@@ -138,7 +138,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& user,
         }
     }
     // Generate ID for the new user
-    entity::Employee newUser = user;
+    entity::User newUser = user;
     newUser.generateID();
     LOG_INFO("EmployeeID %s generated", user.employeeID().c_str());
     mDataProvider->create(newUser);
