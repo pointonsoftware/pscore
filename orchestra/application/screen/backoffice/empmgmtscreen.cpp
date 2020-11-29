@@ -209,7 +209,7 @@ void EmployeeMgmtScreen::createEmployee() {
 
             if (!isSystemUser) {
                 // non-user, add the employee
-                return mCoreEmployeeMgmt->save(*newEmployee, &validationResult);
+                return mCoreEmployeeMgmt->save({*newEmployee, &validationResult, "", ""});
             } else {
                 // Employee is a system user
                 entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);

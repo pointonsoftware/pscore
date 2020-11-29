@@ -66,43 +66,43 @@ entity::Employee EmployeeMgmtController::get(const std::string& id) {
     }
 }
 
-USERSMGMTSTATUS EmployeeMgmtController::save(const entity::Employee& employee,
-                                             ValidationErrors* validationErrors) {
+USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
     LOG_DEBUG("Saving employee information");
     if (!isInterfaceInitialized()) {
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
-    if (!validationErrors) {
+    if (!employeeData.validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
         mView->showDataNotReadyScreen();
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
-    *validationErrors = validateDetails(employee);
-    if (!validationErrors->empty()) {
+    // Fill the validation results
+    *(employeeData.validationResult) = validateDetails(employeeData.employee);
+    if (!employeeData.validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
-        dumpValidationResult(*validationErrors);
+        dumpValidationResult(*(employeeData.validationResult));
         return USERSMGMTSTATUS::FAILED;
     }
-    if (!employee.employeeID().empty()) {
+    if (!employeeData.employee.employeeID().empty()) {
         LOG_DEBUG("EmployeeID is not empty");
-        if (isExists(employee.employeeID())) {
+        if (isExists(employeeData.employee.employeeID())) {
             // Todo (code) - add Update
-            LOG_INFO("Employee %s %s updated", employee.firstName().c_str(),
-                     employee.lastName().c_str());
+            LOG_INFO("Employee %s %s updated", employeeData.employee.firstName().c_str(),
+                     employeeData.employee.lastName().c_str());
             return USERSMGMTSTATUS::SUCCESS;
         }
     }
     // Generate ID for the new employee
-    entity::Employee newEmployee = employee;
+    entity::Employee newEmployee = employeeData.employee;
     newEmployee.generateID();
-    LOG_INFO("EmployeeID %s generated", employee.employeeID().c_str());
+    LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
     mDataProvider->create(newEmployee);
     /*!
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
     */
     mCachedList.emplace_back(newEmployee);
-    LOG_INFO("Employee %s %s added", employee.firstName().c_str(), employee.lastName().c_str());
+    LOG_INFO("Employee %s %s added", newEmployee.firstName().c_str(), newEmployee.lastName().c_str());
     return USERSMGMTSTATUS::SUCCESS;
 }
 

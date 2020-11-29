@@ -39,6 +39,17 @@ enum class USERSMGMTSTATUS {
     NOT_FOUND     = 3
 };
 
+struct SaveEmployeeData {
+    // [in]
+    const entity::Employee& employee;
+    // [out]
+    std::map<std::string, std::string>* validationResult;
+
+    // [in] Fill only if employee is a system-user
+    const std::string& displayName;
+    const std::string& PIN;
+};
+
 class EmployeeMgmtControlInterface {
  public:
     EmployeeMgmtControlInterface() = default;
@@ -56,8 +67,7 @@ class EmployeeMgmtControlInterface {
      * Creates the employee if not exists, otherwise will update the employee info
      * - param [out]- map of [field, error message]
     */
-    virtual USERSMGMTSTATUS save(const entity::Employee& employee,
-                                std::map<std::string, std::string>* validationError) = 0;
+    virtual USERSMGMTSTATUS save(const SaveEmployeeData& employeeData) = 0;
     /*!
      * Creates the user if not exists, otherwise will update the user info
      * - param [out]- map of [field, error message]

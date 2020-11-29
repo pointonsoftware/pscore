@@ -97,6 +97,8 @@ class Employee : public Person {
 
     int makeUniqueNumber() const;
     std::string getDate() const;
+
+    // Todo (spec) - add employee photo
 };
 
 }  // namespace entity

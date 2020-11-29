@@ -42,8 +42,7 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
 
     std::vector<entity::Employee> list() override;
     entity::Employee get(const std::string& id) override;
-    USERSMGMTSTATUS save(const entity::Employee& employee,
-                         ValidationErrors* validationErrors) override;
+    USERSMGMTSTATUS save(const SaveEmployeeData& employeeData) override;
     USERSMGMTSTATUS save(const entity::User& user,
                          ValidationErrors* validationErrors) override;
     USERSMGMTSTATUS remove(const std::string& id) override;

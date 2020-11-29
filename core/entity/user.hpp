@@ -29,6 +29,11 @@ namespace entity {
 // Fields
 constexpr char FIELD_PIN[] = "Entity.Field.Pin";
 
+// Todo (code) - user entity must only contain:
+// EmployeeID
+// Position
+// Display Name
+// PIN
 class User : public Employee {
  public:
     User(const std::string& firstname,
