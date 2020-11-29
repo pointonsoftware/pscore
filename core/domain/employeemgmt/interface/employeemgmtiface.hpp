@@ -72,6 +72,7 @@ class EmployeeMgmtControlInterface {
      * Creates the user if not exists, otherwise will update the user info
      * - param [out]- map of [field, error message]
     */
+   // Todo (code) - deprecate this function in favor of ave(const SaveEmployeeData& employeeData)
     virtual USERSMGMTSTATUS save(const entity::User& user,
                                 std::map<std::string, std::string>* validationError) = 0;
     /*!

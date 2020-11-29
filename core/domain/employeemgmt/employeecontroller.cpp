@@ -67,33 +67,40 @@ entity::Employee EmployeeMgmtController::get(const std::string& id) {
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
+    const entity::Employee& employee = employeeData.employee;
+    std::map<std::string, std::string>* validationResult = employeeData.validationResult;
     LOG_DEBUG("Saving employee information");
     if (!isInterfaceInitialized()) {
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
-    if (!employeeData.validationResult) {
+    if (!validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
         mView->showDataNotReadyScreen();
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
     // Fill the validation results
-    *(employeeData.validationResult) = validateDetails(employeeData.employee);
-    if (!employeeData.validationResult->empty()) {
+    *(validationResult) = validateDetails(employee);
+    if (employee.isSystemUser()) {
+        // Validate User
+        // entity::validator::UserValidator validator(employeeData.PIN);
+        // validationErrors->insert(validator.result().begin(), validator.result().end());
+    }
+    if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
-        dumpValidationResult(*(employeeData.validationResult));
+        dumpValidationResult(*(validationResult));
         return USERSMGMTSTATUS::FAILED;
     }
-    if (!employeeData.employee.employeeID().empty()) {
+    if (!employee.employeeID().empty()) {
         LOG_DEBUG("EmployeeID is not empty");
-        if (isExists(employeeData.employee.employeeID())) {
+        if (isExists(employee.employeeID())) {
             // Todo (code) - add Update
-            LOG_INFO("Employee %s %s updated", employeeData.employee.firstName().c_str(),
-                     employeeData.employee.lastName().c_str());
+            LOG_INFO("Employee %s %s updated", employee.firstName().c_str(),
+                     employee.lastName().c_str());
             return USERSMGMTSTATUS::SUCCESS;
         }
     }
     // Generate ID for the new employee
-    entity::Employee newEmployee = employeeData.employee;
+    entity::Employee newEmployee = employee;
     newEmployee.generateID();
     LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
     mDataProvider->create(newEmployee);

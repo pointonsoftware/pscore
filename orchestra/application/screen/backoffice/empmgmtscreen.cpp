@@ -212,11 +212,12 @@ void EmployeeMgmtScreen::createEmployee() {
                 return mCoreEmployeeMgmt->save({*newEmployee, &validationResult, "", ""});
             } else {
                 // Employee is a system user
-                entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
-                newUser->setIsSystemUser(true);
-                // get PIN
-                newUser->setPIN(SCREENCOMMON().getInput("PIN"));
-                return mCoreEmployeeMgmt->save(*newUser, &validationResult);
+                newEmployee->setIsSystemUser(true);
+                // User display name
+                const std::string dpName = SCREENCOMMON().getInput("Display Name");
+                // User PIN
+                const std::string pin = SCREENCOMMON().getInput("PIN");
+                return mCoreEmployeeMgmt->save({*newEmployee, &validationResult, dpName, pin});
             }
         }();
 
