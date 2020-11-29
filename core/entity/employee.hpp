@@ -28,6 +28,12 @@ namespace entity {
 
 class Employee : public Person {
  public:
+    enum class Status {
+        INACTIVE,
+        ACTIVE,
+        ONLEAVE
+    };
+
     Employee(const std::string& firstname,
              const std::string& middlename,
              const std::string& lastname,
@@ -35,6 +41,7 @@ class Employee : public Person {
              const std::string& gender,
              const std::string& employeeID,
              const std::string& position,
+             const Status status = Status::ACTIVE,
              const bool isSystemUser = false);
     Employee() = default;
     ~Employee() = default;
@@ -51,8 +58,20 @@ class Employee : public Person {
         return mPosition;
     }
 
+    inline void setIsSystemUser(const bool isUser) {
+        mIsSystemUser = isUser;
+    }
+
     inline const bool isSystemUser() const {
         return mIsSystemUser;
+    }
+
+    inline void setStatus(const Status status) {
+        mStatus = status;
+    }
+
+    inline const Status getStatus() const {
+        return mStatus;
     }
 
     /*!
@@ -73,6 +92,7 @@ class Employee : public Person {
  protected:
     std::string mEmployeeID;
     std::string mPosition;
+    Status mStatus;
     bool mIsSystemUser;
 
     int makeUniqueNumber() const;

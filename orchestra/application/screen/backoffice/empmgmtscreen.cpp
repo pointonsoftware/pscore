@@ -193,16 +193,18 @@ void EmployeeMgmtScreen::createEmployee() {
         fillEmployeeInformation(newEmployee, failedFields);
         const domain::empmgmt::USERSMGMTSTATUS status =
             [this, &newEmployee, &validationResult, &failedFields]() {
-            const bool isSystemUser = [&failedFields]() {
+            const bool isSystemUser = [&newEmployee, &failedFields]() {
+                if (newEmployee->isSystemUser()) {
+                    return true;
+                }
                 if (failedFields.empty()) {
                     // We're not editing the PIN field, ask if employee is a system user
                     return SCREENCOMMON().getYesNoInput("System User (y/n)") == "y";
-                } else {
-                    // Check if we require re-input for PIN field
-                    // If so, we're editing a system user entity
-                    return std::find(failedFields.begin(), failedFields.end(),
-                                        "Entity.Field.Pin") != failedFields.end();
                 }
+                // Check if we require re-input for PIN field
+                // If so, we're editing a system user entity
+                return std::find(failedFields.begin(), failedFields.end(),
+                                 "Entity.Field.Pin") != failedFields.end();
             }();
 
             if (!isSystemUser) {
@@ -211,6 +213,7 @@ void EmployeeMgmtScreen::createEmployee() {
             } else {
                 // Employee is a system user
                 entity::User* newUser = dynamic_cast<entity::User*>(newEmployee);
+                newUser->setIsSystemUser(true);
                 // get PIN
                 newUser->setPIN(SCREENCOMMON().getInput("PIN"));
                 return mCoreEmployeeMgmt->save(*newUser, &validationResult);
