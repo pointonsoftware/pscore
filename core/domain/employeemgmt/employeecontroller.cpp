@@ -80,6 +80,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     }
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
+    // Todo (code) - uncomment when user entity is updated
     // if (employee.isSystemUser()) {
         // Validate User
         // entity::validator::UserValidator validator(employeeData.PIN);
@@ -104,6 +105,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     newEmployee.generateID();
     LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
     mDataProvider->create(newEmployee);
+    // Todo (code) - uncomment when user entity is updated
     // if (employee.isSystemUser()) {
         // mDataProvider->Create(User);
     // }

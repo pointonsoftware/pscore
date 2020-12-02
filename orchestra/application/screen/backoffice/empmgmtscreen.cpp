@@ -209,7 +209,7 @@ void EmployeeMgmtScreen::createEmployee() {
 
             if (!isSystemUser) {
                 // non-user, add the employee
-                return mCoreEmployeeMgmt->save({*newEmployee, &validationResult, "", ""});
+                return mCoreEmployeeMgmt->save({*newEmployee, "", "", &validationResult});
             } else {
                 // Employee is a system user
                 newEmployee->setIsSystemUser(true);
@@ -217,7 +217,7 @@ void EmployeeMgmtScreen::createEmployee() {
                 const std::string dpName = SCREENCOMMON().getInput("Display Name");
                 // User PIN
                 const std::string pin = SCREENCOMMON().getInput("PIN");
-                return mCoreEmployeeMgmt->save({*newEmployee, &validationResult, dpName, pin});
+                return mCoreEmployeeMgmt->save({*newEmployee, dpName, pin, &validationResult});
             }
         }();
 
