@@ -80,11 +80,11 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     }
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
-    if (employee.isSystemUser()) {
+    // if (employee.isSystemUser()) {
         // Validate User
         // entity::validator::UserValidator validator(employeeData.PIN);
         // validationErrors->insert(validator.result().begin(), validator.result().end());
-    }
+    // }
     if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
         dumpValidationResult(*(validationResult));
@@ -104,57 +104,15 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     newEmployee.generateID();
     LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
     mDataProvider->create(newEmployee);
+    // if (employee.isSystemUser()) {
+        // mDataProvider->Create(User);
+    // }
     /*!
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
     */
     mCachedList.emplace_back(newEmployee);
-    LOG_INFO("Employee %s %s added", newEmployee.firstName().c_str(), newEmployee.lastName().c_str());
-    return USERSMGMTSTATUS::SUCCESS;
-}
-
-USERSMGMTSTATUS EmployeeMgmtController::save(const entity::User& user,
-                                             ValidationErrors* validationErrors) {
-    LOG_DEBUG("Saving employee information");
-    if (!isInterfaceInitialized()) {
-        return USERSMGMTSTATUS::UNINITIALIZED;
-    }
-    if (!validationErrors) {
-        LOG_ERROR("Validation-message container is not initialized");
-        mView->showDataNotReadyScreen();
-        return USERSMGMTSTATUS::UNINITIALIZED;
-    }
-    *validationErrors = validateDetails(user);
-    {
-        // Validate PIN
-        entity::validator::UserValidator validator(user);
-        validationErrors->insert(validator.result().begin(), validator.result().end());
-    }
-    if (!validationErrors->empty()) {
-        LOG_WARN("Entity contains invalid data. Returning validation results.");
-        dumpValidationResult(*validationErrors);
-        return USERSMGMTSTATUS::FAILED;
-    }
-    if (!user.employeeID().empty()) {
-        LOG_DEBUG("EmployeeID is not empty");
-        if (isExists(user.employeeID())) {
-            // Todo (code) - add Update
-            LOG_INFO("Employee %s %s updated", user.firstName().c_str(),
-                     user.lastName().c_str());
-            return USERSMGMTSTATUS::SUCCESS;
-        }
-    }
-    // Generate ID for the new user
-    entity::User newUser = user;
-    newUser.generateID();
-    LOG_INFO("EmployeeID %s generated", user.employeeID().c_str());
-    mDataProvider->create(newUser);
-    /*!
-     * Todo (code) - add checking if create is successful from dataprovider
-     * before updating the cache
-    */
-    mCachedList.emplace_back(newUser);
-    LOG_INFO("Employee %s %s added", user.firstName().c_str(), user.lastName().c_str());
+    LOG_INFO("Employee %s %s added", employee.firstName().c_str(), employee.lastName().c_str());
     return USERSMGMTSTATUS::SUCCESS;
 }
 
