@@ -21,6 +21,9 @@ add_library (
     # fileio
     fileio/fileio.hpp
     fileio/fileio.cpp
+    # id generator
+    idgenerator/idgenerator.hpp
+    idgenerator/idgenerator.cpp
     # cfg
     cfg/configiface.hpp
     cfg/config.hpp

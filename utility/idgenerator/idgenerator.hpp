@@ -18,21 +18,31 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_GENERAL_HPP_
-#define UTILITY_GENERAL_HPP_
-
-#include <algorithm>
+#ifndef UTILITY_IDGENERATOR_IDGENERATOR_HPP_
+#define UTILITY_IDGENERATOR_IDGENERATOR_HPP_
 #include <string>
 
 namespace utility {
+namespace IdGenerator {
 /*!
- * Checks if the string argument is a number
+ * Generates an employee ID
+ * ID format - [YY][unique-five-digit-number]
+ * e.g. - 2021135
 */
-extern bool isNumber(const std::string& str);
+extern std::string generateEmployeeID();
 /*!
- * Checks if the string argument contains a number
+ * Generates the system user ID
+ * Format - [first-letter-of-param1][first-three-letters-of-param2][three-digit-unique-number]
+ * e.g.
+ * p1 = John
+ * p2 = Doe
+ * result = JDOE123
 */
-extern bool hasNumber(const std::string& str);
+extern std::string generateUID(const std::string& p1, const std::string& p2);
+/*!
+ * Generates random integer from inclusive-range [low : high]
+*/
+extern unsigned int randomNumber(unsigned int low, unsigned int high);
+}  // namespace IdGenerator
 }  // namespace utility
-
-#endif  // UTILITY_GENERAL_HPP_
+#endif  // UTILITY_IDGENERATOR_IDGENERATOR_HPP_
