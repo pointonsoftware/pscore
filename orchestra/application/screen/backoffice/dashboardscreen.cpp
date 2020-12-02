@@ -76,8 +76,6 @@ void DashboardScreen::showOptions() const {
 
 void DashboardScreen::showUserInformation() const {
     SCREENCOMMON().showTopBanner("User Information");
-    std::cout << "UserID = " << mCurrentUser.userID() << std::endl;
-    std::cout << "EmployeeID = " << mCurrentUser.employeeID() << std::endl;
     if(!mCurrentUser.employeeID().empty()) {
         screen::InformationScreen<entity::Employee> userInfoScreen(mCoreDashboard->getUserDetails(mCurrentUser));
         userInfoScreen.showBasicInformation();
