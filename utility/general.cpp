@@ -31,12 +31,4 @@ bool hasNumber(const std::string &str) {
         [](unsigned char c) { return std::isdigit(c); }) != str.end();
 }
 
-unsigned randomNumber(unsigned int low, unsigned int high) {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    // low = 0 ; high = 9  -  generates number for 0 to 9
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
-    return dist6(rng);
-}
-
 }  // namespace utility
