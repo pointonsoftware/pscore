@@ -34,7 +34,7 @@ class LoginDataProviderIface {
     /*!
      * entity::User findUserByPin(const std::string& pin)
      * Looks for the user that's assigned with the pin argument
-     * Will return empty user.employeeID() if user is not found.
+     * Will return empty user.userID() if user is not found.
      *
      * [in] input pin
      * [return] user class

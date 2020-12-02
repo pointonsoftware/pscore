@@ -80,12 +80,12 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     }
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
-    // Todo (code) - uncomment when user entity is updated
-    // if (employee.isSystemUser()) {
-        // Validate User
-        // entity::validator::UserValidator validator(employeeData.PIN);
-        // validationErrors->insert(validator.result().begin(), validator.result().end());
-    // }
+    if (employee.isSystemUser()) {
+        // Validate PIN
+        entity::validator::UserValidator validator(
+                entity::User("Proxy", "Proxy", employeeData.PIN, "Proxy"));
+        validationResult->insert(validator.result().begin(), validator.result().end());
+    }
     if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
         dumpValidationResult(*(validationResult));
@@ -102,11 +102,13 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     }
     // Generate ID for the new employee
     entity::Employee newEmployee = employee;
+    // Todo (code) - replace with utility::generateEmployeeID
     newEmployee.generateID();
     LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
     mDataProvider->create(newEmployee);
-    // Todo (code) - uncomment when user entity is updated
+    // Todo (code) - uncomment for create user is ready
     // if (employee.isSystemUser()) {
+        // Todo (code) - Add a utility::generateUserID call here
         // mDataProvider->Create(User);
     // }
     /*!

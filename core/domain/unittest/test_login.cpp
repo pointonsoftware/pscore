@@ -55,11 +55,11 @@ class TestLogin : public testing::Test {
 
 TEST_F(TestLogin, LoginShouldSucceed) {
     const std::string dummyPin = "1234";
-    const std::string dummyUID = "11111";
+    const std::string dummyUID = "JDOE123";
     // Calls findUser
     EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
             .WillOnce(Return(
-                entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUID, "admin", dummyPin)));
+                entity::User(dummyUID, "Manager", dummyPin, "DummyEmployeeID")));
     // Returns the userID
     ASSERT_EQ(loginController.loginWithPIN(dummyPin), dummyUID);
 }
@@ -69,7 +69,7 @@ TEST_F(TestLogin, LoginUserNotFound) {
     // Calls findUser - fake that user was not found
     EXPECT_CALL(*dpMock, findUserByPin(_))
             .WillOnce(Return(
-                entity::User("", "", "", "", "", "", "", "")));
+                entity::User("", "", "", "")));
     // Calls showInvalidPINScreen
     EXPECT_CALL(*viewMock, showUserNotFoundScreen());
     // Returns empty

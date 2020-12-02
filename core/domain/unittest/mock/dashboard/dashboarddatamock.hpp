@@ -35,6 +35,7 @@ class DashboardDataMock : public DashboardDataInterface {
     ~DashboardDataMock() = default;
 
     MOCK_METHOD(entity::User, getUserByID, (const std::string& userID));
+    MOCK_METHOD(entity::Employee, getEmployeeInformation, (const std::string& employeeID));
 };
 
 }  // namespace dashboard

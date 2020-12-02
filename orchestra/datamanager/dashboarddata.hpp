@@ -31,6 +31,7 @@ class DashboardDataProvider : public domain::dashboard::DashboardDataInterface {
     DashboardDataProvider() = default;
     virtual ~DashboardDataProvider() = default;
     entity::User getUserByID(const std::string& userID) override;
+    entity::Employee getEmployeeInformation(const std::string& employeeID) override;
 };
 
 }  // namespace dashboard

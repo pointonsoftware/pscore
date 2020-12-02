@@ -43,7 +43,6 @@ struct SaveEmployeeData {
     // [in]
     const entity::Employee& employee;
     // [in] Fill only if employee is a system-user
-    const std::string& displayName;
     const std::string& PIN;
     // [out]
     std::map<std::string, std::string>* validationResult;

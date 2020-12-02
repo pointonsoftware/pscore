@@ -49,7 +49,13 @@ class StackDB {
         std::string birthdate;
         std::string gender;
         std::string position;
+    };
+
+    struct UserTableItem {
+        std::string userID;
+        std::string role;
         std::string PIN;
+        std::string employeeID;  // Links to Employee ID
     };
 
     struct AddressTableItem {
@@ -84,6 +90,10 @@ class StackDB {
         return EMPLOYEES_TABLE;
     }
 
+    inline std::vector<UserTableItem>& SELECT_USERS_TABLE() const {
+        return USERS_TABLE;
+    }
+
     inline std::vector<AddressTableItem>& SELECT_ADDRESS_TABLE() const {
         return ADDRESS_TABLE;
     }
@@ -100,6 +110,8 @@ class StackDB {
     StackDB();
     // employees storage
     static std::vector<EmployeeTableItem> EMPLOYEES_TABLE;
+    // employees storage
+    static std::vector<UserTableItem> USERS_TABLE;
     // address storage - of all persons
     static std::vector<AddressTableItem> ADDRESS_TABLE;
     // contacts storage - of all persons

@@ -22,24 +22,34 @@
 #include <algorithm>
 #include <vector>
 #include <storage/stackdb.hpp>
-
 namespace dataprovider {
 namespace dashboard {
 
 entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
-    // SELECT UNION(employeestable, addresstable, contactstable, personalIDtable) WHERE ID = userID
-    entity::User user = [userID]() {
+    const entity::User user = [userID]() {
+        for (const db::StackDB::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
+            if (temp.userID == userID) {
+                return entity::User(temp.userID, temp.role, temp.PIN, temp.employeeID);
+            }
+        }
+        // Return empty if not found
+        return entity::User();
+    }();
+    return user;
+}
+
+entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string& employeeID) {
+    const entity::Employee employee = [employeeID]() {
         for (const db::StackDB::EmployeeTableItem& temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
-            if (temp.employeeID == userID) {
-                entity::User foundUser(
+            if (temp.employeeID == employeeID) {
+                entity::Employee foundUser(
                     temp.firstname,
                     temp.middlename,
                     temp.lastname,
                     temp.birthdate,
                     temp.gender,
                     temp.employeeID,
-                    temp.position,
-                    temp.PIN);
+                    temp.position);
                 // Get Address
                 [&foundUser]() {
                     const std::vector<db::StackDB::AddressTableItem>::iterator it =
@@ -92,9 +102,9 @@ entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
             }
         }
         // Return empty if not found
-        return entity::User();
+        return entity::Employee();
     }();
-    return user;
+    return employee;
 }
 
 }  // namespace dashboard

@@ -76,7 +76,7 @@ class Employee : public Person {
 
     /*!
      * Generate ID for the employee object
-     * Note: this should only be called when creating a new employee/user
+     * Note: this should only be called when creating a new employee
      *
      * ID format - [YY][unique-five-digit-number]
      * e.g. - 2021135
@@ -87,6 +87,7 @@ class Employee : public Person {
      *
      * Return true if successful; false if employee ID was already set
     */
+    // Todo (code) - remove this function and use the utility class from the controllers
     bool generateID();
 
  protected:

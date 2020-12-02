@@ -182,7 +182,7 @@ void EmployeeMgmtScreen::createEmployee() {
     std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
     std::map<std::string, std::string> validationResult;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
-    entity::Employee* newEmployee = new entity::User();
+    entity::Employee* newEmployee = new entity::Employee();
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
@@ -209,15 +209,13 @@ void EmployeeMgmtScreen::createEmployee() {
 
             if (!isSystemUser) {
                 // non-user, add the employee
-                return mCoreEmployeeMgmt->save({*newEmployee, "", "", &validationResult});
+                return mCoreEmployeeMgmt->save({*newEmployee, "", &validationResult});
             } else {
                 // Employee is a system user
                 newEmployee->setIsSystemUser(true);
-                // User display name
-                const std::string dpName = SCREENCOMMON().getInput("Display Name");
                 // User PIN
                 const std::string pin = SCREENCOMMON().getInput("PIN");
-                return mCoreEmployeeMgmt->save({*newEmployee, dpName, pin, &validationResult});
+                return mCoreEmployeeMgmt->save({*newEmployee, pin, &validationResult});
             }
         }();
 

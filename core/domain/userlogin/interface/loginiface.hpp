@@ -33,6 +33,10 @@ class LoginControlInterface {
  public:
     LoginControlInterface() = default;
     virtual ~LoginControlInterface() = default;
+    /*!
+     * Login with PIN
+     * Returns the userID if successful; otherwise, will return empty
+    */
     virtual std::string loginWithPIN(const std::string& pin) = 0;
 };
 

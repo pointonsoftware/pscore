@@ -29,6 +29,9 @@ namespace entity {
 namespace validator {
 /*!
  * Validation Rules:
+ * - User ID must not be empty
+ * - Role must not be empty
+ * - Employee ID can be empty
  * - PIN must only be a four digit numeric value
 */
 constexpr unsigned int PIN_SIZE = 4;
@@ -41,6 +44,8 @@ class UserValidator : public Validator {
  private:
     const User mUser;
     // Validation functions
+    ValidationStatus validateUserID();
+    ValidationStatus validateRole();
     ValidationStatus validatePIN();
 };
 

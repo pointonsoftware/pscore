@@ -22,18 +22,12 @@
 
 namespace entity {
 
-User::User(const std::string& firstname,
-           const std::string& middlename,
-           const std::string& lastname,
-           const std::string& birthdate,
-           const std::string& gender,
-           const std::string& employeeID,
-           const std::string& position,
-           const std::string& pin)
-: Employee{firstname, middlename, lastname, birthdate, gender, employeeID, position,
-           Employee::Status::ACTIVE, true},
-  mPIN(pin) {
-    // Empty for now
+User::User(const std::string& userID,
+         const std::string& role,
+         const std::string& pin,
+         const std::string& employeeID)
+         : mUserID(userID), mRole(role), mPIN(pin), mEmployeeID(employeeID) {
+        // Empty for now
 }
 
 }  // namespace entity

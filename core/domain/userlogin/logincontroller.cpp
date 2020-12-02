@@ -61,7 +61,7 @@ std::string LoginController::loginWithPIN(const std::string& pin) {
     }
 
     LOG_INFO("User with PIN %s was found", pin.c_str());
-    return userInfo.employeeID();
+    return userInfo.userID();
 }
 
 AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* user) {
@@ -88,7 +88,7 @@ bool LoginController::isPinValid(const std::string& pin) const {
         return false;
     }
     {
-        entity::User userInfo("", "", "", "", "", "", "", pin);
+        entity::User userInfo("Proxy", "Proxy", pin, "Proxy");
         entity::validator::UserValidator validator(userInfo);
         // Check if its numeric and valid size
         if (!validator.result().empty()) {
@@ -102,8 +102,8 @@ bool LoginController::isPinValid(const std::string& pin) const {
 
 bool LoginController::isUserValid(const entity::User& userInfo) const {
     LOG_DEBUG("Validating user data");
-    // If default pin is found, that means the user data was not initialized
-    return !userInfo.employeeID().empty();
+    // If userID is empty, that means the user data was not initialized
+    return !userInfo.userID().empty();
 }
 
 std::unique_ptr<LoginControlInterface> createLoginModule(
