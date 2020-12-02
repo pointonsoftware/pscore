@@ -27,16 +27,6 @@
 namespace utility {
 namespace IdGenerator {
 
-std::string generateEmployeeID() {
-    // Substring the last two digit of the year + unique_number
-    return getDate().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
-}
-
-std::string generateUID(const std::string& p1, const std::string& p2) {
-    // first-letter-of-param1 + first-three-letters-of-param2 + three-digit-unique-number
-    return p1.at(0) + p2.substr(0, 2) + std::to_string(randomNumber(100, 999));
-}
-
 std::string getDate() {
     typedef std::chrono::system_clock Clock;
     auto now = Clock::now();
@@ -54,6 +44,16 @@ unsigned randomNumber(unsigned int low, unsigned int high) {
     // low = 0 ; high = 9  -  generates number for 0 to 9
     std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
     return dist6(rng);
+}
+
+std::string generateEmployeeID() {
+    // Substring the last two digit of the year + unique_number
+    return getDate().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
+}
+
+std::string generateUID(const std::string& p1, const std::string& p2) {
+    // first-letter-of-param1 + first-three-letters-of-param2 + three-digit-unique-number
+    return p1.at(0) + p2.substr(0, 2) + std::to_string(randomNumber(100, 999));
 }
 
 }  // namespace IdGenerator
