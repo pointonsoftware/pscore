@@ -87,6 +87,10 @@ DASHSTATUS DashboardController::getUserData(entity::User* container) const {
 
 entity::Employee DashboardController::getUserDetails(const entity::User& user) {
     LOG_DEBUG("Getting employee details");
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
+        return entity::Employee();
+    }
     // Validate user info
     if (!isUserValid(user)) {
         LOG_ERROR("UserID %s was not found", mCurrentUserID.c_str());
