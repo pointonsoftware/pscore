@@ -86,6 +86,7 @@ DASHSTATUS DashboardController::getUserData(entity::User* container) const {
 }
 
 entity::Employee DashboardController::getUserDetails(const entity::User& user) {
+    LOG_DEBUG("Getting employee details");
     // Validate user info
     if (!isUserValid(user)) {
         LOG_ERROR("UserID %s was not found", mCurrentUserID.c_str());
@@ -99,14 +100,20 @@ entity::Employee DashboardController::getUserDetails(const entity::User& user) {
     }
     // Retrieve employee data
     entity::Employee temp;
-    if (getEmployeeData(&temp) != DASHSTATUS::SUCCESS) {
+    if (getEmployeeData(user.employeeID(), &temp) != DASHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
+        return entity::Employee();
+    }
+    if (temp.employeeID().empty()) {
+        LOG_ERROR("Failed to retrieve employee data for user %s", mCurrentUserID.c_str());
+        mView->showUserNotFound();
         return entity::Employee();
     }
     return temp;
 }
 
-DASHSTATUS DashboardController::getEmployeeData(entity::Employee* container) const {
+DASHSTATUS DashboardController::getEmployeeData(const std::string& employeeID,
+                                                entity::Employee* container) const {
     if (!container) {
         LOG_ERROR("Invalid user argument");
         return DASHSTATUS::FAILED;
@@ -117,7 +124,7 @@ DASHSTATUS DashboardController::getEmployeeData(entity::Employee* container) con
     }
     LOG_DEBUG("Retrieving employee data");
     // todo (xxx) : Check if dataprovider is ready; else throw
-    *container = mDataProvider->getEmployeeInformation(container->employeeID());
+    *container = mDataProvider->getEmployeeInformation(employeeID);
     return DASHSTATUS::SUCCESS;
 }
 

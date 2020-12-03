@@ -49,7 +49,7 @@ class DashboardController : public DashboardControlInterface {
     std::shared_ptr<DashboardViewInterface> mView;
     std::string mCurrentUserID;
     DASHSTATUS getUserData(entity::User* container) const;
-    DASHSTATUS getEmployeeData(entity::Employee* container) const;
+    DASHSTATUS getEmployeeData(const std::string& employeeID, entity::Employee* container) const;
     bool isUserValid(const entity::User& userInfo) const;
 };
 

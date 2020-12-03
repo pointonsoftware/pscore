@@ -20,8 +20,9 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
-#include <string>
 #include <future>
+#include <memory>
+#include <string>
 #include <domain/dashboard/interface/dashboardiface.hpp>
 #include <domain/dashboard/interface/dashboardviewif.hpp>
 #include <screeniface.hpp>

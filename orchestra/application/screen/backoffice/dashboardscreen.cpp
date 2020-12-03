@@ -20,8 +20,6 @@
 **************************************************************************************************/
 #include "dashboardscreen.hpp"
 #include <iostream>
-#include <memory>
-#include <string>
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -76,8 +74,9 @@ void DashboardScreen::showOptions() const {
 
 void DashboardScreen::showUserInformation() const {
     SCREENCOMMON().showTopBanner("User Information");
-    if(!mCurrentUser.employeeID().empty()) {
-        screen::InformationScreen<entity::Employee> userInfoScreen(mCoreDashboard->getUserDetails(mCurrentUser));
+    if (!mCurrentUser.employeeID().empty()) {
+        entity::Employee emp = mCoreDashboard->getUserDetails(mCurrentUser);
+        screen::InformationScreen<entity::Employee> userInfoScreen(emp);
         userInfoScreen.showBasicInformation();
         userInfoScreen.showContactDetails();
         userInfoScreen.showUserAddress();
