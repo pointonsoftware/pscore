@@ -41,12 +41,15 @@ class DashboardController : public DashboardControlInterface {
     virtual ~DashboardController() = default;
 
     void setCurrentUserId(const std::string& userID) override;
-    entity::User getCurrentUserInfo() override;
+    entity::User getCurrentUser() override;
+    entity::Employee getUserDetails(const entity::User& user) override;
+
  private:
     std::shared_ptr<DashboardDataInterface> mDataProvider;
     std::shared_ptr<DashboardViewInterface> mView;
     std::string mCurrentUserID;
-    DASHSTATUS getCurrentUserInfo(entity::User* userInfoContainer) const;
+    DASHSTATUS getUserData(entity::User* container) const;
+    DASHSTATUS getEmployeeData(const std::string& employeeID, entity::Employee* container) const;
     bool isUserValid(const entity::User& userInfo) const;
 };
 

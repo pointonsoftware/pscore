@@ -63,32 +63,25 @@ void EmployeeDataProvider::create(const entity::Employee& employee) {
             employee.lastName(),
             employee.birthdate(),
             employee.gender(),
-            employee.position(),
-            ""});
+            employee.position()});
 
     writeEmployeeDetails(employee);
 }
 
 void EmployeeDataProvider::create(const entity::User& user) {
-    if (std::find_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
-                            DATABASE().SELECT_EMPLOYEES_TABLE().end(),
-                            [&user](const db::StackDB::EmployeeTableItem& e) {
-                               return e.employeeID == user.employeeID();
-                            }) != DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
-        // If employee ID exists, don't proceed!
+    if (std::find_if(DATABASE().SELECT_USERS_TABLE().begin(),
+                            DATABASE().SELECT_USERS_TABLE().end(),
+                            [&user](const db::StackDB::UserTableItem& e) {
+                               return e.userID == user.userID();
+                            }) != DATABASE().SELECT_USERS_TABLE().end()) {
+        // If User ID exists, don't proceed!
         return;
     }
-    DATABASE().SELECT_EMPLOYEES_TABLE().emplace_back(db::StackDB::EmployeeTableItem {
-            user.employeeID(),
-            user.firstName(),
-            user.middleName(),
-            user.lastName(),
-            user.birthdate(),
-            user.gender(),
-            user.position(),
-            user.pin()});
-
-    writeEmployeeDetails(dynamic_cast<const entity::Employee&>(user));
+    DATABASE().SELECT_USERS_TABLE().emplace_back(db::StackDB::UserTableItem {
+            user.userID(),
+            user.role(),
+            user.pin(),
+            user.employeeID()});
 }
 
 void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee) const {

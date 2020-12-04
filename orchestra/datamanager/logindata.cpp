@@ -27,9 +27,9 @@ namespace login {
 entity::User LoginDataProvider::findUserByPin(const std::string& inputPin) {
     // SELECT * WHERE PIN = inputPin
     const entity::User user = [inputPin]() {
-        for (const db::StackDB::EmployeeTableItem& temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
+        for (const db::StackDB::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
             if (temp.PIN == inputPin) {
-                return entity::User("", "", "", "", "", temp.employeeID, temp.position, temp.PIN);
+                return entity::User(temp.userID, temp.role, temp.PIN, temp.employeeID);
             }
         }
         return entity::User();

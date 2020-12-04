@@ -20,8 +20,10 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
-#include <string>
 #include <future>
+#include <memory>
+#include <string>
+#include <domain/dashboard/interface/dashboardiface.hpp>
 #include <domain/dashboard/interface/dashboardviewif.hpp>
 #include <screeniface.hpp>
 #include <entity/user.hpp>
@@ -64,6 +66,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     void invalidOptionSelected() const;
     Options getUserSelection() const;
     bool action(Options option, std::promise<defines::display>* nextScreen) const;
+    std::unique_ptr<domain::dashboard::DashboardControlInterface> mCoreDashboard;
 };
 
 }  // namespace backoffice

@@ -20,13 +20,10 @@
 **************************************************************************************************/
 #include "dashboardscreen.hpp"
 #include <iostream>
-#include <memory>
-#include <string>
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
-// core
-#include <domain/dashboard/interface/dashboardiface.hpp>
+
 // data
 #include <dashboarddata.hpp>
 
@@ -38,15 +35,13 @@ DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
 }
 
 void DashboardScreen::show(std::promise<defines::display>* promise) {
-    using domain::dashboard::DashboardControlInterface;
-    std::unique_ptr<DashboardControlInterface> coreDashboard
-        = domain::dashboard::createDashboardModule(
+    mCoreDashboard = domain::dashboard::createDashboardModule(
                 std::make_shared<dataprovider::dashboard::DashboardDataProvider>(),
-                std::make_shared<DashboardScreen>(*this));
-    coreDashboard->setCurrentUserId(mUserID);
-    mCurrentUser = coreDashboard->getCurrentUserInfo();
+                std::make_shared<DashboardScreen>(mUserID));
+    mCoreDashboard->setCurrentUserId(mUserID);
+    mCurrentUser = mCoreDashboard->getCurrentUser();
 
-    if (!mCurrentUser.employeeID().empty()) {
+    if (!mCurrentUser.userID().empty()) {
         // Valid user, proceed to menu selection
         menuSelection(promise);
     } else {
@@ -65,7 +60,7 @@ void DashboardScreen::menuSelection(std::promise<defines::display>* promise) con
 
 void DashboardScreen::showLandingScreen() const {
     SCREENCOMMON().showTopBanner("Dashboard");
-    std::cout << "Hi " << mCurrentUser.getFullName()
+    std::cout << "Hi " << mCurrentUser.userID()
               << ", please select an option below." << std::endl;
     showOptions();
 }
@@ -79,11 +74,16 @@ void DashboardScreen::showOptions() const {
 
 void DashboardScreen::showUserInformation() const {
     SCREENCOMMON().showTopBanner("User Information");
-    screen::InformationScreen<entity::User> userInfoScreen(mCurrentUser);
-    userInfoScreen.showBasicInformation();
-    userInfoScreen.showContactDetails();
-    userInfoScreen.showUserAddress();
-    userInfoScreen.showUserPersonalIds();
+    if (!mCurrentUser.employeeID().empty()) {
+        entity::Employee emp = mCoreDashboard->getUserDetails(mCurrentUser);
+        screen::InformationScreen<entity::Employee> userInfoScreen(emp);
+        userInfoScreen.showBasicInformation();
+        userInfoScreen.showContactDetails();
+        userInfoScreen.showUserAddress();
+        userInfoScreen.showUserPersonalIds();
+    } else {
+        std::cout << "No data." << std::endl;
+    }
     std::cout << std::endl << std::endl;
     std::cout << "Enter [b] to go back." << std::endl;
 }

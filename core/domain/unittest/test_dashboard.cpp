@@ -56,18 +56,18 @@ TEST_F(TestDashboard, GetCurrentUserInfoSuccess) {
      * According to the API, we should set the current userID
      * before calling getCurrentUserInfo()
     */
-    const std::string dummyUserId = "1234";
+    const std::string dummyUserId = "JDOE123";
     dashController.setCurrentUserId(dummyUserId);
 
     // We expect that data provider will perform getUserByID()
     EXPECT_CALL(*dataMock, getUserByID(dummyUserId))
     // Fake that we found a user
         .WillOnce(Return(
-        entity::User("Ben", "H", "Gar", "12/12/1212", "M", dummyUserId, "admin", "1111")));
+        entity::User(dummyUserId, "Manager", "1111", "dummyEmployeeID")));
 
-    entity::User dummyUser = dashController.getCurrentUserInfo();
-    // The employeeID must not be empty
-    ASSERT_NE(dummyUser.employeeID(), "");
+    entity::User dummyUser = dashController.getCurrentUser();
+    // The userID must not be empty
+    ASSERT_NE(dummyUser.userID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserNotFound) {
@@ -75,7 +75,7 @@ TEST_F(TestDashboard, GetCurrentUserNotFound) {
      * According to the API, we should set the current userID
      * before calling getCurrentUserInfo()
     */
-    const std::string dummyUserId = "1234";
+    const std::string dummyUserId = "JDOE123";
     dashController.setCurrentUserId(dummyUserId);
 
     // We expect that data provider will perform getUserByID()
@@ -85,9 +85,9 @@ TEST_F(TestDashboard, GetCurrentUserNotFound) {
     // We should show an information in the screen
     EXPECT_CALL(*viewMock, showUserNotFound());
 
-    entity::User dummyUser = dashController.getCurrentUserInfo();
-    // The employeeID must be empty
-    ASSERT_EQ(dummyUser.employeeID(), "");
+    entity::User dummyUser = dashController.getCurrentUser();
+    // The userID must be empty
+    ASSERT_EQ(dummyUser.userID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserWithEmptyUserID) {
@@ -98,16 +98,16 @@ TEST_F(TestDashboard, GetCurrentUserWithEmptyUserID) {
     // We should show an information in the screen
     EXPECT_CALL(*viewMock, showUserNotFound());
 
-    entity::User dummyUser = dashController.getCurrentUserInfo();
-    // employeeID must be empty
-    ASSERT_EQ(dummyUser.employeeID(), "");
+    entity::User dummyUser = dashController.getCurrentUser();
+    // userID must be empty
+    ASSERT_EQ(dummyUser.userID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserViewNotInitialized) {
     DashboardController dashboardController(dataMock, nullptr);
-    entity::User dummyUser = dashboardController.getCurrentUserInfo();
-    // employeeID must be empty
-    ASSERT_EQ(dummyUser.employeeID(), "");
+    entity::User dummyUser = dashboardController.getCurrentUser();
+    // userID must be empty
+    ASSERT_EQ(dummyUser.userID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserWithDataProviderNotInitialized) {
@@ -117,15 +117,107 @@ TEST_F(TestDashboard, GetCurrentUserWithDataProviderNotInitialized) {
      * According to the API, we should set the current userID
      * before calling getCurrentUserInfo()
     */
-    const std::string dummyUserId = "1234";
+    const std::string dummyUserId = "JDOE123";
     dashboardController.setCurrentUserId(dummyUserId);
 
     // We should inform the user
     EXPECT_CALL(*viewMock, showDataNotReadyScreen());
 
-    entity::User dummyUser = dashboardController.getCurrentUserInfo();
+    entity::User dummyUser = dashboardController.getCurrentUser();
+    // userID must be empty
+    ASSERT_EQ(dummyUser.userID(), "");
+}
+
+
+
+TEST_F(TestDashboard, GetCurrentUserDetailsSuccess) {
+    /* Pre-condition
+     * According to the API, we should set the current userID
+     * before calling getCurrentUserInfo()
+    */
+    const std::string dummyUserId = "JDOE123";
+    const std::string dummyEmployeeId = "202012344";
+    dashController.setCurrentUserId(dummyUserId);
+    // Fake current user
+    entity::User dummyUser(dummyUserId, "Manager", "1111", dummyEmployeeId);
+
+    // We expect that data provider will perform getEmployeeInformation()
+    EXPECT_CALL(*dataMock, getEmployeeInformation(dummyEmployeeId))
+    // Fake that we found the employee details
+        .WillOnce(Return(entity::Employee("DummyFname",
+                         "DummyMname",
+                         "DummyLname",
+                         "DummyBdate",
+                         "DummyGender",
+                         dummyEmployeeId,
+                         "DummyPosition",
+                         entity::Employee::Status::ACTIVE)));
+
+    entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
+    // The employeeID must be the same
+    ASSERT_EQ(dummyEmployee.employeeID(), dummyEmployeeId);
+    // The user's full name must not be empty
+    ASSERT_NE(dummyEmployee.getFullName(), "");
+}
+
+TEST_F(TestDashboard, GetCurrentUserDataNotFound) {
+    /* Pre-condition
+     * According to the API, we should set the current userID
+     * before calling getCurrentUserInfo()
+    */
+    const std::string dummyUserId = "JDOE123";
+    const std::string dummyEmployeeId = "202012344";
+    dashController.setCurrentUserId(dummyUserId);
+    // Fake current user
+    entity::User dummyUser(dummyUserId, "Manager", "1111", dummyEmployeeId);
+
+    // We expect that data provider will perform getEmployeeInformation()
+    EXPECT_CALL(*dataMock, getEmployeeInformation(dummyEmployeeId))
+    // Fake that we did NOT found the employee data by returning an empty data
+        .WillOnce(Return(entity::Employee()));
+    // We should show an information in the screen
+    EXPECT_CALL(*viewMock, showUserNotFound());
+
+    entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
+    // The employeeID must be empty
+    ASSERT_EQ(dummyEmployee.employeeID(), "");
+}
+
+TEST_F(TestDashboard, GetCurrentUserDataWithEmptyEmployeeID) {
+    // This case generally happens when a user is not an employee
+    // Fake current user
+    const std::string dummyUserId = "JDOE123";
+    // Fake that employeeID is empty (i.e. user is not an employee)
+    entity::User dummyUser(dummyUserId, "Manager", "1111", "");
+
+    // We should show an information in the screen
+    EXPECT_CALL(*viewMock, showUserNotFound());
+
+    entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
+    // The employeeID must be empty
+    ASSERT_EQ(dummyEmployee.employeeID(), "");
+}
+
+TEST_F(TestDashboard, GetCurrentUserDataWithViewNotInitialized) {
+    DashboardController dashboardController(dataMock, nullptr);
+    entity::User dummyUser;
+    entity::Employee dummyEmployee = dashboardController.getUserDetails(dummyUser);
     // employeeID must be empty
-    ASSERT_EQ(dummyUser.employeeID(), "");
+    ASSERT_EQ(dummyEmployee.employeeID(), "");
+}
+
+TEST_F(TestDashboard, GetCurrentUserDataWithDataProviderNotInitialized) {
+    DashboardController dashboardController(nullptr, viewMock);
+    const std::string dummyUserId = "JDOE123";
+    const std::string dummyEmployeeId = "202012344";
+    // Fake current user
+    entity::User dummyUser(dummyUserId, "Manager", "1111", dummyEmployeeId);
+    // We should inform the user
+    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
+
+    entity::Employee dummyEmployee = dashboardController.getUserDetails(dummyUser);
+    // employeeID must be empty
+    ASSERT_EQ(dummyEmployee.employeeID(), "");
 }
 
 }  // namespace test

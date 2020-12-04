@@ -25,8 +25,24 @@ namespace entity {
 namespace validator {
 
 UserValidator::UserValidator(const User& user) : mUser(user) {
+    validationFunctions.emplace_back(std::bind(&UserValidator::validateUserID, this));
+    validationFunctions.emplace_back(std::bind(&UserValidator::validateRole, this));
     validationFunctions.emplace_back(std::bind(&UserValidator::validatePIN, this));
     validate();
+}
+ValidationStatus UserValidator::validateUserID() {
+    if (mUser.userID().empty()) {
+        addError(FIELD_UID, " UserID must not be empty.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
+}
+ValidationStatus UserValidator::validateRole() {
+    if (mUser.role().empty()) {
+        addError(FIELD_ROLE, " Role must not be empty.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
 }
 
 ValidationStatus UserValidator::validatePIN() {

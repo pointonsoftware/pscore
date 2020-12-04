@@ -27,40 +27,49 @@
 namespace entity {
 
 // Fields
+constexpr char FIELD_UID[] = "Entity.Field.UserID";
+constexpr char FIELD_ROLE[] = "Entity.Field.Role";
 constexpr char FIELD_PIN[] = "Entity.Field.Pin";
-constexpr char FIELD_DPNAME[] = "Entity.Field.DisplayName";
 
-// Todo (code) - user entity must only contain:
-// EmployeeID
-// Position
-// Display Name (if empty, fullname will be displayed)
-// PIN
-class User : public Employee {
+class User {
  public:
-    User(const std::string& firstname,
-         const std::string& middlename,
-         const std::string& lastname,
-         const std::string& birthdate,
-         const std::string& gender,
-         const std::string& employeeID,
-         const std::string& position,
-         const std::string& pin);
+    User(const std::string& userID,
+         const std::string& role,
+         const std::string& pin,
+         const std::string& employeeID = "");
     User() = default;
     ~User() = default;
 
+    // Setters
+    void setRole(const std::string& role) {
+        mRole = role;
+    }
     void setPIN(const std::string& pin) {
         mPIN = pin;
     }
+    void setEmployeeID(const std::string& employeeID) {
+        mEmployeeID = employeeID;
+    }
 
+    // Getters
+    inline const std::string userID() const {
+        return mUserID;
+    }
+    inline const std::string role() const {
+        return mRole;
+    }
     inline const std::string pin() const {
         return mPIN;
     }
-    /*!
-     * Todo (spec): What is the business rule for user IDs?
-     * Here we're using employeeID as the userID (but this is subject to change)
-    */
- protected:
+    inline const std::string employeeID() const {
+        return mEmployeeID;
+    }
+
+ private:
+    std::string mUserID;
+    std::string mRole;
     std::string mPIN;
+    std::string mEmployeeID;
 };
 
 }  // namespace entity

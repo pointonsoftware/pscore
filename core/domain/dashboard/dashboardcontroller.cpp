@@ -40,7 +40,7 @@ void DashboardController::setCurrentUserId(const std::string& userID) {
     }
 }
 
-entity::User DashboardController::getCurrentUserInfo() {
+entity::User DashboardController::getCurrentUser() {
     LOG_DEBUG("Getting current user info");
     // Make sure view is valid
     if (!mView) {
@@ -55,7 +55,7 @@ entity::User DashboardController::getCurrentUserInfo() {
     }
     // Retrieve the userinfo from db using userID
     entity::User userInfo;
-    if (getCurrentUserInfo(&userInfo) != DASHSTATUS::SUCCESS) {
+    if (getUserData(&userInfo) != DASHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return entity::User();
     }
@@ -70,8 +70,8 @@ entity::User DashboardController::getCurrentUserInfo() {
     return userInfo;
 }
 
-DASHSTATUS DashboardController::getCurrentUserInfo(entity::User* userInfoContainer) const {
-    if (!userInfoContainer) {
+DASHSTATUS DashboardController::getUserData(entity::User* container) const {
+    if (!container) {
         LOG_ERROR("Invalid user argument");
         return DASHSTATUS::FAILED;
     }
@@ -81,14 +81,61 @@ DASHSTATUS DashboardController::getCurrentUserInfo(entity::User* userInfoContain
     }
     LOG_DEBUG("Retrieving user data");
     // todo (xxx) : Check if dataprovider is ready; else throw
-    *userInfoContainer = mDataProvider->getUserByID(mCurrentUserID);
+    *container = mDataProvider->getUserByID(mCurrentUserID);
+    return DASHSTATUS::SUCCESS;
+}
+
+entity::Employee DashboardController::getUserDetails(const entity::User& user) {
+    LOG_DEBUG("Getting employee details");
+    if (!mView) {
+        LOG_ERROR("View is not initialized");
+        return entity::Employee();
+    }
+    // Validate user info
+    if (!isUserValid(user)) {
+        LOG_ERROR("UserID %s was not found", mCurrentUserID.c_str());
+        mView->showUserNotFound();
+        return entity::Employee();
+    }
+    if (user.employeeID().empty()) {
+        LOG_ERROR("User is not an employee");
+        mView->showUserNotFound();
+        return entity::Employee();
+    }
+    // Retrieve employee data
+    entity::Employee temp;
+    if (getEmployeeData(user.employeeID(), &temp) != DASHSTATUS::SUCCESS) {
+        mView->showDataNotReadyScreen();
+        return entity::Employee();
+    }
+    if (temp.employeeID().empty()) {
+        LOG_ERROR("Failed to retrieve employee data for user %s", mCurrentUserID.c_str());
+        mView->showUserNotFound();
+        return entity::Employee();
+    }
+    return temp;
+}
+
+DASHSTATUS DashboardController::getEmployeeData(const std::string& employeeID,
+                                                entity::Employee* container) const {
+    if (!container) {
+        LOG_ERROR("Invalid user argument");
+        return DASHSTATUS::FAILED;
+    }
+    if (!mDataProvider) {
+        LOG_ERROR("Dataprovider is not initialized");
+        return DASHSTATUS::UNINITIALIZED;
+    }
+    LOG_DEBUG("Retrieving employee data");
+    // todo (xxx) : Check if dataprovider is ready; else throw
+    *container = mDataProvider->getEmployeeInformation(employeeID);
     return DASHSTATUS::SUCCESS;
 }
 
 bool DashboardController::isUserValid(const entity::User& userInfo) const {
     LOG_DEBUG("Validating user data");
-    // If employeeID is empty, that means the user data was not initialized
-    return !userInfo.employeeID().empty();
+    // If userID is empty, that means the user data was not initialized
+    return !userInfo.userID().empty();
 }
 
 std::unique_ptr<DashboardControlInterface> createDashboardModule(
