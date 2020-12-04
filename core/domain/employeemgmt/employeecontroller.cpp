@@ -114,11 +114,11 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
         employee.isSystemUser());
     LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
     mDataProvider->create(newEmployee);
-    // Todo (code) - uncomment for create user is ready
-    // if (employee.isSystemUser()) {
+    if (employee.isSystemUser()) {
+        entity::User newUser("ID", employee.position(), employeeData.PIN, employee.employeeID());
         // Todo (code) - Add a utility::generateUserID call here
-        // mDataProvider->Create(User);
-    // }
+        mDataProvider->create(newUser);
+    }
     /*!
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
