@@ -33,38 +33,45 @@ LoginController::LoginController(const std::shared_ptr<LoginDataProviderIface>& 
     // Empty for now
 }
 
-std::string LoginController::loginWithPIN(const std::string& pin) {
+bool LoginController::authenticate(const std::string& id, const std::string& pin) {
     // Make sure view is valid
     if (!mView) {
         LOG_ERROR("View is not initialized");
-        return "";
+        return false;
     }
-
+    if (id.empty()) {
+        LOG_WARN("ID is empty");
+        mView->showUserNotFoundScreen();
+        return false;
+    }
     // Validate the PIN
     if (!isPinValid(pin)) {
-        mView->showInvalidPINScreen();
-        return "";
+        mView->showUserNotFoundScreen();
+        return false;
     }
-
     // Get user info
     entity::User userInfo;
-    if (getUserByPIN(pin, &userInfo) != AUTHSTATUS::SUCCESS) {
+    if (getUser(utility::toUpper(id), &userInfo) != AUTHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
-        return "";
+        return false;
     }
-
     // Validate user info
     if (!isUserValid(userInfo)) {
-        LOG_WARN("User with PIN %s was not found", pin.c_str());
+        LOG_WARN("User with ID %s was not found", id.c_str());
         mView->showUserNotFoundScreen();
-        return "";
+        return false;
+    }
+    if (userInfo.pin() != pin) {
+        LOG_WARN("User ID and PIN did not match");
+        mView->showUserNotFoundScreen();
+        return false;
     }
 
     LOG_INFO("User with PIN %s was found", pin.c_str());
-    return userInfo.userID();
+    return true;
 }
 
-AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* user) {
+AUTHSTATUS LoginController::getUser(const std::string& id, entity::User* user) {
     if (!user) {
         LOG_ERROR("Invalid user argument");
         return AUTHSTATUS::FAILED;
@@ -76,8 +83,8 @@ AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* u
 
     // todo (xxx) : Check if dataprovider is ready; else throw
     LOG_DEBUG("Retrieving user data");
-    // Check pin in dataprovider
-    *user = mDataProvider->findUserByPin(pin);
+    // Check userID in dataprovider
+    *user = mDataProvider->findUserByID(id);
 
     return AUTHSTATUS::SUCCESS;
 }

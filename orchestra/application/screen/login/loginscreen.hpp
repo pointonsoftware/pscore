@@ -44,14 +44,13 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     void show(std::promise<defines::display>* promise) override;
 
     // Domain interface implementation
-    void showInvalidPINScreen() override;
     void showUserNotFoundScreen() override;
     void showDataNotReadyScreen() override;
 
  private:
     std::string mUserID;
     // Return true if successful
-    bool onLogin(const std::string& pin);
+    bool onLogin(const std::string& id, const std::string& pin);
 };
 
 }  // namespace login

@@ -33,7 +33,7 @@ class LoginDataMock : public LoginDataProviderIface {
  public:
     LoginDataMock() = default;
     ~LoginDataMock() = default;
-    MOCK_METHOD(entity::User, findUserByPin, (const std::string& inputPin));
+    MOCK_METHOD(entity::User, findUserByID, (const std::string& id));
 };
 
 }  // namespace login

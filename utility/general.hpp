@@ -21,7 +21,6 @@
 #ifndef UTILITY_GENERAL_HPP_
 #define UTILITY_GENERAL_HPP_
 
-#include <algorithm>
 #include <string>
 
 namespace utility {
@@ -33,6 +32,14 @@ extern bool isNumber(const std::string& str);
  * Checks if the string argument contains a number
 */
 extern bool hasNumber(const std::string& str);
+/*!
+ * Returns the uppercase string equivalent
+*/
+extern std::string toUpper(std::string str);
+/*!
+ * Returns the lowercase string equivalent
+*/
+extern std::string toLower(std::string str);
 }  // namespace utility
 
 #endif  // UTILITY_GENERAL_HPP_

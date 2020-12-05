@@ -57,75 +57,93 @@ TEST_F(TestLogin, LoginShouldSucceed) {
     const std::string dummyPin = "1234";
     const std::string dummyUID = "JDOE123";
     // Calls findUser
-    EXPECT_CALL(*dpMock, findUserByPin(dummyPin))
+    EXPECT_CALL(*dpMock, findUserByID(dummyUID))
             .WillOnce(Return(
                 entity::User(dummyUID, "Manager", dummyPin, "DummyEmployeeID")));
-    // Returns the userID
-    ASSERT_EQ(loginController.loginWithPIN(dummyPin), dummyUID);
+    // Successful
+    ASSERT_TRUE(loginController.authenticate(dummyUID, dummyPin));
 }
 
 TEST_F(TestLogin, LoginUserNotFound) {
     const std::string dummyPin = "1234";
+    const std::string dummyUID = "JDOE123";
     // Calls findUser - fake that user was not found
-    EXPECT_CALL(*dpMock, findUserByPin(_))
+    EXPECT_CALL(*dpMock, findUserByID(_))
             .WillOnce(Return(
                 entity::User("", "", "", "")));
-    // Calls showInvalidPINScreen
+    // Calls showUserNotFoundScreen
     EXPECT_CALL(*viewMock, showUserNotFoundScreen());
-    // Returns empty
-    ASSERT_EQ(loginController.loginWithPIN(dummyPin), "");
+    ASSERT_FALSE(loginController.authenticate(dummyUID, dummyPin));
+}
+
+TEST_F(TestLogin, LoginUserIdAndPinDidNotMatch) {
+    const std::string dummyInputPin = "1111";
+    const std::string dummyUID = "JDOE123";
+    const std::string dummyStoredPin = "1234";
+    // Calls findUser - fake that user was found but PIN is different
+    EXPECT_CALL(*dpMock, findUserByID(_))
+            .WillOnce(Return(
+                entity::User(dummyUID, "Manager", dummyStoredPin, "DummyEmployeeID")));
+    // Calls showUserNotFoundScreen
+    EXPECT_CALL(*viewMock, showUserNotFoundScreen());
+    ASSERT_FALSE(loginController.authenticate(dummyUID, dummyInputPin));
+}
+
+TEST_F(TestLogin, LoginWithUserIDEmpty) {
+    const std::string dummyPin = "1234";
+    // Calls showUserNotFoundScreen
+    EXPECT_CALL(*viewMock, showUserNotFoundScreen());
+    ASSERT_FALSE(loginController.authenticate("", dummyPin));
 }
 
 TEST_F(TestLogin, LoginWithEmptyPIN) {
-    // Calls showInvalidPINScreen
-    EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns empty
-    ASSERT_EQ(loginController.loginWithPIN(""), "");
+    // Calls showUserNotFoundScreen
+    EXPECT_CALL(*viewMock, showUserNotFoundScreen());
+    ASSERT_FALSE(loginController.authenticate("JDOE123", ""));
 }
 
 TEST_F(TestLogin, LoginWithNonNumericPIN) {
-    // Calls showInvalidPINScreen
-    EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns empty
-    ASSERT_EQ(loginController.loginWithPIN("abcd"), "");
+    // Calls showUserNotFoundScreen
+    EXPECT_CALL(*viewMock, showUserNotFoundScreen());
+    ASSERT_FALSE(loginController.authenticate("JDOE123", "abcd"));
 }
 
 TEST_F(TestLogin, LoginWithFewCharacterPIN) {
     std::string dummyPIN;
+    const std::string dummyUID = "JDOE123";
     const unsigned int dummyPinSize = PIN_SIZE - 1;
     for (unsigned int i = 0; i < dummyPinSize; ++i) {
         dummyPIN.append("1");
     }
-    // Calls showInvalidPINScreen
-    EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns empty
-    ASSERT_EQ(loginController.loginWithPIN(dummyPIN), "");
+    // Calls showUserNotFoundScreen
+    EXPECT_CALL(*viewMock, showUserNotFoundScreen());
+    ASSERT_FALSE(loginController.authenticate(dummyUID, dummyPIN));
 }
 
 TEST_F(TestLogin, LoginWithTooManyCharacterPIN) {
     std::string dummyPIN;
+    const std::string dummyUID = "JDOE123";
     const unsigned int dummyPinSize = PIN_SIZE + 1;
     for (unsigned int i = 0; i < dummyPinSize; ++i) {
         dummyPIN.append("1");
     }
-    // Calls showInvalidPINScreen
-    EXPECT_CALL(*viewMock, showInvalidPINScreen());
-    // Returns empty
-    ASSERT_EQ(loginController.loginWithPIN(dummyPIN), "");
+    // Calls showUserNotFoundScreen
+    EXPECT_CALL(*viewMock, showUserNotFoundScreen());
+    ASSERT_FALSE(loginController.authenticate(dummyUID, dummyPIN));
 }
 
 TEST_F(TestLogin, LoginWithViewNotInitialized) {
+    const std::string dummyUID = "JDOE123";
     LoginController dummyController(dpMock, nullptr);
-    // Returns empty
-    ASSERT_EQ(dummyController.loginWithPIN("1234"), "");
+    ASSERT_FALSE(dummyController.authenticate(dummyUID, "1234"));
 }
 
 TEST_F(TestLogin, LoginWithDataProviderNotInitialized) {
+    const std::string dummyUID = "JDOE123";
     LoginController dummyController(nullptr, viewMock);
     // Calls showDataNotReadyScreen
     EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-    // Returns empty
-    ASSERT_EQ(dummyController.loginWithPIN("1234"), "");
+    ASSERT_FALSE(dummyController.authenticate(dummyUID, "1234"));
 }
 
 }  // namespace test

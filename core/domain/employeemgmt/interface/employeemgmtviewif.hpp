@@ -51,6 +51,11 @@ class EmployeeMgmtViewInterface {
      * showEmployeeExists
     */
     virtual void showEmployeeExists(const std::string& name) = 0;
+    /*!
+     * User successfully created
+    */
+    virtual void showUserSuccessfullyCreated(const std::string& name,
+                                             const std::string& userID) = 0;
 };
 
 }  // namespace empmgmt

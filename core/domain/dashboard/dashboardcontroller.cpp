@@ -22,6 +22,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <general.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
 
 namespace domain {
@@ -36,7 +37,7 @@ DashboardController::DashboardController(const std::shared_ptr<DashboardDataInte
 void DashboardController::setCurrentUserId(const std::string& userID) {
     if (!userID.empty()) {
         LOG_INFO("Setting current user ID to: %s", userID.c_str());
-        mCurrentUserID = userID;
+        mCurrentUserID = utility::toUpper(userID);
     }
 }
 

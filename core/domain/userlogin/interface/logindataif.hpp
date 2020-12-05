@@ -32,14 +32,14 @@ class LoginDataProviderIface {
     virtual ~LoginDataProviderIface() = default;
 
     /*!
-     * entity::User findUserByPin(const std::string& pin)
-     * Looks for the user that's assigned with the pin argument
+     * entity::User findUserByID(const std::string& id)
+     * Looks for the user that's assigned with the ID argument
      * Will return empty user.userID() if user is not found.
      *
-     * [in] input pin
-     * [return] user class
+     * [in] input ID
+     * [return] user entity class
     */
-    virtual entity::User findUserByPin(const std::string& inputPin) = 0;
+    virtual entity::User findUserByID(const std::string& id) = 0;
 };
 
 }  // namespace login
