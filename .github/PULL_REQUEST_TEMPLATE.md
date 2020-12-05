@@ -1,6 +1,6 @@
 ### Pull Request Checklist
 
-- [ ] I have ensured that my commit message contains the Jira ID.
+- [ ] I have ensured that my commit message contains the Issue ID.
 - [ ] I have ensured that my commit message contains the feature/bugfix description.
 - [ ] I have updated the documentation accordingly.
 - [ ] I have ensured my code follows the coding guidelines.
