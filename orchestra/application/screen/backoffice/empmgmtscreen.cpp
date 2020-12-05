@@ -241,11 +241,8 @@ void EmployeeMgmtScreen::createEmployee() {
 
 void EmployeeMgmtScreen::updateEmployee() {
     showEmployeeInformation(true);  // true - request to show the index # of each data
-    std::cout << std::endl << "Update employee - select the data [number] to edit" << std::endl;
-    std::map<std::string, std::string> validationResult;
-    std::vector<std::string> requiredFields;  // Used to request re-input of fields
-    entity::Employee selectedEmployee;
-    std::cout << std::endl << "Updating - type [space] for empty entry" << std::endl;
+    std::cout << std::endl << "Select the data [number] to edit > " << std::endl;
+    // fillEmployeeInformation(requiredField);
 }
 
 void EmployeeMgmtScreen::removeEmployee() {

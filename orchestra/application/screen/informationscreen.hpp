@@ -32,9 +32,6 @@ class InformationScreen {
  public:
     explicit InformationScreen(const T& t) : mInfo(&t) {}
     ~InformationScreen() = default;
-    void showItemIndex(bool show) {
-        mShowIndex = show;
-    }
 
     void showBasicInformation() {
         SCREENCOMMON().printColumns({"Basic Info"}, true);
@@ -42,6 +39,7 @@ class InformationScreen {
         printItem("Middle Name", mInfo->middleName());
         printItem("Last Name", mInfo->lastName());
         printItem("Birthdate", mInfo->birthdate());
+        printItem("Gender", mInfo->gender());
     }
 
     void showContactDetails() {
@@ -70,7 +68,7 @@ class InformationScreen {
         SCREENCOMMON().printColumns({"Personal Identification"}, true);
         for (size_t count = 1; count <= mInfo->personalIds().size(); ++count) {
             const std::string details(mInfo->personalIds()[count-1].type
-                                + defines::DELIMETER_DASH
+                                + " " + defines::DELIMETER_DASH + " "
                                 + mInfo->personalIds()[count-1].id_number);
             printItem("ID " + std::to_string(count), details);
         }
@@ -80,6 +78,10 @@ class InformationScreen {
         std::cout << std::endl << std::endl;
         SCREENCOMMON().printColumns({"[u] - Update", "[d] - Delete", "[b] - Back"},
                                     true, false);
+    }
+
+    void showItemIndex(bool show) {
+        mShowIndex = show;
     }
 
  private:

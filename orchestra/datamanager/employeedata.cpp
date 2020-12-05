@@ -196,7 +196,7 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
             for (const db::StackDB::PersonalIdTableItem& e :
                  DATABASE().SELECT_PERSONAL_ID_TABLE()) {
                 if (e.ID == employee->employeeID()) {
-                    employee->addPersonalId(e.id_number, e.id_number);
+                    employee->addPersonalId(e.type, e.id_number);
                 }
             }
         }();
