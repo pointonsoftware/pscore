@@ -182,7 +182,7 @@ void EmployeeMgmtScreen::createEmployee() {
     std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
     std::map<std::string, std::string> validationResult;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
-    entity::Employee* newEmployee = new entity::Employee();
+    entity::Employee newEmployee;
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
@@ -190,11 +190,11 @@ void EmployeeMgmtScreen::createEmployee() {
      *                   do you want to update this employee instead?"
     */
     do {
-        fillEmployeeInformation(newEmployee, failedFields);
+        fillEmployeeInformation(&newEmployee, failedFields);
         const domain::empmgmt::USERSMGMTSTATUS status =
             [this, &newEmployee, &validationResult, &failedFields]() {
             const bool isSystemUser = [&newEmployee, &failedFields]() {
-                if (newEmployee->isSystemUser()) {
+                if (newEmployee.isSystemUser()) {
                     return true;
                 }
                 if (failedFields.empty()) {
@@ -209,13 +209,13 @@ void EmployeeMgmtScreen::createEmployee() {
 
             if (!isSystemUser) {
                 // non-user, add the employee
-                return mCoreEmployeeMgmt->save({*newEmployee, "", &validationResult});
+                return mCoreEmployeeMgmt->save({newEmployee, "", &validationResult});
             } else {
                 // Employee is a system user
-                newEmployee->setIsSystemUser(true);
+                newEmployee.setIsSystemUser(true);
                 // User PIN
                 const std::string pin = SCREENCOMMON().getInput("PIN");
-                return mCoreEmployeeMgmt->save({*newEmployee, pin, &validationResult});
+                return mCoreEmployeeMgmt->save({newEmployee, pin, &validationResult});
             }
         }();
 
@@ -233,12 +233,10 @@ void EmployeeMgmtScreen::createEmployee() {
             std::cin.ignore();
             std::cin.get();
         } else {
-            std::cout << "Employee " << newEmployee->getFullName()
+            std::cout << "Employee " << newEmployee.getFullName()
                     << " added successfully!" << std::endl;
         }
     } while (!failedFields.empty());  // repeat input until new employee is created
-    // delete the heap object
-    delete newEmployee;
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
