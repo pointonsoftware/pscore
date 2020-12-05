@@ -88,14 +88,11 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
             }();
             // Get personal IDs
             [&foundUser]() {
-                const std::vector<db::StackDB::PersonalIdTableItem>::iterator it =
-                    std::find_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
-                                 DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
-                                 [&foundUser](const db::StackDB::PersonalIdTableItem &e) {
-                                     return e.ID == foundUser.employeeID();
-                                 });
-                if (it != DATABASE().SELECT_PERSONAL_ID_TABLE().end()) {
-                    foundUser.addPersonalId(it->type, it->id_number);
+                for (const db::StackDB::PersonalIdTableItem& e :
+                     DATABASE().SELECT_PERSONAL_ID_TABLE()) {
+                    if (e.ID == foundUser.employeeID()) {
+                        foundUser.addPersonalId(e.id_number, e.id_number);
+                    }
                 }
             }();
             return foundUser;

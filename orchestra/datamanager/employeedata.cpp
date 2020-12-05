@@ -193,14 +193,11 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
         }();
         // Get personal IDs
         [&employee]() {
-            const std::vector<db::StackDB::PersonalIdTableItem>::iterator it =
-                    std::find_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
-                                DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
-                                [&employee](const db::StackDB::PersonalIdTableItem& e) {
-                                    return e.ID == employee->employeeID();
-                                });
-            if (it != DATABASE().SELECT_PERSONAL_ID_TABLE().end()) {
-                employee->addPersonalId(it->type, it->id_number);
+            for (const db::StackDB::PersonalIdTableItem& e :
+                 DATABASE().SELECT_PERSONAL_ID_TABLE()) {
+                if (e.ID == employee->employeeID()) {
+                    employee->addPersonalId(e.id_number, e.id_number);
+                }
             }
         }();
 }
