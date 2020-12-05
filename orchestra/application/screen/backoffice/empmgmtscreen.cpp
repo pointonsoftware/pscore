@@ -239,6 +239,15 @@ void EmployeeMgmtScreen::createEmployee() {
     } while (!failedFields.empty());  // repeat input until new employee is created
 }
 
+void EmployeeMgmtScreen::updateEmployee() {
+    showEmployeeInformation(true);  // true - request to show the index # of each data
+    std::cout << std::endl << "Update employee - select the data [number] to edit" << std::endl;
+    std::map<std::string, std::string> validationResult;
+    std::vector<std::string> requiredFields;  // Used to request re-input of fields
+    entity::Employee selectedEmployee;
+    std::cout << std::endl << "Updating - type [space] for empty entry" << std::endl;
+}
+
 void EmployeeMgmtScreen::removeEmployee() {
     if (mCoreEmployeeMgmt->remove(mEmployeesGUITable[mSelectedEmployeeIndex - 1].employeeID())
           == domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
@@ -292,6 +301,8 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         return Options::EMPLOYEE_DETAILS;
     } else if (userInput == "c") {
         return Options::EMPLOYEE_CREATE;
+    } else if (userInput == "u") {
+        return Options::EMPLOYEE_UPDATE;
     } else if (userInput == "d") {
         return Options::EMPLOYEE_REMOVE;
     }  // add more options here
@@ -319,6 +330,11 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             // Get the employees from Core then cache the list
             queryEmployeesList();
             showLandingScreen();
+            break;
+        case Options::EMPLOYEE_UPDATE:
+            // Make sure an employee was selected from the list
+            mSelectedEmployeeIndex == 0 ?
+                invalidOptionSelected() : updateEmployee();
             break;
         case Options::EMPLOYEE_REMOVE:
             mSelectedEmployeeIndex == 0 ?
@@ -351,7 +367,7 @@ void EmployeeMgmtScreen::invalidOptionSelected() const {
     std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
-void EmployeeMgmtScreen::showEmployeeInformation() const {
+void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
     /*!
      * Get the employeeID from employee GUI table
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
@@ -362,6 +378,7 @@ void EmployeeMgmtScreen::showEmployeeInformation() const {
         // Valid employee, show the information screen!
         SCREENCOMMON().showTopBanner("Employee Information");
         screen::InformationScreen<entity::Employee> infoScreen(selectedEmployee);
+        infoScreen.showItemIndex(showIndex);
         infoScreen.showBasicInformation();
         infoScreen.showContactDetails();
         infoScreen.showUserAddress();
@@ -393,7 +410,7 @@ void EmployeeMgmtScreen::showEmployeeExists(const std::string& name) {
 
 void EmployeeMgmtScreen::showUserSuccessfullyCreated(const std::string& name,
                                                      const std::string& userID) {
-    std::cout << "Welcome, " << name << "! "
+    std::cout << std::endl << "Welcome, " << name << "! "
               << "Please take note of your Login ID: " << userID << std::endl;
     // Let the user confirm
     std::cin.ignore();

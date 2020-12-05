@@ -72,9 +72,10 @@ class EmployeeMgmtScreen : public ScreenInterface,
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
     void invalidOptionSelected() const;
-    void showEmployeeInformation() const;
+    void showEmployeeInformation(bool showIndex = false) const;
     void queryEmployeesList();
     void createEmployee();
+    void updateEmployee();
     void removeEmployee();
     void fillEmployeeInformation(entity::Employee* employee,
                                  const std::vector<std::string>& requiredFields = {}) const;
