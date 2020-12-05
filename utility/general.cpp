@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "general.hpp"
+#include <algorithm>
 
 namespace utility {
 
@@ -29,6 +30,18 @@ bool isNumber(const std::string &str) {
 bool hasNumber(const std::string &str) {
   return std::find_if(str.begin(), str.end(),
         [](unsigned char c) { return std::isdigit(c); }) != str.end();
+}
+
+std::string toUpper(std::string str) {
+    std::transform(str.begin(), str.end(), str.begin(),
+                   [](unsigned char c){ return std::toupper(c); });
+    return str;
+}
+
+std::string toLower(std::string str) {
+    std::transform(str.begin(), str.end(), str.begin(),
+                   [](unsigned char c){ return std::tolower(c); });
+    return str;
 }
 
 }  // namespace utility

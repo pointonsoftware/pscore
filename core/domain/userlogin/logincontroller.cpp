@@ -46,13 +46,12 @@ bool LoginController::authenticate(const std::string& id, const std::string& pin
     }
     // Validate the PIN
     if (!isPinValid(pin)) {
-        LOG_WARN("Invalid PIN.");
         mView->showUserNotFoundScreen();
         return false;
     }
     // Get user info
     entity::User userInfo;
-    if (getUser(id, &userInfo) != AUTHSTATUS::SUCCESS) {
+    if (getUser(utility::toUpper(id), &userInfo) != AUTHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return false;
     }

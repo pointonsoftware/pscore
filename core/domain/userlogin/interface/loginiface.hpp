@@ -35,6 +35,7 @@ class LoginControlInterface {
     virtual ~LoginControlInterface() = default;
     /*!
      * Returns the true if user ID with PIN is found; otherwise, will return false
+     * Note: ID is not case-sensitive
     */
     virtual bool authenticate(const std::string& id, const std::string& pin) = 0;
 };

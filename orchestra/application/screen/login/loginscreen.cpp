@@ -37,10 +37,11 @@ void LoginScreen::show(std::promise<defines::display>* promise) {
     std::cout << "Hi there, Welcome to Core!" << std::endl;
 
     do {
-        std::string id = SCREENCOMMON().getInput("ID");
-        std::string pin = SCREENCOMMON().getInput("Pin");
+        std::string id;
+        std::string pin;
 
-        if ((id == "x") || (pin == "x")) {
+        if (((id = SCREENCOMMON().getInput("ID")) == "x") ||
+            ((pin = SCREENCOMMON().getInput("Pin")) == "x")) {
             // exit was pressed
             promise->set_value(defines::display::EXIT);
             break;
