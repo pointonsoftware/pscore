@@ -112,19 +112,33 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
         employee.position(),
         entity::Employee::Status::ACTIVE,
         employee.isSystemUser());
-    LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
-    mDataProvider->create(newEmployee);
-    if (employee.isSystemUser()) {
-        entity::User newUser("ID", employee.position(), employeeData.PIN, employee.employeeID());
-        // Todo (code) - Add a utility::generateUserID call here
-        mDataProvider->create(newUser);
+    newEmployee.setEmail(employee.contactDetails().email);
+    newEmployee.setPhoneNumbers(employee.contactDetails().phone_number_1,
+                                employee.contactDetails().phone_number_2);
+    for(auto& personalId : employee.personalIds()) {
+        newEmployee.addPersonalId(personalId.type, personalId.id_number);
     }
+    newEmployee.setAddress(employee.address());
+
+    LOG_DEBUG("EmployeeID %s generated", newEmployee.employeeID().c_str());
+    // Adding new employee
+    mDataProvider->create(newEmployee);
     /*!
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
     */
     mCachedList.emplace_back(newEmployee);
     LOG_INFO("Employee %s %s added", employee.firstName().c_str(), employee.lastName().c_str());
+
+    if (employee.isSystemUser()) {
+        entity::User newUser(
+            utility::IdGenerator::generateUID(newEmployee.firstName(),
+            newEmployee.lastName()), newEmployee.position(),
+            employeeData.PIN, newEmployee.employeeID());
+        // Adding new user
+        mDataProvider->create(newUser);
+        LOG_INFO("User %s added", newUser.userID().c_str());
+    }
     return USERSMGMTSTATUS::SUCCESS;
 }
 

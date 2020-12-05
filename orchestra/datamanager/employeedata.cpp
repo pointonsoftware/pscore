@@ -144,6 +144,14 @@ void EmployeeDataProvider::removeWithID(const std::string& id) {
                         return e.ID == id;
                     }),
         DATABASE().SELECT_PERSONAL_ID_TABLE().end());
+    // Delete associated user account
+    DATABASE().SELECT_USERS_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_USERS_TABLE().begin(),
+                    DATABASE().SELECT_USERS_TABLE().end(),
+                    [&](const db::StackDB::UserTableItem& e) {
+                        return e.employeeID == id;
+                    }),
+        DATABASE().SELECT_USERS_TABLE().end());
 }
 
 void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const {

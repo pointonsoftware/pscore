@@ -229,7 +229,7 @@ void EmployeeMgmtScreen::createEmployee() {
                 failedFields.emplace_back(result.first);
             }
             // Let the user confirm after viewing the validation results
-            std::cout << "Press [Enter] to continue..." << std::endl;
+            std::cout << "Press [Enter] to update fields..." << std::endl;
             std::cin.ignore();
             std::cin.get();
         } else {
