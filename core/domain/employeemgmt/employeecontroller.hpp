@@ -58,8 +58,9 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
     ValidationErrors validateDetails(const entity::Employee& employee) const;
     void dumpValidationResult(const ValidationErrors& validationErrors) const;
 
-    USERSMGMTSTATUS create(const entity::Employee& employee) const;
-    USERSMGMTSTATUS update(const entity::Employee& employee) const;
+    void create(const SaveEmployeeData& data);
+    void createUser(const entity::Employee& employee, const std::string& pin) const;
+    void update(const SaveEmployeeData& data);
 };
 
 }  // namespace empmgmt

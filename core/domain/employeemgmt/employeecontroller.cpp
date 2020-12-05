@@ -67,6 +67,54 @@ entity::Employee EmployeeMgmtController::get(const std::string& id) {
     }
 }
 
+void EmployeeMgmtController::create(const SaveEmployeeData& data) {
+    // Generate ID for the new employee
+    entity::Employee newEmployee(
+        utility::IdGenerator::generateEmployeeID(),
+        data.employee.firstName(),
+        data.employee.middleName(),
+        data.employee.lastName(),
+        data.employee.birthdate(),
+        data.employee.gender(),
+        data.employee.position(),
+        entity::Employee::Status::ACTIVE,
+        data.employee.isSystemUser());
+    newEmployee.setEmail(data.employee.contactDetails().email);
+    newEmployee.setPhoneNumbers(data.employee.contactDetails().phone_number_1,
+                                data.employee.contactDetails().phone_number_2);
+    for (auto& personalId : data.employee.personalIds()) {
+        newEmployee.addPersonalId(personalId.type, personalId.id_number);
+    }
+    newEmployee.setAddress(data.employee.address());
+    LOG_DEBUG("EmployeeID %s generated", newEmployee.employeeID().c_str());
+    // Adding new employee
+    mDataProvider->create(newEmployee);
+    /*!
+     * Todo (code) - add checking if create is successful from dataprovider
+     * before updating the cache
+    */
+    mCachedList.emplace_back(newEmployee);
+    LOG_INFO("Employee %s %s added", newEmployee.firstName().c_str(),
+                                     newEmployee.lastName().c_str());
+    if (newEmployee.isSystemUser()) {
+        // Adding new user
+        createUser(newEmployee, data.PIN);
+    }
+}
+
+void EmployeeMgmtController::createUser(const entity::Employee& employee,
+                                        const std::string& pin) const {
+    entity::User newUser(
+        utility::IdGenerator::generateUID(employee.firstName(), employee.lastName()),
+        employee.position(), pin, employee.employeeID());
+    mDataProvider->create(newUser);
+    LOG_INFO("User %s added", newUser.userID().c_str());
+}
+
+void EmployeeMgmtController::update(const SaveEmployeeData& data) {
+    LOG_DEBUG("Updating employee %s", data.employee.employeeID());
+}
+
 USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
     const entity::Employee& employee = employeeData.employee;
     std::map<std::string, std::string>* validationResult = employeeData.validationResult;
@@ -92,39 +140,17 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
         dumpValidationResult(*(validationResult));
         return USERSMGMTSTATUS::FAILED;
     }
+    // Decide if it's a create or update request
     if (!employee.employeeID().empty()) {
-        LOG_DEBUG("EmployeeID is not empty");
-        if (isExists(employee.employeeID())) {
-            // Todo (code) - add Update
-            LOG_INFO("Employee %s %s updated", employee.firstName().c_str(),
-                     employee.lastName().c_str());
-            return USERSMGMTSTATUS::SUCCESS;
+        if (!isExists(employee.employeeID())) {
+            LOG_ERROR("Employee has ID %s but it is not in our record.",
+                      employee.employeeID().c_str());
+            return USERSMGMTSTATUS::FAILED;
         }
+        update(employeeData);
+    } else {
+        create(employeeData);
     }
-    // Generate ID for the new employee
-    entity::Employee newEmployee(
-        utility::IdGenerator::generateEmployeeID(),
-        employee.firstName(),
-        employee.middleName(),
-        employee.lastName(),
-        employee.birthdate(),
-        employee.gender(),
-        employee.position(),
-        entity::Employee::Status::ACTIVE,
-        employee.isSystemUser());
-    LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
-    mDataProvider->create(newEmployee);
-    // Todo (code) - uncomment for create user is ready
-    // if (employee.isSystemUser()) {
-        // Todo (code) - Add a utility::generateUserID call here
-        // mDataProvider->Create(User);
-    // }
-    /*!
-     * Todo (code) - add checking if create is successful from dataprovider
-     * before updating the cache
-    */
-    mCachedList.emplace_back(newEmployee);
-    LOG_INFO("Employee %s %s added", employee.firstName().c_str(), employee.lastName().c_str());
     return USERSMGMTSTATUS::SUCCESS;
 }
 

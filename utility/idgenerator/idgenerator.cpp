@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "idgenerator.hpp"
+#include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <random>
@@ -52,8 +53,13 @@ std::string generateEmployeeID() {
 }
 
 std::string generateUID(const std::string& p1, const std::string& p2) {
+    auto convertToUpperCase = [](std::string str) {
+        std::transform(str.begin(), str.end(), str.begin(),
+                   [](unsigned char c){ return std::toupper(c); });
+        return str;
+    };
     // first-letter-of-param1 + first-three-letters-of-param2 + three-digit-unique-number
-    return p1.at(0) + p2.substr(0, 2) + std::to_string(randomNumber(100, 999));
+    return convertToUpperCase(p1.at(0) + p2.substr(0, 2) + std::to_string(randomNumber(100, 999)));
 }
 
 }  // namespace IdGenerator
