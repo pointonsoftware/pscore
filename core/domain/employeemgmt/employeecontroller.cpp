@@ -115,7 +115,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     newEmployee.setEmail(employee.contactDetails().email);
     newEmployee.setPhoneNumbers(employee.contactDetails().phone_number_1,
                                 employee.contactDetails().phone_number_2);
-    for(auto& personalId : employee.personalIds()) {
+    for (auto& personalId : employee.personalIds()) {
         newEmployee.addPersonalId(personalId.type, personalId.id_number);
     }
     newEmployee.setAddress(employee.address());
