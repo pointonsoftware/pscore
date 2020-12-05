@@ -32,14 +32,14 @@ UserValidator::UserValidator(const User& user) : mUser(user) {
 }
 ValidationStatus UserValidator::validateUserID() {
     if (mUser.userID().empty()) {
-        addError(FIELD_UID, " UserID must not be empty.");
+        addError(FIELD_UID, "UserID must not be empty.");
         return ValidationStatus::S_INVALID_STRING;
     }
     return ValidationStatus::S_OK;
 }
 ValidationStatus UserValidator::validateRole() {
     if (mUser.role().empty()) {
-        addError(FIELD_ROLE, " Role must not be empty.");
+        addError(FIELD_ROLE, "Role must not be empty.");
         return ValidationStatus::S_INVALID_STRING;
     }
     return ValidationStatus::S_OK;
@@ -47,7 +47,7 @@ ValidationStatus UserValidator::validateRole() {
 
 ValidationStatus UserValidator::validatePIN() {
     if (!utility::isNumber(mUser.pin())) {
-        addError(FIELD_PIN, " PIN contains invalid character.");
+        addError(FIELD_PIN, "PIN contains invalid character.");
         return ValidationStatus::S_INVALID_STRING;
     }
     if (mUser.pin().size() != PIN_SIZE) {
