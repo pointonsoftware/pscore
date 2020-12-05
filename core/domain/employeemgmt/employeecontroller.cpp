@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <memory>
 #include <map>
+#include <idgenerator/idgenerator.hpp>
 #include <logger/loghelper.hpp>
 #include <validator/addressvalidator.hpp>
 #include <validator/contactdetailsvalidator.hpp>
@@ -101,9 +102,16 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
         }
     }
     // Generate ID for the new employee
-    entity::Employee newEmployee = employee;
-    // Todo (code) - replace with utility::generateEmployeeID
-    newEmployee.generateID();
+    entity::Employee newEmployee(
+        utility::IdGenerator::generateEmployeeID(),
+        employee.firstName(),
+        employee.middleName(),
+        employee.lastName(),
+        employee.birthdate(),
+        employee.gender(),
+        employee.position(),
+        entity::Employee::Status::ACTIVE,
+        employee.isSystemUser());
     LOG_INFO("EmployeeID %s generated", newEmployee.employeeID().c_str());
     mDataProvider->create(newEmployee);
     // Todo (code) - uncomment for create user is ready

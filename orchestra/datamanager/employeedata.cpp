@@ -34,12 +34,12 @@ std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
     // Gather all employees
     for (const db::StackDB::EmployeeTableItem& temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
         entity::Employee employee(
+                temp.employeeID,
                 temp.firstname,
                 temp.middlename,
                 temp.lastname,
                 temp.birthdate,
                 temp.gender,
-                temp.employeeID,
                 temp.position);
         fillEmployeeDetails(&employee);
         employees.emplace_back(employee);

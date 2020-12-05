@@ -43,12 +43,12 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
     for (const db::StackDB::EmployeeTableItem &temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
         if (temp.employeeID == employeeID) {
             entity::Employee foundUser(
+                temp.employeeID,
                 temp.firstname,
                 temp.middlename,
                 temp.lastname,
                 temp.birthdate,
                 temp.gender,
-                temp.employeeID,
                 temp.position);
             // Get Address
             [&foundUser]() {

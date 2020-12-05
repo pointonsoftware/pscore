@@ -34,12 +34,12 @@ class Employee : public Person {
         ONLEAVE
     };
 
-    Employee(const std::string& firstname,
+    Employee(const std::string& employeeID,
+             const std::string& firstname,
              const std::string& middlename,
              const std::string& lastname,
              const std::string& birthdate,
              const std::string& gender,
-             const std::string& employeeID,
              const std::string& position,
              const Status status = Status::ACTIVE,
              const bool isSystemUser = false);
@@ -74,30 +74,11 @@ class Employee : public Person {
         return mStatus;
     }
 
-    /*!
-     * Generate ID for the employee object
-     * Note: this should only be called when creating a new employee
-     *
-     * ID format - [YY][unique-five-digit-number]
-     * e.g. - 2021135
-     *
-     * But this may change depending on the system spec
-     * We either provide an API to specify the ID format
-     * or use a config file
-     *
-     * Return true if successful; false if employee ID was already set
-    */
-    // Todo (code) - remove this function and use the utility class from the controllers
-    bool generateID();
-
  protected:
     std::string mEmployeeID;
     std::string mPosition;
     Status mStatus;
     bool mIsSystemUser;
-
-    int makeUniqueNumber() const;
-    std::string getDate() const;
 
     // Todo (spec) - add employee photo
 };
