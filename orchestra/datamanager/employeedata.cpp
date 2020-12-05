@@ -193,7 +193,8 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
         }();
         // Get personal IDs
         [&employee]() {
-            for (const db::StackDB::PersonalIdTableItem& e : DATABASE().SELECT_PERSONAL_ID_TABLE()) {
+            for (const db::StackDB::PersonalIdTableItem& e :
+                 DATABASE().SELECT_PERSONAL_ID_TABLE()) {
                 if (e.ID == employee->employeeID()) {
                     employee->addPersonalId(e.id_number, e.id_number);
                 }

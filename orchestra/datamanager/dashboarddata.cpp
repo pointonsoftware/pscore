@@ -88,7 +88,8 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
             }();
             // Get personal IDs
             [&foundUser]() {
-                for (const db::StackDB::PersonalIdTableItem& e : DATABASE().SELECT_PERSONAL_ID_TABLE()) {
+                for (const db::StackDB::PersonalIdTableItem& e :
+                     DATABASE().SELECT_PERSONAL_ID_TABLE()) {
                     if (e.ID == foundUser.employeeID()) {
                         foundUser.addPersonalId(e.id_number, e.id_number);
                     }
