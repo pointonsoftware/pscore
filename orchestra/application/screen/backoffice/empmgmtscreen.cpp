@@ -393,5 +393,9 @@ void EmployeeMgmtScreen::showEmployeeExists(const std::string& name) {
      "Would you like to update that employee instead?" << std::endl;
 }
 
+void EmployeeMgmtScreen::showUserSuccessfullyCreated(const std::string& userID) {
+    std::cout << "Welcome, new user! Please take note of your Login ID: " << userID << std::endl;
+}
+
 }  // namespace backoffice
 }  // namespace screen

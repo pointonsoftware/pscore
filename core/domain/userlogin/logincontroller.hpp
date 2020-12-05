@@ -43,7 +43,7 @@ class LoginController : public LoginControlInterface {
  public:
     explicit LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
                             const std::shared_ptr<LoginViewIface>& view);
-    std::string loginWithPIN(const std::string& pin) override;
+    bool authenticate(const std::string& id, const std::string& pin) override;
  private:
     std::shared_ptr<LoginDataProviderIface> mDataProvider;
     std::shared_ptr<LoginViewIface> mView;

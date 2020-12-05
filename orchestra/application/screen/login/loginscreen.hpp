@@ -51,7 +51,7 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
  private:
     std::string mUserID;
     // Return true if successful
-    bool onLogin(const std::string& pin);
+    bool onLogin(const std::string& id, const std::string& pin);
 };
 
 }  // namespace login

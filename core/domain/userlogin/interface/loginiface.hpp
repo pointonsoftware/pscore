@@ -34,10 +34,9 @@ class LoginControlInterface {
     LoginControlInterface() = default;
     virtual ~LoginControlInterface() = default;
     /*!
-     * Login with PIN
-     * Returns the userID if successful; otherwise, will return empty
+     * Returns the true if user ID with PIN is found; otherwise, will return false
     */
-    virtual std::string loginWithPIN(const std::string& pin) = 0;
+    virtual bool authenticate(const std::string& id, const std::string& pin) = 0;
 };
 
 // Lib APIs

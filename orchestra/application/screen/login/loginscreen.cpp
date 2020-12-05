@@ -37,33 +37,29 @@ void LoginScreen::show(std::promise<defines::display>* promise) {
     std::cout << "Hi there, Welcome to Core!" << std::endl;
 
     do {
-        std::string pin;
-        std::cout << "Input your PIN: ";
-        std::cin >> pin;
+        std::string id = SCREENCOMMON().getInput("ID");
+        std::string pin = SCREENCOMMON().getInput("Pin");
 
-        if (pin.find("x") != std::string::npos) {
+        if ((id == "x") || (pin == "x")) {
             // exit was pressed
             promise->set_value(defines::display::EXIT);
             break;
         }
-        if (onLogin(pin)) {
-            // If login is successful, we show the dashboard
+        if (onLogin(id, pin)) {
+            // If login is successful, set userID then show the dashboard
+            mUserID = id;
             promise->set_value(defines::display::DASHBOARD);
             break;
         }
     } while (1);
 }
 
-bool LoginScreen::onLogin(const std::string& pin) {
+bool LoginScreen::onLogin(const std::string& id, const std::string& pin) {
     std::unique_ptr<domain::login::LoginControlInterface> auth
          = domain::login::createLoginModule(
                     std::make_shared<dataprovider::login::LoginDataProvider>(),
                     std::make_shared<LoginScreen>(*this));
-
-    mUserID = auth->loginWithPIN(pin);
-    // If userID is empty, then the login attempt had failed
-    // The failure reason should be shown in the screen/logs
-    return mUserID.empty() ? false : true;
+    return auth->authenticate(id, pin);
 }
 
 std::string LoginScreen::getUserID() const {

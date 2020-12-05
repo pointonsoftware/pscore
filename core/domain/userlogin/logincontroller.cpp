@@ -33,35 +33,36 @@ LoginController::LoginController(const std::shared_ptr<LoginDataProviderIface>& 
     // Empty for now
 }
 
-std::string LoginController::loginWithPIN(const std::string& pin) {
+bool LoginController::authenticate(const std::string& id, const std::string& pin) {
     // Make sure view is valid
     if (!mView) {
         LOG_ERROR("View is not initialized");
-        return "";
+        return false;
     }
-
+    if (id.empty()) {
+        LOG_WARN("ID is empty");
+        return false;
+    }
     // Validate the PIN
     if (!isPinValid(pin)) {
         mView->showInvalidPINScreen();
-        return "";
+        return false;
     }
-
     // Get user info
     entity::User userInfo;
     if (getUserByPIN(pin, &userInfo) != AUTHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
-        return "";
+        return false;
     }
-
     // Validate user info
     if (!isUserValid(userInfo)) {
         LOG_WARN("User with PIN %s was not found", pin.c_str());
         mView->showUserNotFoundScreen();
-        return "";
+        return false;
     }
 
     LOG_INFO("User with PIN %s was found", pin.c_str());
-    return userInfo.userID();
+    return true;
 }
 
 AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* user) {
