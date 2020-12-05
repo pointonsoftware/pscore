@@ -47,7 +47,8 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void showEmployeeNotFoundPopup() override;
     void showSuccessfullyRemoved(const std::string& id) override;
     void showEmployeeExists(const std::string& name) override;
-    void showUserSuccessfullyCreated(const std::string& userID) override;
+    void showUserSuccessfullyCreated(const std::string& name,
+                                     const std::string& userID) override;
 
  private:
      // Screen options - this represents the buttons in a GUI

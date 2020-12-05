@@ -109,7 +109,7 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
         utility::IdGenerator::generateUID(employee.firstName(), employee.lastName()),
         employee.position(), pin, employee.employeeID());
     mDataProvider->create(newUser);
-    mView->showUserSuccessfullyCreated(newUser.userID());
+    mView->showUserSuccessfullyCreated(employee.firstName(), newUser.userID());
     LOG_INFO("User %s added", newUser.userID().c_str());
 }
 
