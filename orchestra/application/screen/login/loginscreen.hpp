@@ -44,7 +44,6 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     void show(std::promise<defines::display>* promise) override;
 
     // Domain interface implementation
-    void showInvalidPINScreen() override;
     void showUserNotFoundScreen() override;
     void showDataNotReadyScreen() override;
 

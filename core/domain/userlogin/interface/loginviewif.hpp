@@ -32,11 +32,6 @@ class LoginViewIface {
     virtual ~LoginViewIface() = default;
 
     /**
-    * invalid PIN!
-    */
-    virtual void showInvalidPINScreen() = 0;
-
-    /**
     * user not found
     */
     virtual void showUserNotFoundScreen() = 0;

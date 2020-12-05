@@ -30,7 +30,7 @@ class LoginDataProvider : public domain::login::LoginDataProviderIface {
  public:
     LoginDataProvider() = default;
     virtual ~LoginDataProvider() = default;
-    entity::User findUserByPin(const std::string& inputPin) override;
+    entity::User findUserByID(const std::string& id) override;
 };
 
 }  // namespace login

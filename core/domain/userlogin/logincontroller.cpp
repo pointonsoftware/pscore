@@ -41,22 +41,29 @@ bool LoginController::authenticate(const std::string& id, const std::string& pin
     }
     if (id.empty()) {
         LOG_WARN("ID is empty");
+        mView->showUserNotFoundScreen();
         return false;
     }
     // Validate the PIN
     if (!isPinValid(pin)) {
-        mView->showInvalidPINScreen();
+        LOG_WARN("Invalid PIN.");
+        mView->showUserNotFoundScreen();
         return false;
     }
     // Get user info
     entity::User userInfo;
-    if (getUserByPIN(pin, &userInfo) != AUTHSTATUS::SUCCESS) {
+    if (getUser(id, &userInfo) != AUTHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return false;
     }
     // Validate user info
     if (!isUserValid(userInfo)) {
-        LOG_WARN("User with PIN %s was not found", pin.c_str());
+        LOG_WARN("User with ID %s was not found", id.c_str());
+        mView->showUserNotFoundScreen();
+        return false;
+    }
+    if (userInfo.pin() != pin) {
+        LOG_WARN("User ID and PIN did not match");
         mView->showUserNotFoundScreen();
         return false;
     }
@@ -65,7 +72,7 @@ bool LoginController::authenticate(const std::string& id, const std::string& pin
     return true;
 }
 
-AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* user) {
+AUTHSTATUS LoginController::getUser(const std::string& id, entity::User* user) {
     if (!user) {
         LOG_ERROR("Invalid user argument");
         return AUTHSTATUS::FAILED;
@@ -77,8 +84,8 @@ AUTHSTATUS LoginController::getUserByPIN(const std::string& pin, entity::User* u
 
     // todo (xxx) : Check if dataprovider is ready; else throw
     LOG_DEBUG("Retrieving user data");
-    // Check pin in dataprovider
-    *user = mDataProvider->findUserByPin(pin);
+    // Check userID in dataprovider
+    *user = mDataProvider->findUserByID(id);
 
     return AUTHSTATUS::SUCCESS;
 }

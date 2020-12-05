@@ -47,7 +47,7 @@ class LoginController : public LoginControlInterface {
  private:
     std::shared_ptr<LoginDataProviderIface> mDataProvider;
     std::shared_ptr<LoginViewIface> mView;
-    AUTHSTATUS getUserByPIN(const std::string& pin, entity::User* user);
+    AUTHSTATUS getUser(const std::string& id, entity::User* user);
     bool isPinValid(const std::string& pin) const;
     bool isUserValid(const entity::User& userInfo) const;
 };

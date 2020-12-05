@@ -66,12 +66,8 @@ std::string LoginScreen::getUserID() const {
     return mUserID;
 }
 
-void LoginScreen::showInvalidPINScreen() {
-    std::cout << "PIN is invalid, please try again." << std::endl;
-}
-
 void LoginScreen::showUserNotFoundScreen() {
-    std::cout << "User PIN not found." << std::endl;
+    std::cout << "User not found." << std::endl;
 }
 
 void LoginScreen::showDataNotReadyScreen() {
