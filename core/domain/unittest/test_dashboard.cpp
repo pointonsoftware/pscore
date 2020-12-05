@@ -144,12 +144,12 @@ TEST_F(TestDashboard, GetCurrentUserDetailsSuccess) {
     // We expect that data provider will perform getEmployeeInformation()
     EXPECT_CALL(*dataMock, getEmployeeInformation(dummyEmployeeId))
     // Fake that we found the employee details
-        .WillOnce(Return(entity::Employee("DummyFname",
+        .WillOnce(Return(entity::Employee(dummyEmployeeId,
+                         "DummyFname",
                          "DummyMname",
                          "DummyLname",
                          "DummyBdate",
                          "DummyGender",
-                         dummyEmployeeId,
                          "DummyPosition",
                          entity::Employee::Status::ACTIVE)));
 
