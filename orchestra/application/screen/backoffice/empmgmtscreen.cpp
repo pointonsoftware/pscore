@@ -234,9 +234,53 @@ void EmployeeMgmtScreen::createEmployee() {
             std::cin.get();
         } else {
             std::cout << "Employee " << newEmployee.getFullName()
-                    << " added successfully!" << std::endl;
+                      << " added successfully!" << std::endl;
         }
     } while (!failedFields.empty());  // repeat input until new employee is created
+}
+
+void EmployeeMgmtScreen::updateEmployee() {
+    showEmployeeInformation(true);  // true - request to show the index # of each data
+    // Get the field to update
+    const std::string field = [this]() {
+        unsigned int index;
+        do {
+            // Ask the index from the user
+            std::string userInput = SCREENCOMMON().getInput("Input the data [number] to edit");
+            if (utility::isNumber(userInput)) {
+                index =  std::stoi(userInput);
+                break;
+            }
+         } while (1);  // Keep asking until a number is inputted
+        // Fetch the selected field
+        return getEntityField(index);
+    }();
+    if (field.empty()) {
+        std::cout << "Invalid selection." << std::endl;
+        return;
+    }
+    {   // Update operation
+        std::vector<std::string> requiredFields = { field };
+        std::map<std::string, std::string> validationResult;
+        entity::Employee updateEmployee = mEmployeesGUITable[mSelectedEmployeeIndex - 1];
+        do {
+            fillEmployeeInformation(&updateEmployee, requiredFields);
+            // Reset validation results
+            validationResult.clear();
+            if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
+                domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+                for (auto const &result : validationResult) {
+                    std::cout << "- " << result.second << std::endl;
+                }
+                // Let the user confirm after viewing the validation results
+                std::cout << "Press [Enter] to update fields..." << std::endl;
+                std::cin.ignore();
+                std::cin.get();
+            }
+        } while (!validationResult.empty());  // repeat input until new employee is created
+        mEmployeesGUITable[mSelectedEmployeeIndex - 1] = updateEmployee;
+    }
+    showEmployeeInformation();  // refresh employee details screen
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
@@ -245,6 +289,38 @@ void EmployeeMgmtScreen::removeEmployee() {
        // Remove the user form
        mEmployeesGUITable.erase(mEmployeesGUITable.begin() + (mSelectedEmployeeIndex - 1));
     }
+}
+
+const std::string EmployeeMgmtScreen::getEntityField(unsigned int index) const {
+    static const std::vector<std::string> employeeDomainFields {
+        "Entity.Field.FirstName",
+        "Entity.Field.MiddleName",
+        "Entity.Field.LastName",
+        "Entity.Field.Birthdate",
+        "Entity.Field.Gender",
+        "Entity.Field.Position",
+        "Entity.Field.HouseNumber",
+        "Entity.Field.Lot",
+        "Entity.Field.Block",
+        "Entity.Field.Street",
+        "Entity.Field.Subdivision",
+        "Entity.Field.Sitio",
+        "Entity.Field.Purok",
+        "Entity.Field.Barangay",
+        "Entity.Field.CityTown",
+        "Entity.Field.Province",
+        "Entity.Field.Zip",
+        "Entity.Field.Phone1",
+        "Entity.Field.Phone2",
+        "Entity.Field.Email",
+        "Entity.Field.IdType",
+        "Entity.Field.IdNumber"
+    };
+    if (index >= employeeDomainFields.size()) {
+        return "";
+    }
+    // Vector is a 0-based index
+    return employeeDomainFields[index - 1];
 }
 
 void EmployeeMgmtScreen::showEmployees() const {
@@ -292,6 +368,8 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         return Options::EMPLOYEE_DETAILS;
     } else if (userInput == "c") {
         return Options::EMPLOYEE_CREATE;
+    } else if (userInput == "u") {
+        return Options::EMPLOYEE_UPDATE;
     } else if (userInput == "d") {
         return Options::EMPLOYEE_REMOVE;
     }  // add more options here
@@ -319,6 +397,11 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             // Get the employees from Core then cache the list
             queryEmployeesList();
             showLandingScreen();
+            break;
+        case Options::EMPLOYEE_UPDATE:
+            // Make sure an employee was selected from the list
+            mSelectedEmployeeIndex == 0 ?
+                invalidOptionSelected() : updateEmployee();
             break;
         case Options::EMPLOYEE_REMOVE:
             mSelectedEmployeeIndex == 0 ?
@@ -351,7 +434,7 @@ void EmployeeMgmtScreen::invalidOptionSelected() const {
     std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
-void EmployeeMgmtScreen::showEmployeeInformation() const {
+void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
     /*!
      * Get the employeeID from employee GUI table
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
@@ -362,9 +445,14 @@ void EmployeeMgmtScreen::showEmployeeInformation() const {
         // Valid employee, show the information screen!
         SCREENCOMMON().showTopBanner("Employee Information");
         screen::InformationScreen<entity::Employee> infoScreen(selectedEmployee);
+        infoScreen.showItemIndex(showIndex);
+        /*!
+         * The sequence of calls below to InformationScreen should be in-sync with
+         * the entity fields in EmployeeMgmtScreen::getEntityField()
+        */
         infoScreen.showBasicInformation();
-        infoScreen.showContactDetails();
         infoScreen.showUserAddress();
+        infoScreen.showContactDetails();
         infoScreen.showUserPersonalIds();
         infoScreen.showOptions();
     }
@@ -393,7 +481,7 @@ void EmployeeMgmtScreen::showEmployeeExists(const std::string& name) {
 
 void EmployeeMgmtScreen::showUserSuccessfullyCreated(const std::string& name,
                                                      const std::string& userID) {
-    std::cout << "Welcome, " << name << "! "
+    std::cout << std::endl << "Welcome, " << name << "! "
               << "Please take note of your Login ID: " << userID << std::endl;
     // Let the user confirm
     std::cin.ignore();

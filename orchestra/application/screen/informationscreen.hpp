@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_INFORMATIONSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_INFORMATIONSCREEN_HPP_
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include "screencommon.hpp"
@@ -34,41 +35,43 @@ class InformationScreen {
 
     void showBasicInformation() {
         SCREENCOMMON().printColumns({"Basic Info"}, true);
-        SCREENCOMMON().printItemText("First Name", mInfo->firstName());
-        SCREENCOMMON().printItemText("Middle Name", mInfo->middleName());
-        SCREENCOMMON().printItemText("Last Name", mInfo->lastName());
-        SCREENCOMMON().printItemText("Birthdate", mInfo->birthdate());
+        printItem("First Name", mInfo->firstName());
+        printItem("Middle Name", mInfo->middleName());
+        printItem("Last Name", mInfo->lastName());
+        printItem("Birthdate", mInfo->birthdate());
+        printItem("Gender", mInfo->gender());
+        printItem("Position", mInfo->position());
     }
 
-    void showContactDetails() const {
+    void showContactDetails() {
         SCREENCOMMON().printColumns({"Contact Details"}, true);
-        SCREENCOMMON().printItemText("Phone", mInfo->contactDetails().phone_number_1);
-        SCREENCOMMON().printItemText("Phone 2", mInfo->contactDetails().phone_number_2);
-        SCREENCOMMON().printItemText("Email", mInfo->contactDetails().email);
+        printItem("Phone", mInfo->contactDetails().phone_number_1);
+        printItem("Phone 2", mInfo->contactDetails().phone_number_2);
+        printItem("Email", mInfo->contactDetails().email);
     }
 
-    void showUserAddress() const {
+    void showUserAddress() {
         SCREENCOMMON().printColumns({"Address"}, true);
-        SCREENCOMMON().printItemText("House No.", mInfo->address().housenumber);
-        SCREENCOMMON().printItemText("Lot", mInfo->address().lot);
-        SCREENCOMMON().printItemText("Block", mInfo->address().block);
-        SCREENCOMMON().printItemText("Street", mInfo->address().street);
-        SCREENCOMMON().printItemText("Subdivision", mInfo->address().subdivision);
-        SCREENCOMMON().printItemText("Sitio", mInfo->address().sitio);
-        SCREENCOMMON().printItemText("Purok", mInfo->address().purok);
-        SCREENCOMMON().printItemText("Barangay", mInfo->address().barangay);
-        SCREENCOMMON().printItemText("City/Town", mInfo->address().city_town);
-        SCREENCOMMON().printItemText("Province", mInfo->address().province);
-        SCREENCOMMON().printItemText("Zip Code", mInfo->address().zip);
+        printItem("House No.", mInfo->address().housenumber);
+        printItem("Lot", mInfo->address().lot);
+        printItem("Block", mInfo->address().block);
+        printItem("Street", mInfo->address().street);
+        printItem("Subdivision", mInfo->address().subdivision);
+        printItem("Sitio", mInfo->address().sitio);
+        printItem("Purok", mInfo->address().purok);
+        printItem("Barangay", mInfo->address().barangay);
+        printItem("City/Town", mInfo->address().city_town);
+        printItem("Province", mInfo->address().province);
+        printItem("Zip Code", mInfo->address().zip);
     }
 
-    void showUserPersonalIds() const {
+    void showUserPersonalIds() {
         SCREENCOMMON().printColumns({"Personal Identification"}, true);
         for (size_t count = 1; count <= mInfo->personalIds().size(); ++count) {
             const std::string details(mInfo->personalIds()[count-1].type
-                                + defines::DELIMETER_DASH
+                                + " " + defines::DELIMETER_DASH + " "
                                 + mInfo->personalIds()[count-1].id_number);
-            SCREENCOMMON().printItemText("ID " + std::to_string(count), details);
+            printItem("ID " + std::to_string(count), details);
         }
     }
 
@@ -78,8 +81,29 @@ class InformationScreen {
                                     true, false);
     }
 
+    void showItemIndex(bool show) {
+        mShowIndex = show;
+    }
+
  private:
-    const T* mInfo;
+    const T* mInfo = nullptr;
+    bool mShowIndex = false;
+    unsigned int mIndex = 0;
+    const size_t MAX_SPACE = 4;
+
+    void printItem(const std::string& label, const std::string& value) {
+        if (!mShowIndex) {
+            // Display label and value as-is
+            SCREENCOMMON().printItemText(label, value);
+        } else {
+            // Spacing
+            const size_t space = MAX_SPACE - std::to_string(mIndex + 1).length();
+            // Print index
+            std::cout << "[" << std::to_string(++mIndex) << std::left << std::setw(space) << "] ";
+            // Show dash if value is empty
+            SCREENCOMMON().printItemText(label, value.empty() ? "-" : value);
+        }
+    }
 };
 
 }  // namespace screen
