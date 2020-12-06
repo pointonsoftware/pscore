@@ -114,7 +114,7 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
 }
 
 void EmployeeMgmtController::update(const SaveEmployeeData& data) {
-    LOG_DEBUG("Updating employee %s", data.employee.employeeID());
+    LOG_DEBUG("Updating employee %s", data.employee.employeeID().c_str());
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {

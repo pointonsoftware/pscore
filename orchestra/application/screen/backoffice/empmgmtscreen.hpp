@@ -79,6 +79,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void removeEmployee();
     void fillEmployeeInformation(entity::Employee* employee,
                                  const std::vector<std::string>& requiredFields = {}) const;
+    const std::string getEntityField(unsigned int index) const;
 
     std::vector<entity::Employee> mEmployeesGUITable;  // Represents the GUI employees-table
     unsigned int mSelectedEmployeeIndex = 0;  // 1-based index

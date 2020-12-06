@@ -40,6 +40,7 @@ class InformationScreen {
         printItem("Last Name", mInfo->lastName());
         printItem("Birthdate", mInfo->birthdate());
         printItem("Gender", mInfo->gender());
+        printItem("Position", mInfo->position());
     }
 
     void showContactDetails() {
