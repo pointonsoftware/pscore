@@ -84,6 +84,116 @@ void EmployeeDataProvider::create(const entity::User& user) {
             user.employeeID()});
 }
 
+void EmployeeDataProvider::update(const entity::Employee& employee) {
+    // Updating employee basic info
+    {
+        std::vector<db::StackDB::EmployeeTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
+                                    DATABASE().SELECT_EMPLOYEES_TABLE().end(),
+                                    [&employee](const db::StackDB::EmployeeTableItem& e) {
+                                        // We only match the employeeID for updating
+                                        return e.employeeID == employee.employeeID();
+                                    });
+        if (it == DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::EmployeeTableItem {
+                employee.employeeID(),
+                employee.firstName(),
+                employee.middleName(),
+                employee.lastName(),
+                employee.birthdate(),
+                employee.gender(),
+                employee.position()};
+    }
+    // Updating employee address
+    {
+        std::vector<db::StackDB::AddressTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
+                                    DATABASE().SELECT_ADDRESS_TABLE().end(),
+                                    [&employee](const db::StackDB::AddressTableItem& e) {
+                                        // We only match the employeeID for updating
+                                        return e.ID == employee.employeeID();
+                                    });
+        if (it == DATABASE().SELECT_ADDRESS_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::AddressTableItem {
+            employee.employeeID(),
+            employee.address().housenumber,
+            employee.address().lot,
+            employee.address().block,
+            employee.address().street,
+            employee.address().subdivision,
+            employee.address().sitio,
+            employee.address().purok,
+            employee.address().barangay,
+            employee.address().city_town,
+            employee.address().province,
+            employee.address().zip};
+    }
+    // Updating employee contacts
+    {
+        std::vector<db::StackDB::ContactDetailsTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
+                                    DATABASE().SELECT_CONTACTS_TABLE().end(),
+                                    [&employee](const db::StackDB::ContactDetailsTableItem& e) {
+                                        // We only match the employeeID for updating
+                                        return e.ID == employee.employeeID();
+                                    });
+        if (it == DATABASE().SELECT_CONTACTS_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::ContactDetailsTableItem {
+            employee.employeeID(),
+            employee.contactDetails().email,
+            employee.contactDetails().phone_number_1,
+            employee.contactDetails().phone_number_2};
+    }
+    // Updating employee personal ID
+    {
+        // Todo (code) - currently supports updating the first personal ID only
+        std::vector<db::StackDB::PersonalIdTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
+                                    DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
+                                    [&employee](const db::StackDB::PersonalIdTableItem& e) {
+                                        // We only match the employeeID for updating
+                                        return e.ID == employee.employeeID();
+                                    });
+        if (it == DATABASE().SELECT_PERSONAL_ID_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::PersonalIdTableItem {
+                employee.employeeID(),
+                employee.personalIds()[0].type,
+                employee.personalIds()[0].id_number};
+    }
+}
+
+void EmployeeDataProvider::update(const entity::User& user) {
+    std::vector<db::StackDB::UserTableItem>::iterator it =
+        std::find_if(DATABASE().SELECT_USERS_TABLE().begin(),
+                                DATABASE().SELECT_USERS_TABLE().end(),
+                                [&user](const db::StackDB::UserTableItem& e) {
+                                    // We only match the employeeID for updating
+                                    return e.employeeID == user.employeeID();
+                                });
+    if (it == DATABASE().SELECT_USERS_TABLE().end()) {
+        // Not found
+        return;
+    }
+    // Update the role only
+    *it->role = user.role();
+}
+
 void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee) const {
     DATABASE().SELECT_ADDRESS_TABLE().emplace_back(db::StackDB::AddressTableItem {
             employee.employeeID(),

@@ -35,6 +35,8 @@ class EmployeeDataProvider : public domain::empmgmt::EmployeeMgmtDataInterface {
     std::vector<entity::Employee> getEmployees() override;
     void create(const entity::Employee& employee) override;
     void create(const entity::User& user) override;
+    void update(const entity::Employee& employee) override;
+    void update(const entity::User& user) override;
     void removeWithID(const std::string& userID) override;
 
  private:
