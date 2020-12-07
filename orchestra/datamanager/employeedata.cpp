@@ -191,7 +191,7 @@ void EmployeeDataProvider::update(const entity::User& user) {
         return;
     }
     // Update the role only
-    *it->role = user.role();
+    it->role = user.role();
 }
 
 void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee) const {
