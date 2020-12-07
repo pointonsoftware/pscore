@@ -46,6 +46,14 @@ class EmployeeMgmtDataInterface {
     */
     virtual void create(const entity::User& user) = 0;
     /*!
+     * Update an employee
+    */
+    virtual void update(const entity::Employee& employee) = 0;
+    /*!
+     * Update a user role to sync with employee data
+    */
+    virtual void update(const entity::User& user) = 0;
+    /*!
      * Remove an employee with id
     */
     virtual void removeWithID(const std::string& id) = 0;

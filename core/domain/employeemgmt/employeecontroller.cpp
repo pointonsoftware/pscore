@@ -114,7 +114,23 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
 }
 
 void EmployeeMgmtController::update(const SaveEmployeeData& data) {
-    LOG_DEBUG("Updating employee %s", data.employee.employeeID().c_str());
+    const entity::Employee& employee = data.employee;
+    LOG_DEBUG("Updating employee %s", employee.employeeID().c_str());
+    const std::vector<entity::Employee>::iterator it = find(employee.employeeID());
+    if (it == mCachedList.end()) {
+        LOG_ERROR("Employee ID %s is not in the cache list", employee.employeeID().c_str());
+        mView->showDataNotReadyScreen();
+        return;
+    }
+    // Update actual data
+    mDataProvider->update(employee);
+    // If system user, update the user info as well
+    if (employee.isSystemUser()) {
+        mDataProvider->update(entity::User("Proxy", employee.position(),
+                                           "Proxy", employee.employeeID()));
+    }
+    // Update cache list
+    *it = employee;
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
@@ -195,8 +211,7 @@ bool EmployeeMgmtController::isExists(const std::string& id) {
 
 std::vector<entity::Employee>::iterator EmployeeMgmtController::find(const std::string& id) {
     return std::find_if(mCachedList.begin(), mCachedList.end(), [&id](const entity::Employee& e) {
-                return e.employeeID() == id;
-            });
+                return e.employeeID() == id; });
 }
 
 std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
