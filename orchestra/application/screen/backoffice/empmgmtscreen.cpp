@@ -207,6 +207,9 @@ void EmployeeMgmtScreen::createEmployee() {
                                  "Entity.Field.Pin") != failedFields.end();
             }();
 
+            // Todo (code) - let's default to ACTIVE for now
+            newEmployee.setStatus("ACTIVE");
+
             if (!isSystemUser) {
                 // non-user, add the employee
                 return mCoreEmployeeMgmt->save({newEmployee, "", &validationResult});

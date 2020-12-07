@@ -50,7 +50,9 @@ void StackDB::populateEmployees() {
             "Garcia",                     // Last name
             "15/10/2020",                 // B-date
             "M",                          // Gender
-            "Manager"});                  // Position
+            "Manager",                    // Position
+            "1",                          // Status - (0) Inactive (1) Active
+            true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "BGAR123",                    // User ID <!Make sure this is unique>
             "Manager",                    // Role
@@ -92,7 +94,9 @@ void StackDB::populateEmployees() {
             "Mage",                       // Last name
             "10/10/2020",                 // B-date
             "M",                          // Gender
-            "Cashier"});                  // Position
+            "Cashier",                    // Position
+             "1",                         // Status - (0) Inactive (1) Active
+            true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "BGAR567",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
@@ -129,7 +133,9 @@ void StackDB::populateEmployees() {
             "Dela Cruz",                  // Last name
             "18/10/2020",                 // B-date
             "F",                          // Gender
-            "Cashier"});                  // Position
+            "Cashier",                    // Position
+             "1",                         // Status - (0) Inactive (1) Active
+            true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "JDEL554",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
@@ -166,7 +172,9 @@ void StackDB::populateEmployees() {
             "Duterte",                    // Last name
             "17/10/1977",                 // B-date
             "M",                          // Gender
-            "Security Guard"});           // Position
+            "Security Guard",             // Position
+             "1",                         // Status - (0) Inactive (1) Active
+            false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2054993",                    // Employee ID <!Same as employeeID>
             "22",                         // housenumber
@@ -198,7 +206,9 @@ void StackDB::populateEmployees() {
             "Pacquiao",                   // Last name
             "25/10/1988",                 // B-date
             "M",                          // Gender
-            "Delivery Personnel"});       // Position
+            "Delivery Personnel",         // Position
+             "1",                         // Status - (0) Inactive (1) Active
+            false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2073155",                    // Employee ID <!Same as employeeID>
             "18",                         // housenumber

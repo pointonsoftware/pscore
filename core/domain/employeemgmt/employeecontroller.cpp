@@ -56,10 +56,10 @@ std::vector<entity::Employee> EmployeeMgmtController::list() {
 }
 
 entity::Employee EmployeeMgmtController::get(const std::string& id) {
-    LOG_DEBUG("Getting employee with ID %s", id.c_str());
+    LOG_DEBUG("Getting employee %s", id.c_str());
     const std::vector<entity::Employee>::iterator& iter = find(id);
     if (iter != mCachedList.end()) {
-        LOG_INFO("Found employee with ID %s", id.c_str());
+        LOG_INFO("Found employee %s", id.c_str());
         return *iter;
     } else {
         LOG_ERROR("Employee was not found");
@@ -77,7 +77,7 @@ void EmployeeMgmtController::create(const SaveEmployeeData& data) {
         data.employee.birthdate(),
         data.employee.gender(),
         data.employee.position(),
-        entity::Employee::Status::ACTIVE,
+        data.employee.status(),
         data.employee.isSystemUser());
     newEmployee.setEmail(data.employee.contactDetails().email);
     newEmployee.setPhoneNumbers(data.employee.contactDetails().phone_number_1,
@@ -128,9 +128,11 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     if (employee.isSystemUser()) {
         mDataProvider->update(entity::User("Proxy", employee.position(),
                                            "Proxy", employee.employeeID()));
+        LOG_INFO("User role updated to %s", employee.position().c_str());
     }
     // Update cache list
     *it = employee;
+    LOG_INFO("Employee %s information updated", employee.employeeID().c_str());
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
@@ -147,7 +149,11 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     }
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
-    if (employee.isSystemUser()) {
+    /*!
+     * Todo (code) - the second check will determine if we're creating or updating,
+     *               and can be removed once we support User Information update
+    */
+    if (employee.isSystemUser() && !isExists(employee.employeeID())) {
         // Validate PIN
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN, "Proxy"));

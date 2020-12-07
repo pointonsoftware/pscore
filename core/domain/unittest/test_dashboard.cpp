@@ -151,7 +151,8 @@ TEST_F(TestDashboard, GetCurrentUserDetailsSuccess) {
                          "DummyBdate",
                          "DummyGender",
                          "DummyPosition",
-                         entity::Employee::Status::ACTIVE)));
+                         "ACTIVE",
+                         true)));
 
     entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
     // The employeeID must be the same

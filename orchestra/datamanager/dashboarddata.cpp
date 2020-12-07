@@ -49,7 +49,9 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
                 temp.lastname,
                 temp.birthdate,
                 temp.gender,
-                temp.position);
+                temp.position,
+                temp.status,
+                temp.isSystemUser);
             // Get Address
             [&foundUser]() {
                 const std::vector<db::StackDB::AddressTableItem>::iterator it =
@@ -63,6 +65,7 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
                         it->housenumber,
                         it->lot,
                         it->block,
+                        it->street,
                         it->subdivision,
                         it->sitio,
                         it->purok,

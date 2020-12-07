@@ -28,12 +28,6 @@ namespace entity {
 
 class Employee : public Person {
  public:
-    enum class Status {
-        INACTIVE,
-        ACTIVE,
-        ONLEAVE
-    };
-
     Employee(const std::string& employeeID,
              const std::string& firstname,
              const std::string& middlename,
@@ -41,8 +35,8 @@ class Employee : public Person {
              const std::string& birthdate,
              const std::string& gender,
              const std::string& position,
-             const Status status = Status::ACTIVE,
-             const bool isSystemUser = false);
+             const std::string& status,
+             const bool isSystemUser);
     Employee() = default;
     ~Employee() = default;
 
@@ -66,19 +60,19 @@ class Employee : public Person {
         return mIsSystemUser;
     }
 
-    inline void setStatus(const Status status) {
+    inline void setStatus(const std::string& status) {
         mStatus = status;
     }
 
-    inline const Status getStatus() const {
+    inline const std::string status() const {
         return mStatus;
     }
 
  protected:
     std::string mEmployeeID;
     std::string mPosition;
-    Status mStatus;
-    bool mIsSystemUser;
+    std::string mStatus;
+    bool mIsSystemUser = false;
 
     // Todo (spec) - add employee photo
 };
