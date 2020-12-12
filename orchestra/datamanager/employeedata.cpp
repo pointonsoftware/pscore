@@ -40,7 +40,9 @@ std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
                 temp.lastname,
                 temp.birthdate,
                 temp.gender,
-                temp.position);
+                temp.position,
+                temp.status,
+                temp.isSystemUser);
         fillEmployeeDetails(&employee);
         employees.emplace_back(employee);
     }
@@ -63,7 +65,9 @@ void EmployeeDataProvider::create(const entity::Employee& employee) {
             employee.lastName(),
             employee.birthdate(),
             employee.gender(),
-            employee.position()});
+            employee.position(),
+            employee.status(),
+            employee.isSystemUser()});
 
     writeEmployeeDetails(employee);
 }
@@ -106,7 +110,9 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
                 employee.lastName(),
                 employee.birthdate(),
                 employee.gender(),
-                employee.position()};
+                employee.position(),
+                employee.status(),
+                employee.isSystemUser()};
     }
     // Updating employee address
     {
@@ -278,6 +284,7 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
                     it->housenumber,
                     it->lot,
                     it->block,
+                    it->street,
                     it->subdivision,
                     it->sitio,
                     it->purok,

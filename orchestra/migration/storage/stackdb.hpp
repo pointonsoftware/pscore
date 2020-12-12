@@ -49,6 +49,8 @@ class StackDB {
         std::string birthdate;
         std::string gender;
         std::string position;
+        std::string status;
+        bool isSystemUser;
     };
 
     struct UserTableItem {

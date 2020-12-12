@@ -33,7 +33,7 @@ Employee::Employee(const std::string& employeeID,
                    const std::string& birthdate,
                    const std::string& gender,
                    const std::string& position,
-                   const Status status,
+                   const std::string& status,
                    const bool isSystemUser)
 : Person{firstname, middlename, lastname, birthdate, gender},
   mEmployeeID(employeeID), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
