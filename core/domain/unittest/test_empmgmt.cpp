@@ -45,7 +45,7 @@ class TestEmployeeManagement : public testing::Test {
 
     ~TestEmployeeManagement() = default;
     void SetUp() override {}
-    void TearDown() override{}
+    void TearDown() override {}
 
     std::shared_ptr<EmployeeMgmtDataMock> dpMock  = std::make_shared<EmployeeMgmtDataMock>();
     std::shared_ptr<EmployeeMgmtViewMock> viewMock = std::make_shared<EmployeeMgmtViewMock>();
@@ -54,8 +54,8 @@ class TestEmployeeManagement : public testing::Test {
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeList) {
     // Fake that there is at least one employee data on record
-    ON_CALL(*dpMock, getEmployees())
-        .WillByDefault(Return(std::vector<entity::Employee>{entity::Employee()}));
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(std::vector<entity::Employee>{entity::Employee()}));
     // The list should not be empty
     ASSERT_NE(empmgmtController.list().size(), 0);
 }
@@ -74,8 +74,8 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeListWithDataNotInitialized) {
 TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
     const std::string requestedID = "1234";
     // Fake that the employee data is saved on record
-    ON_CALL(*dpMock, getEmployees())
-        .WillByDefault(Return(
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(
             std::vector<entity::Employee>{
                 entity::Employee(requestedID, "", "", "", "", "", "", "", true)
                 }));
@@ -89,8 +89,8 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
     const std::string requestedID = "1234";
     const std::string storedEmployeeID = "5678";
     // Fake that we only have an employee with ID 5678
-    ON_CALL(*dpMock, getEmployees())
-        .WillByDefault(Return(
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(
             std::vector<entity::Employee>{
                 entity::Employee(storedEmployeeID, "", "", "", "", "", "", "", true)
                 }));
@@ -100,6 +100,47 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
     ASSERT_TRUE(empmgmtController.get(requestedID).employeeID().empty());
 }
 
+TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
+    const std::string requestedID = "1234";
+    // Fake that the employee data is saved on record
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(
+            std::vector<entity::Employee>{
+                entity::Employee(requestedID, "", "", "", "", "", "", "", true)
+                }));
+    // Cache the list
+    empmgmtController.list();
+    EXPECT_CALL(*viewMock, showSuccessfullyRemoved(_));
+    // Should be successful
+    ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::SUCCESS);
+    // The user ID should also be removed from the cachelist
+    ASSERT_TRUE(empmgmtController.get(requestedID).employeeID().empty());
+}
+
+TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
+    const std::string requestedID = "1234";
+    const std::string storedEmployeeID = "5678";
+    // Fake that we only have an employee with ID 5678
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(
+            std::vector<entity::Employee>{
+                entity::Employee(storedEmployeeID, "", "", "", "", "", "", "", true)
+                }));
+    // Cache the list
+    empmgmtController.list();
+    ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::NOT_FOUND);
+}
+
+TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithViewNotInitialized) {
+    EmployeeMgmtController dummyController(dpMock, nullptr);
+    ASSERT_EQ(dummyController.remove("1234"), USERSMGMTSTATUS::UNINITIALIZED);
+}
+
+TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithDataNotInitialized) {
+    EmployeeMgmtController dummyController(nullptr, viewMock);
+    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
+    ASSERT_EQ(dummyController.remove("1234"), USERSMGMTSTATUS::UNINITIALIZED);
+}
 
 }  // namespace test
 }  // namespace empmgmt

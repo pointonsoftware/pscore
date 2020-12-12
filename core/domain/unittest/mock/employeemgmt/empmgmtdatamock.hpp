@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <string>
+#include <vector>
 #include <domain/employeemgmt/interface/employeemgmtdataif.hpp>
 #include <entity/employee.hpp>
 #include <entity/user.hpp>
