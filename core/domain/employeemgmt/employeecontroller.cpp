@@ -47,7 +47,7 @@ std::vector<entity::Employee> EmployeeMgmtController::list() {
     }
     mCachedList = mDataProvider->getEmployees();
     if (mCachedList.empty()) {
-        LOG_WARN("Employees list is empty");
+        LOG_WARN("There are no employees on record");
         mView->showEmployeesEmptyPopup();
         return {};
     }

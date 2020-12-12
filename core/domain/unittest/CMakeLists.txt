@@ -12,8 +12,17 @@ set (SOURCES_UNDER_TEST
 add_executable (
     domain_unittest
     ${SOURCES_UNDER_TEST}
+    # mocks
+    mock/dashboard/dashboarddatamock.hpp
+    mock/dashboard/dashboardviewmock.hpp
+    mock/employeemgmt/empmgmtdatamock.hpp
+    mock/employeemgmt/empmgmtviewmock.hpp
+    mock/login/logindatamock.hpp
+    mock/login/loginviewmock.hpp
+    # test suites
     test_main.cpp
     test_dashboard.cpp
+    test_empmgmt.cpp
     test_login.cpp
 )
 
