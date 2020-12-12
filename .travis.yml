@@ -56,10 +56,9 @@ jobs:
     - name   : Code Coverage
       workspaces:
         use: buildws
-      script :
-              - ci/ci_unittest.sh
-              - pip install --user cpp-coveralls
-              - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*" -E ".*.sh"
+      install: pip install --user cpp-coveralls
+      script : ci/ci_unittest.sh
+      after_success: coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*" -E ".*.sh" --gcov-options '\-lp'
 
     - stage  : Profile
       name   : Gprof
