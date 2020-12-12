@@ -13,5 +13,6 @@ if (MINGW)
 endif ()
 
 if (BUILD_UNITTEST)
+    set (DOMAIN_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
     add_subdirectory (unittest)
 endif()

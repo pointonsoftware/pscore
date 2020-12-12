@@ -4,8 +4,14 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
 set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov --coverage ${CMAKE_EXE_LINKER_FLAGS}")
 
+set (SOURCES_UNDER_TEST
+    ${DOMAIN_DIRECTORY}/dashboard/dashboardcontroller.cpp
+    ${DOMAIN_DIRECTORY}/userlogin/logincontroller.cpp
+)
+
 add_executable (
     domain_unittest
+    ${SOURCES_UNDER_TEST}
     test_main.cpp
     test_dashboard.cpp
     test_login.cpp
@@ -19,8 +25,8 @@ endif ()
 
 target_link_libraries (
     domain_unittest
-    dashboard
-    loginmod
+    entity
+    validator
     gtest
     gmock
     ${MINGW_DEPENDENCY}
