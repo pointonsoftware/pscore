@@ -58,7 +58,7 @@ jobs:
         use: buildws
       install: pip install --user cpp-coveralls
       script : ci/ci_unittest.sh
-      after_success: coveralls -r core/domain -b . --gcov-options '\-lp'
+      after_success: coveralls -r . -e orechestra -e utility -e core/entity -e core/validator --gcov-options '\-lp'
 
     - stage  : Profile
       name   : Gprof
