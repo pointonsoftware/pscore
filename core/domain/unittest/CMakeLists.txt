@@ -6,6 +6,7 @@ set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov --coverage ${
 
 set (SOURCES_UNDER_TEST
     ${DOMAIN_DIRECTORY}/dashboard/dashboardcontroller.cpp
+    ${DOMAIN_DIRECTORY}/employeemgmt/employeecontroller.cpp
     ${DOMAIN_DIRECTORY}/userlogin/logincontroller.cpp
 )
 
