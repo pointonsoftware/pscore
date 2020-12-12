@@ -58,7 +58,7 @@ jobs:
         use: buildws
       install: pip install --user cpp-coveralls
       script : ci/ci_unittest.sh
-      after_success: coveralls --root core/domain --gcov ${TRAVIS_BUILD_DIR}/build/core/domain --gcov-options '\-lp'
+      after_success: coveralls --root core/domain --b . --gcov-options '\-lp'
 
     - stage  : Profile
       name   : Gprof
