@@ -366,9 +366,16 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
     } else if (userInput == "0") {
         return Options::LOGOUT;
     } else if (utility::isNumber(userInput)) {
-        // Store user input as the selected index
-        mSelectedEmployeeIndex = std::stoi(userInput);
-        return Options::EMPLOYEE_DETAILS;
+        /*!
+         * If the input is a number, check if we're in the landing screen.
+         * If we're currently in the landing screen, go to employee details.
+         * Otherwise, return invalid.
+        */
+        if (mSelectedEmployeeIndex == 0) {
+            // Store user input as the selected index
+            mSelectedEmployeeIndex = std::stoi(userInput);
+            return Options::EMPLOYEE_DETAILS;
+        }
     } else if (userInput == "c") {
         return Options::EMPLOYEE_CREATE;
     } else if (userInput == "u") {
@@ -385,6 +392,7 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
     bool switchScreenIsRequired = false;
     switch (option) {
         case Options::LANDING:
+            // Warning! Consider the recurssion in EMPLOYEE_REMOVE when making changes
             mSelectedEmployeeIndex = 0;  // reset whenever we go to landing
             showLandingScreen();
             break;
@@ -392,8 +400,12 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             invalidOptionSelected();
             break;
         case Options::EMPLOYEE_DETAILS:
-            mSelectedEmployeeIndex > (mEmployeesGUITable.size()) ?
-                invalidOptionSelected() : showEmployeeInformation();
+            if (mSelectedEmployeeIndex > (mEmployeesGUITable.size())) {
+                 mSelectedEmployeeIndex = 0;  // reset while we're in the landing screen
+                invalidOptionSelected();
+            } else {
+                showEmployeeInformation();
+            }
             break;
         case Options::EMPLOYEE_CREATE:
             createEmployee();

@@ -88,7 +88,7 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeListWithDataNotInitialized) {
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
-    const std::string requestedID = "JDO1234";
+    const std::string requestedID = "JDOE123";
     // Fake that the employee data is saved on record
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
@@ -102,9 +102,9 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
-    const std::string requestedID = "JDO1234";
-    const std::string storedEmployeeID = "PHP5678";
-    // Fake that we only have an employee with ID PHP5678
+    const std::string requestedID = "JDOE123";
+    const std::string storedEmployeeID = "PHIP567";
+    // Fake that we only have an employee with ID PHIP567
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
             std::vector<entity::Employee>{
@@ -117,7 +117,7 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
-    const std::string requestedID = "JDO1234";
+    const std::string requestedID = "JDOE123";
     // Fake that the employee data is saved on record
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
@@ -135,9 +135,9 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
-    const std::string requestedID = "JDO1234";
-    const std::string storedEmployeeID = "PHP5678";
-    // Fake that we only have an employee with ID PHP5678
+    const std::string requestedID = "JDOE123";
+    const std::string storedEmployeeID = "PHIP567";
+    // Fake that we only have an employee with ID PHIP567
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
             std::vector<entity::Employee>{
@@ -150,13 +150,13 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithViewNotInitialized) {
     EmployeeMgmtController dummyController(dpMock, nullptr);
-    ASSERT_EQ(dummyController.remove("JDO1234"), USERSMGMTSTATUS::UNINITIALIZED);
+    ASSERT_EQ(dummyController.remove("JDOE123"), USERSMGMTSTATUS::UNINITIALIZED);
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithDataNotInitialized) {
     EmployeeMgmtController dummyController(nullptr, viewMock);
     EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-    ASSERT_EQ(dummyController.remove("JDO1234"), USERSMGMTSTATUS::UNINITIALIZED);
+    ASSERT_EQ(dummyController.remove("JDOE123"), USERSMGMTSTATUS::UNINITIALIZED);
 }
 
 TEST_F(TestEmployeeManagement, TestSaveWithNullValidationContainer) {
@@ -218,7 +218,7 @@ TEST_F(TestEmployeeManagement, TestCreateUser) {
 
 TEST_F(TestEmployeeManagement, TestUpdateEmployee) {
     std::map<std::string, std::string> dummyValidationContainer;
-    const std::string requestedID = "JDO1234";
+    const std::string requestedID = "JDOE123";
     SaveEmployeeData employeeData {
              makeValidEmployee(requestedID, false),
              "", &dummyValidationContainer
@@ -242,7 +242,7 @@ TEST_F(TestEmployeeManagement, TestUpdateEmployee) {
 
 TEST_F(TestEmployeeManagement, TestUpdateUser) {
     std::map<std::string, std::string> dummyValidationContainer;
-    const std::string requestedID = "JDO1234";
+    const std::string requestedID = "JDOE123";
     SaveEmployeeData employeeData {
              makeValidEmployee(requestedID, true),
              "1234", &dummyValidationContainer
@@ -266,7 +266,7 @@ TEST_F(TestEmployeeManagement, TestUpdateUser) {
 
 TEST_F(TestEmployeeManagement, TestUpdateEmployeeDataThatIsNotInTheCacheList) {
     std::map<std::string, std::string> dummyValidationContainer;
-    const std::string requestedID = "JDO1234";
+    const std::string requestedID = "JDOE123";
     SaveEmployeeData employeeData {
              makeValidEmployee(requestedID, false),
              "", &dummyValidationContainer
