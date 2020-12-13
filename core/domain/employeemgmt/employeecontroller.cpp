@@ -47,7 +47,7 @@ std::vector<entity::Employee> EmployeeMgmtController::list() {
     }
     mCachedList = mDataProvider->getEmployees();
     if (mCachedList.empty()) {
-        LOG_WARN("Employees list is empty");
+        LOG_WARN("There are no employees on record");
         mView->showEmployeesEmptyPopup();
         return {};
     }
@@ -113,15 +113,10 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
     LOG_INFO("User %s added", newUser.userID().c_str());
 }
 
+// Note: Before calling this, make sure the employee is already in the cache list
 void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     const entity::Employee& employee = data.employee;
     LOG_DEBUG("Updating employee %s", employee.employeeID().c_str());
-    const std::vector<entity::Employee>::iterator it = find(employee.employeeID());
-    if (it == mCachedList.end()) {
-        LOG_ERROR("Employee ID %s is not in the cache list", employee.employeeID().c_str());
-        mView->showDataNotReadyScreen();
-        return;
-    }
     // Update actual data
     mDataProvider->update(employee);
     // If system user, update the user info as well
@@ -131,6 +126,7 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
         LOG_INFO("User role updated to %s", employee.position().c_str());
     }
     // Update cache list
+    const std::vector<entity::Employee>::iterator it = find(employee.employeeID());
     *it = employee;
     LOG_INFO("Employee %s information updated", employee.employeeID().c_str());
 }
@@ -144,14 +140,14 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     }
     if (!validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
-        mView->showDataNotReadyScreen();
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
     /*!
-     * Todo (code) - the second check will determine if we're creating or updating,
-     *               and can be removed once we support User Information update
+     * Todo (code) - the second check will determine if we're creating or updating.
+     *               if we're updating, we don't need to validate PIN
+     *               until we support User Information update
     */
     if (employee.isSystemUser() && !isExists(employee.employeeID())) {
         // Validate PIN
@@ -220,12 +216,6 @@ std::vector<entity::Employee>::iterator EmployeeMgmtController::find(const std::
                 return e.employeeID() == id; });
 }
 
-std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
-                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
-                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
-    return std::make_unique<EmployeeMgmtController>(data, view);
-}
-
 bool EmployeeMgmtController::isInterfaceInitialized() const {
     if (!mView) {
         LOG_ERROR("View is not initialized");
@@ -272,5 +262,12 @@ void EmployeeMgmtController::dumpValidationResult(const ValidationErrors& valida
         LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
     }
 }
+
+std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
+                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
+                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
+    return std::make_unique<EmployeeMgmtController>(data, view);
+}
+
 }  // namespace empmgmt
 }  // namespace domain

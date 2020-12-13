@@ -18,72 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTIFACE_HPP_
-#define CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTIFACE_HPP_
-#include <memory>
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_EMPLOYEEMGMT_EMPMGMTVIEWMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_EMPLOYEEMGMT_EMPMGMTVIEWMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <string>
-#include <map>
-#include <vector>
-#include "employeemgmtdataif.hpp"
-#include "employeemgmtviewif.hpp"
-#include <domain/librarycommon.hpp>
-#include <entity/user.hpp>
+#include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
 
 namespace domain {
 namespace empmgmt {
 
-enum class USERSMGMTSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2,
-    NOT_FOUND     = 3
-};
-
-struct SaveEmployeeData {
-    // [in]
-    const entity::Employee& employee;
-    // [in] Fill only if employee is a system-user
-    const std::string& PIN;
-    // [out]
-    std::map<std::string, std::string>* validationResult;
-};
-
-class EmployeeMgmtControlInterface {
+class EmployeeMgmtViewMock : public EmployeeMgmtViewInterface {
  public:
-    EmployeeMgmtControlInterface() = default;
-    virtual ~EmployeeMgmtControlInterface() = default;
+    EmployeeMgmtViewMock() = default;
+    ~EmployeeMgmtViewMock() = default;
 
-    /*!
-     * Gets the list of all employees
-    */
-    virtual std::vector<entity::Employee> list() = 0;
-    /*!
-     * Returns the info of the requested user
-    */
-    virtual entity::Employee get(const std::string& id) = 0;
-    /*!
-     * To create an employee, the employee object must not have an employeeID.
-     * To update an employee, use an employee object retrieved from list() or get().
-     * - param [out]- map of [field, error message]
-    */
-    virtual USERSMGMTSTATUS save(const SaveEmployeeData& employeeData) = 0;
-    /*!
-     * Deletes the user
-    */
-    virtual USERSMGMTSTATUS remove(const std::string& userID) = 0;
-    /*!
-     * Find the employees with first and last name
-    */
-    virtual std::vector<entity::Employee> findByName(const std::string& fname,
-                                                     const std::string& lname) = 0;
+    MOCK_METHOD(void, showEmployeesEmptyPopup, ());
+    MOCK_METHOD(void, showDataNotReadyScreen, ());
+    MOCK_METHOD(void, showEmployeeNotFoundPopup, ());
+    MOCK_METHOD(void, showSuccessfullyRemoved, (const std::string&));
+    MOCK_METHOD(void, showEmployeeExists, (const std::string&));
+    MOCK_METHOD(void, showUserSuccessfullyCreated, (const std::string&, const std::string&));
 };
-
-// Lib APIs
-extern "C" CORE_API std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
-                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
-                    const std::shared_ptr<EmployeeMgmtViewInterface>& view);
 
 }  // namespace empmgmt
 }  // namespace domain
 
-#endif  // CORE_DOMAIN_EMPLOYEEMGMT_INTERFACE_EMPLOYEEMGMTIFACE_HPP_
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_EMPLOYEEMGMT_EMPMGMTVIEWMOCK_HPP_
