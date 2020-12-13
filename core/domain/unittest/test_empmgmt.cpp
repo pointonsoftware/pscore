@@ -127,6 +127,7 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
     // Cache the list
     empmgmtController.list();
     EXPECT_CALL(*viewMock, showSuccessfullyRemoved(_));
+    EXPECT_CALL(*dpMock, removeWithID(requestedID));
     // Should be successful
     ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::SUCCESS);
     // The user ID should also be removed from the cachelist

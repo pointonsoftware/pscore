@@ -62,7 +62,8 @@ class EmployeeMgmtControlInterface {
     */
     virtual entity::Employee get(const std::string& id) = 0;
     /*!
-     * Creates the employee if not exists, otherwise will update the employee info
+     * To create an employee, the employee object must not have an employeeID.
+     * To update an employee, use an employee object retrieved from list() or get().
      * - param [out]- map of [field, error message]
     */
     virtual USERSMGMTSTATUS save(const SaveEmployeeData& employeeData) = 0;
