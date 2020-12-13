@@ -144,14 +144,14 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     }
     if (!validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
-        mView->showDataNotReadyScreen();
         return USERSMGMTSTATUS::UNINITIALIZED;
     }
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
     /*!
-     * Todo (code) - the second check will determine if we're creating or updating,
-     *               and can be removed once we support User Information update
+     * Todo (code) - the second check will determine if we're creating or updating.
+     *               if we're updating, we don't need to validate PIN
+     *               until we support User Information update
     */
     if (employee.isSystemUser() && !isExists(employee.employeeID())) {
         // Validate PIN
@@ -220,12 +220,6 @@ std::vector<entity::Employee>::iterator EmployeeMgmtController::find(const std::
                 return e.employeeID() == id; });
 }
 
-std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
-                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
-                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
-    return std::make_unique<EmployeeMgmtController>(data, view);
-}
-
 bool EmployeeMgmtController::isInterfaceInitialized() const {
     if (!mView) {
         LOG_ERROR("View is not initialized");
@@ -272,5 +266,12 @@ void EmployeeMgmtController::dumpValidationResult(const ValidationErrors& valida
         LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
     }
 }
+
+std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
+                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
+                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
+    return std::make_unique<EmployeeMgmtController>(data, view);
+}
+
 }  // namespace empmgmt
 }  // namespace domain

@@ -31,6 +31,7 @@
 
 // Gmock
 using testing::_;
+using testing::Matcher;
 using testing::Return;
 
 namespace domain {
@@ -46,6 +47,12 @@ class TestEmployeeManagement : public testing::Test {
     ~TestEmployeeManagement() = default;
     void SetUp() override {}
     void TearDown() override {}
+    // Helper function
+    entity::Employee makeValidEmployee(const std::string& id, bool isUser) const {
+        entity::Employee employee(id, "John", "", "Doe", "", "M", "", "", isUser);
+        employee.setAddress({"", "", "", "", "", "", "", "", "Town", "Prov", ""});
+        return employee;
+    }
 
     std::shared_ptr<EmployeeMgmtDataMock> dpMock  = std::make_shared<EmployeeMgmtDataMock>();
     std::shared_ptr<EmployeeMgmtViewMock> viewMock = std::make_shared<EmployeeMgmtViewMock>();
@@ -57,7 +64,16 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeList) {
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(std::vector<entity::Employee>{entity::Employee()}));
     // The list should not be empty
-    ASSERT_NE(empmgmtController.list().size(), 0);
+    ASSERT_FALSE(empmgmtController.list().empty());
+}
+
+TEST_F(TestEmployeeManagement, TestGetEmployeeListEmpty) {
+    // Fake that there is no employee data on record
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(std::vector<entity::Employee>{}));
+    EXPECT_CALL(*viewMock, showEmployeesEmptyPopup());
+    // The list should be empty
+    ASSERT_TRUE(empmgmtController.list().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeListWithViewNotInitialized) {
@@ -72,7 +88,7 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeListWithDataNotInitialized) {
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
-    const std::string requestedID = "1234";
+    const std::string requestedID = "JDO1234";
     // Fake that the employee data is saved on record
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
@@ -86,9 +102,9 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
-    const std::string requestedID = "1234";
-    const std::string storedEmployeeID = "5678";
-    // Fake that we only have an employee with ID 5678
+    const std::string requestedID = "JDO1234";
+    const std::string storedEmployeeID = "PHP5678";
+    // Fake that we only have an employee with ID PHP5678
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
             std::vector<entity::Employee>{
@@ -101,7 +117,7 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
-    const std::string requestedID = "1234";
+    const std::string requestedID = "JDO1234";
     // Fake that the employee data is saved on record
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
@@ -118,9 +134,9 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
-    const std::string requestedID = "1234";
-    const std::string storedEmployeeID = "5678";
-    // Fake that we only have an employee with ID 5678
+    const std::string requestedID = "JDO1234";
+    const std::string storedEmployeeID = "PHP5678";
+    // Fake that we only have an employee with ID PHP5678
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
             std::vector<entity::Employee>{
@@ -133,15 +149,132 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithViewNotInitialized) {
     EmployeeMgmtController dummyController(dpMock, nullptr);
-    ASSERT_EQ(dummyController.remove("1234"), USERSMGMTSTATUS::UNINITIALIZED);
+    ASSERT_EQ(dummyController.remove("JDO1234"), USERSMGMTSTATUS::UNINITIALIZED);
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithDataNotInitialized) {
     EmployeeMgmtController dummyController(nullptr, viewMock);
     EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-    ASSERT_EQ(dummyController.remove("1234"), USERSMGMTSTATUS::UNINITIALIZED);
+    ASSERT_EQ(dummyController.remove("JDO1234"), USERSMGMTSTATUS::UNINITIALIZED);
 }
 
+TEST_F(TestEmployeeManagement, TestSaveWithNullValidationContainer) {
+    SaveEmployeeData employeeData { entity::Employee(), "", nullptr };
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::UNINITIALIZED);
+}
+
+TEST_F(TestEmployeeManagement, TestSaveWithEmptyEmployeeData) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    SaveEmployeeData employeeData { entity::Employee(), "", &dummyValidationContainer };
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::FAILED);
+    // Validation result must not be empty
+    ASSERT_FALSE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestEmployeeManagement, TestSaveSystemUserWithEmptyPin) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    SaveEmployeeData employeeData {
+             makeValidEmployee("", true),
+             "",  // PIN is empty
+             &dummyValidationContainer
+    };
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::FAILED);
+    // Validation result must not be empty
+    ASSERT_FALSE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestEmployeeManagement, TestCreateEmployee) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    SaveEmployeeData employeeData {
+             makeValidEmployee("", false),
+             "", &dummyValidationContainer
+    };
+    // DP create must be called
+    EXPECT_CALL(*dpMock, create(Matcher<const entity::Employee&>(_)));
+    // Should be successful
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    // Validation result should be empty
+    ASSERT_TRUE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestEmployeeManagement, TestCreateUser) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    SaveEmployeeData employeeData {
+             makeValidEmployee("", true),
+             "1234", &dummyValidationContainer
+    };
+
+    // DP create must be called
+    EXPECT_CALL(*dpMock, create(Matcher<const entity::User&>(_)));
+    // Must display the ID to the user
+    EXPECT_CALL(*viewMock, showUserSuccessfullyCreated(_, _));
+
+    // Should be successful
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    // Validation result should be empty
+    ASSERT_TRUE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestEmployeeManagement, TestUpdateEmployee) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    const std::string requestedID = "JDO1234";
+    SaveEmployeeData employeeData {
+             makeValidEmployee(requestedID, false),
+             "", &dummyValidationContainer
+    };
+
+    // Pre-condition - cache the user data first
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(
+            std::vector<entity::Employee>{
+                entity::Employee(requestedID, "", "", "", "", "", "", "", false)
+                }));
+    empmgmtController.list();
+
+    // DP update must be called
+    EXPECT_CALL(*dpMock, update(Matcher<const entity::Employee&>(_)));
+    // Should be successful
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    // Validation result should be empty
+    ASSERT_TRUE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestEmployeeManagement, TestUpdateUser) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    const std::string requestedID = "JDO1234";
+    SaveEmployeeData employeeData {
+             makeValidEmployee(requestedID, true),
+             "1234", &dummyValidationContainer
+    };
+
+    // Pre-condition - cache the user data first
+    EXPECT_CALL(*dpMock, getEmployees())
+        .WillOnce(Return(
+            std::vector<entity::Employee>{
+                entity::Employee(requestedID, "", "", "", "", "", "", "", true)
+                }));
+    empmgmtController.list();
+
+    // DP update must be called
+    EXPECT_CALL(*dpMock, update(Matcher<const entity::User&>(_)));
+    // Should be successful
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    // Validation result should be empty
+    ASSERT_TRUE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestEmployeeManagement, TestUpdateEmployeeDataThatIsNotInTheCacheList) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    const std::string requestedID = "JDO1234";
+    SaveEmployeeData employeeData {
+             makeValidEmployee(requestedID, false),
+             "", &dummyValidationContainer
+    };
+    // Should be successful
+    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::FAILED);
+    // Validation result is expected not empty
+    EXPECT_TRUE(dummyValidationContainer.empty());
+}
 }  // namespace test
 }  // namespace empmgmt
 }  // namespace domain
