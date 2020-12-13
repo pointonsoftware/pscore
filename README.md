@@ -1,4 +1,4 @@
-<!--          PSCORE README v4.9         -->
+<!--          PSCORE README v4.10        -->
 <!-- Copyright (C) 2020 Pointon Software -->
 
 <p align="center">
@@ -108,7 +108,7 @@ The initial CORE [v0.0.4](https://github.com/pointonsoftware/pscore/releases/tag
 Below are the planned releases in the future:  
 
  - [**v0.1.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.1.0) - Full admin login/logout
- - **v0.2.0** - Basic employee management
+ - [**v0.2.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.2.0) - Basic employee management
  - **v0.3.0** - Basic inventory operations
  - **v0.4.0** - Basic customer management
  - **v0.5.0** - Basic POS
@@ -117,7 +117,7 @@ Below are the planned releases in the future:
  - **v1.x.x** - Improving the basic operations  
  - **v2.x.x** - Support for external hardwares like barcode scanner and receipt printer
 
-After CORE v1.0.0 is released, it is planned that **console_app** will be upgraded into a more user friendly GUI and build it as another project.
+After CORE v1.0.0, it is planned that another project will be built to upgrade the **console_app** into a more user friendly, graphical user interface.
 
 ---
 
