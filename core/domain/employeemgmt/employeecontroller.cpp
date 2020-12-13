@@ -113,15 +113,10 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
     LOG_INFO("User %s added", newUser.userID().c_str());
 }
 
+// Note: Before calling this, make sure the employee is already in the cache list
 void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     const entity::Employee& employee = data.employee;
     LOG_DEBUG("Updating employee %s", employee.employeeID().c_str());
-    const std::vector<entity::Employee>::iterator it = find(employee.employeeID());
-    if (it == mCachedList.end()) {
-        LOG_ERROR("Employee ID %s is not in the cache list", employee.employeeID().c_str());
-        mView->showDataNotReadyScreen();
-        return;
-    }
     // Update actual data
     mDataProvider->update(employee);
     // If system user, update the user info as well
@@ -131,6 +126,7 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
         LOG_INFO("User role updated to %s", employee.position().c_str());
     }
     // Update cache list
+    const std::vector<entity::Employee>::iterator it = find(employee.employeeID());
     *it = employee;
     LOG_INFO("Employee %s information updated", employee.employeeID().c_str());
 }
