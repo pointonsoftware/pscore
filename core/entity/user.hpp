@@ -27,9 +27,9 @@
 namespace entity {
 
 // Fields
-constexpr char FIELD_UID[] = "Entity.Field.UserID";
-constexpr char FIELD_ROLE[] = "Entity.Field.Role";
-constexpr char FIELD_PIN[] = "Entity.Field.Pin";
+constexpr char FIELD_UID[] = "User.ID";
+constexpr char FIELD_ROLE[] = "User.Role";
+constexpr char FIELD_PIN[] = "User.Pin";
 
 class User {
  public:

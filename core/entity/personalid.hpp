@@ -26,8 +26,8 @@
 namespace entity {
 
 // Fields
-constexpr char FIELD_PNID_IDT[] = "Entity.Field.IdType";
-constexpr char FIELD_PNID_IDN[] = "Entity.Field.IdNumber";
+constexpr char FIELD_PNID_IDT[] = "PersonalId.Type";
+constexpr char FIELD_PNID_IDN[] = "PersonalId.Number";
 
 struct PersonalId {
     std::string type;

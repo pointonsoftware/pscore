@@ -30,12 +30,11 @@
 namespace entity {
 
 // Fields
-constexpr char FIELD_FNAME[] = "Entity.Field.FirstName";
-constexpr char FIELD_MNAME[] = "Entity.Field.MiddleName";
-constexpr char FIELD_LNAME[] = "Entity.Field.LastName";
-constexpr char FIELD_BDATE[] = "Entity.Field.Birthdate";
-constexpr char FIELD_GENDER[] = "Entity.Field.Gender";
-constexpr char FIELD_POSITION[] = "Entity.Field.Position";
+constexpr char FIELD_FNAME[] = "Person.FirstName";
+constexpr char FIELD_MNAME[] = "Person.MiddleName";
+constexpr char FIELD_LNAME[] = "Person.LastName";
+constexpr char FIELD_BDATE[] = "Person.Birthdate";
+constexpr char FIELD_GENDER[] = "Person.Gender";
 
 class Person {
  public:
