@@ -80,11 +80,11 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     };
     // Basic info
     inputArea(std::bind(&entity::Employee::setFirstName, employee,
-              std::placeholders::_1), "First Name", requires("Person.FirstName"));
+              std::placeholders::_1), "First Name", requires("Person.First.Name"));
     inputArea(std::bind(&entity::Employee::setMiddleName, employee,
-              std::placeholders::_1), "Middle Name", requires("Person.MiddleName"));
+              std::placeholders::_1), "Middle Name", requires("Person.Middle.Name"));
     inputArea(std::bind(&entity::Employee::setLastName, employee,
-              std::placeholders::_1), "Last Name", requires("Person.LastName"));
+              std::placeholders::_1), "Last Name", requires("Person.Last.Name"));
     inputArea(std::bind(&entity::Employee::setBirthdate, employee,
               std::placeholders::_1), "Date of Birth (dd/mm/yyyy)",
                                       requires("Person.Birthdate"));
@@ -95,7 +95,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     // Address
     {
         entity::Address address = employee->address();
-        if (requires("Address.HouseNumber")) {
+        if (requires("Address.House.Number")) {
             address.housenumber = SCREENCOMMON().getInput("House Number");
         }
         if (requires("Address.Lot")) {
@@ -296,13 +296,13 @@ void EmployeeMgmtScreen::removeEmployee() {
 
 const std::string EmployeeMgmtScreen::getEntityField(unsigned int index) const {
     static const std::vector<std::string> employeeDomainFields {
-        "Person.FirstName",
-        "Person.MiddleName",
-        "Person.LastName",
+        "Person.First.Name",
+        "Person.Middle.Name",
+        "Person.Last.Name",
         "Person.Birthdate",
         "Person.Gender",
         "Employee.Position",
-        "Address.HouseNumber",
+        "Address.House.Number",
         "Address.Lot",
         "Address.Block",
         "Address.Street",

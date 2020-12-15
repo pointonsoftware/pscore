@@ -26,7 +26,7 @@
 namespace entity {
 
 // Fields
-constexpr char FIELD_ADDR_HNO[] = "Address.HouseNumber";
+constexpr char FIELD_ADDR_HNO[] = "Address.House.Number";
 constexpr char FIELD_ADDR_LOT[] = "Address.Lot";
 constexpr char FIELD_ADDR_BLK[] = "Address.Block";
 constexpr char FIELD_ADDR_STR[] = "Address.Street";

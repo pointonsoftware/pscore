@@ -30,9 +30,9 @@
 namespace entity {
 
 // Fields
-constexpr char FIELD_FNAME[] = "Person.FirstName";
-constexpr char FIELD_MNAME[] = "Person.MiddleName";
-constexpr char FIELD_LNAME[] = "Person.LastName";
+constexpr char FIELD_FNAME[] = "Person.First.Name";
+constexpr char FIELD_MNAME[] = "Person.Middle.Name";
+constexpr char FIELD_LNAME[] = "Person.Last.Name";
 constexpr char FIELD_BDATE[] = "Person.Birthdate";
 constexpr char FIELD_GENDER[] = "Person.Gender";
 
