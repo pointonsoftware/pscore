@@ -103,5 +103,5 @@ class Product {
     std::string mSupplierCode;
 };
 
-}  // namespace Product
+}  // namespace entity
 #endif  // CORE_ENTITY_PRODUCT_HPP_
