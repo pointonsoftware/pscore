@@ -12,6 +12,8 @@ add_library (
     person.hpp
     person.cpp
     personalid.hpp
+    product.hpp
+    product.cpp
     user.hpp
     user.cpp
 )

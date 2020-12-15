@@ -28,6 +28,7 @@ std::vector<StackDB::UserTableItem> StackDB::USERS_TABLE;
 std::vector<StackDB::AddressTableItem> StackDB::ADDRESS_TABLE;
 std::vector<StackDB::ContactDetailsTableItem> StackDB::CONTACTS_TABLE;
 std::vector<StackDB::PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
+std::vector<StackDB::ProductTableItem> StackDB::PRODUCT_TABLE;
 
 StackDB::StackDB() {
     populateEmployees();
