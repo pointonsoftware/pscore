@@ -80,52 +80,52 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     };
     // Basic info
     inputArea(std::bind(&entity::Employee::setFirstName, employee,
-              std::placeholders::_1), "First Name", requires("Entity.Field.FirstName"));
+              std::placeholders::_1), "First Name", requires("Person.FirstName"));
     inputArea(std::bind(&entity::Employee::setMiddleName, employee,
-              std::placeholders::_1), "Middle Name", requires("Entity.Field.MiddleName"));
+              std::placeholders::_1), "Middle Name", requires("Person.MiddleName"));
     inputArea(std::bind(&entity::Employee::setLastName, employee,
-              std::placeholders::_1), "Last Name", requires("Entity.Field.LastName"));
+              std::placeholders::_1), "Last Name", requires("Person.LastName"));
     inputArea(std::bind(&entity::Employee::setBirthdate, employee,
               std::placeholders::_1), "Date of Birth (dd/mm/yyyy)",
-                                      requires("Entity.Field.Birthdate"));
+                                      requires("Person.Birthdate"));
     inputArea(std::bind(&entity::Employee::setGender, employee,
-              std::placeholders::_1), "Gender (M/F)", requires("Entity.Field.Gender"));
+              std::placeholders::_1), "Gender (M/F)", requires("Person.Gender"));
     inputArea(std::bind(&entity::Employee::setPosition, employee,
-              std::placeholders::_1), "Position", requires("Entity.Field.Position"));
+              std::placeholders::_1), "Position", requires("Employee.Position"));
     // Address
     {
         entity::Address address = employee->address();
-        if (requires("Entity.Field.HouseNumber")) {
+        if (requires("Address.HouseNumber")) {
             address.housenumber = SCREENCOMMON().getInput("House Number");
         }
-        if (requires("Entity.Field.Lot")) {
+        if (requires("Address.Lot")) {
             address.lot = SCREENCOMMON().getInput("Lot Number");
         }
-        if (requires("Entity.Field.Block")) {
+        if (requires("Address.Block")) {
             address.block = SCREENCOMMON().getInput("Block");
         }
-        if (requires("Entity.Field.Street")) {
+        if (requires("Address.Street")) {
             address.street = SCREENCOMMON().getInput("Street");
         }
-        if (requires("Entity.Field.Subdivision")) {
+        if (requires("Address.Subdivision")) {
             address.subdivision = SCREENCOMMON().getInput("Subdivision");
         }
-        if (requires("Entity.Field.Sitio")) {
+        if (requires("Address.Sitio")) {
             address.sitio = SCREENCOMMON().getInput("Sitio");
         }
-        if (requires("Entity.Field.Purok")) {
+        if (requires("Address.Purok")) {
             address.purok = SCREENCOMMON().getInput("Purok");
         }
-        if (requires("Entity.Field.Barangay")) {
+        if (requires("Address.Barangay")) {
             address.barangay = SCREENCOMMON().getInput("Barangay");
         }
-        if (requires("Entity.Field.CityTown")) {
+        if (requires("Address.CityTown")) {
             address.city_town = SCREENCOMMON().getInput("City/Town");
         }
-        if (requires("Entity.Field.Province")) {
+        if (requires("Address.Province")) {
             address.province = SCREENCOMMON().getInput("Province");
         }
-        if (requires("Entity.Field.Zip")) {
+        if (requires("Address.Zip")) {
             address.zip = SCREENCOMMON().getInput("Zip");
         }
         employee->setAddress(address);
@@ -133,20 +133,20 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     // Contact details
     {
         entity::ContactDetails contactDetails = employee->contactDetails();
-        if (requires("Entity.Field.Phone1")) {
+        if (requires("ContactDetails.Phone1")) {
             contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
         }
-        if (requires("Entity.Field.Phone2")) {
+        if (requires("ContactDetails.Phone2")) {
             contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
         }
-        if (requires("Entity.Field.Email")) {
+        if (requires("ContactDetails.Email")) {
             contactDetails.email = SCREENCOMMON().getInput("Email Address");
         }
         employee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
         employee->setEmail(contactDetails.email);
     }
     // Ask if user wants to input a valid/government ID
-    if (requires("Entity.Field.IdType") || requires("Entity.Field.IdNumber")) {
+    if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
         entity::PersonalId personalId;
         bool idFieldsRequired = true;
         bool updateFields = false;
@@ -161,10 +161,10 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
         }
 
         if (idFieldsRequired) {
-            if (requires("Entity.Field.IdType")) {
+            if (requires("PersonalId.Type")) {
                 personalId.type = SCREENCOMMON().getInput("ID Type");
             }
-            if (requires("Entity.Field.IdNumber")) {
+            if (requires("PersonalId.Number")) {
                 personalId.id_number = SCREENCOMMON().getInput("ID Number");
             }
             if (updateFields) {
@@ -204,7 +204,7 @@ void EmployeeMgmtScreen::createEmployee() {
                 // Check if we require re-input for PIN field
                 // If so, we're editing a system user entity
                 return std::find(failedFields.begin(), failedFields.end(),
-                                 "Entity.Field.Pin") != failedFields.end();
+                                 "User.Pin") != failedFields.end();
             }();
 
             // Todo (code) - let's default to ACTIVE for now
@@ -296,28 +296,28 @@ void EmployeeMgmtScreen::removeEmployee() {
 
 const std::string EmployeeMgmtScreen::getEntityField(unsigned int index) const {
     static const std::vector<std::string> employeeDomainFields {
-        "Entity.Field.FirstName",
-        "Entity.Field.MiddleName",
-        "Entity.Field.LastName",
-        "Entity.Field.Birthdate",
-        "Entity.Field.Gender",
-        "Entity.Field.Position",
-        "Entity.Field.HouseNumber",
-        "Entity.Field.Lot",
-        "Entity.Field.Block",
-        "Entity.Field.Street",
-        "Entity.Field.Subdivision",
-        "Entity.Field.Sitio",
-        "Entity.Field.Purok",
-        "Entity.Field.Barangay",
-        "Entity.Field.CityTown",
-        "Entity.Field.Province",
-        "Entity.Field.Zip",
-        "Entity.Field.Phone1",
-        "Entity.Field.Phone2",
-        "Entity.Field.Email",
-        "Entity.Field.IdType",
-        "Entity.Field.IdNumber"
+        "Person.FirstName",
+        "Person.MiddleName",
+        "Person.LastName",
+        "Person.Birthdate",
+        "Person.Gender",
+        "Employee.Position",
+        "Address.HouseNumber",
+        "Address.Lot",
+        "Address.Block",
+        "Address.Street",
+        "Address.Subdivision",
+        "Address.Sitio",
+        "Address.Purok",
+        "Address.Barangay",
+        "Address.CityTown",
+        "Address.Province",
+        "Address.Zip",
+        "ContactDetails.Phone1",
+        "ContactDetails.Phone2",
+        "ContactDetails.Email",
+        "PersonalId.Type",
+        "PersonalId.Number"
     };
     if (index >= employeeDomainFields.size()) {
         return "";
