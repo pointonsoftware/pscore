@@ -6,7 +6,10 @@
 </p>
 
 <p align="center">
-<a href='https://coveralls.io/github/pointonsoftware/pscore?branch=master'><img src='https://coveralls.io/repos/github/pointonsoftware/pscore/badge.svg?branch=master' alt='Coverage Status' /></a>
+  <a href="https://coveralls.io/github/pointonsoftware/pscore?branch=master">
+    <img alt="Coverage Status"
+        src="https://coveralls.io/repos/github/pointonsoftware/pscore/badge.svg?branch=master"/>
+  </a>
   <a href="https://scan.coverity.com/projects/pointonsoftware-pscore">
     <img alt="Coverity Scan Build Status"
         src="https://scan.coverity.com/projects/22264/badge.svg"/>
