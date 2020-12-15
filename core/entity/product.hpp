@@ -88,18 +88,18 @@ class Product {
     void setSupplierCode(const std::string& supplierCode);
 
  private:
-    std::string mSKU,
-    std::string mName,
-    std::string mDescription,
-    std::string mBarcode,
-    std::string mCategory,
-    std::string mBrand,
-    std::string mUOM,
-    std::string mStock,
-    std::string mStatus,
-    std::string mOriginalPrice,
-    std::string mSellPrice,
-    std::string mSupplierName,
+    std::string mSKU;
+    std::string mName;
+    std::string mDescription;
+    std::string mBarcode;
+    std::string mCategory;
+    std::string mBrand;
+    std::string mUOM;
+    std::string mStock;
+    std::string mStatus;
+    std::string mOriginalPrice;
+    std::string mSellPrice;
+    std::string mSupplierName;
     std::string mSupplierCode;
 };
 
