@@ -1,8 +1,19 @@
-<!--          PSCORE README v4.10        -->
+<!--          PSCORE README v5.0         -->
 <!-- Copyright (C) 2020 Pointon Software -->
 
 <p align="center">
   <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
+</p>
+
+<p align="center">
+  <a href="https://coveralls.io/github/pointonsoftware/pscore?branch=master">
+    <img alt="Coverage Status"
+        src="https://coveralls.io/repos/github/pointonsoftware/pscore/badge.svg?branch=master"/>
+  </a>
+  <a href="https://scan.coverity.com/projects/pointonsoftware-pscore">
+    <img alt="Coverity Scan Build Status"
+        src="https://scan.coverity.com/projects/22264/badge.svg"/>
+  </a>
 </p>
 
 CORE is a software engine that houses the common use-case algorithms used for business management applications. CORE can be used as a processing module of a POS software, an inventory system, and more.
