@@ -133,17 +133,29 @@ TEST_F(TestLogin, LoginWithTooManyCharacterPIN) {
 }
 
 TEST_F(TestLogin, LoginWithViewNotInitialized) {
-    const std::string dummyUID = "JDOE123";
-    LoginController dummyController(dpMock, nullptr);
-    ASSERT_FALSE(dummyController.authenticate(dummyUID, "1234"));
+    try {
+        LoginController dummyController(dpMock, nullptr);
+        FAIL() << "Expected std::invalid_argument";
+    }
+    catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(),std::string("Received a nulltpr argument"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::invalid_argument";
+    }
 }
 
 TEST_F(TestLogin, LoginWithDataProviderNotInitialized) {
-    const std::string dummyUID = "JDOE123";
-    LoginController dummyController(nullptr, viewMock);
-    // Calls showDataNotReadyScreen
-    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-    ASSERT_FALSE(dummyController.authenticate(dummyUID, "1234"));
+    try {
+        LoginController dummyController(nullptr, viewMock);
+        FAIL() << "Expected std::invalid_argument";
+    }
+    catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(),std::string("Received a nulltpr argument"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::invalid_argument";
+    }
 }
 
 }  // namespace test

@@ -28,17 +28,15 @@ namespace domain {
 namespace login {
 
 LoginController::LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
-                               const std::shared_ptr<LoginViewIface>& view)
-: mDataProvider(dataprovider), mView(view) {
-    // Empty for now
+                                 const std::shared_ptr<LoginViewIface>& view) {
+    if((dataprovider == nullptr) || (view == nullptr)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    mDataProvider = dataprovider;
+    mView = view;
 }
 
 bool LoginController::authenticate(const std::string& id, const std::string& pin) {
-    // Make sure view is valid
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return false;
-    }
     if (id.empty()) {
         LOG_WARN("ID is empty");
         mView->showUserNotFoundScreen();
@@ -76,11 +74,6 @@ AUTHSTATUS LoginController::getUser(const std::string& id, entity::User* user) {
         LOG_ERROR("Invalid user argument");
         return AUTHSTATUS::FAILED;
     }
-    if (!mDataProvider) {
-        LOG_ERROR("Dataprovider is not initialized");
-        return AUTHSTATUS::UNINITIALIZED;
-    }
-
     // todo (xxx) : Check if dataprovider is ready; else throw
     LOG_DEBUG("Retrieving user data");
     // Check userID in dataprovider
