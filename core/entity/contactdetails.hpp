@@ -27,9 +27,9 @@
 namespace entity {
 
 // Fields
-constexpr char FIELD_CONT_PH1[] = "Entity.Field.Phone1";
-constexpr char FIELD_CONT_PH2[] = "Entity.Field.Phone2";
-constexpr char FIELD_CONT_EML[] = "Entity.Field.Email";
+constexpr char FIELD_CONT_PH1[] = "ContactDetails.Phone1";
+constexpr char FIELD_CONT_PH2[] = "ContactDetails.Phone2";
+constexpr char FIELD_CONT_EML[] = "ContactDetails.Email";
 
 struct ContactDetails {
     std::string email;

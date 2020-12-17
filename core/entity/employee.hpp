@@ -26,6 +26,11 @@
 
 namespace entity {
 
+// Fields
+constexpr char FIELD_EMPID[] = "Employee.ID";
+constexpr char FIELD_EPOS[] = "Employee.Position";
+constexpr char FIELD_ESTATUS[] = "Employee.Status";
+
 class Employee : public Person {
  public:
     Employee(const std::string& employeeID,
