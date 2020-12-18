@@ -103,33 +103,6 @@ TEST_F(TestDashboard, GetCurrentUserWithEmptyUserID) {
     ASSERT_EQ(dummyUser.userID(), "");
 }
 
-TEST_F(TestDashboard, GetCurrentUserViewNotInitialized) {
-    DashboardController dashboardController(dataMock, nullptr);
-    entity::User dummyUser = dashboardController.getCurrentUser();
-    // userID must be empty
-    ASSERT_EQ(dummyUser.userID(), "");
-}
-
-TEST_F(TestDashboard, GetCurrentUserWithDataProviderNotInitialized) {
-    DashboardController dashboardController(nullptr, viewMock);
-
-    /* Pre-condition
-     * According to the API, we should set the current userID
-     * before calling getCurrentUserInfo()
-    */
-    const std::string dummyUserId = "JDOE123";
-    dashboardController.setCurrentUserId(dummyUserId);
-
-    // We should inform the user
-    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-
-    entity::User dummyUser = dashboardController.getCurrentUser();
-    // userID must be empty
-    ASSERT_EQ(dummyUser.userID(), "");
-}
-
-
-
 TEST_F(TestDashboard, GetCurrentUserDetailsSuccess) {
     /* Pre-condition
      * According to the API, we should set the current userID
@@ -199,26 +172,30 @@ TEST_F(TestDashboard, GetCurrentUserDataWithEmptyEmployeeID) {
     ASSERT_EQ(dummyEmployee.employeeID(), "");
 }
 
-TEST_F(TestDashboard, GetCurrentUserDataWithViewNotInitialized) {
-    DashboardController dashboardController(dataMock, nullptr);
-    entity::User dummyUser;
-    entity::Employee dummyEmployee = dashboardController.getUserDetails(dummyUser);
-    // employeeID must be empty
-    ASSERT_EQ(dummyEmployee.employeeID(), "");
+TEST_F(TestDashboard, TestDashboardWithViewNotInitialized) {
+    try {
+        DashboardController dashboardController(dataMock, nullptr);
+        FAIL() << "Expected std::invalid_argument";
+    }
+    catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(), std::string("Received a nulltpr argument"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::invalid_argument";
+    }
 }
 
-TEST_F(TestDashboard, GetCurrentUserDataWithDataProviderNotInitialized) {
-    DashboardController dashboardController(nullptr, viewMock);
-    const std::string dummyUserId = "JDOE123";
-    const std::string dummyEmployeeId = "202012344";
-    // Fake current user
-    entity::User dummyUser(dummyUserId, "Manager", "1111", dummyEmployeeId);
-    // We should inform the user
-    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-
-    entity::Employee dummyEmployee = dashboardController.getUserDetails(dummyUser);
-    // employeeID must be empty
-    ASSERT_EQ(dummyEmployee.employeeID(), "");
+TEST_F(TestDashboard, TestDashboardWithDataProviderNotInitialized) {
+    try {
+        DashboardController dashboardController(nullptr, viewMock);
+        FAIL() << "Expected std::invalid_argument";
+    }
+    catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(), std::string("Received a nulltpr argument"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::invalid_argument";
+    }
 }
 
 }  // namespace test
