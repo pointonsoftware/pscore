@@ -29,9 +29,12 @@ namespace domain {
 namespace dashboard {
 
 DashboardController::DashboardController(const std::shared_ptr<DashboardDataInterface>& data,
-                                         const std::shared_ptr<DashboardViewInterface>& view)
-: mDataProvider(data), mView(view), mCurrentUserID("") {
-    // empty for now
+                                         const std::shared_ptr<DashboardViewInterface>& view) {
+    if((data == nullptr) || (view == nullptr)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    mDataProvider = data;
+    mView = view;
 }
 
 void DashboardController::setCurrentUserId(const std::string& userID) {
@@ -43,11 +46,6 @@ void DashboardController::setCurrentUserId(const std::string& userID) {
 
 entity::User DashboardController::getCurrentUser() {
     LOG_DEBUG("Getting current user info");
-    // Make sure view is valid
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return entity::User();
-    }
     if (mCurrentUserID.empty()) {
         LOG_ERROR("UserID was not set");
         // Todo (spec), do we need a more specific popup here?
@@ -76,10 +74,6 @@ DASHSTATUS DashboardController::getUserData(entity::User* container) const {
         LOG_ERROR("Invalid user argument");
         return DASHSTATUS::FAILED;
     }
-    if (!mDataProvider) {
-        LOG_ERROR("Dataprovider is not initialized");
-        return DASHSTATUS::UNINITIALIZED;
-    }
     LOG_DEBUG("Retrieving user data");
     // todo (xxx) : Check if dataprovider is ready; else throw
     *container = mDataProvider->getUserByID(mCurrentUserID);
@@ -88,10 +82,6 @@ DASHSTATUS DashboardController::getUserData(entity::User* container) const {
 
 entity::Employee DashboardController::getUserDetails(const entity::User& user) {
     LOG_DEBUG("Getting employee details");
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return entity::Employee();
-    }
     // Validate user info
     if (!isUserValid(user)) {
         LOG_ERROR("UserID %s was not found", mCurrentUserID.c_str());
@@ -122,10 +112,6 @@ DASHSTATUS DashboardController::getEmployeeData(const std::string& employeeID,
     if (!container) {
         LOG_ERROR("Invalid user argument");
         return DASHSTATUS::FAILED;
-    }
-    if (!mDataProvider) {
-        LOG_ERROR("Dataprovider is not initialized");
-        return DASHSTATUS::UNINITIALIZED;
     }
     LOG_DEBUG("Retrieving employee data");
     // todo (xxx) : Check if dataprovider is ready; else throw
