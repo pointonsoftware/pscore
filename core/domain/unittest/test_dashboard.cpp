@@ -178,7 +178,7 @@ TEST_F(TestDashboard, TestDashboardWithViewNotInitialized) {
         FAIL() << "Expected std::invalid_argument";
     }
     catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(),std::string("Received a nulltpr argument"));
+        EXPECT_EQ(err.what(), std::string("Received a nulltpr argument"));
     }
     catch(...) {
         FAIL() << "Expected std::invalid_argument";
@@ -191,7 +191,7 @@ TEST_F(TestDashboard, TestDashboardWithDataProviderNotInitialized) {
         FAIL() << "Expected std::invalid_argument";
     }
     catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(),std::string("Received a nulltpr argument"));
+        EXPECT_EQ(err.what(), std::string("Received a nulltpr argument"));
     }
     catch(...) {
         FAIL() << "Expected std::invalid_argument";

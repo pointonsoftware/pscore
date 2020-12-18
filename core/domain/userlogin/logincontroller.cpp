@@ -29,7 +29,7 @@ namespace login {
 
 LoginController::LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
                                  const std::shared_ptr<LoginViewIface>& view) {
-    if((dataprovider == nullptr) || (view == nullptr)) {
+    if ((dataprovider == nullptr) || (view == nullptr)) {
         throw std::invalid_argument("Received a nulltpr argument");
     }
     mDataProvider = dataprovider;

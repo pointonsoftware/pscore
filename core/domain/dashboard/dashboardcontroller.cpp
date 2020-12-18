@@ -30,7 +30,7 @@ namespace dashboard {
 
 DashboardController::DashboardController(const std::shared_ptr<DashboardDataInterface>& data,
                                          const std::shared_ptr<DashboardViewInterface>& view) {
-    if((data == nullptr) || (view == nullptr)) {
+    if ((data == nullptr) || (view == nullptr)) {
         throw std::invalid_argument("Received a nulltpr argument");
     }
     mDataProvider = data;

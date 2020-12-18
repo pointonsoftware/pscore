@@ -77,14 +77,29 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeListEmpty) {
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeListWithViewNotInitialized) {
-    EmployeeMgmtController dummyController(dpMock, nullptr);
-    ASSERT_TRUE(dummyController.list().empty());
+    try {
+        EmployeeMgmtController dummyController(dpMock, nullptr);
+        FAIL() << "Expected std::invalid_argument";
+    }
+    catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(), std::string("Received a nulltpr argument"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::invalid_argument";
+    }
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeListWithDataNotInitialized) {
-    EmployeeMgmtController dummyController(nullptr, viewMock);
-    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-    ASSERT_TRUE(dummyController.list().empty());
+    try {
+        EmployeeMgmtController dummyController(nullptr, viewMock);
+        FAIL() << "Expected std::invalid_argument";
+    }
+    catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(), std::string("Received a nulltpr argument"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::invalid_argument";
+    }
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
@@ -146,17 +161,6 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
     // Cache the list
     empmgmtController.list();
     ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::NOT_FOUND);
-}
-
-TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithViewNotInitialized) {
-    EmployeeMgmtController dummyController(dpMock, nullptr);
-    ASSERT_EQ(dummyController.remove("JDOE123"), USERSMGMTSTATUS::UNINITIALIZED);
-}
-
-TEST_F(TestEmployeeManagement, TestRemoveEmployeeWithDataNotInitialized) {
-    EmployeeMgmtController dummyController(nullptr, viewMock);
-    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
-    ASSERT_EQ(dummyController.remove("JDOE123"), USERSMGMTSTATUS::UNINITIALIZED);
 }
 
 TEST_F(TestEmployeeManagement, TestSaveWithNullValidationContainer) {

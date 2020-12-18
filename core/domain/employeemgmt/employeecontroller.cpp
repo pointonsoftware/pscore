@@ -35,16 +35,16 @@ namespace empmgmt {
 
 EmployeeMgmtController::EmployeeMgmtController(
                                     const std::shared_ptr<EmployeeMgmtDataInterface>& data,
-                                    const std::shared_ptr<EmployeeMgmtViewInterface>& view)
-: mDataProvider(data), mView(view) {
-    // empty for now
+                                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
+    if ((data == nullptr) || (view == nullptr)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    mDataProvider = data;
+    mView = view;
 }
 
 std::vector<entity::Employee> EmployeeMgmtController::list() {
     LOG_DEBUG("Getting the list of employees");
-    if (!isInterfaceInitialized()) {
-        return {};
-    }
     mCachedList = mDataProvider->getEmployees();
     if (mCachedList.empty()) {
         LOG_WARN("There are no employees on record");
@@ -135,9 +135,6 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     const entity::Employee& employee = employeeData.employee;
     std::map<std::string, std::string>* validationResult = employeeData.validationResult;
     LOG_DEBUG("Saving employee information");
-    if (!isInterfaceInitialized()) {
-        return USERSMGMTSTATUS::UNINITIALIZED;
-    }
     if (!validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
         return USERSMGMTSTATUS::UNINITIALIZED;
@@ -176,9 +173,6 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
 
 USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
     LOG_DEBUG("Removing employee with ID %s", id.c_str());
-    if (!isInterfaceInitialized()) {
-        return USERSMGMTSTATUS::UNINITIALIZED;
-    }
     const std::vector<entity::Employee>::iterator it = find(id);
     if (it == mCachedList.end()) {
         LOG_ERROR("Employee with ID %s was not found in the cache list", id.c_str());
@@ -214,19 +208,6 @@ bool EmployeeMgmtController::isExists(const std::string& id) {
 std::vector<entity::Employee>::iterator EmployeeMgmtController::find(const std::string& id) {
     return std::find_if(mCachedList.begin(), mCachedList.end(), [&id](const entity::Employee& e) {
                 return e.employeeID() == id; });
-}
-
-bool EmployeeMgmtController::isInterfaceInitialized() const {
-    if (!mView) {
-        LOG_ERROR("View is not initialized");
-        return false;
-    }
-    if (!mDataProvider) {
-        LOG_ERROR("Dataprovider is not initialized");
-        mView->showDataNotReadyScreen();
-        return false;
-    }
-    return true;
 }
 
 ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee& employee) const {

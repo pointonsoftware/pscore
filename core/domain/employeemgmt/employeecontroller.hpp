@@ -54,7 +54,6 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
 
     bool isExists(const std::string& id);
     std::vector<entity::Employee>::iterator find(const std::string& id);
-    bool isInterfaceInitialized() const;
     ValidationErrors validateDetails(const entity::Employee& employee) const;
     void dumpValidationResult(const ValidationErrors& validationErrors) const;
 
