@@ -59,7 +59,7 @@ TEST_F(TestLogin, LoginShouldSucceed) {
     // Calls findUser
     EXPECT_CALL(*dpMock, findUserByID(dummyUID))
             .WillOnce(Return(
-                entity::User(dummyUID, "Manager", dummyPin, "DummyEmployeeID")));
+                entity::User(dummyUID, "Manager", dummyPin, "dummyCreatedAt", "DummyEmployeeID")));
     // Successful
     ASSERT_TRUE(loginController.authenticate(dummyUID, dummyPin));
 }
@@ -70,7 +70,7 @@ TEST_F(TestLogin, LoginUserNotFound) {
     // Calls findUser - fake that user was not found
     EXPECT_CALL(*dpMock, findUserByID(_))
             .WillOnce(Return(
-                entity::User("", "", "", "")));
+                entity::User("", "", "", "", "")));
     // Calls showUserNotFoundScreen
     EXPECT_CALL(*viewMock, showUserNotFoundScreen());
     ASSERT_FALSE(loginController.authenticate(dummyUID, dummyPin));
@@ -83,7 +83,8 @@ TEST_F(TestLogin, LoginUserIdAndPinDidNotMatch) {
     // Calls findUser - fake that user was found but PIN is different
     EXPECT_CALL(*dpMock, findUserByID(_))
             .WillOnce(Return(
-                entity::User(dummyUID, "Manager", dummyStoredPin, "DummyEmployeeID")));
+                entity::User(dummyUID, "Manager", dummyStoredPin,
+                             "dummyCreatedAt", "DummyEmployeeID")));
     // Calls showUserNotFoundScreen
     EXPECT_CALL(*viewMock, showUserNotFoundScreen());
     ASSERT_FALSE(loginController.authenticate(dummyUID, dummyInputPin));

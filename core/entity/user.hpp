@@ -36,7 +36,9 @@ class User {
     User(const std::string& userID,
          const std::string& role,
          const std::string& pin,
-         const std::string& employeeID = "");
+         const std::string& createdAt,
+         const std::string& employeeID);
+
     User() = default;
     ~User() = default;
 
@@ -61,6 +63,9 @@ class User {
     inline const std::string pin() const {
         return mPIN;
     }
+    inline const std::string createdAt() const {
+        return mCreatedAt;
+    }
     inline const std::string employeeID() const {
         return mEmployeeID;
     }
@@ -69,6 +74,7 @@ class User {
     std::string mUserID;
     std::string mRole;
     std::string mPIN;
+    std::string mCreatedAt;
     std::string mEmployeeID;
 };
 

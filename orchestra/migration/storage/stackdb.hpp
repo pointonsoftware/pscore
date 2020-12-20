@@ -57,6 +57,7 @@ class StackDB {
         std::string userID;
         std::string role;
         std::string PIN;
+        std::string createdAt;
         std::string employeeID;  // Links to Employee ID
     };
 

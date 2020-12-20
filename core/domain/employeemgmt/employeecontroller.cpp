@@ -90,8 +90,9 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
                                         const std::string& pin) const {
     entity::User newUser(
         // Todo (code) - need to ensure this ID is unique
+        // Use the second constructor
         utility::chargenerator::generateUID(employee.firstName(), employee.lastName()),
-        employee.position(), pin, employee.ID());
+        employee.position(), pin, "CreatedAt", employee.ID());
     mDataProvider->create(newUser);
     mView->showUserSuccessfullyCreated(employee.firstName(), newUser.userID());
     LOG_INFO("User %s added", newUser.userID().c_str());
@@ -106,7 +107,7 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     // If system user, update the user info as well
     if (employee.isSystemUser()) {
         mDataProvider->update(entity::User("Proxy", employee.position(),
-                                           "Proxy", employee.ID()));
+                                           "Proxy", "Proxy", employee.ID()));
         LOG_INFO("User role updated to %s", employee.position().c_str());
     }
     // Update cache list
@@ -133,7 +134,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     if (employee.isSystemUser() && !isExists(employee.ID())) {
         // Validate PIN
         entity::validator::UserValidator validator(
-                entity::User("Proxy", "Proxy", employeeData.PIN, "Proxy"));
+                entity::User("Proxy", "Proxy", employeeData.PIN, "Proxy", "Proxy"));
         validationResult->insert(validator.result().begin(), validator.result().end());
     }
     if (!validationResult->empty()) {

@@ -63,7 +63,7 @@ TEST_F(TestDashboard, GetCurrentUserInfoSuccess) {
     EXPECT_CALL(*dataMock, getUserByID(dummyUserId))
     // Fake that we found a user
         .WillOnce(Return(
-        entity::User(dummyUserId, "Manager", "1111", "dummyEmployeeID")));
+        entity::User(dummyUserId, "Manager", "1111", "dummyCreatedAt", "dummyEmployeeID")));
 
     entity::User dummyUser = dashController.getCurrentUser();
     // The userID must not be empty
@@ -112,7 +112,7 @@ TEST_F(TestDashboard, GetCurrentUserDetailsSuccess) {
     const std::string dummyEmployeeId = "202012344";
     dashController.setCurrentUserId(dummyUserId);
     // Fake current user
-    entity::User dummyUser(dummyUserId, "Manager", "1111", dummyEmployeeId);
+    entity::User dummyUser(dummyUserId, "Manager", "1111", "dummyCreatedAt", dummyEmployeeId);
 
     // We expect that data provider will perform getEmployeeInformation()
     EXPECT_CALL(*dataMock, getEmployeeInformation(dummyEmployeeId))
@@ -143,7 +143,7 @@ TEST_F(TestDashboard, GetCurrentUserDataNotFound) {
     const std::string dummyEmployeeId = "202012344";
     dashController.setCurrentUserId(dummyUserId);
     // Fake current user
-    entity::User dummyUser(dummyUserId, "Manager", "1111", dummyEmployeeId);
+    entity::User dummyUser(dummyUserId, "Manager", "1111", "dummyCreatedAt", dummyEmployeeId);
 
     // We expect that data provider will perform getEmployeeInformation()
     EXPECT_CALL(*dataMock, getEmployeeInformation(dummyEmployeeId))
@@ -162,7 +162,7 @@ TEST_F(TestDashboard, GetCurrentUserDataWithEmptyEmployeeID) {
     // Fake current user
     const std::string dummyUserId = "JDOE123";
     // Fake that employeeID is empty (i.e. user is not an employee)
-    entity::User dummyUser(dummyUserId, "Manager", "1111", "");
+    entity::User dummyUser(dummyUserId, "Manager", "1111", "dummyCreatedAt", "");
 
     // We should show an information in the screen
     EXPECT_CALL(*viewMock, showUserNotFound());

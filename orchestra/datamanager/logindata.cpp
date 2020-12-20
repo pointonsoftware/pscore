@@ -28,7 +28,8 @@ entity::User LoginDataProvider::findUserByID(const std::string& id) {
     const entity::User user = [id]() {
         for (const db::StackDB::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
             if (temp.userID == id) {
-                return entity::User(temp.userID, temp.role, temp.PIN, temp.employeeID);
+                return entity::User(temp.userID, temp.role, temp.PIN,
+                                    temp.createdAt, temp.employeeID);
             }
         }
         return entity::User();

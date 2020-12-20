@@ -30,7 +30,8 @@ entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
     const entity::User user = [userID]() {
         for (const db::StackDB::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
             if (temp.userID == userID) {
-                return entity::User(temp.userID, temp.role, temp.PIN, temp.employeeID);
+                return entity::User(temp.userID, temp.role, temp.PIN,
+                                    temp.createdAt, temp.employeeID);
             }
         }
         // Return empty if not found
