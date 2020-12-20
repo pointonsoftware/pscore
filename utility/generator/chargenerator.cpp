@@ -18,30 +18,17 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "employee.hpp"
-#include <chrono>
-#include <ctime>
-#include <random>
+#include "chargenerator.hpp"
 #include <string>
+#include <general.hpp>
 
-namespace entity {
+namespace utility {
+namespace chargenerator {
 
-Employee::Employee(const std::string& employeeID,
-                   const std::string& firstname,
-                   const std::string& middlename,
-                   const std::string& lastname,
-                   const std::string& birthdate,
-                   const std::string& gender,
-                   const std::string& position,
-                   const std::string& status,
-                   const bool isSystemUser)
-: Person{firstname, middlename, lastname, birthdate, gender},
-  mEmployeeID(employeeID), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
-    // Empty for now
+std::string generateUID(const std::string& p1, const std::string& p2) {
+    // first-letter-of-param1 + first-three-letters-of-param2 + three-digit-unique-number
+    return toUpper(p1.at(0) + p2.substr(0, 2) + std::to_string(randomNumber(100, 999)));
 }
 
-Employee::Employee(const std::string& employeeID) : mEmployeeID(employeeID) {
-    // Empty for now
-}
-
-}  // namespace entity
+}  // namespace chargenerator
+}  // namespace utility

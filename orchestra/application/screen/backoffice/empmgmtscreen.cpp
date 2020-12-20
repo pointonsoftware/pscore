@@ -26,8 +26,10 @@
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
+#include <idgenerator.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
+
 // data
 #include <employeedata.hpp>
 
@@ -182,7 +184,10 @@ void EmployeeMgmtScreen::createEmployee() {
     std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
     std::map<std::string, std::string> validationResult;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
-    entity::Employee newEmployee;
+    // App must provide the employee ID
+    entity::Employee newEmployee(app::utility::generateEmployeeID());
+    // Todo (code) - let's default to ACTIVE for now
+    newEmployee.setStatus("ACTIVE");
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
@@ -206,9 +211,6 @@ void EmployeeMgmtScreen::createEmployee() {
                 return std::find(failedFields.begin(), failedFields.end(),
                                  "User.Pin") != failedFields.end();
             }();
-
-            // Todo (code) - let's default to ACTIVE for now
-            newEmployee.setStatus("ACTIVE");
 
             if (!isSystemUser) {
                 // non-user, add the employee

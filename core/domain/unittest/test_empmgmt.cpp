@@ -191,7 +191,7 @@ TEST_F(TestEmployeeManagement, TestSaveSystemUserWithEmptyPin) {
 TEST_F(TestEmployeeManagement, TestCreateEmployee) {
     std::map<std::string, std::string> dummyValidationContainer;
     SaveEmployeeData employeeData {
-             makeValidEmployee("", false),
+             makeValidEmployee("JDOE123", false),
              "", &dummyValidationContainer
     };
     // DP create must be called
@@ -205,7 +205,7 @@ TEST_F(TestEmployeeManagement, TestCreateEmployee) {
 TEST_F(TestEmployeeManagement, TestCreateUser) {
     std::map<std::string, std::string> dummyValidationContainer;
     SaveEmployeeData employeeData {
-             makeValidEmployee("", true),
+             makeValidEmployee("JDOE123", true),
              "1234", &dummyValidationContainer
     };
 
@@ -266,19 +266,6 @@ TEST_F(TestEmployeeManagement, TestUpdateUser) {
     ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
     // Validation result should be empty
     ASSERT_TRUE(dummyValidationContainer.empty());
-}
-
-TEST_F(TestEmployeeManagement, TestUpdateEmployeeDataThatIsNotInTheCacheList) {
-    std::map<std::string, std::string> dummyValidationContainer;
-    const std::string requestedID = "JDOE123";
-    SaveEmployeeData employeeData {
-             makeValidEmployee(requestedID, false),
-             "", &dummyValidationContainer
-    };
-    // Should be successful
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::FAILED);
-    // Validation result is expected not empty
-    EXPECT_TRUE(dummyValidationContainer.empty());
 }
 }  // namespace test
 }  // namespace empmgmt

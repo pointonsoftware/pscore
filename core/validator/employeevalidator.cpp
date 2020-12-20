@@ -18,30 +18,25 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "employee.hpp"
-#include <chrono>
-#include <ctime>
-#include <random>
-#include <string>
+#include "employeevalidator.hpp"
+#include <regex>
+#include <general.hpp>  // pscore utility
 
 namespace entity {
+namespace validator {
 
-Employee::Employee(const std::string& employeeID,
-                   const std::string& firstname,
-                   const std::string& middlename,
-                   const std::string& lastname,
-                   const std::string& birthdate,
-                   const std::string& gender,
-                   const std::string& position,
-                   const std::string& status,
-                   const bool isSystemUser)
-: Person{firstname, middlename, lastname, birthdate, gender},
-  mEmployeeID(employeeID), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
-    // Empty for now
+EmployeeValidator::EmployeeValidator(const Employee& employee) : mEmployee(employee) {
+    validationFunctions.emplace_back(std::bind(&EmployeeValidator::validateID, this));
+    validate();
 }
 
-Employee::Employee(const std::string& employeeID) : mEmployeeID(employeeID) {
-    // Empty for now
+ValidationStatus EmployeeValidator::validateID() {
+    if (mEmployee.employeeID().empty()) {
+        addError(FIELD_EMPID, "Employee ID must not be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
+    return ValidationStatus::S_OK;
 }
 
+}  // namespace validator
 }  // namespace entity

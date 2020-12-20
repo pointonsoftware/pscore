@@ -1,6 +1,7 @@
 project (application)
 
 include_directories(screen)
+include_directories(utility)
 
 add_executable (
     console_app
@@ -21,6 +22,9 @@ add_executable (
     screen/backoffice/dashboardscreen.cpp
     screen/backoffice/empmgmtscreen.hpp
     screen/backoffice/empmgmtscreen.cpp
+    # Utility
+    utility/idgenerator.hpp
+    utility/idgenerator.cpp
 )
 
 set (CONSOLE_APP_LINKER_EXCEPTION "")

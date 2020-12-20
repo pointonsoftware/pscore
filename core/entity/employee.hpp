@@ -42,6 +42,7 @@ class Employee : public Person {
              const std::string& position,
              const std::string& status,
              const bool isSystemUser);
+    explicit Employee(const std::string& employeeID);
     Employee() = default;
     ~Employee() = default;
 
