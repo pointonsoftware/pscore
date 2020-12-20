@@ -26,8 +26,10 @@
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
+#include <idgenerator.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
+
 // data
 #include <employeedata.hpp>
 
@@ -182,7 +184,10 @@ void EmployeeMgmtScreen::createEmployee() {
     std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
     std::map<std::string, std::string> validationResult;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
-    entity::Employee newEmployee;
+    // App must provide the employee ID
+    entity::Employee newEmployee(app::utility::generateEmployeeID());
+    // Todo (code) - let's default to ACTIVE for now
+    newEmployee.setStatus("ACTIVE");
     /*!
      * Todo (code)
      * - do findByName(fname, lname) first
@@ -206,9 +211,6 @@ void EmployeeMgmtScreen::createEmployee() {
                 return std::find(failedFields.begin(), failedFields.end(),
                                  "User.Pin") != failedFields.end();
             }();
-
-            // Todo (code) - let's default to ACTIVE for now
-            newEmployee.setStatus("ACTIVE");
 
             if (!isSystemUser) {
                 // non-user, add the employee
@@ -287,7 +289,7 @@ void EmployeeMgmtScreen::updateEmployee() {
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
-    if (mCoreEmployeeMgmt->remove(mEmployeesGUITable[mSelectedEmployeeIndex - 1].employeeID())
+    if (mCoreEmployeeMgmt->remove(mEmployeesGUITable[mSelectedEmployeeIndex - 1].ID())
           == domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
        // Remove the user form
        mEmployeesGUITable.erase(mEmployeesGUITable.begin() + (mSelectedEmployeeIndex - 1));
@@ -334,7 +336,7 @@ void EmployeeMgmtScreen::showEmployees() const {
     for (unsigned int index = 0; index < mEmployeesGUITable.size(); ++index) {
         SCREENCOMMON().printColumns({
             std::string("[" + std::to_string(index + 1) + "] "
-                         + mEmployeesGUITable[index].employeeID()),
+                         + mEmployeesGUITable[index].ID()),
             mEmployeesGUITable[index].firstName(),
             mEmployeesGUITable[index].lastName(),
             mEmployeesGUITable[index].position()
@@ -454,9 +456,9 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
      * Get the employeeID from employee GUI table
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
     */
-    const std::string& employeeID = mEmployeesGUITable[mSelectedEmployeeIndex - 1].employeeID();
+    const std::string& employeeID = mEmployeesGUITable[mSelectedEmployeeIndex - 1].ID();
     const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->get(employeeID);
-    if (!selectedEmployee.employeeID().empty()) {
+    if (!selectedEmployee.ID().empty()) {
         // Valid employee, show the information screen!
         SCREENCOMMON().showTopBanner("Employee Information");
         screen::InformationScreen<entity::Employee> infoScreen(selectedEmployee);

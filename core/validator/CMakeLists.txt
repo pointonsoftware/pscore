@@ -9,6 +9,8 @@ add_library (
     addressvalidator.cpp
     contactdetailsvalidator.hpp
     contactdetailsvalidator.cpp
+    employeevalidator.hpp
+    employeevalidator.cpp
     personalidvalidator.hpp
     personalidvalidator.cpp
     personvalidator.hpp

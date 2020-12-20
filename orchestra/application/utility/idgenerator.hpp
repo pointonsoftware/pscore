@@ -18,31 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_IDGENERATOR_IDGENERATOR_HPP_
-#define UTILITY_IDGENERATOR_IDGENERATOR_HPP_
+#ifndef ORCHESTRA_APPLICATION_UTILITY_IDGENERATOR_HPP_
+#define ORCHESTRA_APPLICATION_UTILITY_IDGENERATOR_HPP_
 #include <string>
 
+namespace app {
 namespace utility {
-namespace IdGenerator {
 /*!
  * Generates an employee ID
  * ID format - [YY][unique-five-digit-number]
  * e.g. - 2021135
 */
 extern std::string generateEmployeeID();
-/*!
- * Generates the system user ID
- * Format - [first-letter-of-param1][first-three-letters-of-param2][three-digit-unique-number]
- * e.g.
- * p1 = John
- * p2 = Doe
- * result = JDOE123
-*/
-extern std::string generateUID(const std::string& p1, const std::string& p2);
-/*!
- * Generates random integer from inclusive-range [low : high]
-*/
-extern unsigned int randomNumber(unsigned int low, unsigned int high);
-}  // namespace IdGenerator
+
 }  // namespace utility
-#endif  // UTILITY_IDGENERATOR_IDGENERATOR_HPP_
+}  // namespace app
+#endif  // ORCHESTRA_APPLICATION_UTILITY_IDGENERATOR_HPP_

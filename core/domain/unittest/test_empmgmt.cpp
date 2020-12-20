@@ -49,7 +49,7 @@ class TestEmployeeManagement : public testing::Test {
     void TearDown() override {}
     // Helper function
     entity::Employee makeValidEmployee(const std::string& id, bool isUser) const {
-        entity::Employee employee(id, "John", "", "Doe", "", "M", "", "", isUser);
+        entity::Employee employee(id, "John", "", "Doe", "", "M", "Admin", "ACTIVE", isUser);
         employee.setAddress({"", "", "", "", "", "", "", "", "Town", "Prov", ""});
         return employee;
     }
@@ -112,8 +112,8 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
                 }));
     // Cache the list
     empmgmtController.list();
-    // Should return a valid employee data (valid EmployeeID)
-    ASSERT_FALSE(empmgmtController.get(requestedID).employeeID().empty());
+    // Should return a valid employee data (valid Employee ID)
+    ASSERT_FALSE(empmgmtController.get(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
@@ -127,8 +127,8 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
                 }));
     // Cache the list
     empmgmtController.list();
-    // Should return an empty employee data (empty EmployeeID)
-    ASSERT_TRUE(empmgmtController.get(requestedID).employeeID().empty());
+    // Should return an empty employee data (empty Employee ID)
+    ASSERT_TRUE(empmgmtController.get(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
@@ -146,7 +146,7 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
     // Should be successful
     ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::SUCCESS);
     // The user ID should also be removed from the cachelist
-    ASSERT_TRUE(empmgmtController.get(requestedID).employeeID().empty());
+    ASSERT_TRUE(empmgmtController.get(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
@@ -191,7 +191,7 @@ TEST_F(TestEmployeeManagement, TestSaveSystemUserWithEmptyPin) {
 TEST_F(TestEmployeeManagement, TestCreateEmployee) {
     std::map<std::string, std::string> dummyValidationContainer;
     SaveEmployeeData employeeData {
-             makeValidEmployee("", false),
+             makeValidEmployee("JDOE123", false),
              "", &dummyValidationContainer
     };
     // DP create must be called
@@ -205,7 +205,7 @@ TEST_F(TestEmployeeManagement, TestCreateEmployee) {
 TEST_F(TestEmployeeManagement, TestCreateUser) {
     std::map<std::string, std::string> dummyValidationContainer;
     SaveEmployeeData employeeData {
-             makeValidEmployee("", true),
+             makeValidEmployee("JDOE123", true),
              "1234", &dummyValidationContainer
     };
 
@@ -266,19 +266,6 @@ TEST_F(TestEmployeeManagement, TestUpdateUser) {
     ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
     // Validation result should be empty
     ASSERT_TRUE(dummyValidationContainer.empty());
-}
-
-TEST_F(TestEmployeeManagement, TestUpdateEmployeeDataThatIsNotInTheCacheList) {
-    std::map<std::string, std::string> dummyValidationContainer;
-    const std::string requestedID = "JDOE123";
-    SaveEmployeeData employeeData {
-             makeValidEmployee(requestedID, false),
-             "", &dummyValidationContainer
-    };
-    // Should be successful
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::FAILED);
-    // Validation result is expected not empty
-    EXPECT_TRUE(dummyValidationContainer.empty());
 }
 }  // namespace test
 }  // namespace empmgmt

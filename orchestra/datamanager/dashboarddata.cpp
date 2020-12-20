@@ -42,7 +42,7 @@ entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
 entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string& employeeID) {
     for (const db::StackDB::EmployeeTableItem &temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
         if (temp.employeeID == employeeID) {
-            entity::Employee foundUser(
+            entity::Employee employee(
                 temp.employeeID,
                 temp.firstname,
                 temp.middlename,
@@ -53,15 +53,15 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
                 temp.status,
                 temp.isSystemUser);
             // Get Address
-            [&foundUser]() {
+            [&employee]() {
                 const std::vector<db::StackDB::AddressTableItem>::iterator it =
                     std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
                                  DATABASE().SELECT_ADDRESS_TABLE().end(),
-                                 [&foundUser](const db::StackDB::AddressTableItem &e) {
-                                     return e.ID == foundUser.employeeID();
+                                 [&employee](const db::StackDB::AddressTableItem &e) {
+                                     return e.ID == employee.ID();
                                  });
                 if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
-                    foundUser.setAddress({
+                    employee.setAddress({
                         it->housenumber,
                         it->lot,
                         it->block,
@@ -77,28 +77,28 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
                 }
             }();
             // Get Contact details
-            [&foundUser]() {
+            [&employee]() {
                 const std::vector<db::StackDB::ContactDetailsTableItem>::iterator it =
                     std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
                                  DATABASE().SELECT_CONTACTS_TABLE().end(),
-                                 [&foundUser](const db::StackDB::ContactDetailsTableItem &e) {
-                                     return e.ID == foundUser.employeeID();
+                                 [&employee](const db::StackDB::ContactDetailsTableItem &e) {
+                                     return e.ID == employee.ID();
                                  });
                 if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
-                    foundUser.setPhoneNumbers(it->phone_number_1, it->phone_number_2);
-                    foundUser.setEmail(it->email);
+                    employee.setPhoneNumbers(it->phone_number_1, it->phone_number_2);
+                    employee.setEmail(it->email);
                 }
             }();
             // Get personal IDs
-            [&foundUser]() {
+            [&employee]() {
                 for (const db::StackDB::PersonalIdTableItem& e :
                      DATABASE().SELECT_PERSONAL_ID_TABLE()) {
-                    if (e.ID == foundUser.employeeID()) {
-                        foundUser.addPersonalId(e.type, e.id_number);
+                    if (e.ID == employee.ID()) {
+                        employee.addPersonalId(e.type, e.id_number);
                     }
                 }
             }();
-            return foundUser;
+            return employee;
         }
     }
     // Return empty if not found

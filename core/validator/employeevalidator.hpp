@@ -18,30 +18,33 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "employee.hpp"
-#include <chrono>
-#include <ctime>
-#include <random>
-#include <string>
+#ifndef CORE_VALIDATOR_EMPLOYEEVALIDATOR_HPP_
+#define CORE_VALIDATOR_EMPLOYEEVALIDATOR_HPP_
+// Parent
+#include "validator.hpp"
+// Entity
+#include <entity/employee.hpp>
 
 namespace entity {
+namespace validator {
 
-Employee::Employee(const std::string& id,
-                   const std::string& firstname,
-                   const std::string& middlename,
-                   const std::string& lastname,
-                   const std::string& birthdate,
-                   const std::string& gender,
-                   const std::string& position,
-                   const std::string& status,
-                   const bool isSystemUser)
-: Person{firstname, middlename, lastname, birthdate, gender},
-  mID(id), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
-    // Empty for now
-}
+/*!
+ * Validation Rules:
+ * - Employee ID cannot be empty
+*/
+class EmployeeValidator : public Validator {
+ public:
+    explicit EmployeeValidator(const Employee& employee);
+    ~EmployeeValidator() = default;
 
-Employee::Employee(const std::string& id) : mID(id) {
-    // Empty for now
-}
+ private:
+    const Employee mEmployee;
+    // Validation functions
+    ValidationStatus validateID();
+    ValidationStatus validatePosition();
+    ValidationStatus validateStatus();
+};
 
+}  // namespace validator
 }  // namespace entity
+#endif  // CORE_VALIDATOR_EMPLOYEEVALIDATOR_HPP_

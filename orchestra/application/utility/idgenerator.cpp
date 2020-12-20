@@ -18,30 +18,39 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "employee.hpp"
+#include "idgenerator.hpp"
+#include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <random>
 #include <string>
 
-namespace entity {
+namespace app {
+namespace utility {
 
-Employee::Employee(const std::string& id,
-                   const std::string& firstname,
-                   const std::string& middlename,
-                   const std::string& lastname,
-                   const std::string& birthdate,
-                   const std::string& gender,
-                   const std::string& position,
-                   const std::string& status,
-                   const bool isSystemUser)
-: Person{firstname, middlename, lastname, birthdate, gender},
-  mID(id), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
-    // Empty for now
+std::string getDate() {
+    typedef std::chrono::system_clock Clock;
+    auto now = Clock::now();
+    std::time_t now_c = Clock::to_time_t(now);
+    struct tm *parts = std::localtime(&now_c);
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", parts->tm_year + 1900,
+                  parts->tm_mon + 1, parts->tm_mday);
+    return std::string(buff);
 }
 
-Employee::Employee(const std::string& id) : mID(id) {
-    // Empty for now
+unsigned randomNumber(unsigned int low, unsigned int high) {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    // low = 0 ; high = 9  -  generates number for 0 to 9
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
+    return dist6(rng);
 }
 
-}  // namespace entity
+std::string generateEmployeeID() {
+    // Substring the last two digit of the year + unique_number
+    return getDate().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
+}
+
+}  // namespace utility
+}  // namespace app

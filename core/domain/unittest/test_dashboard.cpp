@@ -128,8 +128,8 @@ TEST_F(TestDashboard, GetCurrentUserDetailsSuccess) {
                          true)));
 
     entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
-    // The employeeID must be the same
-    ASSERT_EQ(dummyEmployee.employeeID(), dummyEmployeeId);
+    // The employee ID must be the same
+    ASSERT_EQ(dummyEmployee.ID(), dummyEmployeeId);
     // The user's full name must not be empty
     ASSERT_NE(dummyEmployee.getFullName(), "");
 }
@@ -153,8 +153,8 @@ TEST_F(TestDashboard, GetCurrentUserDataNotFound) {
     EXPECT_CALL(*viewMock, showUserNotFound());
 
     entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
-    // The employeeID must be empty
-    ASSERT_EQ(dummyEmployee.employeeID(), "");
+    // The employee ID must be empty
+    ASSERT_EQ(dummyEmployee.ID(), "");
 }
 
 TEST_F(TestDashboard, GetCurrentUserDataWithEmptyEmployeeID) {
@@ -168,8 +168,8 @@ TEST_F(TestDashboard, GetCurrentUserDataWithEmptyEmployeeID) {
     EXPECT_CALL(*viewMock, showUserNotFound());
 
     entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
-    // The employeeID must be empty
-    ASSERT_EQ(dummyEmployee.employeeID(), "");
+    // The employee ID must be empty
+    ASSERT_EQ(dummyEmployee.ID(), "");
 }
 
 TEST_F(TestDashboard, TestDashboardWithViewNotInitialized) {

@@ -40,6 +40,10 @@ extern std::string toUpper(std::string str);
  * Returns the lowercase string equivalent
 */
 extern std::string toLower(std::string str);
+/*!
+ * Generates random integer from inclusive-range [low : high]
+*/
+extern unsigned int randomNumber(unsigned int low, unsigned int high);
 }  // namespace utility
 
 #endif  // UTILITY_GENERAL_HPP_

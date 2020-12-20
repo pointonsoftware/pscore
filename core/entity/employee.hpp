@@ -33,7 +33,7 @@ constexpr char FIELD_ESTATUS[] = "Employee.Status";
 
 class Employee : public Person {
  public:
-    Employee(const std::string& employeeID,
+    Employee(const std::string& id,
              const std::string& firstname,
              const std::string& middlename,
              const std::string& lastname,
@@ -42,11 +42,12 @@ class Employee : public Person {
              const std::string& position,
              const std::string& status,
              const bool isSystemUser);
+    explicit Employee(const std::string& id);
     Employee() = default;
     ~Employee() = default;
 
-    inline const std::string employeeID() const {
-        return mEmployeeID;
+    inline const std::string ID() const {
+        return mID;
     }
 
     inline void setPosition(const std::string& position) {
@@ -74,7 +75,7 @@ class Employee : public Person {
     }
 
  protected:
-    std::string mEmployeeID;
+    std::string mID;
     std::string mPosition;
     std::string mStatus;
     bool mIsSystemUser = false;
