@@ -41,6 +41,8 @@ class EmployeeValidator : public Validator {
     const Employee mEmployee;
     // Validation functions
     ValidationStatus validateID();
+    ValidationStatus validatePosition();
+    ValidationStatus validateStatus();
 };
 
 }  // namespace validator

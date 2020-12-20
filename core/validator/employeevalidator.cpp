@@ -27,12 +27,30 @@ namespace validator {
 
 EmployeeValidator::EmployeeValidator(const Employee& employee) : mEmployee(employee) {
     validationFunctions.emplace_back(std::bind(&EmployeeValidator::validateID, this));
+    validationFunctions.emplace_back(std::bind(&EmployeeValidator::validatePosition, this));
+    validationFunctions.emplace_back(std::bind(&EmployeeValidator::validateStatus, this));
     validate();
 }
 
 ValidationStatus EmployeeValidator::validateID() {
     if (mEmployee.employeeID().empty()) {
         addError(FIELD_EMPID, "Employee ID must not be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
+    return ValidationStatus::S_OK;
+}
+
+ValidationStatus EmployeeValidator::validatePosition() {
+    if (mEmployee.position().empty()) {
+        addError(FIELD_EPOS, "Employee position must not be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
+    return ValidationStatus::S_OK;
+}
+
+ValidationStatus EmployeeValidator::validateStatus() {
+    if (mEmployee.status().empty()) {
+        addError(FIELD_ESTATUS, "Employee status must not be empty.");
         return ValidationStatus::S_EMPTY;
     }
     return ValidationStatus::S_OK;
