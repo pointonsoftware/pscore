@@ -49,7 +49,7 @@ class TestEmployeeManagement : public testing::Test {
     void TearDown() override {}
     // Helper function
     entity::Employee makeValidEmployee(const std::string& id, bool isUser) const {
-        entity::Employee employee(id, "John", "", "Doe", "", "M", "", "", isUser);
+        entity::Employee employee(id, "John", "", "Doe", "", "M", "Admin", "ACTIVE", isUser);
         employee.setAddress({"", "", "", "", "", "", "", "", "Town", "Prov", ""});
         return employee;
     }
