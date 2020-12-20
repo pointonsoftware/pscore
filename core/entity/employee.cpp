@@ -26,7 +26,7 @@
 
 namespace entity {
 
-Employee::Employee(const std::string& employeeID,
+Employee::Employee(const std::string& id,
                    const std::string& firstname,
                    const std::string& middlename,
                    const std::string& lastname,
@@ -36,11 +36,11 @@ Employee::Employee(const std::string& employeeID,
                    const std::string& status,
                    const bool isSystemUser)
 : Person{firstname, middlename, lastname, birthdate, gender},
-  mEmployeeID(employeeID), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
+  mID(id), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
     // Empty for now
 }
 
-Employee::Employee(const std::string& employeeID) : mEmployeeID(employeeID) {
+Employee::Employee(const std::string& id) : mID(id) {
     // Empty for now
 }
 

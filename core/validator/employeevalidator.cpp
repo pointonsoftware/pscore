@@ -33,7 +33,7 @@ EmployeeValidator::EmployeeValidator(const Employee& employee) : mEmployee(emplo
 }
 
 ValidationStatus EmployeeValidator::validateID() {
-    if (mEmployee.employeeID().empty()) {
+    if (mEmployee.ID().empty()) {
         addError(FIELD_EMPID, "Employee ID must not be empty.");
         return ValidationStatus::S_EMPTY;
     }

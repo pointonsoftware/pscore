@@ -112,8 +112,8 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
                 }));
     // Cache the list
     empmgmtController.list();
-    // Should return a valid employee data (valid EmployeeID)
-    ASSERT_FALSE(empmgmtController.get(requestedID).employeeID().empty());
+    // Should return a valid employee data (valid Employee ID)
+    ASSERT_FALSE(empmgmtController.get(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
@@ -127,8 +127,8 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
                 }));
     // Cache the list
     empmgmtController.list();
-    // Should return an empty employee data (empty EmployeeID)
-    ASSERT_TRUE(empmgmtController.get(requestedID).employeeID().empty());
+    // Should return an empty employee data (empty Employee ID)
+    ASSERT_TRUE(empmgmtController.get(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
@@ -146,7 +146,7 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
     // Should be successful
     ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::SUCCESS);
     // The user ID should also be removed from the cachelist
-    ASSERT_TRUE(empmgmtController.get(requestedID).employeeID().empty());
+    ASSERT_TRUE(empmgmtController.get(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {

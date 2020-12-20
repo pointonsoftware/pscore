@@ -99,7 +99,7 @@ entity::Employee DashboardController::getUserDetails(const entity::User& user) {
         mView->showDataNotReadyScreen();
         return entity::Employee();
     }
-    if (temp.employeeID().empty()) {
+    if (temp.ID().empty()) {
         LOG_ERROR("Failed to retrieve employee data for user %s", mCurrentUserID.c_str());
         mView->showUserNotFound();
         return entity::Employee();

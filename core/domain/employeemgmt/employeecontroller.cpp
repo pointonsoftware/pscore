@@ -70,7 +70,7 @@ entity::Employee EmployeeMgmtController::get(const std::string& id) {
 
 void EmployeeMgmtController::create(const SaveEmployeeData& data) {
     const entity::Employee& newEmployee = data.employee;
-    LOG_DEBUG("EmployeeID %s generated", newEmployee.employeeID().c_str());
+    LOG_DEBUG("EmployeeID %s generated", newEmployee.ID().c_str());
     // Adding new employee
     mDataProvider->create(newEmployee);
     /*!
@@ -91,7 +91,7 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
     entity::User newUser(
         // Todo (code) - need to ensure this ID is unique
         utility::chargenerator::generateUID(employee.firstName(), employee.lastName()),
-        employee.position(), pin, employee.employeeID());
+        employee.position(), pin, employee.ID());
     mDataProvider->create(newUser);
     mView->showUserSuccessfullyCreated(employee.firstName(), newUser.userID());
     LOG_INFO("User %s added", newUser.userID().c_str());
@@ -100,19 +100,19 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
 // Note: Before calling this, make sure the employee is already in the cache list
 void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     const entity::Employee& employee = data.employee;
-    LOG_DEBUG("Updating employee %s", employee.employeeID().c_str());
+    LOG_DEBUG("Updating employee %s", employee.ID().c_str());
     // Update actual data
     mDataProvider->update(employee);
     // If system user, update the user info as well
     if (employee.isSystemUser()) {
         mDataProvider->update(entity::User("Proxy", employee.position(),
-                                           "Proxy", employee.employeeID()));
+                                           "Proxy", employee.ID()));
         LOG_INFO("User role updated to %s", employee.position().c_str());
     }
     // Update cache list
-    const std::vector<entity::Employee>::iterator it = find(employee.employeeID());
+    const std::vector<entity::Employee>::iterator it = find(employee.ID());
     *it = employee;
-    LOG_INFO("Employee %s information updated", employee.employeeID().c_str());
+    LOG_INFO("Employee %s information updated", employee.ID().c_str());
 }
 
 USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
@@ -130,7 +130,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
      *               if we're updating, we don't need to validate PIN
      *               until we support User Information update
     */
-    if (employee.isSystemUser() && !isExists(employee.employeeID())) {
+    if (employee.isSystemUser() && !isExists(employee.ID())) {
         // Validate PIN
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN, "Proxy"));
@@ -142,7 +142,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
         return USERSMGMTSTATUS::FAILED;
     }
     // Decide if it's a create or update request
-    if (isExists(employee.employeeID())) {
+    if (isExists(employee.ID())) {
         update(employeeData);
     } else {
         create(employeeData);
@@ -186,7 +186,7 @@ bool EmployeeMgmtController::isExists(const std::string& id) {
 
 std::vector<entity::Employee>::iterator EmployeeMgmtController::find(const std::string& id) {
     return std::find_if(mCachedList.begin(), mCachedList.end(), [&id](const entity::Employee& e) {
-                return e.employeeID() == id; });
+                return e.ID() == id; });
 }
 
 ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee& employee) const {

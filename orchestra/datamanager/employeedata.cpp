@@ -53,13 +53,13 @@ void EmployeeDataProvider::create(const entity::Employee& employee) {
     if (std::find_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
                             DATABASE().SELECT_EMPLOYEES_TABLE().end(),
                             [&employee](const db::StackDB::EmployeeTableItem& e) {
-                               return e.employeeID == employee.employeeID();
+                               return e.employeeID == employee.ID();
                             }) != DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
         // If employee ID exists, don't proceed!
         return;
     }
     DATABASE().SELECT_EMPLOYEES_TABLE().emplace_back(db::StackDB::EmployeeTableItem {
-            employee.employeeID(),
+            employee.ID(),
             employee.firstName(),
             employee.middleName(),
             employee.lastName(),
@@ -95,8 +95,8 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
             std::find_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
                                     DATABASE().SELECT_EMPLOYEES_TABLE().end(),
                                     [&employee](const db::StackDB::EmployeeTableItem& e) {
-                                        // We only match the employeeID for updating
-                                        return e.employeeID == employee.employeeID();
+                                        // We only match the employee ID for updating
+                                        return e.employeeID == employee.ID();
                                     });
         if (it == DATABASE().SELECT_EMPLOYEES_TABLE().end()) {
             // Not found
@@ -104,7 +104,7 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         }
         // Actual update
         *it = db::StackDB::EmployeeTableItem {
-                employee.employeeID(),
+                employee.ID(),
                 employee.firstName(),
                 employee.middleName(),
                 employee.lastName(),
@@ -120,8 +120,8 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
             std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
                                     DATABASE().SELECT_ADDRESS_TABLE().end(),
                                     [&employee](const db::StackDB::AddressTableItem& e) {
-                                        // We only match the employeeID for updating
-                                        return e.ID == employee.employeeID();
+                                        // We only match the employee ID for updating
+                                        return e.ID == employee.ID();
                                     });
         if (it == DATABASE().SELECT_ADDRESS_TABLE().end()) {
             // Not found
@@ -129,7 +129,7 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         }
         // Actual update
         *it = db::StackDB::AddressTableItem {
-            employee.employeeID(),
+            employee.ID(),
             employee.address().housenumber,
             employee.address().lot,
             employee.address().block,
@@ -148,8 +148,8 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
             std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
                                     DATABASE().SELECT_CONTACTS_TABLE().end(),
                                     [&employee](const db::StackDB::ContactDetailsTableItem& e) {
-                                        // We only match the employeeID for updating
-                                        return e.ID == employee.employeeID();
+                                        // We only match the employee ID for updating
+                                        return e.ID == employee.ID();
                                     });
         if (it == DATABASE().SELECT_CONTACTS_TABLE().end()) {
             // Not found
@@ -157,7 +157,7 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         }
         // Actual update
         *it = db::StackDB::ContactDetailsTableItem {
-            employee.employeeID(),
+            employee.ID(),
             employee.contactDetails().email,
             employee.contactDetails().phone_number_1,
             employee.contactDetails().phone_number_2};
@@ -169,8 +169,8 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
             std::find_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
                                     DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
                                     [&employee](const db::StackDB::PersonalIdTableItem& e) {
-                                        // We only match the employeeID for updating
-                                        return e.ID == employee.employeeID();
+                                        // We only match the employee ID for updating
+                                        return e.ID == employee.ID();
                                     });
         if (it == DATABASE().SELECT_PERSONAL_ID_TABLE().end()) {
             // Not found
@@ -178,7 +178,7 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         }
         // Actual update
         *it = db::StackDB::PersonalIdTableItem {
-                employee.employeeID(),
+                employee.ID(),
                 employee.personalIds()[0].type,
                 employee.personalIds()[0].id_number};
     }
@@ -189,7 +189,7 @@ void EmployeeDataProvider::update(const entity::User& user) {
         std::find_if(DATABASE().SELECT_USERS_TABLE().begin(),
                                 DATABASE().SELECT_USERS_TABLE().end(),
                                 [&user](const db::StackDB::UserTableItem& e) {
-                                    // We only match the employeeID for updating
+                                    // We only match the employee ID for updating
                                     return e.employeeID == user.employeeID();
                                 });
     if (it == DATABASE().SELECT_USERS_TABLE().end()) {
@@ -202,7 +202,7 @@ void EmployeeDataProvider::update(const entity::User& user) {
 
 void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee) const {
     DATABASE().SELECT_ADDRESS_TABLE().emplace_back(db::StackDB::AddressTableItem {
-            employee.employeeID(),
+            employee.ID(),
             employee.address().housenumber,
             employee.address().lot,
             employee.address().block,
@@ -215,13 +215,13 @@ void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee
             employee.address().province,
             employee.address().zip});
     DATABASE().SELECT_CONTACTS_TABLE().emplace_back(db::StackDB::ContactDetailsTableItem {
-            employee.employeeID(),
+            employee.ID(),
             employee.contactDetails().email,
             employee.contactDetails().phone_number_1,
             employee.contactDetails().phone_number_2});
     for (unsigned int i = 0; i < employee.personalIds().size(); i++) {
         DATABASE().SELECT_PERSONAL_ID_TABLE().emplace_back(db::StackDB::PersonalIdTableItem {
-                employee.employeeID(),
+                employee.ID(),
                 employee.personalIds()[i].type,
                 employee.personalIds()[i].id_number});
     }
@@ -277,7 +277,7 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
                     std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
                             DATABASE().SELECT_ADDRESS_TABLE().end(),
                             [&employee](const db::StackDB::AddressTableItem& e) {
-                               return e.ID == employee->employeeID();
+                               return e.ID == employee->ID();
                             });
             if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
                 employee->setAddress({
@@ -301,7 +301,7 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
                     std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
                                 DATABASE().SELECT_CONTACTS_TABLE().end(),
                                 [&employee](const db::StackDB::ContactDetailsTableItem& e) {
-                                    return e.ID == employee->employeeID();
+                                    return e.ID == employee->ID();
                                 });
             if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
                 employee->setPhoneNumbers(it->phone_number_1, it->phone_number_2);
@@ -312,7 +312,7 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
         [&employee]() {
             for (const db::StackDB::PersonalIdTableItem& e :
                  DATABASE().SELECT_PERSONAL_ID_TABLE()) {
-                if (e.ID == employee->employeeID()) {
+                if (e.ID == employee->ID()) {
                     employee->addPersonalId(e.type, e.id_number);
                 }
             }
