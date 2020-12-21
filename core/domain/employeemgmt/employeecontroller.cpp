@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <memory>
 #include <map>
+#include <general.hpp>  // pscore utility
 #include <generator/chargenerator.hpp>
 #include <logger/loghelper.hpp>
 #include <validator/addressvalidator.hpp>
@@ -91,7 +92,7 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
     entity::User newUser(
         // Todo (code) - need to ensure this ID is unique
         utility::chargenerator::generateUID(employee.firstName(), employee.lastName()),
-        employee.position(), pin, employee.ID());
+        employee.position(), pin, utility::currentDateTime(), employee.ID());
     mDataProvider->create(newUser);
     mView->showUserSuccessfullyCreated(employee.firstName(), newUser.userID());
     LOG_INFO("User %s added", newUser.userID().c_str());
@@ -106,7 +107,7 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     // If system user, update the user info as well
     if (employee.isSystemUser()) {
         mDataProvider->update(entity::User("Proxy", employee.position(),
-                                           "Proxy", employee.ID()));
+                                           "Proxy", "Proxy", employee.ID()));
         LOG_INFO("User role updated to %s", employee.position().c_str());
     }
     // Update cache list
@@ -131,9 +132,10 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
      *               until we support User Information update
     */
     if (employee.isSystemUser() && !isExists(employee.ID())) {
-        // Validate PIN
+        // Validate PIN only
         entity::validator::UserValidator validator(
-                entity::User("Proxy", "Proxy", employeeData.PIN, "Proxy"));
+                entity::User("Proxy", "Proxy", employeeData.PIN,
+                             "10/10/2020 10:10:10", "Proxy"));
         validationResult->insert(validator.result().begin(), validator.result().end());
     }
     if (!validationResult->empty()) {
