@@ -2,7 +2,7 @@ project (storage)
 
 # dummy database lib
 add_library (
-    dummydata
+    stackdb
     STATIC
     # in-memory db
     stackdb.hpp
@@ -11,6 +11,6 @@ add_library (
 
 
 target_link_libraries (
-    dummydata
+    stackdb
     entity
 )
