@@ -216,7 +216,7 @@ void StackDB::populateProducts() {
     //------- Copy starting from the line below
     PRODUCT_TABLE.emplace_back(ProductTableItem {
             "JNJ-CHP-SML-RED",            // SKU <!Make sure this is unique>
-            "Chippy Original",            // Name
+            "Chippy",                     // Name
             "Original flavor",            // Description
             "1125478744",                 // Barcode
             "Grocery",                    // Category

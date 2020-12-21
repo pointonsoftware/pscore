@@ -28,6 +28,11 @@ class InventoryViewInterface {
  public:
     InventoryViewInterface() = default;
     virtual ~InventoryViewInterface() = default;
+
+    /*!
+     * showProductsEmptyPopup
+    */
+    virtual void showProductsEmptyPopup() = 0;
 };
 
 }  // namespace inventory

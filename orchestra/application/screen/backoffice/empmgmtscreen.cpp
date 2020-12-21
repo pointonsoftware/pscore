@@ -335,7 +335,7 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
     if (userInput == "x") {
         return Options::APP_EXIT;
     } else if (userInput == "b") {
-        // Todo (code) - we should return whatever was the previous screen
+        // We should return whatever was the previous screen
         // For now, we will check if user has selected an index (i.e. info screen is shown)
         if (mSelectedEmployeeIndex == 0) {
             return Options::DASHBOARD;

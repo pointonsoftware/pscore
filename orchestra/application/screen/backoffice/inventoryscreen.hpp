@@ -20,9 +20,10 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
+#include <future>
 #include <memory>
 #include <string>
-#include <future>
+#include <vector>
 #include <domain/inventory/interface/inventoryviewif.hpp>
 #include <screeniface.hpp>
 // Core
@@ -39,8 +40,31 @@ class InventoryScreen : public screen::ScreenInterface,
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;
+    // CoreView implementation
+    void showProductsEmptyPopup() override;
 
  private:
+      // Screen options - this represents the buttons in a GUI
+    enum class Options {
+        LANDING,
+        DASHBOARD,
+        // add more enums here
+        LOGOUT,
+        APP_EXIT,
+        INVALID
+        // Warning! Don't add anything here.
+        // New enum values must be added before LOGOUT
+    };
+    void showLandingScreen() const;
+    void queryProductsList();
+    void showProducts() const;
+    void showOptions() const;
+    Options getUserSelection();
+    bool action(Options option, std::promise<defines::display>* nextScreen);
+    void invalidOptionSelected() const;
+
+    std::vector<entity::Product> mProductGUITable;  // Represents the GUI table
+    unsigned int mSelectedProductIndex = 0;  // 1-based index
     std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;
 };
 

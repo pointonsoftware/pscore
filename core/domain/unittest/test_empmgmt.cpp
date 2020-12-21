@@ -28,7 +28,6 @@
 // code under test
 #include <domain/employeemgmt/employeecontroller.hpp>
 
-
 // Gmock
 using testing::_;
 using testing::Matcher;

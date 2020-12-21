@@ -21,9 +21,11 @@
 #ifndef CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
 #define CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
 #include <memory>
+#include <vector>
 #include "inventorydataif.hpp"
 #include "inventoryviewif.hpp"
 #include <domain/librarycommon.hpp>
+#include <entity/product.hpp>
 
 namespace domain {
 namespace inventory {
@@ -32,6 +34,10 @@ class InventoryControlInterface {
  public:
     InventoryControlInterface() = default;
     virtual ~InventoryControlInterface() = default;
+    /*!
+     * Gets the list of all products
+    */
+    virtual std::vector<entity::Product> list() = 0;
 };
 
 // Lib APIs
