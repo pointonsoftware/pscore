@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <memory>
 #include <map>
+#include <general.hpp>  // pscore utility
 #include <generator/chargenerator.hpp>
 #include <logger/loghelper.hpp>
 #include <validator/addressvalidator.hpp>
@@ -92,7 +93,7 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
         // Todo (code) - need to ensure this ID is unique
         // Use the second constructor
         utility::chargenerator::generateUID(employee.firstName(), employee.lastName()),
-        employee.position(), pin, "CreatedAt", employee.ID());
+        employee.position(), pin,  utility::currentDateTime(), employee.ID());
     mDataProvider->create(newUser);
     mView->showUserSuccessfullyCreated(employee.firstName(), newUser.userID());
     LOG_INFO("User %s added", newUser.userID().c_str());
@@ -132,9 +133,10 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
      *               until we support User Information update
     */
     if (employee.isSystemUser() && !isExists(employee.ID())) {
-        // Validate PIN
+        // Validate PIN only
         entity::validator::UserValidator validator(
-                entity::User("Proxy", "Proxy", employeeData.PIN, "Proxy", "Proxy"));
+                entity::User("Proxy", "Proxy", employeeData.PIN,
+                             "10/10/2020 10:10:10", "Proxy"));
         validationResult->insert(validator.result().begin(), validator.result().end());
     }
     if (!validationResult->empty()) {

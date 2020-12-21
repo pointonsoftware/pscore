@@ -44,6 +44,10 @@ extern std::string toLower(std::string str);
  * Generates random integer from inclusive-range [low : high]
 */
 extern unsigned int randomNumber(unsigned int low, unsigned int high);
+/*!
+ * Returns the current date-time in "dd/mm/yyyy HH:MM:SS" form
+*/
+extern std::string currentDateTime();
 }  // namespace utility
 
 #endif  // UTILITY_GENERAL_HPP_

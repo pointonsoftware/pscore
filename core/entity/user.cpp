@@ -23,12 +23,12 @@
 namespace entity {
 
 User::User(const std::string& userID,
-         const std::string& role,
-         const std::string& pin,
-         const std::string& createdAt,
-         const std::string& employeeID)
-         : mUserID(userID), mRole(role), mPIN(pin),
-           mCreatedAt(createdAt), mEmployeeID(employeeID) {
+           const std::string& role,
+           const std::string& pin,
+           const std::string& createdAt,
+           const std::string& employeeID)
+           : mUserID(userID), mRole(role), mPIN(pin),
+             mCreatedAt(createdAt), mEmployeeID(employeeID) {
         // Empty for now
 }
 

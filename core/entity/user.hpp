@@ -39,7 +39,6 @@ class User {
          const std::string& pin,
          const std::string& createdAt,
          const std::string& employeeID);
-
     User() = default;
     ~User() = default;
 

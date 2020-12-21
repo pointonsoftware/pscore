@@ -85,6 +85,7 @@ void EmployeeDataProvider::create(const entity::User& user) {
             user.userID(),
             user.role(),
             user.pin(),
+            user.createdAt(),
             user.employeeID()});
 }
 

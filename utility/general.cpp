@@ -66,4 +66,17 @@ unsigned randomNumber(unsigned int low, unsigned int high) {
     return dist6(rng);
 }
 
+std::string currentDateTime() {
+    typedef std::chrono::system_clock Clock;
+    auto now = Clock::now();
+    std::time_t now_c = Clock::to_time_t(now);
+    struct tm *parts = std::localtime(&now_c);
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%02u/%02u/%04u %02u:%02u:%02u", parts->tm_mday,
+                  parts->tm_mon + 1,  parts->tm_year + 1900, parts->tm_hour,
+                  parts->tm_min, parts->tm_sec);
+    return std::string(buff);
+}
+
+
 }  // namespace utility
