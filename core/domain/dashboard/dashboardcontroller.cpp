@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "dashboardcontroller.hpp"
+#include <assert.h>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -70,10 +71,8 @@ entity::User DashboardController::getCurrentUser() {
 }
 
 DASHSTATUS DashboardController::getUserData(entity::User* container) const {
-    if (!container) {
-        LOG_ERROR("Invalid user argument");
-        return DASHSTATUS::FAILED;
-    }
+    // The container must not be null
+    assert(container != nullptr);
     LOG_DEBUG("Retrieving user data");
     // todo (xxx) : Check if dataprovider is ready; else throw
     *container = mDataProvider->getUserByID(mCurrentUserID);
@@ -109,10 +108,8 @@ entity::Employee DashboardController::getUserDetails(const entity::User& user) {
 
 DASHSTATUS DashboardController::getEmployeeData(const std::string& employeeID,
                                                 entity::Employee* container) const {
-    if (!container) {
-        LOG_ERROR("Invalid user argument");
-        return DASHSTATUS::FAILED;
-    }
+    // The container must not be null
+    assert(container != nullptr);
     LOG_DEBUG("Retrieving employee data");
     // todo (xxx) : Check if dataprovider is ready; else throw
     *container = mDataProvider->getEmployeeInformation(employeeID);
