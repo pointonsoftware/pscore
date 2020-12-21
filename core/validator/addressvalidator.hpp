@@ -32,9 +32,11 @@ namespace validator {
 /*!
  * Validation Rules:
  * - Address fields can be empty except for City/Town and Province
- * - Address can only contain alphabet, numbers, dots and dashes
+ * - City/Town and Province can only contain alphabet, numbers, space, dots and dashes
+ * - Address Line 1 and Line 2 can contain alphabet, numbers, space, dots, dashes, and commas
 */
-constexpr char INVALID_ADDRESS_CHARACTERS[] = "[^a-zA-Z0-9\\-. ]";
+constexpr char INVALID_CTPZ_CHARACTERS[] = "[^a-zA-Z0-9\\-. ]";  // for city, town, province and Zip
+constexpr char INVALID_ADDRLINE_CHARACTERS[] = "[^a-zA-Z0-9\\-., ]";  // for address lines 1 and 2
 
 class AddressValidator : public Validator {
  public:
@@ -44,19 +46,13 @@ class AddressValidator : public Validator {
  private:
     const Address mAddress;
     // Validation functions
-    ValidationStatus validateHouseNumber();
-    ValidationStatus validateLot();
-    ValidationStatus validateBlock();
-    ValidationStatus validateStreet();
-    ValidationStatus validateSubdivision();
-    ValidationStatus validateSitio();
-    ValidationStatus validatePurok();
-    ValidationStatus validateBarangay();
+    ValidationStatus validateLine1();
+    ValidationStatus validateLine2();
     ValidationStatus validateCityTown();
     ValidationStatus validateProvince();
     ValidationStatus validateZipCode();
 
-    ValidationStatus sanity(const std::string& str) const;
+    ValidationStatus sanity(const std::string& str, const std::string& invalidChars) const;
 };
 
 }  // namespace validator

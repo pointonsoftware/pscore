@@ -26,82 +26,36 @@ namespace entity {
 namespace validator {
 
 AddressValidator::AddressValidator(const Address& address) : mAddress(address) {
-    validationFunctions.emplace_back(std::bind(&AddressValidator::validateHouseNumber, this));
-    validationFunctions.emplace_back(std::bind(&AddressValidator::validateLot, this));
-    validationFunctions.emplace_back(std::bind(&AddressValidator::validateBlock, this));
-    validationFunctions.emplace_back(std::bind(&AddressValidator::validateStreet, this));
-    validationFunctions.emplace_back(std::bind(&AddressValidator::validateSubdivision, this));
-    validationFunctions.emplace_back(std::bind(&AddressValidator::validatePurok, this));
-    validationFunctions.emplace_back(std::bind(&AddressValidator::validateBarangay, this));
+    validationFunctions.emplace_back(std::bind(&AddressValidator::validateLine1, this));
+    validationFunctions.emplace_back(std::bind(&AddressValidator::validateLine2, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateCityTown, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateProvince, this));
     validationFunctions.emplace_back(std::bind(&AddressValidator::validateZipCode, this));
     validate();
 }
 
-ValidationStatus AddressValidator::sanity(const std::string& str) const {
+ValidationStatus AddressValidator::sanity(const std::string& str,
+                                          const std::string& invalidChars) const {
     if (str.empty()) {
         return ValidationStatus::S_OK;
     }
-    if (std::regex_search(str, std::regex(INVALID_ADDRESS_CHARACTERS))) {
+    if (std::regex_search(str, std::regex(invalidChars))) {
         return ValidationStatus::S_INVALID_STRING;
     }
     return ValidationStatus::S_OK;
 }
 
-ValidationStatus AddressValidator::validateHouseNumber() {
-    ValidationStatus retVal = sanity(mAddress.housenumber);
+ValidationStatus AddressValidator::validateLine1() {
+    ValidationStatus retVal = sanity(mAddress.line1, INVALID_ADDRLINE_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_HNO, "House number contains invalid character.");
+        addError(FIELD_ADDR_LN1, "Address Line 1 contains invalid character.");
     }
     return retVal;
 }
-ValidationStatus AddressValidator::validateLot() {
-    ValidationStatus retVal = sanity(mAddress.lot);
+ValidationStatus AddressValidator::validateLine2() {
+    ValidationStatus retVal = sanity(mAddress.line2, INVALID_ADDRLINE_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_LOT, "Lot contains invalid character.");
-    }
-    return retVal;
-}
-ValidationStatus AddressValidator::validateBlock() {
-    ValidationStatus retVal = sanity(mAddress.block);
-    if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_BLK, "Block contains invalid character.");
-    }
-    return retVal;
-}
-ValidationStatus AddressValidator::validateStreet() {
-    ValidationStatus retVal = sanity(mAddress.street);
-    if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_STR, "Street contains invalid character.");
-    }
-    return retVal;
-}
-ValidationStatus AddressValidator::validateSubdivision() {
-    ValidationStatus retVal = sanity(mAddress.subdivision);
-    if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_SDV, "Subdivision contains invalid character.");
-    }
-    return retVal;
-}
-ValidationStatus AddressValidator::validateSitio() {
-    ValidationStatus retVal = sanity(mAddress.sitio);
-    if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_SIT, "Sitio contains invalid character.");
-    }
-    return retVal;
-}
-ValidationStatus AddressValidator::validatePurok() {
-    ValidationStatus retVal = sanity(mAddress.purok);
-    if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_PRK, "Purok contains invalid character.");
-    }
-    return retVal;
-}
-ValidationStatus AddressValidator::validateBarangay() {
-    ValidationStatus retVal = sanity(mAddress.barangay);
-    if (retVal == ValidationStatus::S_INVALID_STRING) {
-        addError(FIELD_ADDR_BRG, "Barangay contains invalid character.");
+        addError(FIELD_ADDR_LN2, "Address Line 2 contains invalid character.");
     }
     return retVal;
 }
@@ -110,7 +64,7 @@ ValidationStatus AddressValidator::validateCityTown() {
         addError(FIELD_ADDR_CTY, "City/Town cannot be empty.");
         return ValidationStatus::S_EMPTY;
     }
-    ValidationStatus retVal = sanity(mAddress.city_town);
+    ValidationStatus retVal = sanity(mAddress.city_town, INVALID_CTPZ_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_CTY, "City/Town contains invalid character.");
     }
@@ -121,14 +75,14 @@ ValidationStatus AddressValidator::validateProvince() {
         addError(FIELD_ADDR_PRV, "Province cannot be empty.");
         return ValidationStatus::S_EMPTY;
     }
-    ValidationStatus retVal = sanity(mAddress.province);
+    ValidationStatus retVal = sanity(mAddress.province, INVALID_CTPZ_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_PRV, "Province contains invalid character.");
     }
     return retVal;
 }
 ValidationStatus AddressValidator::validateZipCode() {
-    ValidationStatus retVal = sanity(mAddress.zip);
+    ValidationStatus retVal = sanity(mAddress.zip, INVALID_CTPZ_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_ZIP, "Zip contains invalid character.");
     }

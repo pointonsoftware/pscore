@@ -78,5 +78,4 @@ std::string currentDateTime() {
     return std::string(buff);
 }
 
-
 }  // namespace utility

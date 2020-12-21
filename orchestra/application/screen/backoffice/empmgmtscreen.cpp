@@ -97,29 +97,11 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     // Address
     {
         entity::Address address = employee->address();
-        if (requires("Address.House.Number")) {
-            address.housenumber = SCREENCOMMON().getInput("House Number");
+        if (requires("Address.Line1")) {
+            address.line1 = SCREENCOMMON().getInput("Address 1");
         }
-        if (requires("Address.Lot")) {
-            address.lot = SCREENCOMMON().getInput("Lot Number");
-        }
-        if (requires("Address.Block")) {
-            address.block = SCREENCOMMON().getInput("Block");
-        }
-        if (requires("Address.Street")) {
-            address.street = SCREENCOMMON().getInput("Street");
-        }
-        if (requires("Address.Subdivision")) {
-            address.subdivision = SCREENCOMMON().getInput("Subdivision");
-        }
-        if (requires("Address.Sitio")) {
-            address.sitio = SCREENCOMMON().getInput("Sitio");
-        }
-        if (requires("Address.Purok")) {
-            address.purok = SCREENCOMMON().getInput("Purok");
-        }
-        if (requires("Address.Barangay")) {
-            address.barangay = SCREENCOMMON().getInput("Barangay");
+        if (requires("Address.Line2")) {
+            address.line2 = SCREENCOMMON().getInput("Address 2");
         }
         if (requires("Address.CityTown")) {
             address.city_town = SCREENCOMMON().getInput("City/Town");
@@ -304,14 +286,8 @@ const std::string EmployeeMgmtScreen::getEntityField(unsigned int index) const {
         "Person.Birthdate",
         "Person.Gender",
         "Employee.Position",
-        "Address.House.Number",
-        "Address.Lot",
-        "Address.Block",
-        "Address.Street",
-        "Address.Subdivision",
-        "Address.Sitio",
-        "Address.Purok",
-        "Address.Barangay",
+        "Address.Line1",
+        "Address.Line2",
         "Address.CityTown",
         "Address.Province",
         "Address.Zip",

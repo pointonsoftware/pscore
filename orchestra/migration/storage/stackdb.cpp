@@ -63,14 +63,8 @@ void StackDB::populateEmployees() {
             "2014566"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2014566",                    // Employee ID <!Same as employeeID>
-            "",                           // housenumber
-            "5",                          // lot
-            "10",                         // block
-            "Petunia St.",                // Street
-            "Camella Homes",              // Subdivision
-            "",                           // Sitio
-            "",                           // Purok
-            "Basak",                      // Barangay
+            "Lot 5, Blk 10, Petunia St",  // Line 1
+            "Camella Homes, Basak",       // Line 2
             "Lapu-Lapu City",             // City/Town
             "Cebu",                       // Province
             "6015"});                     // ZIP
@@ -108,14 +102,8 @@ void StackDB::populateEmployees() {
             "2019542"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2019542",                    // Employee ID <!Same as employeeID>
-            "",                           // housenumber
-            "",                           // lot
-            "",                           // block
-            "",                           // Street
-            "",                           // Subdivision
-            "Bacbacan",                   // Sitio
-            "",                           // Purok
-            "San Francisco",              // Barangay
+            "Bacbacan, San Francisco",    // Line 1
+            "",                           // Line 2
             "Malayong Dapit",             // City/Town
             "Davao",                      // Province
             "6060"});                     // ZIP
@@ -148,14 +136,8 @@ void StackDB::populateEmployees() {
             "2098472"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2098472",                    // Employee ID <!Same as employeeID>
-            "2",                          // housenumber
-            "6",                          // lot
-            "",                           // block
-            "",                           // Street
-            "BF Homes",                   // Subdivision
-            "Bacbacan",                   // Sitio
-            "",                           // Purok
-            "Agus",                       // Barangay
+            "BF Homes, Poblacion",        // Line 1
+            "",                           // Line 2
             "Lapu-Lapu City",             // City/Town
             "Cebu",                       // Province
             "6015"});                     // ZIP
@@ -182,14 +164,8 @@ void StackDB::populateEmployees() {
             false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2054993",                    // Employee ID <!Same as employeeID>
-            "22",                         // housenumber
-            "1",                          // lot
-            "16",                         // block
-            "",                           // Street
-            "St. Andrews Hills",          // Subdivision
-            "",                           // Sitio
-            "",                           // Purok
-            "Poblacion",                  // Barangay
+            "22 St. Andrews Hills",       // Line 1
+            "Poblacion",                  // Line 2
             "Davao City",                 // City/Town
             "Davao Del Sur",              // Province
             "8080"});                     // ZIP
@@ -216,14 +192,8 @@ void StackDB::populateEmployees() {
             false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2073155",                    // Employee ID <!Same as employeeID>
-            "18",                         // housenumber
-            "",                           // lot
-            "",                           // block
-            "Palermo St.",                // Street
-            "",                           // Subdivision
-            "Mahayahay",                  // Sitio
-            "",                           // Purok
-            "Opon",                       // Barangay
+            "Palermo St., Mahayahay",     // Line 1
+            "Opon",                       // Line 2
             "Lapu-Lapu City",             // City/Town
             "Cebu",                       // Province
             "6015"});                     // ZIP

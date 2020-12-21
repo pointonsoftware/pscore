@@ -50,7 +50,7 @@ class TestEmployeeManagement : public testing::Test {
     // Helper function
     entity::Employee makeValidEmployee(const std::string& id, bool isUser) const {
         entity::Employee employee(id, "John", "", "Doe", "", "M", "Admin", "ACTIVE", isUser);
-        employee.setAddress({"", "", "", "", "", "", "", "", "Town", "Prov", ""});
+        employee.setAddress({"DummyL1", "DummyL2", "DummyTown", "DummyProv", ""});
         return employee;
     }
 
