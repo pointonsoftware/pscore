@@ -26,7 +26,7 @@
 #include <screeniface.hpp>
 
 namespace screen {
-namespace inventory {
+namespace backoffice {
 
 class InventoryScreen : public screen::ScreenInterface,
                         public domain::inventory::InventoryViewInterface {
@@ -38,6 +38,6 @@ class InventoryScreen : public screen::ScreenInterface,
     void show(std::promise<defines::display>* promise) override;
 };
 
-}  // namespace inventory
+}  // namespace backoffice
 }  // namespace screen
 #endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_

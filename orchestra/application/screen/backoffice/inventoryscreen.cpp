@@ -29,7 +29,7 @@
 #include <inventorydata.hpp>
 
 namespace screen {
-namespace inventory {
+namespace backoffice {
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
     SCREENCOMMON().showTopBanner("Inventory Control");
@@ -39,5 +39,5 @@ void InventoryScreen::show(std::promise<defines::display>* promise) {
     promise->set_value(defines::display::DASHBOARD);
 }
 
-}  // namespace inventory
+}  // namespace backoffice
 }  // namespace screen
