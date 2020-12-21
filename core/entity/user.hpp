@@ -30,6 +30,7 @@ namespace entity {
 constexpr char FIELD_UID[] = "User.ID";
 constexpr char FIELD_ROLE[] = "User.Role";
 constexpr char FIELD_PIN[] = "User.Pin";
+constexpr char FIELD_CDATE[] = "User.CreatedAt";
 
 class User {
  public:

@@ -37,6 +37,7 @@ StackDB::StackDB() {
             "2020202",                    // Unique User ID
             "Admin",                      // Role
             "1251",                       // PIN <!Unique> <!Empty if non-user>
+            "12/01/2020 11:09:50",        // Created At
             ""});                         // No employee ID
 }
 
@@ -58,6 +59,7 @@ void StackDB::populateEmployees() {
             "BGAR123",                    // User ID <!Make sure this is unique>
             "Manager",                    // Role
             "2020",                       // PIN
+            "10/01/2020 07:47:48",        // Created At
             "2014566"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2014566",                    // Employee ID <!Same as employeeID>
@@ -102,6 +104,7 @@ void StackDB::populateEmployees() {
             "BGAR567",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
             "2021",                       // PIN
+            "10/02/2020 08:47:48",        // Created At
             "2019542"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2019542",                    // Employee ID <!Same as employeeID>
@@ -141,6 +144,7 @@ void StackDB::populateEmployees() {
             "JDEL554",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
             "2022",                       // PIN
+            "10/05/2020 10:09:50",        // Created At
             "2098472"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2098472",                    // Employee ID <!Same as employeeID>

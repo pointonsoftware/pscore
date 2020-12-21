@@ -19,6 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "uservalidator.hpp"
+#include <iomanip>
+#include <sstream>
 #include <general.hpp>  // pscore utility
 
 namespace entity {
@@ -28,8 +30,10 @@ UserValidator::UserValidator(const User& user) : mUser(user) {
     validationFunctions.emplace_back(std::bind(&UserValidator::validateUserID, this));
     validationFunctions.emplace_back(std::bind(&UserValidator::validateRole, this));
     validationFunctions.emplace_back(std::bind(&UserValidator::validatePIN, this));
+    validationFunctions.emplace_back(std::bind(&UserValidator::validateCreatedAt, this));
     validate();
 }
+
 ValidationStatus UserValidator::validateUserID() {
     if (mUser.userID().empty()) {
         addError(FIELD_UID, "UserID must not be empty.");
@@ -53,6 +57,33 @@ ValidationStatus UserValidator::validatePIN() {
     if (mUser.pin().size() != PIN_SIZE) {
         addError(FIELD_PIN, "PIN character length is invalid.");
         return ValidationStatus::S_INVALID_SIZE;
+    }
+    return ValidationStatus::S_OK;
+}
+
+ValidationStatus UserValidator::validateCreatedAt() {
+    /**
+    * Code based-from StackOverflow by alain
+    * Author profile: https://stackoverflow.com/users/3435400/alain
+    *
+    * Original question: https://stackoverflow.com/q/39447921/3975468
+    * Answer: https://stackoverflow.com/a/39452595/3975468
+    */
+    std::istringstream date_s(mUser.createdAt());
+    struct tm date_c, date_c_cmp;
+    date_s >> std::get_time(&date_c, "%d-%m-%Y %H:%M:%S");
+    date_c_cmp = date_c;  // store original  to compare later
+    std::mktime(& date_c);  // normalize
+
+    // Compare with original
+    if (date_c.tm_year != date_c_cmp.tm_year
+        || date_c.tm_mon != date_c_cmp.tm_mon
+        || date_c.tm_mday != date_c_cmp.tm_mday
+        || date_c.tm_hour != date_c_cmp.tm_hour
+        || date_c.tm_min != date_c_cmp.tm_min
+        || date_c.tm_sec != date_c_cmp.tm_sec) {
+        addError(FIELD_CDATE, "CreatedAt is an invalid date-time string.");
+        return ValidationStatus::S_INVALID_STRING;
     }
     return ValidationStatus::S_OK;
 }
