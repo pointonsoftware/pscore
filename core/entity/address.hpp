@@ -26,27 +26,15 @@
 namespace entity {
 
 // Fields
-constexpr char FIELD_ADDR_HNO[] = "Address.House.Number";
-constexpr char FIELD_ADDR_LOT[] = "Address.Lot";
-constexpr char FIELD_ADDR_BLK[] = "Address.Block";
-constexpr char FIELD_ADDR_STR[] = "Address.Street";
-constexpr char FIELD_ADDR_SDV[] = "Address.Subdivision";
-constexpr char FIELD_ADDR_SIT[] = "Address.Sitio";
-constexpr char FIELD_ADDR_PRK[] = "Address.Purok";
-constexpr char FIELD_ADDR_BRG[] = "Address.Barangay";
+constexpr char FIELD_ADDR_LN1[] = "Address.Line1";
+constexpr char FIELD_ADDR_LN2[] = "Address.Line2";
 constexpr char FIELD_ADDR_CTY[] = "Address.CityTown";
 constexpr char FIELD_ADDR_PRV[] = "Address.Province";
 constexpr char FIELD_ADDR_ZIP[] = "Address.Zip";
 
 struct Address {
-    std::string housenumber;
-    std::string lot;
-    std::string block;
-    std::string street;
-    std::string subdivision;
-    std::string sitio;
-    std::string purok;
-    std::string barangay;
+    std::string line1;
+    std::string line2;
     std::string city_town;
     std::string province;
     std::string zip;

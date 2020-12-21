@@ -63,14 +63,8 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
                                  });
                 if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
                     employee.setAddress({
-                        it->housenumber,
-                        it->lot,
-                        it->block,
-                        it->street,
-                        it->subdivision,
-                        it->sitio,
-                        it->purok,
-                        it->barangay,
+                        it->line1,
+                        it->line2,
                         it->city_town,
                         it->province,
                         it->zip,

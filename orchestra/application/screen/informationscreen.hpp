@@ -52,14 +52,8 @@ class InformationScreen {
 
     void showUserAddress() {
         SCREENCOMMON().printColumns({"Address"}, true);
-        printItem("House No.", mInfo->address().housenumber);
-        printItem("Lot", mInfo->address().lot);
-        printItem("Block", mInfo->address().block);
-        printItem("Street", mInfo->address().street);
-        printItem("Subdivision", mInfo->address().subdivision);
-        printItem("Sitio", mInfo->address().sitio);
-        printItem("Purok", mInfo->address().purok);
-        printItem("Barangay", mInfo->address().barangay);
+        printItem("Address 1", mInfo->address().line1);
+        printItem("Address 2", mInfo->address().line2);
         printItem("City/Town", mInfo->address().city_town);
         printItem("Province", mInfo->address().province);
         printItem("Zip Code", mInfo->address().zip);

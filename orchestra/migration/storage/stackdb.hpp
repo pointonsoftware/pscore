@@ -63,14 +63,8 @@ class StackDB {
 
     struct AddressTableItem {
         std::string ID;  // Links to person's ID
-        std::string housenumber;
-        std::string lot;
-        std::string block;
-        std::string street;
-        std::string subdivision;
-        std::string sitio;
-        std::string purok;
-        std::string barangay;
+        std::string line1;
+        std::string line2;
         std::string city_town;
         std::string province;
         std::string zip;

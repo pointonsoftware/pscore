@@ -131,14 +131,8 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         // Actual update
         *it = db::StackDB::AddressTableItem {
             employee.ID(),
-            employee.address().housenumber,
-            employee.address().lot,
-            employee.address().block,
-            employee.address().street,
-            employee.address().subdivision,
-            employee.address().sitio,
-            employee.address().purok,
-            employee.address().barangay,
+            employee.address().line1,
+            employee.address().line2,
             employee.address().city_town,
             employee.address().province,
             employee.address().zip};
@@ -204,14 +198,8 @@ void EmployeeDataProvider::update(const entity::User& user) {
 void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee) const {
     DATABASE().SELECT_ADDRESS_TABLE().emplace_back(db::StackDB::AddressTableItem {
             employee.ID(),
-            employee.address().housenumber,
-            employee.address().lot,
-            employee.address().block,
-            employee.address().street,
-            employee.address().subdivision,
-            employee.address().sitio,
-            employee.address().purok,
-            employee.address().barangay,
+            employee.address().line1,
+            employee.address().line2,
             employee.address().city_town,
             employee.address().province,
             employee.address().zip});
@@ -282,14 +270,8 @@ void EmployeeDataProvider::fillEmployeeDetails(entity::Employee* employee) const
                             });
             if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
                 employee->setAddress({
-                    it->housenumber,
-                    it->lot,
-                    it->block,
-                    it->street,
-                    it->subdivision,
-                    it->sitio,
-                    it->purok,
-                    it->barangay,
+                    it->line1,
+                    it->line2,
                     it->city_town,
                     it->province,
                     it->zip,
