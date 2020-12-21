@@ -24,9 +24,8 @@
 namespace domain {
 namespace inventory {
 
-InventoryController::InventoryController(
-                                    const std::shared_ptr<InventoryDataInterface>& data,
-                                    const std::shared_ptr<InventoryViewInterface>& view) {
+InventoryController::InventoryController(const std::shared_ptr<InventoryDataInterface>& data,
+                                         const std::shared_ptr<InventoryViewInterface>& view) {
     if ((data == nullptr) || (view == nullptr)) {
         throw std::invalid_argument("Received a nulltpr argument");
     }
@@ -34,7 +33,7 @@ InventoryController::InventoryController(
     mView = view;
 }
 
-std::unique_ptr<InventoryControlInterface> createEmployeeMgmtModule(
+std::unique_ptr<InventoryControlInterface> createInventoryModule(
                     const std::shared_ptr<InventoryDataInterface>& data,
                     const std::shared_ptr<InventoryViewInterface>& view) {
     return std::make_unique<InventoryController>(data, view);

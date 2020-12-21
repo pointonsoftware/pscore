@@ -32,6 +32,9 @@ namespace screen {
 namespace backoffice {
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
+    mInventoryController = domain::inventory::createInventoryModule(
+                    std::make_shared<dataprovider::inventory::InventoryDataProvider>(),
+                    std::make_shared<InventoryScreen>());
     SCREENCOMMON().showTopBanner("Inventory Control");
     std::cout << "No data." << std::endl;
     std::string input;

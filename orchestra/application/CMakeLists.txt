@@ -40,6 +40,7 @@ target_link_libraries (
     dashboard
     datamanager
     empmgmt
+    inventory
     loginmod
     ${MINGW_DEPENDENCY}
     ${CONSOLE_APP_LINKER_EXCEPTION}
