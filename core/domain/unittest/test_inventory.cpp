@@ -28,6 +28,11 @@
 // code under test
 #include <domain/inventory/inventorycontroller.hpp>
 
+// Gmock
+using testing::_;
+using testing::Matcher;
+using testing::Return;
+
 namespace domain {
 namespace inventory {
 namespace test {
@@ -47,8 +52,21 @@ class TestInventory : public testing::Test {
     InventoryController inventoryController;
 };
 
-TEST_F(TestInventory, SampleTest) {
-    SUCCEED() << "SampleTest";
+TEST_F(TestInventory, TestGetProductsList) {
+    // Fake that there is at least one product data on record
+    EXPECT_CALL(*dpMock, getProducts())
+        .WillOnce(Return(std::vector<entity::Product>{entity::Product()}));
+    // The list should not be empty
+    ASSERT_FALSE(inventoryController.list().empty());
+}
+
+TEST_F(TestInventory, TestGetProductsListEmpty) {
+    // Fake that there is no product data on record
+    EXPECT_CALL(*dpMock, getProducts())
+        .WillOnce(Return(std::vector<entity::Product>{}));
+    EXPECT_CALL(*viewMock, showProductsEmptyPopup());
+    // The list should be empty
+    ASSERT_TRUE(inventoryController.list().empty());
 }
 
 }  // namespace test
