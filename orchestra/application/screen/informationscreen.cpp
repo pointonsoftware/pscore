@@ -18,59 +18,27 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
-#include <future>
-#include <memory>
-#include <string>
-#include <vector>
-#include <domain/inventory/interface/inventoryviewif.hpp>
-#include <screeniface.hpp>
-// Core
-#include <domain/inventory/interface/inventoryiface.hpp>
+#include "informationscreen.hpp"
 
 namespace screen {
-namespace backoffice {
 
-class InventoryScreen : public screen::ScreenInterface,
-                        public domain::inventory::InventoryViewInterface {
- public:
-    InventoryScreen() = default;
-    ~InventoryScreen() = default;
+template <>
+void InformationScreen<entity::Employee>::showBasicInformation() {  // specialize for employee
+    SCREENCOMMON().printColumns({"Basic Information"}, true);
+    printItem("First Name", mInfo->firstName());
+    printItem("Middle Name", mInfo->middleName());
+    printItem("Last Name", mInfo->lastName());
+    printItem("Birthdate", mInfo->birthdate());
+    printItem("Gender", mInfo->gender());
+    printItem("Position", mInfo->position());
+}
 
-    // ScreenInterface
-    void show(std::promise<defines::display>* promise) override;
-    // CoreView implementation
-    void showProductsEmptyPopup() override;
+template <>
+void InformationScreen<entity::Product>::showBasicInformation() {  // specialize for product
+    SCREENCOMMON().printColumns({"Details"}, true);
+    printItem("SKU", mInfo->sku());
 
- private:
-      // Screen options - this represents the buttons in a GUI
-    enum class Options {
-        LANDING,
-        DASHBOARD,
-        PRODUCT_DETAILS,
-        // add more enums here
-        LOGOUT,
-        APP_EXIT,
-        INVALID
-        // Warning! Don't add anything here.
-        // New enum values must be added before LOGOUT
-    };
-    void showLandingScreen() const;
-    void queryProductsList();
-    void showProducts() const;
-    void showOptions() const;
-    Options getUserSelection();
-    bool action(Options option, std::promise<defines::display>* nextScreen);
-    void invalidOptionSelected() const;
-    void showProductDetails(bool showIndex = false) const;
-    const std::string getEntityField(unsigned int index) const;
+    // Add more data here!
+}
 
-    std::vector<entity::Product> mProductGUITable;  // Represents the GUI table
-    unsigned int mSelectedProductIndex = 0;  // 1-based index
-    std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;
-};
-
-}  // namespace backoffice
 }  // namespace screen
-#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
