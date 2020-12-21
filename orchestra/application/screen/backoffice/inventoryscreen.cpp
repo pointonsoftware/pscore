@@ -57,7 +57,7 @@ void InventoryScreen::queryProductsList() {
 void InventoryScreen::showProducts() const {
     std::cout << std::endl;
     // Display the columns
-    SCREENCOMMON().printColumns({"SKU", "Product", "Stock", "Price"}, true);
+    SCREENCOMMON().printColumns({"Product", "Category", "Stock", "Price"}, true);
     // Display employees
     for (unsigned int index = 0; index < mProductGUITable.size(); ++index) {
         SCREENCOMMON().printColumns({
@@ -85,7 +85,7 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
     if (userInput == "x") {
         return Options::APP_EXIT;
     } else if (userInput == "b") {
-        // Todo (code) - we should return whatever was the previous screen
+        // We should return whatever was the previous screen
         // For now, we will check if user has selected an index (i.e. info screen is shown)
         if (mSelectedProductIndex == 0) {
             return Options::DASHBOARD;
