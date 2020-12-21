@@ -50,7 +50,7 @@ class EmployeeMgmtDataInterface {
     */
     virtual void update(const entity::Employee& employee) = 0;
     /*!
-     * Updates the user role ONLY to sync with employee data
+     * Updates the user role only to sync with employee data
      * Note: Core uses the employeeID as the key
     */
     virtual void update(const entity::User& user) = 0;

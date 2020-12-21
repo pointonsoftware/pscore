@@ -73,8 +73,8 @@ std::string currentDateTime() {
     struct tm *parts = std::localtime(&now_c);
     char buff[100];
     snprintf(buff, sizeof(buff), "%02u/%02u/%04u %02u:%02u:%02u", parts->tm_mday,
-                  parts->tm_mon + 1,  parts->tm_year + 1900, parts->tm_hour,
-                  parts->tm_min, parts->tm_sec);
+                   parts->tm_mon + 1,  parts->tm_year + 1900, parts->tm_hour,
+                   parts->tm_min, parts->tm_sec);
     return std::string(buff);
 }
 
