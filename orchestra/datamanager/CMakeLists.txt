@@ -10,6 +10,9 @@ add_library (
     # employee management
     employeedata.hpp
     employeedata.cpp
+    # inventory control
+    inventorydata.hpp
+    inventorydata.cpp
     # userlogin
     logindata.hpp
     logindata.cpp

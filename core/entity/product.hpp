@@ -43,18 +43,18 @@ constexpr char FIELD_SPCODE[] = "Product.Supplier.Code";
 class Product {
  public:
     Product(const std::string& sku,
-           const std::string& name,
-           const std::string& description,
-           const std::string& barcode,
-           const std::string& category,
-           const std::string& brand,
-           const std::string& uom,
-           const std::string& stock,
-           const std::string& status,
-           const std::string& originalPrice,
-           const std::string& sellPrice,
-           const std::string& supplierName,
-           const std::string& supplierCode);
+            const std::string& name,
+            const std::string& description,
+            const std::string& barcode,
+            const std::string& category,
+            const std::string& brand,
+            const std::string& uom,
+            const std::string& stock,
+            const std::string& status,
+            const std::string& originalPrice,
+            const std::string& sellPrice,
+            const std::string& supplierName,
+            const std::string& supplierCode);
     Product() = default;
     ~Product() = default;
 
