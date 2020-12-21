@@ -67,7 +67,7 @@ class Product {
     std::string brand() const;
     std::string uom() const;
     std::string stock() const;
-    std::string status() const;
+    std::string status() const;  // High, Active, Reorder, Low Stock
     std::string originalPrice() const;
     std::string sellPrice() const;
     std::string supplierName() const;

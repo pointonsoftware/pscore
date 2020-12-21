@@ -138,6 +138,7 @@ class StackDB {
     // product storage
     static std::vector<ProductTableItem> PRODUCT_TABLE;
     void populateEmployees();
+    void populateProducts();
 };
 
 }  // namespace db
