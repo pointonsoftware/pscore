@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "logincontroller.hpp"
+#include <assert.h>
 #include <memory>
 #include <general.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
@@ -70,10 +71,8 @@ bool LoginController::authenticate(const std::string& id, const std::string& pin
 }
 
 AUTHSTATUS LoginController::getUser(const std::string& id, entity::User* user) {
-    if (!user) {
-        LOG_ERROR("Invalid user argument");
-        return AUTHSTATUS::FAILED;
-    }
+    // The user argument must not be null
+    assert(user != nullptr);
     // todo (xxx) : Check if dataprovider is ready; else throw
     LOG_DEBUG("Retrieving user data");
     // Check userID in dataprovider

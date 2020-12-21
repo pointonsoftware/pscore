@@ -172,6 +172,18 @@ TEST_F(TestDashboard, GetCurrentUserDataWithEmptyEmployeeID) {
     ASSERT_EQ(dummyEmployee.ID(), "");
 }
 
+TEST_F(TestDashboard, GetCurrentUserDataUsingInvalidUserID) {
+    // Fake that user is not valid (UserID is empty)
+    entity::User dummyUser("", "", "", "", "");
+
+    // We should show an information in the screen
+    EXPECT_CALL(*viewMock, showUserNotFound());
+
+    entity::Employee dummyEmployee = dashController.getUserDetails(dummyUser);
+    // The employee ID must be empty
+    ASSERT_EQ(dummyEmployee.ID(), "");
+}
+
 TEST_F(TestDashboard, TestDashboardWithViewNotInitialized) {
     try {
         DashboardController dashboardController(dataMock, nullptr);

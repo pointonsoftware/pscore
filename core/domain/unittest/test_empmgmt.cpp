@@ -51,6 +51,7 @@ class TestEmployeeManagement : public testing::Test {
     entity::Employee makeValidEmployee(const std::string& id, bool isUser) const {
         entity::Employee employee(id, "John", "", "Doe", "", "M", "Admin", "ACTIVE", isUser);
         employee.setAddress({"DummyL1", "DummyL2", "DummyTown", "DummyProv", ""});
+        employee.addPersonalId("Driver's License", "PC13-72021-20");
         return employee;
     }
 
