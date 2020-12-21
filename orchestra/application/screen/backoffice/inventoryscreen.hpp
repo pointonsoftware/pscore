@@ -20,13 +20,16 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
+#include <memory>
 #include <string>
 #include <future>
 #include <domain/inventory/interface/inventoryviewif.hpp>
 #include <screeniface.hpp>
+// Core
+#include <domain/inventory/interface/inventoryiface.hpp>
 
 namespace screen {
-namespace inventory {
+namespace backoffice {
 
 class InventoryScreen : public screen::ScreenInterface,
                         public domain::inventory::InventoryViewInterface {
@@ -36,8 +39,11 @@ class InventoryScreen : public screen::ScreenInterface,
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;
+
+ private:
+    std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;
 };
 
-}  // namespace inventory
+}  // namespace backoffice
 }  // namespace screen
 #endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_

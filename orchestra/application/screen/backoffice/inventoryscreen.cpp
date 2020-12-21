@@ -29,9 +29,12 @@
 #include <inventorydata.hpp>
 
 namespace screen {
-namespace inventory {
+namespace backoffice {
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
+    mInventoryController = domain::inventory::createInventoryModule(
+                    std::make_shared<dataprovider::inventory::InventoryDataProvider>(),
+                    std::make_shared<InventoryScreen>());
     SCREENCOMMON().showTopBanner("Inventory Control");
     std::cout << "No data." << std::endl;
     std::string input;
@@ -39,5 +42,5 @@ void InventoryScreen::show(std::promise<defines::display>* promise) {
     promise->set_value(defines::display::DASHBOARD);
 }
 
-}  // namespace inventory
+}  // namespace backoffice
 }  // namespace screen

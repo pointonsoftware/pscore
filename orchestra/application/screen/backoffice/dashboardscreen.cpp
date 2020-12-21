@@ -69,6 +69,7 @@ void DashboardScreen::showOptions() const {
     std::cout << std::endl;
     std::cout << "[1] Personal Information" << std::endl;
     std::cout << "[2] Employee Management" << std::endl;
+    std::cout << "[3] Inventory Control" << std::endl;
     std::cout << "[0] Logout" << std::endl;
 }
 
@@ -106,6 +107,8 @@ DashboardScreen::Options DashboardScreen::getUserSelection() const {
         return Options::USER_DETAILS;
     } else if (userInput == "2") {
         return Options::EMPLOYEE_MGMT;
+    } else if (userInput == "3") {
+        return Options::INVENTORY_CTRL;
     }  // add more options here
 
     // Default invalid option
@@ -127,6 +130,10 @@ bool DashboardScreen::action(Options option, std::promise<defines::display>* nex
         case Options::EMPLOYEE_MGMT:
             switchScreenIsRequired = true;
             nextScreen->set_value(defines::display::EMPMGMT);
+            break;
+        case Options::INVENTORY_CTRL:
+            switchScreenIsRequired = true;
+            nextScreen->set_value(defines::display::INVENTORY);
             break;
         case Options::LOGOUT:
             switchScreenIsRequired = true;
