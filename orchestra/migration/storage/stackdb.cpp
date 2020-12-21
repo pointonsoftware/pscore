@@ -31,7 +31,6 @@ std::vector<StackDB::PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
 std::vector<StackDB::ProductTableItem> StackDB::PRODUCT_TABLE;
 
 StackDB::StackDB() {
-    populateEmployees();
     // Admin user
     USERS_TABLE.emplace_back(UserTableItem {
             "2020202",                    // Unique User ID
@@ -39,6 +38,8 @@ StackDB::StackDB() {
             "1251",                       // PIN <!Unique> <!Empty if non-user>
             "12/01/2020 11:09:50",        // Created At
             ""});                         // No employee ID
+    populateEmployees();
+    populateProducts();
 }
 
 void StackDB::populateEmployees() {
@@ -207,6 +208,87 @@ void StackDB::populateEmployees() {
             "SSS",                        // Type
             "014-135-188-813"});          // ID-number
     //-------
+}
+
+void StackDB::populateProducts() {
+    // If you want to add a product to our in-memory DB, put it here
+
+    //------- Copy starting from the line below
+    PRODUCT_TABLE.emplace_back(ProductTableItem {
+            "JNJ-CHP-SML-RED",            // SKU <!Make sure this is unique>
+            "Chippy Original",            // Name
+            "Original flavor",            // Description
+            "1125478744",                 // Barcode
+            "Grocery",                    // Category
+            "Jack n Jill",                // Brand
+            "piece",                      // Unit of measurement
+            "10",                         // Stocks remaining
+            "High",                       // Status
+            "8.00",                       // Original Price
+            "10.00",                      // Selling Price
+            "Alturas Supermarket",        // Supplier name
+            "AltSmkt6325"});              // Supplier code
+    //------- End here
+
+    PRODUCT_TABLE.emplace_back(ProductTableItem {
+            "NNN-COL-NNN-NNN",            // SKU <!Make sure this is unique>
+            "Mantika",                    // Name
+            "Cooking oil",                // Description
+            "",                           // Barcode
+            "Grocery",                    // Category
+            "No Brand",                   // Brand
+            "cup",                        // Unit of measurement
+            "100",                        // Stocks remaining
+            "High",                       // Status
+            "5.00",                       // Original Price
+            "6.00",                       // Selling Price
+            "Alturas Supermarket",        // Supplier name
+            "AltSmkt6325"});              // Supplier code
+
+    PRODUCT_TABLE.emplace_back(ProductTableItem {
+            "NNN-SUG-NNN-NNN",            // SKU <!Make sure this is unique>
+            "Asukal Puti",                // Name
+            "Sugar",                      // Description
+            "",                           // Barcode
+            "Grocery",                    // Category
+            "No Brand",                   // Brand
+            "gram",                       // Unit of measurement
+            "100",                        // Stocks remaining
+            "High",                       // Status
+            "5.00",                       // Original Price
+            "6.00",                       // Selling Price
+            "Alturas Supermarket",        // Supplier name
+            "AltSmkt6325"});              // Supplier code
+
+    PRODUCT_TABLE.emplace_back(ProductTableItem {
+            "UNI-BIO-NNN-NNN",            // SKU <!Make sure this is unique>
+            "Biogesic",                   // Name
+            "Paracetamol",                // Description
+            "",                           // Barcode
+            "Medicine",                   // Category
+            "Unilab",                     // Brand
+            "piece",                      // Unit of measurement
+            "20",                         // Stocks remaining
+            "High",                       // Status
+            "5.00",                       // Original Price
+            "6.00",                       // Selling Price
+            "Sab Pharmacy",               // Supplier name
+            "SABPHARM210"});              // Supplier code
+
+    PRODUCT_TABLE.emplace_back(ProductTableItem {
+            "COK-COK-LAR-NNN",            // SKU <!Make sure this is unique>
+            "Coke 1L",                    // Name
+            "Coke 1L bottle",             // Description
+            "",                           // Barcode
+            "Beverage",                   // Category
+            "Coca Cola",                  // Brand
+            "piece",                      // Unit of measurement
+            "20",                         // Stocks remaining
+            "High",                       // Status
+            "5.00",                       // Original Price
+            "6.00",                       // Selling Price
+            "Pengavator",                 // Supplier name
+            "PGVTOR"});                   // Supplier code
 }
 
 }  // namespace db
