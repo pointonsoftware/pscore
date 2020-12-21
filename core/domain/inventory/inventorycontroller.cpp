@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include "inventorycontroller.hpp"
 #include <memory>
+#include <logger/loghelper.hpp>
 
 namespace domain {
 namespace inventory {
@@ -31,6 +32,18 @@ InventoryController::InventoryController(const std::shared_ptr<InventoryDataInte
     }
     mDataProvider = data;
     mView = view;
+}
+
+std::vector<entity::Product> InventoryController::list() {
+    LOG_DEBUG("Getting the list of products");
+    mCachedList = mDataProvider->getProducts();
+    if (mCachedList.empty()) {
+        LOG_WARN("There are no products on record");
+        mView->showProductsEmptyPopup();
+        return {};
+    }
+    LOG_INFO("Successfully retrieved products list. Size: %d", mCachedList.size());
+    return mCachedList;
 }
 
 std::unique_ptr<InventoryControlInterface> createInventoryModule(

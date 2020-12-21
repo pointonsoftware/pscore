@@ -39,6 +39,8 @@ class InventoryScreen : public screen::ScreenInterface,
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;
+    // CoreView implementation
+    void showProductsEmptyPopup() override;
 
  private:
     std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;

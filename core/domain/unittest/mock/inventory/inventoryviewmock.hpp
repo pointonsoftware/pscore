@@ -31,6 +31,8 @@ class InventoryViewMock : public InventoryViewInterface {
  public:
     InventoryViewMock() = default;
     ~InventoryViewMock() = default;
+
+    MOCK_METHOD(void, showProductsEmptyPopup, ());
 };
 
 }  // namespace inventory

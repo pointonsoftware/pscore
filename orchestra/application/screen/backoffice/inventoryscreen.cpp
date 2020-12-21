@@ -42,5 +42,9 @@ void InventoryScreen::show(std::promise<defines::display>* promise) {
     promise->set_value(defines::display::DASHBOARD);
 }
 
+void InventoryScreen::showProductsEmptyPopup() {
+    std::cout << "Products record is empty." << std::endl;
+}
+
 }  // namespace backoffice
 }  // namespace screen

@@ -40,10 +40,12 @@ class InventoryController : public InventoryControlInterface {
                                  const std::shared_ptr<InventoryViewInterface>& view);
     ~InventoryController() = default;
 
+    std::vector<entity::Product> list() override;
+
  private:
     std::shared_ptr<InventoryDataInterface> mDataProvider;
     std::shared_ptr<InventoryViewInterface> mView;
-    std::vector<entity::Product> mCachedList;  // List of employees
+    std::vector<entity::Product> mCachedList;  // List of products
 };
 
 }  // namespace inventory
