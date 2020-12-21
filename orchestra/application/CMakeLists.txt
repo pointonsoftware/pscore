@@ -14,14 +14,16 @@ add_executable (
     screen/screeniface.hpp
     screen/screencommon.hpp
     screen/screencommon.cpp
-    # Login screen
-    screen/login/loginscreen.hpp
-    screen/login/loginscreen.cpp
     # Back office screen
     screen/backoffice/dashboardscreen.hpp
     screen/backoffice/dashboardscreen.cpp
     screen/backoffice/empmgmtscreen.hpp
     screen/backoffice/empmgmtscreen.cpp
+    screen/backoffice/inventoryscreen.hpp
+    screen/backoffice/inventoryscreen.cpp
+    # Login screen
+    screen/login/loginscreen.hpp
+    screen/login/loginscreen.cpp
     # Utility
     utility/idgenerator.hpp
     utility/idgenerator.cpp
