@@ -215,10 +215,10 @@ void StackDB::populateProducts() {
 
     //------- Copy starting from the line below
     PRODUCT_TABLE.emplace_back(ProductTableItem {
-            "JNJ-CHP-SML-RED",            // SKU <!Make sure this is unique>
+            "1125478744",                 // Barcode <!Make sure this is unique>
+            "JNJ-CHP-SML-RED",            // SKU
             "Chippy",                     // Name
             "Original flavor",            // Description
-            "1125478744",                 // Barcode
             "Grocery",                    // Category
             "Jack n Jill",                // Brand
             "piece",                      // Unit of measurement
@@ -231,10 +231,10 @@ void StackDB::populateProducts() {
     //------- End here
 
     PRODUCT_TABLE.emplace_back(ProductTableItem {
-            "NNN-COL-NNN-NNN",            // SKU <!Make sure this is unique>
+            "1254854545",                 // Barcode <!Make sure this is unique>
+            "NNN-COL-NNN-NNN",            // SKU
             "Mantika",                    // Name
             "Cooking oil",                // Description
-            "1254854545",                 // Barcode
             "Grocery",                    // Category
             "No Brand",                   // Brand
             "cup",                        // Unit of measurement
@@ -246,10 +246,10 @@ void StackDB::populateProducts() {
             "AltSmkt6325"});              // Supplier code
 
     PRODUCT_TABLE.emplace_back(ProductTableItem {
-            "NNN-SUG-NNN-NNN",            // SKU <!Make sure this is unique>
+            "5554833345",                 // Barcode <!Make sure this is unique>
+            "NNN-SUG-NNN-NNN",            // SKU
             "Asukal Puti",                // Name
             "Sugar",                      // Description
-            "5554833345",                 // Barcode
             "Grocery",                    // Category
             "No Brand",                   // Brand
             "gram",                       // Unit of measurement
@@ -261,10 +261,10 @@ void StackDB::populateProducts() {
             "AltSmkt6325"});              // Supplier code
 
     PRODUCT_TABLE.emplace_back(ProductTableItem {
-            "UNI-BIO-NNN-NNN",            // SKU <!Make sure this is unique>
+            "5684833847",                 // Barcode <!Make sure this is unique>
+            "UNI-BIO-NNN-NNN",            // SKU
             "Biogesic",                   // Name
             "Paracetamol",                // Description
-            "5684833847",                 // Barcode
             "Medicine",                   // Category
             "Unilab",                     // Brand
             "piece",                      // Unit of measurement
@@ -276,10 +276,10 @@ void StackDB::populateProducts() {
             "SABPHARM210"});              // Supplier code
 
     PRODUCT_TABLE.emplace_back(ProductTableItem {
-            "COK-COK-LAR-NNN",            // SKU <!Make sure this is unique>
+            "4844811887",                 // Barcode <!Make sure this is unique>
+            "COK-COK-LAR-NNN",            // SKU
             "Coke 1L",                    // Name
             "Coke 1L bottle",             // Description
-            "4844811887",                 // Barcode
             "Beverage",                   // Category
             "Coca Cola",                  // Brand
             "piece",                      // Unit of measurement

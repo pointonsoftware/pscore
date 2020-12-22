@@ -23,10 +23,10 @@
 
 namespace entity {
 
-Product::Product(const std::string& sku,
+Product::Product(const std::string& barcode,
+           const std::string& sku,
            const std::string& name,
            const std::string& description,
-           const std::string& barcode,
            const std::string& category,
            const std::string& brand,
            const std::string& uom,
@@ -36,11 +36,15 @@ Product::Product(const std::string& sku,
            const std::string& sellPrice,
            const std::string& supplierName,
            const std::string& supplierCode)
-    : mSKU(sku), mName(name), mDescription(description), mBarcode(barcode),
+    : mBarcode(barcode), mSKU(sku), mName(name), mDescription(description),
       mCategory(category), mBrand(brand), mUOM(uom), mStock(stock), mStatus(status),
       mOriginalPrice(originalPrice), mSellPrice(sellPrice),
       mSupplierName(supplierName), mSupplierCode(supplierCode) {
     // Empty for now
+}
+
+void Product::setBarcode(const std::string& barcode) {
+    mBarcode = barcode;
 }
 
 void Product::setName(const std::string& name) {
@@ -49,10 +53,6 @@ void Product::setName(const std::string& name) {
 
 void Product::setDescription(const std::string& description) {
     mDescription = description;
-}
-
-void Product::setBarcode(const std::string& barcode) {
-    mBarcode = barcode;
 }
 
 void Product::setCategory(const std::string& category) {
@@ -91,6 +91,10 @@ void Product::setSupplierCode(const std::string& supplierCode) {
     mSupplierCode = supplierCode;
 }
 
+std::string Product::barcode() const {
+    return mBarcode;
+}
+
 std::string Product::sku() const {
     return mSKU;
 }
@@ -101,10 +105,6 @@ std::string Product::name() const {
 
 std::string Product::description() const {
     return mDescription;
-}
-
-std::string Product::barcode() const {
-    return mBarcode;
 }
 
 std::string Product::category() const {

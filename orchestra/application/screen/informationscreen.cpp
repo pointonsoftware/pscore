@@ -36,10 +36,10 @@ void InformationScreen<entity::Employee>::showBasicInformation() {  // specializ
 template <>
 void InformationScreen<entity::Product>::showBasicInformation() {  // specialize for product
     SCREENCOMMON().printColumns({"Details"}, true);
+    printItem("Barcode", mInfo->barcode());
     printItem("SKU", mInfo->sku());
     printItem("Name", mInfo->name());
     printItem("Description", mInfo->description());
-    printItem("Barcode", mInfo->barcode());
     printItem("Category", mInfo->category());
     printItem("Brand", mInfo->brand());
     printItem("UOM", mInfo->uom());
