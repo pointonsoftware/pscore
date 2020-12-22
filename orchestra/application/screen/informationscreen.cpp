@@ -37,8 +37,18 @@ template <>
 void InformationScreen<entity::Product>::showBasicInformation() {  // specialize for product
     SCREENCOMMON().printColumns({"Details"}, true);
     printItem("SKU", mInfo->sku());
-
-    // Add more data here!
+    printItem("Name", mInfo->name());
+    printItem("Description", mInfo->description());
+    printItem("Barcode", mInfo->barcode());
+    printItem("Category", mInfo->category());
+    printItem("Brand", mInfo->brand());
+    printItem("UOM", mInfo->uom());
+    printItem("Stocks", mInfo->stock());
+    printItem("Status", mInfo->status());
+    printItem("Orig. Price", mInfo->originalPrice());
+    printItem("Sell Price", mInfo->sellPrice());
+    printItem("Supplier", mInfo->supplierName());
+    printItem("Suppl. Code", mInfo->supplierCode());
 }
 
 }  // namespace screen

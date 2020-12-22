@@ -21,6 +21,7 @@
 #ifndef CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
 #define CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
 #include <memory>
+#include <string>
 #include <vector>
 #include "inventorydataif.hpp"
 #include "inventoryviewif.hpp"
@@ -38,6 +39,10 @@ class InventoryControlInterface {
      * Gets the list of all products
     */
     virtual std::vector<entity::Product> list() = 0;
+    /*!
+     * Retrieves a product using the barcode
+    */
+    virtual entity::Product getProduct(const std::string& barcode) = 0;
 };
 
 // Lib APIs

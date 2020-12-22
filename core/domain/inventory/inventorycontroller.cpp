@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "inventorycontroller.hpp"
+#include <algorithm>
 #include <memory>
 #include <logger/loghelper.hpp>
 
@@ -44,6 +45,29 @@ std::vector<entity::Product> InventoryController::list() {
     }
     LOG_INFO("Successfully retrieved products list. Size: %d", mCachedList.size());
     return mCachedList;
+}
+
+entity::Product InventoryController::getProduct(const std::string& barcode) {
+    LOG_DEBUG("Getting product %s", barcode.c_str());
+    const std::vector<entity::Product>::iterator& iter = find(barcode);
+    if (iter != mCachedList.end()) {
+        LOG_INFO("Found product %s", barcode.c_str());
+        return *iter;
+    } else {
+        LOG_ERROR("Product was not found");
+        return entity::Product{};
+    }
+}
+
+bool InventoryController::isExists(const std::string& barcode) {
+    return find(barcode) != mCachedList.end();
+}
+
+std::vector<entity::Product>::iterator InventoryController::find(const std::string& barcode) {
+    return std::find_if(mCachedList.begin(), mCachedList.end(),
+                [&barcode](const entity::Product& e) {
+                    return e.barcode() == barcode;
+                });
 }
 
 std::unique_ptr<InventoryControlInterface> createInventoryModule(
