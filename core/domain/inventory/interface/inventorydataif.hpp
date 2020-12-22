@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYDATAIF_HPP_
 #define CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYDATAIF_HPP_
+#include <string>
 #include <vector>
 #include <entity/product.hpp>
 
@@ -35,6 +36,10 @@ class InventoryDataInterface {
      * Retrieves the all the products from the database
     */
     virtual std::vector<entity::Product> getProducts() = 0;
+    /*!
+     * Removes the product from the database
+    */
+    virtual void removeWithBarcode(const std::string& barcode) = 0;
 };
 
 }  // namespace inventory

@@ -98,6 +98,39 @@ TEST_F(TestInventory, TestGetProductDataNotFound) {
     ASSERT_TRUE(inventoryController.getProduct(requestedBarcode).sku().empty());
 }
 
+TEST_F(TestInventory, TestRemoveProduct) {
+    const std::string requestedBarcode = "124412222020";
+    // Fake that the product data is saved on record
+    EXPECT_CALL(*dpMock, getProducts())
+        .WillOnce(Return(
+            std::vector<entity::Product>{
+                entity::Product("DUMMY-SKU", "", "", requestedBarcode, "", "", "", "", "",
+                                "", "", "", "")}));
+    // Cache the list
+    inventoryController.list();
+    EXPECT_CALL(*viewMock, showSuccessfullyRemoved(_));
+    EXPECT_CALL(*dpMock, removeWithBarcode(requestedBarcode));
+    // Should be successful
+    ASSERT_EQ(inventoryController.remove(requestedBarcode), INVENTORYAPISTATUS::SUCCESS);
+    // The product should also be removed from the cachelist
+    ASSERT_TRUE(inventoryController.getProduct(requestedBarcode).sku().empty());
+}
+
+TEST_F(TestInventory, TestRemoveProductNotFound) {
+    const std::string requestedBarcode = "124412222020";
+    const std::string storedProduct = "111111999999";
+    // Fake that we only have a product with barcode 111111999999
+    EXPECT_CALL(*dpMock, getProducts())
+        .WillOnce(Return(
+            std::vector<entity::Product>{
+                entity::Product("DUMMY-SKU", "", "", storedProduct, "", "", "", "", "",
+                                "", "", "", "")}));
+    // Cache the list
+    inventoryController.list();
+    EXPECT_CALL(*viewMock, showDataNotReadyScreen());
+    ASSERT_EQ(inventoryController.remove(requestedBarcode), INVENTORYAPISTATUS::NOT_FOUND);
+}
+
 }  // namespace test
 }  // namespace inventory
 }  // namespace domain

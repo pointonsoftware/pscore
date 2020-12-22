@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "inventorydata.hpp"
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <storage/stackdb.hpp>
@@ -47,6 +48,17 @@ std::vector<entity::Product> InventoryDataProvider::getProducts() {
         products.emplace_back(product);
     }
     return products;
+}
+
+void InventoryDataProvider::removeWithBarcode(const std::string& barcode) {
+    // Delete in PRODUCTS
+    DATABASE().SELECT_PRODUCT_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_PRODUCT_TABLE().begin(),
+                    DATABASE().SELECT_PRODUCT_TABLE().end(),
+                    [&](const db::StackDB::ProductTableItem& e) {
+                        return e.barcode == barcode;
+                    }),
+        DATABASE().SELECT_PRODUCT_TABLE().end());
 }
 
 }  // namespace inventory

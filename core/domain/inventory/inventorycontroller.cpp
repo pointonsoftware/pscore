@@ -59,6 +59,26 @@ entity::Product InventoryController::getProduct(const std::string& barcode) {
     }
 }
 
+INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
+    LOG_DEBUG("Removing product %s", barcode.c_str());
+    const std::vector<entity::Product>::iterator it = find(barcode);
+    if (it == mCachedList.end()) {
+        LOG_ERROR("Product %s was not found in the cache list", barcode.c_str());
+        mView->showDataNotReadyScreen();
+        return INVENTORYAPISTATUS::NOT_FOUND;
+    }
+    mDataProvider->removeWithBarcode(barcode);
+    /*!
+     * Todo (code) - check if mDataProvider successfully removed the product
+     * E.g. failure: mDataprovider lost db connection
+    */
+    // Remove from cache
+    mCachedList.erase(it);
+    mView->showSuccessfullyRemoved(barcode);
+    LOG_INFO("Successfully removed product %s", barcode.c_str());
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
 bool InventoryController::isExists(const std::string& barcode) {
     return find(barcode) != mCachedList.end();
 }

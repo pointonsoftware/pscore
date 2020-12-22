@@ -33,6 +33,7 @@ class InventoryDataProvider : public domain::inventory::InventoryDataInterface {
     virtual ~InventoryDataProvider() = default;
 
     std::vector<entity::Product> getProducts() override;
+    void removeWithBarcode(const std::string& barcode) override;
 };
 
 }  // namespace inventory

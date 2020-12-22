@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYVIEWIF_HPP_
 #define CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYVIEWIF_HPP_
+#include <string>
 
 namespace domain {
 namespace inventory {
@@ -33,6 +34,14 @@ class InventoryViewInterface {
      * showProductsEmptyPopup
     */
     virtual void showProductsEmptyPopup() = 0;
+    /*!
+     * showDataNotReadyScreen
+    */
+    virtual void showDataNotReadyScreen() = 0;
+    /*!
+     * showSuccessfullyRemoved
+    */
+    virtual void showSuccessfullyRemoved(const std::string& barcode) = 0;
 };
 
 }  // namespace inventory

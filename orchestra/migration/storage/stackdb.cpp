@@ -234,7 +234,7 @@ void StackDB::populateProducts() {
             "NNN-COL-NNN-NNN",            // SKU <!Make sure this is unique>
             "Mantika",                    // Name
             "Cooking oil",                // Description
-            "",                           // Barcode
+            "1254854545",                 // Barcode
             "Grocery",                    // Category
             "No Brand",                   // Brand
             "cup",                        // Unit of measurement
@@ -249,7 +249,7 @@ void StackDB::populateProducts() {
             "NNN-SUG-NNN-NNN",            // SKU <!Make sure this is unique>
             "Asukal Puti",                // Name
             "Sugar",                      // Description
-            "",                           // Barcode
+            "5554833345",                 // Barcode
             "Grocery",                    // Category
             "No Brand",                   // Brand
             "gram",                       // Unit of measurement
@@ -264,7 +264,7 @@ void StackDB::populateProducts() {
             "UNI-BIO-NNN-NNN",            // SKU <!Make sure this is unique>
             "Biogesic",                   // Name
             "Paracetamol",                // Description
-            "",                           // Barcode
+            "5684833847",                 // Barcode
             "Medicine",                   // Category
             "Unilab",                     // Brand
             "piece",                      // Unit of measurement
@@ -279,7 +279,7 @@ void StackDB::populateProducts() {
             "COK-COK-LAR-NNN",            // SKU <!Make sure this is unique>
             "Coke 1L",                    // Name
             "Coke 1L bottle",             // Description
-            "",                           // Barcode
+            "4844811887",                 // Barcode
             "Beverage",                   // Category
             "Coca Cola",                  // Brand
             "piece",                      // Unit of measurement
