@@ -42,6 +42,8 @@ class InventoryScreen : public screen::ScreenInterface,
     void show(std::promise<defines::display>* promise) override;
     // CoreView implementation
     void showProductsEmptyPopup() override;
+    void showDataNotReadyScreen() override;
+    void showSuccessfullyRemoved(const std::string& barcode) override;
 
  private:
       // Screen options - this represents the buttons in a GUI
@@ -49,6 +51,7 @@ class InventoryScreen : public screen::ScreenInterface,
         LANDING,
         DASHBOARD,
         PRODUCT_DETAILS,
+        PRODUCT_REMOVE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -65,6 +68,7 @@ class InventoryScreen : public screen::ScreenInterface,
     void invalidOptionSelected() const;
     void showProductDetails(bool showIndex = false) const;
     const std::string getEntityField(unsigned int index) const;
+    void removeProduct();
 
     std::vector<entity::Product> mProductGUITable;  // Represents the GUI table
     unsigned int mSelectedProductIndex = 0;  // 1-based index

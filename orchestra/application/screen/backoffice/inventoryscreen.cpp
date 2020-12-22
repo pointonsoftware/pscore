@@ -86,6 +86,15 @@ void InventoryScreen::showProductDetails(bool showIndex) const {
     screen::InformationScreen<entity::Product> infoScreen(selectedProduct);
     infoScreen.showItemIndex(showIndex);
     infoScreen.showBasicInformation();
+    infoScreen.showOptions();
+}
+
+void InventoryScreen::removeProduct() {
+    if (mInventoryController->remove(mProductGUITable[mSelectedProductIndex - 1].barcode())
+          == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
+       // Remove the product from our table
+       mProductGUITable.erase(mProductGUITable.begin() + (mSelectedProductIndex - 1));
+    }
 }
 
 InventoryScreen::Options InventoryScreen::getUserSelection() {
@@ -103,7 +112,7 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
         return Options::LANDING;
     } else if (userInput == "0") {
         return Options::LOGOUT;
-    }  else if (utility::isNumber(userInput)) {
+    } else if (utility::isNumber(userInput)) {
         /*!
          * If the input is a number, check if we're in the landing screen.
          * If we're currently in the landing screen, go to product details.
@@ -114,6 +123,8 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
             mSelectedProductIndex = std::stoi(userInput);
             return Options::PRODUCT_DETAILS;
         }
+    } else if (userInput == "d") {
+        return Options::PRODUCT_REMOVE;
     }  // add more options here
 
     // Default invalid option
@@ -137,6 +148,15 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
             } else {
                 showProductDetails();
             }
+            break;
+        case Options::PRODUCT_REMOVE:
+            mSelectedProductIndex == 0 ?
+                invalidOptionSelected() : removeProduct();
+            /*!
+             * Warning: recurssion here!!!
+             * This must be considered when doing changes for Options::LANDING
+             */
+            action(Options::LANDING, nextScreen);
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;
@@ -185,6 +205,14 @@ void InventoryScreen::invalidOptionSelected() const {
 
 void InventoryScreen::showProductsEmptyPopup() {
     std::cout << "Products record is empty." << std::endl;
+}
+
+void InventoryScreen::showDataNotReadyScreen() {
+    std::cout << "Data is not ready." << std::endl;
+}
+
+void InventoryScreen::showSuccessfullyRemoved(const std::string& barcode) {
+    std::cout << "Successfully removed product with barcode " << barcode << std::endl;
 }
 
 }  // namespace backoffice

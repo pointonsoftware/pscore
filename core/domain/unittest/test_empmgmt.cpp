@@ -144,7 +144,7 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
     EXPECT_CALL(*viewMock, showSuccessfullyRemoved(_));
     EXPECT_CALL(*dpMock, removeWithID(requestedID));
     // Should be successful
-    ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::SUCCESS);
+    ASSERT_EQ(empmgmtController.remove(requestedID), EMPLMGMTSTATUS::SUCCESS);
     // The user ID should also be removed from the cachelist
     ASSERT_TRUE(empmgmtController.get(requestedID).ID().empty());
 }
@@ -160,18 +160,18 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
                 }));
     // Cache the list
     empmgmtController.list();
-    ASSERT_EQ(empmgmtController.remove(requestedID), USERSMGMTSTATUS::NOT_FOUND);
+    ASSERT_EQ(empmgmtController.remove(requestedID), EMPLMGMTSTATUS::NOT_FOUND);
 }
 
 TEST_F(TestEmployeeManagement, TestSaveWithNullValidationContainer) {
     SaveEmployeeData employeeData { entity::Employee(), "", nullptr };
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::UNINITIALIZED);
+    ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::UNINITIALIZED);
 }
 
 TEST_F(TestEmployeeManagement, TestSaveWithEmptyEmployeeData) {
     std::map<std::string, std::string> dummyValidationContainer;
     SaveEmployeeData employeeData { entity::Employee(), "", &dummyValidationContainer };
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::FAILED);
+    ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::FAILED);
     // Validation result must not be empty
     ASSERT_FALSE(dummyValidationContainer.empty());
 }
@@ -183,7 +183,7 @@ TEST_F(TestEmployeeManagement, TestSaveSystemUserWithEmptyPin) {
              "",  // PIN is empty
              &dummyValidationContainer
     };
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::FAILED);
+    ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::FAILED);
     // Validation result must not be empty
     ASSERT_FALSE(dummyValidationContainer.empty());
 }
@@ -197,7 +197,7 @@ TEST_F(TestEmployeeManagement, TestCreateEmployee) {
     // DP create must be called
     EXPECT_CALL(*dpMock, create(Matcher<const entity::Employee&>(_)));
     // Should be successful
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::SUCCESS);
     // Validation result should be empty
     ASSERT_TRUE(dummyValidationContainer.empty());
 }
@@ -215,7 +215,7 @@ TEST_F(TestEmployeeManagement, TestCreateUser) {
     EXPECT_CALL(*viewMock, showUserSuccessfullyCreated(_, _));
 
     // Should be successful
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::SUCCESS);
     // Validation result should be empty
     ASSERT_TRUE(dummyValidationContainer.empty());
 }
@@ -239,7 +239,7 @@ TEST_F(TestEmployeeManagement, TestUpdateEmployee) {
     // DP update must be called
     EXPECT_CALL(*dpMock, update(Matcher<const entity::Employee&>(_)));
     // Should be successful
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::SUCCESS);
     // Validation result should be empty
     ASSERT_TRUE(dummyValidationContainer.empty());
 }
@@ -263,7 +263,7 @@ TEST_F(TestEmployeeManagement, TestUpdateUser) {
     // DP update must be called
     EXPECT_CALL(*dpMock, update(Matcher<const entity::User&>(_)));
     // Should be successful
-    ASSERT_EQ(empmgmtController.save(employeeData), USERSMGMTSTATUS::SUCCESS);
+    ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::SUCCESS);
     // Validation result should be empty
     ASSERT_TRUE(dummyValidationContainer.empty());
 }

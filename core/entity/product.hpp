@@ -59,15 +59,28 @@ class Product {
     ~Product() = default;
 
     // Getters
+
+    /*!
+     * SKU is used for inventory and sales purposes
+     * Used to know the number of products remaining and products sold
+    */
     std::string sku() const;
     std::string name() const;
     std::string description() const;
+    /*!
+     * Barcode is used for transaction to make sure the right item is sold
+     * to the customer and removed from inventory
+    */
     std::string barcode() const;
     std::string category() const;
     std::string brand() const;
     std::string uom() const;
     std::string stock() const;
-    std::string status() const;  // High, Active, Reorder, Low Stock
+    /*!
+     * Status is used for knowing the sales and inventory state of the product
+     * { High, Active, Reorder, Low Stock }
+    */
+    std::string status() const;
     std::string originalPrice() const;
     std::string sellPrice() const;
     std::string supplierName() const;

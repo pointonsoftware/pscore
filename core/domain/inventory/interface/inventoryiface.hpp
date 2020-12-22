@@ -31,6 +31,13 @@
 namespace domain {
 namespace inventory {
 
+enum class INVENTORYAPISTATUS {
+    SUCCESS       = 0,
+    FAILED        = 1,
+    UNINITIALIZED = 2,
+    NOT_FOUND     = 3
+};
+
 class InventoryControlInterface {
  public:
     InventoryControlInterface() = default;
@@ -40,9 +47,13 @@ class InventoryControlInterface {
     */
     virtual std::vector<entity::Product> list() = 0;
     /*!
-     * Retrieves a product using the barcode
+     * Retrieves a product with the barcode
     */
     virtual entity::Product getProduct(const std::string& barcode) = 0;
+    /*!
+     * Deletes a product
+    */
+    virtual INVENTORYAPISTATUS remove(const std::string& barcode) = 0;
 };
 
 // Lib APIs

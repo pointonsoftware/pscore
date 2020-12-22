@@ -42,8 +42,8 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
 
     std::vector<entity::Employee> list() override;
     entity::Employee get(const std::string& id) override;
-    USERSMGMTSTATUS save(const SaveEmployeeData& employeeData) override;
-    USERSMGMTSTATUS remove(const std::string& id) override;
+    EMPLMGMTSTATUS save(const SaveEmployeeData& employeeData) override;
+    EMPLMGMTSTATUS remove(const std::string& employeeID) override;
     std::vector<entity::Employee> findByName(const std::string& fname,
                                              const std::string& lname) override;
 

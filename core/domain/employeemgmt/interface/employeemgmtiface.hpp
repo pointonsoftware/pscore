@@ -32,7 +32,7 @@
 namespace domain {
 namespace empmgmt {
 
-enum class USERSMGMTSTATUS {
+enum class EMPLMGMTSTATUS {
     SUCCESS       = 0,
     FAILED        = 1,
     UNINITIALIZED = 2,
@@ -67,11 +67,11 @@ class EmployeeMgmtControlInterface {
      * To update an employee, use an employee object retrieved through list() or get() call.
      * - param [out]- map of [field, error message]
     */
-    virtual USERSMGMTSTATUS save(const SaveEmployeeData& employeeData) = 0;
+    virtual EMPLMGMTSTATUS save(const SaveEmployeeData& employeeData) = 0;
     /*!
-     * Deletes the user
+     * Deletes the employee and user
     */
-    virtual USERSMGMTSTATUS remove(const std::string& userID) = 0;
+    virtual EMPLMGMTSTATUS remove(const std::string& employeeID) = 0;
     /*!
      * Find the employees with first and last name
     */

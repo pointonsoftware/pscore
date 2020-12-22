@@ -116,13 +116,13 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     LOG_INFO("Employee %s information updated", employee.ID().c_str());
 }
 
-USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
+EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
     const entity::Employee& employee = employeeData.employee;
     std::map<std::string, std::string>* validationResult = employeeData.validationResult;
     LOG_DEBUG("Saving employee information");
     if (!validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
-        return USERSMGMTSTATUS::UNINITIALIZED;
+        return EMPLMGMTSTATUS::UNINITIALIZED;
     }
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
@@ -141,7 +141,7 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
         dumpValidationResult(*(validationResult));
-        return USERSMGMTSTATUS::FAILED;
+        return EMPLMGMTSTATUS::FAILED;
     }
     // Decide if it's a create or update request
     if (isExists(employee.ID())) {
@@ -149,27 +149,27 @@ USERSMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeDat
     } else {
         create(employeeData);
     }
-    return USERSMGMTSTATUS::SUCCESS;
+    return EMPLMGMTSTATUS::SUCCESS;
 }
 
-USERSMGMTSTATUS EmployeeMgmtController::remove(const std::string& id) {
-    LOG_DEBUG("Removing employee with ID %s", id.c_str());
-    const std::vector<entity::Employee>::iterator it = find(id);
+EMPLMGMTSTATUS EmployeeMgmtController::remove(const std::string& employeeID) {
+    LOG_DEBUG("Removing employee with ID %s", employeeID.c_str());
+    const std::vector<entity::Employee>::iterator it = find(employeeID);
     if (it == mCachedList.end()) {
-        LOG_ERROR("Employee with ID %s was not found in the cache list", id.c_str());
+        LOG_ERROR("Employee with ID %s was not found in the cache list", employeeID.c_str());
         mView->showDataNotReadyScreen();
-        return USERSMGMTSTATUS::NOT_FOUND;
+        return EMPLMGMTSTATUS::NOT_FOUND;
     }
-    mDataProvider->removeWithID(id);
+    mDataProvider->removeWithID(employeeID);
     /*!
      * Todo (code) - check if mDataProvider successfully removed the employee
      * E.g. failure: mDataprovider lost db connection
     */
     // Remove from cache
     mCachedList.erase(it);
-    mView->showSuccessfullyRemoved(id);
-    LOG_INFO("Successfully removed employee with ID %s", id.c_str());
-    return USERSMGMTSTATUS::SUCCESS;
+    mView->showSuccessfullyRemoved(employeeID);
+    LOG_INFO("Successfully removed employee with ID %s", employeeID.c_str());
+    return EMPLMGMTSTATUS::SUCCESS;
 }
 
 std::vector<entity::Employee> EmployeeMgmtController::findByName(const std::string& fname,

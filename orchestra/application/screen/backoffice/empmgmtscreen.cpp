@@ -177,7 +177,7 @@ void EmployeeMgmtScreen::createEmployee() {
     */
     do {
         fillEmployeeInformation(&newEmployee, failedFields);
-        const domain::empmgmt::USERSMGMTSTATUS status =
+        const domain::empmgmt::EMPLMGMTSTATUS status =
             [this, &newEmployee, &validationResult, &failedFields]() {
             const bool isSystemUser = [&newEmployee, &failedFields]() {
                 if (newEmployee.isSystemUser()) {
@@ -208,7 +208,7 @@ void EmployeeMgmtScreen::createEmployee() {
         // Reset after filling the fields
         failedFields.clear();
 
-        if (status != domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+        if (status != domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
             std::cout << "Invalid inputs:" << std::endl;
             for (auto const &result : validationResult) {
                 std::cout << "- " << result.second << std::endl;
@@ -254,7 +254,7 @@ void EmployeeMgmtScreen::updateEmployee() {
             // Reset validation results
             validationResult.clear();
             if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
-                domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+                domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
                 for (auto const &result : validationResult) {
                     std::cout << "- " << result.second << std::endl;
                 }
@@ -271,7 +271,7 @@ void EmployeeMgmtScreen::updateEmployee() {
 
 void EmployeeMgmtScreen::removeEmployee() {
     if (mCoreEmployeeMgmt->remove(mEmployeesGUITable[mSelectedEmployeeIndex - 1].ID())
-          == domain::empmgmt::USERSMGMTSTATUS::SUCCESS) {
+          == domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
        // Remove the user form
        mEmployeesGUITable.erase(mEmployeesGUITable.begin() + (mSelectedEmployeeIndex - 1));
     }

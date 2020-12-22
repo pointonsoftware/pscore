@@ -22,6 +22,7 @@
 #define CORE_DOMAIN_UNITTEST_MOCK_INVENTORY_INVENTORYVIEWMOCK_HPP_
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <string>
 #include <domain/inventory/interface/inventoryviewif.hpp>
 
 namespace domain {
@@ -33,6 +34,8 @@ class InventoryViewMock : public InventoryViewInterface {
     ~InventoryViewMock() = default;
 
     MOCK_METHOD(void, showProductsEmptyPopup, ());
+    MOCK_METHOD(void, showDataNotReadyScreen, ());
+    MOCK_METHOD(void, showSuccessfullyRemoved, (const std::string& barcode));
 };
 
 }  // namespace inventory

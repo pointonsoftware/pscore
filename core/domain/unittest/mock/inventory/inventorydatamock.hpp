@@ -22,6 +22,7 @@
 #define CORE_DOMAIN_UNITTEST_MOCK_INVENTORY_INVENTORYDATAMOCK_HPP_
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <string>
 #include <vector>
 #include <domain/inventory/interface/inventorydataif.hpp>
 
@@ -34,6 +35,7 @@ class InventoryDataMock : public InventoryDataInterface {
     ~InventoryDataMock() = default;
 
     MOCK_METHOD(std::vector<entity::Product>, getProducts, ());
+    MOCK_METHOD(void, removeWithBarcode, (const std::string& barcode));
 };
 
 }  // namespace inventory

@@ -42,6 +42,7 @@ class InventoryController : public InventoryControlInterface {
 
     std::vector<entity::Product> list() override;
     entity::Product getProduct(const std::string& barcode) override;
+    INVENTORYAPISTATUS remove(const std::string& barcode) override;
 
  private:
     bool isExists(const std::string& barcode);
