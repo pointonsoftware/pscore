@@ -26,10 +26,10 @@
 namespace entity {
 
 // Fields
+constexpr char FIELD_BCODE[] = "Product.Barcode";
 constexpr char FIELD_SKU[] = "Product.SKU";
 constexpr char FIELD_PNAME[] = "Product.Name";
 constexpr char FIELD_PDESC[] = "Product.Description";
-constexpr char FIELD_BCODE[] = "Product.Barcode";
 constexpr char FIELD_CTGR[] = "Product.Category";
 constexpr char FIELD_BRAND[] = "Product.Brand";
 constexpr char FIELD_UOM[] = "Product.UOM";
