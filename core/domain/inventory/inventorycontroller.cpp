@@ -69,7 +69,7 @@ INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
     }
     mDataProvider->removeWithBarcode(barcode);
     /*!
-     * Todo (code) - check if mDataProvider successfully removed the employee
+     * Todo (code) - check if mDataProvider successfully removed the product
      * E.g. failure: mDataprovider lost db connection
     */
     // Remove from cache
