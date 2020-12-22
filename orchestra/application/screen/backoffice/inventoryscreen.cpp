@@ -81,15 +81,10 @@ void InventoryScreen::showOptions() const {
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {
-    // Todo (code) - must perform GET()
     const entity::Product& selectedProduct = mProductGUITable[mSelectedProductIndex - 1];
     SCREENCOMMON().showTopBanner("Product Information");
     screen::InformationScreen<entity::Product> infoScreen(selectedProduct);
     infoScreen.showItemIndex(showIndex);
-    /*!
-     * The sequence of calls below to InformationScreen should be in-sync with
-     * the entity fields in InventoryScreen::getEntityField()
-    */
     infoScreen.showBasicInformation();
 }
 

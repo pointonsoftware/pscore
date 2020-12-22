@@ -86,7 +86,7 @@ TEST_F(TestInventory, TestGetProductData) {
 TEST_F(TestInventory, TestGetProductDataNotFound) {
     const std::string requestedBarcode = "124412222020";
     const std::string storedProduct = "111111999999";
-    // Fake that we only have an product 111111999999
+    // Fake that we only have a product with barcode 111111999999
     EXPECT_CALL(*dpMock, getProducts())
         .WillOnce(Return(
             std::vector<entity::Product>{
