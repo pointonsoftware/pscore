@@ -69,6 +69,35 @@ TEST_F(TestInventory, TestGetProductsListEmpty) {
     ASSERT_TRUE(inventoryController.list().empty());
 }
 
+TEST_F(TestInventory, TestGetProductData) {
+    const std::string requestedBarcode = "124412222020";
+    // Fake that the product data is saved on record
+    EXPECT_CALL(*dpMock, getProducts())
+        .WillOnce(Return(
+            std::vector<entity::Product>{
+                entity::Product("DUMMY-SKU", "", "", requestedBarcode, "", "", "", "", "",
+                                "", "", "", "")}));
+    // Cache the list
+    inventoryController.list();
+    // Should return a valid product data (valid SKU)
+    ASSERT_FALSE(inventoryController.getProduct(requestedBarcode).sku().empty());
+}
+
+TEST_F(TestInventory, TestGetProductDataNotFound) {
+    const std::string requestedBarcode = "124412222020";
+    const std::string storedProduct = "111111999999";
+    // Fake that we only have a product with barcode 111111999999
+    EXPECT_CALL(*dpMock, getProducts())
+        .WillOnce(Return(
+            std::vector<entity::Product>{
+                entity::Product("DUMMY-SKU", "", "", storedProduct, "", "", "", "", "",
+                                "", "", "", "")}));
+    // Cache the list
+    inventoryController.list();
+    // Should return an empty product data (empty SKU)
+    ASSERT_TRUE(inventoryController.getProduct(requestedBarcode).sku().empty());
+}
+
 }  // namespace test
 }  // namespace inventory
 }  // namespace domain

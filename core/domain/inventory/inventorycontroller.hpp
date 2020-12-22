@@ -41,8 +41,12 @@ class InventoryController : public InventoryControlInterface {
     ~InventoryController() = default;
 
     std::vector<entity::Product> list() override;
+    entity::Product getProduct(const std::string& barcode) override;
 
  private:
+    bool isExists(const std::string& barcode);
+    std::vector<entity::Product>::iterator find(const std::string& barcode);
+
     std::shared_ptr<InventoryDataInterface> mDataProvider;
     std::shared_ptr<InventoryViewInterface> mView;
     std::vector<entity::Product> mCachedList;  // List of products

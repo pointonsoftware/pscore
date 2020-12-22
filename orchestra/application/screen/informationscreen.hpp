@@ -24,6 +24,9 @@
 #include <iostream>
 #include <string>
 #include "screencommon.hpp"
+#include "screendefines.hpp"
+#include <entity/employee.hpp>
+#include <entity/product.hpp>
 
 namespace screen {
 
@@ -31,18 +34,9 @@ template <typename T>
 class InformationScreen {
  public:
     explicit InformationScreen(const T& t) : mInfo(&t) {}
+    InformationScreen() = delete;
     ~InformationScreen() = default;
-
-    void showBasicInformation() {
-        SCREENCOMMON().printColumns({"Basic Info"}, true);
-        printItem("First Name", mInfo->firstName());
-        printItem("Middle Name", mInfo->middleName());
-        printItem("Last Name", mInfo->lastName());
-        printItem("Birthdate", mInfo->birthdate());
-        printItem("Gender", mInfo->gender());
-        printItem("Position", mInfo->position());
-    }
-
+    void showBasicInformation();
     void showContactDetails() {
         SCREENCOMMON().printColumns({"Contact Details"}, true);
         printItem("Phone", mInfo->contactDetails().phone_number_1);

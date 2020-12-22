@@ -21,7 +21,9 @@
 #include "inventoryscreen.hpp"
 #include <iostream>
 #include <memory>
+#include <general.hpp>  // pscore utility
 // view
+#include <informationscreen.hpp>
 #include <screencommon.hpp>
 // data
 #include <inventorydata.hpp>
@@ -78,6 +80,14 @@ void InventoryScreen::showOptions() const {
     std::cout << std::endl;
 }
 
+void InventoryScreen::showProductDetails(bool showIndex) const {
+    const entity::Product& selectedProduct = mProductGUITable[mSelectedProductIndex - 1];
+    SCREENCOMMON().showTopBanner("Product Information");
+    screen::InformationScreen<entity::Product> infoScreen(selectedProduct);
+    infoScreen.showItemIndex(showIndex);
+    infoScreen.showBasicInformation();
+}
+
 InventoryScreen::Options InventoryScreen::getUserSelection() {
     std::string userInput;
     std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
@@ -93,6 +103,17 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
         return Options::LANDING;
     } else if (userInput == "0") {
         return Options::LOGOUT;
+    }  else if (utility::isNumber(userInput)) {
+        /*!
+         * If the input is a number, check if we're in the landing screen.
+         * If we're currently in the landing screen, go to product details.
+         * Otherwise, return invalid.
+        */
+        if (mSelectedProductIndex == 0) {
+            // Store user input as the selected index
+            mSelectedProductIndex = std::stoi(userInput);
+            return Options::PRODUCT_DETAILS;
+        }
     }  // add more options here
 
     // Default invalid option
@@ -108,6 +129,14 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
             break;
         case Options::INVALID:
             invalidOptionSelected();
+            break;
+        case Options::PRODUCT_DETAILS:
+            if (mSelectedProductIndex > (mProductGUITable.size())) {
+                mSelectedProductIndex = 0;  // reset while we're in the landing screen
+                invalidOptionSelected();
+            } else {
+                showProductDetails();
+            }
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;
@@ -125,6 +154,29 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
+}
+
+const std::string InventoryScreen::getEntityField(unsigned int index) const {
+    static const std::vector<std::string> productDomainFields {
+        "Product.SKU",
+        "Product.Name",
+        "Product.Description",
+        "Product.Barcode",
+        "Product.Category",
+        "Product.Brand",
+        "Product.UOM",
+        "Product.Stock",
+        "Product.Status",
+        "Product.Original.Price",
+        "Product.Sell.Price",
+        "Product.Supplier.Name",
+        "Product.Supplier.Code"
+    };
+    if (index >= productDomainFields.size()) {
+        return "";
+    }
+    // Vector is a 0-based index
+    return productDomainFields[index - 1];
 }
 
 void InventoryScreen::invalidOptionSelected() const {

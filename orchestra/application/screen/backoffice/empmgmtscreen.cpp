@@ -29,7 +29,6 @@
 #include <idgenerator.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
-
 // data
 #include <employeedata.hpp>
 

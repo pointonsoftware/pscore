@@ -18,38 +18,37 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
-#define CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
-#include <memory>
-#include <string>
-#include <vector>
-#include "inventorydataif.hpp"
-#include "inventoryviewif.hpp"
-#include <domain/librarycommon.hpp>
-#include <entity/product.hpp>
+#include "informationscreen.hpp"
 
-namespace domain {
-namespace inventory {
+namespace screen {
 
-class InventoryControlInterface {
- public:
-    InventoryControlInterface() = default;
-    virtual ~InventoryControlInterface() = default;
-    /*!
-     * Gets the list of all products
-    */
-    virtual std::vector<entity::Product> list() = 0;
-    /*!
-     * Retrieves a product using the barcode
-    */
-    virtual entity::Product getProduct(const std::string& barcode) = 0;
-};
+template <>
+void InformationScreen<entity::Employee>::showBasicInformation() {  // specialize for employee
+    SCREENCOMMON().printColumns({"Basic Information"}, true);
+    printItem("First Name", mInfo->firstName());
+    printItem("Middle Name", mInfo->middleName());
+    printItem("Last Name", mInfo->lastName());
+    printItem("Birthdate", mInfo->birthdate());
+    printItem("Gender", mInfo->gender());
+    printItem("Position", mInfo->position());
+}
 
-// Lib APIs
-extern "C" CORE_API std::unique_ptr<InventoryControlInterface> createInventoryModule(
-                    const std::shared_ptr<InventoryDataInterface>& data,
-                    const std::shared_ptr<InventoryViewInterface>& view);
+template <>
+void InformationScreen<entity::Product>::showBasicInformation() {  // specialize for product
+    SCREENCOMMON().printColumns({"Details"}, true);
+    printItem("SKU", mInfo->sku());
+    printItem("Name", mInfo->name());
+    printItem("Description", mInfo->description());
+    printItem("Barcode", mInfo->barcode());
+    printItem("Category", mInfo->category());
+    printItem("Brand", mInfo->brand());
+    printItem("UOM", mInfo->uom());
+    printItem("Stocks", mInfo->stock());
+    printItem("Status", mInfo->status());
+    printItem("Orig. Price", mInfo->originalPrice());
+    printItem("Sell Price", mInfo->sellPrice());
+    printItem("Supplier", mInfo->supplierName());
+    printItem("Suppl. Code", mInfo->supplierCode());
+}
 
-}  // namespace inventory
-}  // namespace domain
-#endif  // CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
+}  // namespace screen

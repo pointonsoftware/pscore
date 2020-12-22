@@ -48,6 +48,7 @@ class InventoryScreen : public screen::ScreenInterface,
     enum class Options {
         LANDING,
         DASHBOARD,
+        PRODUCT_DETAILS,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -62,6 +63,8 @@ class InventoryScreen : public screen::ScreenInterface,
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
     void invalidOptionSelected() const;
+    void showProductDetails(bool showIndex = false) const;
+    const std::string getEntityField(unsigned int index) const;
 
     std::vector<entity::Product> mProductGUITable;  // Represents the GUI table
     unsigned int mSelectedProductIndex = 0;  // 1-based index
