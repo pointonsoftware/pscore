@@ -26,10 +26,10 @@
 namespace entity {
 
 // Fields
+constexpr char FIELD_BCODE[] = "Product.Barcode";
 constexpr char FIELD_SKU[] = "Product.SKU";
 constexpr char FIELD_PNAME[] = "Product.Name";
 constexpr char FIELD_PDESC[] = "Product.Description";
-constexpr char FIELD_BCODE[] = "Product.Barcode";
 constexpr char FIELD_CTGR[] = "Product.Category";
 constexpr char FIELD_BRAND[] = "Product.Brand";
 constexpr char FIELD_UOM[] = "Product.UOM";
@@ -42,10 +42,10 @@ constexpr char FIELD_SPCODE[] = "Product.Supplier.Code";
 
 class Product {
  public:
-    Product(const std::string& sku,
+    Product(const std::string& barcode,
+            const std::string& sku,
             const std::string& name,
             const std::string& description,
-            const std::string& barcode,
             const std::string& category,
             const std::string& brand,
             const std::string& uom,
@@ -59,7 +59,11 @@ class Product {
     ~Product() = default;
 
     // Getters
-
+    /*!
+     * Barcode is used for transaction to make sure the right item is sold
+     * to the customer and removed from inventory
+    */
+    std::string barcode() const;
     /*!
      * SKU is used for inventory and sales purposes
      * Used to know the number of products remaining and products sold
@@ -67,11 +71,6 @@ class Product {
     std::string sku() const;
     std::string name() const;
     std::string description() const;
-    /*!
-     * Barcode is used for transaction to make sure the right item is sold
-     * to the customer and removed from inventory
-    */
-    std::string barcode() const;
     std::string category() const;
     std::string brand() const;
     std::string uom() const;
@@ -87,9 +86,9 @@ class Product {
     std::string supplierCode() const;
 
     // Setters
+    void setBarcode(const std::string& barcode);
     void setName(const std::string& name);
     void setDescription(const std::string& description);
-    void setBarcode(const std::string& barcode);
     void setCategory(const std::string& category);
     void setBrand(const std::string& brand);
     void setUOM(const std::string& uom);
@@ -101,10 +100,10 @@ class Product {
     void setSupplierCode(const std::string& supplierCode);
 
  private:
+    std::string mBarcode;
     std::string mSKU;
     std::string mName;
     std::string mDescription;
-    std::string mBarcode;
     std::string mCategory;
     std::string mBrand;
     std::string mUOM;

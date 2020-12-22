@@ -84,10 +84,10 @@ class StackDB {
     };
 
     struct ProductTableItem {
+        std::string barcode;
         std::string sku;
         std::string name;
         std::string description;
-        std::string barcode;
         std::string category;
         std::string brand;
         std::string uom;

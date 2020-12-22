@@ -15,6 +15,8 @@ add_library (
     personalidvalidator.cpp
     personvalidator.hpp
     personvalidator.cpp
+    productvalidator.hpp
+    productvalidator.cpp
     uservalidator.hpp
     uservalidator.cpp
     validator.hpp

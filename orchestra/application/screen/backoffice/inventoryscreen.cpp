@@ -178,10 +178,10 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
 
 const std::string InventoryScreen::getEntityField(unsigned int index) const {
     static const std::vector<std::string> productDomainFields {
+        "Product.Barcode",
         "Product.SKU",
         "Product.Name",
         "Product.Description",
-        "Product.Barcode",
         "Product.Category",
         "Product.Brand",
         "Product.UOM",

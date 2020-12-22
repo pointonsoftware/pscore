@@ -75,7 +75,7 @@ TEST_F(TestInventory, TestGetProductData) {
     EXPECT_CALL(*dpMock, getProducts())
         .WillOnce(Return(
             std::vector<entity::Product>{
-                entity::Product("DUMMY-SKU", "", "", requestedBarcode, "", "", "", "", "",
+                entity::Product(requestedBarcode, "DUMMY-SKU", "", "", "", "", "", "", "",
                                 "", "", "", "")}));
     // Cache the list
     inventoryController.list();
@@ -90,7 +90,7 @@ TEST_F(TestInventory, TestGetProductDataNotFound) {
     EXPECT_CALL(*dpMock, getProducts())
         .WillOnce(Return(
             std::vector<entity::Product>{
-                entity::Product("DUMMY-SKU", "", "", storedProduct, "", "", "", "", "",
+                entity::Product(storedProduct, "DUMMY-SKU", "", "", "", "", "", "", "",
                                 "", "", "", "")}));
     // Cache the list
     inventoryController.list();
@@ -104,7 +104,7 @@ TEST_F(TestInventory, TestRemoveProduct) {
     EXPECT_CALL(*dpMock, getProducts())
         .WillOnce(Return(
             std::vector<entity::Product>{
-                entity::Product("DUMMY-SKU", "", "", requestedBarcode, "", "", "", "", "",
+                entity::Product(requestedBarcode, "DUMMY-SKU", "", "", "", "", "", "", "",
                                 "", "", "", "")}));
     // Cache the list
     inventoryController.list();
@@ -123,7 +123,7 @@ TEST_F(TestInventory, TestRemoveProductNotFound) {
     EXPECT_CALL(*dpMock, getProducts())
         .WillOnce(Return(
             std::vector<entity::Product>{
-                entity::Product("DUMMY-SKU", "", "", storedProduct, "", "", "", "", "",
+                entity::Product(storedProduct, "DUMMY-SKU", "", "", "", "", "", "", "",
                                 "", "", "", "")}));
     // Cache the list
     inventoryController.list();

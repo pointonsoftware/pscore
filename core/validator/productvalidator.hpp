@@ -18,49 +18,51 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "inventorydata.hpp"
-#include <algorithm>
+#ifndef CORE_VALIDATOR_PRODUCTVALIDATOR_HPP_
+#define CORE_VALIDATOR_PRODUCTVALIDATOR_HPP_
 #include <string>
-#include <vector>
-#include <storage/stackdb.hpp>
+// Parent
+#include "validator.hpp"
+// Entity
+#include <entity/product.hpp>
 
-namespace dataprovider {
-namespace inventory {
+namespace entity {
+namespace validator {
 
-std::vector<entity::Product> InventoryDataProvider::getProducts() {
-    // SELECT PRODUCTS
-    std::vector<entity::Product> products;
-    for (const db::StackDB::ProductTableItem& temp : DATABASE().SELECT_PRODUCT_TABLE()) {
-        entity::Product product(
-            temp.barcode,
-            temp.sku,
-            temp.name,
-            temp.description,
-            temp.category,
-            temp.brand,
-            temp.uom,
-            temp.stock,
-            temp.status,
-            temp.original_price,
-            temp.sell_price,
-            temp.supplier_name,
-            temp.supplier_code);
-        products.emplace_back(product);
-    }
-    return products;
-}
+/*!
+ * Validation Rules:
+ * All product fields are required (i.e. cannot be empty), except for the product description
+ * Stocks must be a positive integer
+ * Prices must be a valid number up to two decimal places (for cents)
+*/
 
-void InventoryDataProvider::removeWithBarcode(const std::string& barcode) {
-    // Delete in PRODUCTS
-    DATABASE().SELECT_PRODUCT_TABLE().erase(
-        std::remove_if(DATABASE().SELECT_PRODUCT_TABLE().begin(),
-                    DATABASE().SELECT_PRODUCT_TABLE().end(),
-                    [&](const db::StackDB::ProductTableItem& e) {
-                        return e.barcode == barcode;
-                    }),
-        DATABASE().SELECT_PRODUCT_TABLE().end());
-}
+class ProductValidator : public Validator {
+ public:
+    explicit ProductValidator(const Product& product);
+    ~ProductValidator() = default;
 
-}  // namespace inventory
-}  // namespace dataprovider
+ private:
+    const Product mProduct;
+    // Validation functions
+    ValidationStatus validateBarcode();
+    ValidationStatus validateSKU();
+    ValidationStatus validateName();
+    ValidationStatus validateDescription();
+    ValidationStatus validateCategory();
+    ValidationStatus validateBrand();
+    ValidationStatus validateUOM();
+    ValidationStatus validateStock();
+    ValidationStatus validateStatus();
+    ValidationStatus validateOriginalPrice();
+    ValidationStatus validateSellingPrice();
+    ValidationStatus validateSupplierName();
+    ValidationStatus validateSupplierCode();
 
+    ValidationStatus checkEmptyString(const std::string& str,
+                                      const std::string& field,
+                                      const std::string& fieldString);
+};
+
+}  // namespace validator
+}  // namespace entity
+#endif  // CORE_VALIDATOR_PRODUCTVALIDATOR_HPP_
