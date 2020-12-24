@@ -39,7 +39,11 @@ namespace test {
 
 class TestInventory : public testing::Test {
  public:
-    TestInventory() : inventoryController(dpMock, viewMock) {
+    TestInventory() : inventoryController(dpMock, viewMock),
+    validProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
+                 "Description", "DummyCategory", "SomeBrand",
+                 "SomeMeasurement", "12", "High", "10.00", "12.00",
+                 "DummySupplier", "DummySupplierCode") {
         // Empty for now
     }
 
@@ -50,6 +54,7 @@ class TestInventory : public testing::Test {
     std::shared_ptr<InventoryDataMock> dpMock  = std::make_shared<InventoryDataMock>();
     std::shared_ptr<InventoryViewMock> viewMock = std::make_shared<InventoryViewMock>();
     InventoryController inventoryController;
+    entity::Product validProduct;
 };
 
 TEST_F(TestInventory, TestGetProductsList) {
@@ -129,6 +134,53 @@ TEST_F(TestInventory, TestRemoveProductNotFound) {
     inventoryController.list();
     EXPECT_CALL(*viewMock, showDataNotReadyScreen());
     ASSERT_EQ(inventoryController.remove(requestedBarcode), INVENTORYAPISTATUS::NOT_FOUND);
+}
+
+TEST_F(TestInventory, TestSaveWithNullValidationContainer) {
+    ASSERT_EQ(inventoryController.save(entity::Product(), nullptr),
+              INVENTORYAPISTATUS::UNINITIALIZED);
+}
+
+TEST_F(TestInventory, TestSaveWithInvalidProduct) {
+    const uint8_t numberOfRequiredFields = 12;
+    std::map<std::string, std::string> dummyValidationContainer;
+    ASSERT_EQ(inventoryController.save(entity::Product(), &dummyValidationContainer),
+              INVENTORYAPISTATUS::FAILED);
+    // Validation result must not be empty
+    ASSERT_EQ(dummyValidationContainer.size(), numberOfRequiredFields);
+}
+
+TEST_F(TestInventory, TestSaveWithInvalidStock) {
+    entity::Product dummyProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
+                 "Description", "DummyCategory", "SomeBrand",
+                 "SomeMeasurement", "-12", "High", "10.00", "12.00",
+                 "DummySupplier", "DummySupplierCode");
+    std::map<std::string, std::string> dummyValidationContainer;
+
+    ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
+              INVENTORYAPISTATUS::FAILED);
+    // Validation result must contain one error
+    ASSERT_EQ(dummyValidationContainer.size(), 1);
+}
+
+TEST_F(TestInventory, TestSaveWithInvalidPrices) {
+    entity::Product dummyProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
+                 "Description", "DummyCategory", "SomeBrand",
+                 "SomeMeasurement", "12", "High", "10.000", "text.00",
+                 "DummySupplier", "DummySupplierCode");
+    std::map<std::string, std::string> dummyValidationContainer;
+    ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
+              INVENTORYAPISTATUS::FAILED);
+    // Validation result must contain two errors
+    ASSERT_EQ(dummyValidationContainer.size(), 2);
+}
+
+TEST_F(TestInventory, TestCreateProduct) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    ASSERT_EQ(inventoryController.save(validProduct, &dummyValidationContainer),
+              INVENTORYAPISTATUS::SUCCESS);
+    // Validation result must be empty
+    ASSERT_TRUE(dummyValidationContainer.empty());
 }
 
 }  // namespace test

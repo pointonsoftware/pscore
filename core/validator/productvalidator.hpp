@@ -33,7 +33,7 @@ namespace validator {
  * Validation Rules:
  * All product fields are required (i.e. cannot be empty), except for the product description
  * Stocks must be a positive integer
- * Prices must be a valid number up to two decimal places (for cents)
+ * Prices must be a valid number with two decimal places (for cents)
 */
 
 class ProductValidator : public Validator {

@@ -69,6 +69,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
     }
     // Validate fields
     {
+        LOG_DEBUG("Validating fields");
         entity::validator::ProductValidator validator(product);
         validationResult->insert(validator.result().begin(), validator.result().end());
     }
@@ -83,7 +84,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
 }
 
 void InventoryController::create(const entity::Product& product) {
-    LOG_DEBUG("Creating product with code %", product.barcode().c_str());
+    LOG_DEBUG("Creating product with code %s", product.barcode().c_str());
     // Adding new product
     mDataProvider->create(product);
     /*!
@@ -91,7 +92,7 @@ void InventoryController::create(const entity::Product& product) {
      * before updating the cache
     */
     mCachedList.emplace_back(product);
-    LOG_INFO("%s created with code %", product.name().c_str(), product.barcode().c_str());
+    LOG_INFO("%s created with code %s", product.name().c_str(), product.barcode().c_str());
 }
 
 void InventoryController::dumpValidationResult(const ValidationErrors& validationErrors) const {

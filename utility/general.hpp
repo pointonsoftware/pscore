@@ -29,6 +29,10 @@ namespace utility {
 */
 extern bool isNumber(const std::string& str);
 /*!
+ * Checks if the string argument is a valid double
+*/
+extern bool isDouble(const std::string& str);
+/*!
  * Checks if the string argument contains a number
 */
 extern bool hasNumber(const std::string& str);

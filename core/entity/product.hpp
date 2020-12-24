@@ -99,6 +99,8 @@ class Product {
     void setSupplierName(const std::string& supplierName);
     void setSupplierCode(const std::string& supplierCode);
 
+    static const uint8_t PRICE_DECIMAL_POINTS = 2;
+
  private:
     std::string mBarcode;
     std::string mSKU;

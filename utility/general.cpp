@@ -21,6 +21,7 @@
 #include "general.hpp"
 #include <algorithm>
 #include <chrono>
+#include <cstdlib>
 #include <ctime>
 #include <random>
 
@@ -28,6 +29,12 @@ namespace utility {
 
 bool isNumber(const std::string &str) {
   return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
+}
+
+bool isDouble(const std::string& str) {
+    char* end = nullptr;
+    double val = strtod(str.c_str(), &end);
+    return end != str.c_str() && *end == '\0' && val != 999999;
 }
 
 bool hasNumber(const std::string &str) {
