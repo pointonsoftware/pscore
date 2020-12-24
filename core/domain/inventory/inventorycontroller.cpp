@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <memory>
 #include <logger/loghelper.hpp>
+#include <validator/productvalidator.hpp>
 
 namespace domain {
 namespace inventory {
@@ -56,6 +57,47 @@ entity::Product InventoryController::getProduct(const std::string& barcode) {
     } else {
         LOG_ERROR("Product was not found");
         return entity::Product{};
+    }
+}
+
+INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
+                                             ValidationErrors* validationResult) {
+    LOG_DEBUG("Saving product information");
+    if (!validationResult) {
+        LOG_ERROR("Validation-message container is not initialized");
+        return INVENTORYAPISTATUS::UNINITIALIZED;
+    }
+    // Validate fields
+    {
+        entity::validator::ProductValidator validator(product);
+        validationResult->insert(validator.result().begin(), validator.result().end());
+    }
+    if (!validationResult->empty()) {
+        LOG_WARN("Entity contains invalid data. Returning validation results.");
+        dumpValidationResult(*(validationResult));
+        return INVENTORYAPISTATUS::FAILED;
+    }
+    // Todo (code) - decide here if it's a create or update request
+    create(product);
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
+void InventoryController::create(const entity::Product& product) {
+    LOG_DEBUG("Creating product with code %", product.barcode().c_str());
+    // Adding new product
+    mDataProvider->create(product);
+    /*!
+     * Todo (code) - add checking if create is successful from dataprovider
+     * before updating the cache
+    */
+    mCachedList.emplace_back(product);
+    LOG_INFO("%s created with code %", product.name().c_str(), product.barcode().c_str());
+}
+
+void InventoryController::dumpValidationResult(const ValidationErrors& validationErrors) const {
+    LOG_DEBUG("Dumping validation result");
+    for (auto const &result : validationErrors) {
+        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
     }
 }
 

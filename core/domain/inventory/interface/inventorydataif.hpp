@@ -37,6 +37,10 @@ class InventoryDataInterface {
     */
     virtual std::vector<entity::Product> getProducts() = 0;
     /*!
+     * Create a product
+    */
+    virtual void create(const entity::Product& product) = 0;
+    /*!
      * Removes the product from the database
     */
     virtual void removeWithBarcode(const std::string& barcode) = 0;
