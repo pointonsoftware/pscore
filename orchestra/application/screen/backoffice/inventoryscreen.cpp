@@ -21,6 +21,7 @@
 #include "inventoryscreen.hpp"
 #include <functional>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <general.hpp>  // pscore utility
 // view

@@ -126,7 +126,7 @@ ValidationStatus ProductValidator::validateSellingPrice() {
         return ValidationStatus::S_INVALID_STRING;
     }
     if (std::stod(mProduct.sellPrice()) < std::stod(mProduct.originalPrice())) {
-        addError(FIELD_SPRICE, "Selling price must be greater than or equal to the original price.");
+        addError(FIELD_SPRICE, "Sell price must be greater than or equal to the orig. price.");
         return ValidationStatus::S_INVALID_VALUE;
     }
     return ValidationStatus::S_OK;
