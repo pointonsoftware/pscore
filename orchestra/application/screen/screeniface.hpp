@@ -20,7 +20,11 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
+#include <algorithm>
 #include <future>
+#include <string>
+#include <vector>
+#include <screencommon.hpp>
 #include <screendefines.hpp>
 
 namespace screen {
@@ -31,6 +35,33 @@ class ScreenInterface {
     virtual ~ScreenInterface() = default;
 
     virtual void show(std::promise<defines::display>* promise) = 0;
+
+ protected:
+    class FieldHelper {
+     public:
+        explicit FieldHelper(const std::vector<std::string>& requiredFields)
+            : mRequiredFields(requiredFields) {}
+        FieldHelper() = delete;
+        // Find the field from the "requiredFields" vector
+        inline bool requires(const std::string& field) const {
+            if (mRequiredFields.empty()) {
+                // Field is required by default
+                 return true;
+            }
+            return std::find(mRequiredFields.begin(), mRequiredFields.end(), field)
+                    != mRequiredFields.end();
+        }
+     private:
+        const std::vector<std::string>& mRequiredFields;
+    };
+
+    // Simulate an input area or text box of GUI
+    inline void inputArea(std::function<void(const std::string&)> func,
+                          const std::string& label, bool fieldIsRequired) const {
+        if (fieldIsRequired) {
+            func(SCREENCOMMON().getInput(label));
+        }
+    }
 };
 
 }  // namespace screen

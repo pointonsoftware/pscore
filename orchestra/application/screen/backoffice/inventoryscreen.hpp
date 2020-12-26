@@ -52,6 +52,7 @@ class InventoryScreen : public screen::ScreenInterface,
         DASHBOARD,
         PRODUCT_DETAILS,
         PRODUCT_REMOVE,
+        PRODUCT_CREATE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -69,6 +70,9 @@ class InventoryScreen : public screen::ScreenInterface,
     void showProductDetails(bool showIndex = false) const;
     const std::string getEntityField(unsigned int index) const;
     void removeProduct();
+    void createProduct();
+    void fillProductInformation(entity::Product* product,
+                                const std::vector<std::string>& requiredFields) const;
 
     std::vector<entity::Product> mProductGUITable;  // Represents the GUI table
     unsigned int mSelectedProductIndex = 0;  // 1-based index

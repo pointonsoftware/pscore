@@ -97,6 +97,16 @@ void InventoryScreen::removeProduct() {
     }
 }
 
+void InventoryScreen::fillProductInformation(entity::Product* product,
+                                             const std::vector<std::string>& requiredFields) const {
+
+}
+
+void InventoryScreen::createProduct() {
+    SCREENCOMMON().showTopBanner("Create Product");
+    std::cout << "Type [space] for an empty entry" << std::endl;
+}
+
 InventoryScreen::Options InventoryScreen::getUserSelection() {
     std::string userInput;
     std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
@@ -125,6 +135,8 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
         }
     } else if (userInput == "d") {
         return Options::PRODUCT_REMOVE;
+    } else if (userInput == "c") {
+        return Options::PRODUCT_CREATE;
     }  // add more options here
 
     // Default invalid option
@@ -157,6 +169,12 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
              * This must be considered when doing changes for Options::LANDING
              */
             action(Options::LANDING, nextScreen);
+            break;
+        case Options::PRODUCT_CREATE:
+            createProduct();
+            // Get the products from Core then cache the list
+            // queryProductsList();
+            // showLandingScreen();
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;
