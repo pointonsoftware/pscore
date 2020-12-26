@@ -47,6 +47,10 @@ void Product::setBarcode(const std::string& barcode) {
     mBarcode = barcode;
 }
 
+void Product::setSKU(const std::string& sku) {
+    mSKU = sku;
+}
+
 void Product::setName(const std::string& name) {
     mName = name;
 }

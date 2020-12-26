@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "inventoryscreen.hpp"
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <general.hpp>  // pscore utility
@@ -75,7 +76,7 @@ void InventoryScreen::showProducts() const {
 
 void InventoryScreen::showOptions() const {
     std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[0] - Logout"},
+    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"},
                                  true, false);
     std::cout << std::endl;
 }
@@ -99,12 +100,62 @@ void InventoryScreen::removeProduct() {
 
 void InventoryScreen::fillProductInformation(entity::Product* product,
                                              const std::vector<std::string>& requiredFields) const {
-
+    ScreenInterface::FieldHelper fieldHelper(requiredFields);
+    inputArea(std::bind(&entity::Product::setBarcode, product, std::placeholders::_1),
+              "Barcode", fieldHelper.requires(entity::FIELD_BCODE));
+    inputArea(std::bind(&entity::Product::setSKU, product, std::placeholders::_1),
+              "SKU", fieldHelper.requires(entity::FIELD_SKU));
+    inputArea(std::bind(&entity::Product::setName, product, std::placeholders::_1),
+              "Name", fieldHelper.requires(entity::FIELD_PNAME));
+    inputArea(std::bind(&entity::Product::setDescription, product, std::placeholders::_1),
+              "Description", fieldHelper.requires(entity::FIELD_PDESC));
+    inputArea(std::bind(&entity::Product::setCategory, product, std::placeholders::_1),
+              "Category", fieldHelper.requires(entity::FIELD_CTGR));
+    inputArea(std::bind(&entity::Product::setBrand, product, std::placeholders::_1),
+              "Brand", fieldHelper.requires(entity::FIELD_BRAND));
+    inputArea(std::bind(&entity::Product::setUOM, product, std::placeholders::_1),
+              "UOM", fieldHelper.requires(entity::FIELD_UOM));
+    inputArea(std::bind(&entity::Product::setStock, product, std::placeholders::_1),
+              "Stock", fieldHelper.requires(entity::FIELD_STOCK));
+    inputArea(std::bind(&entity::Product::setStatus, product, std::placeholders::_1),
+              "Status", fieldHelper.requires(entity::FIELD_PSTATUS));
+    inputArea(std::bind(&entity::Product::setOriginalPrice, product, std::placeholders::_1),
+              "Orig. Price", fieldHelper.requires(entity::FIELD_OPRICE));
+    inputArea(std::bind(&entity::Product::setSellPrice, product, std::placeholders::_1),
+              "Sell Price", fieldHelper.requires(entity::FIELD_SPRICE));
+    inputArea(std::bind(&entity::Product::setSupplierName, product, std::placeholders::_1),
+              "Supplier", fieldHelper.requires(entity::FIELD_SPNAME));
+    inputArea(std::bind(&entity::Product::setSupplierCode, product, std::placeholders::_1),
+              "Supp. Code", fieldHelper.requires(entity::FIELD_SPCODE));
 }
 
 void InventoryScreen::createProduct() {
     SCREENCOMMON().showTopBanner("Create Product");
     std::cout << "Type [space] for an empty entry" << std::endl;
+    std::vector<std::string> requiredFields;  // Used to request re-input of failed fields
+    entity::Product newProduct;
+    do {
+        // Input product details
+        fillProductInformation(&newProduct, requiredFields);
+        // Reset after filling the fields
+        requiredFields.clear();
+
+        std::map<std::string, std::string> validationResult;
+        if (mInventoryController->save(newProduct, &validationResult)
+            != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
+            std::cout << "Invalid inputs:" << std::endl;
+            for (auto const &result : validationResult) {
+                std::cout << "- " << result.second << std::endl;
+                requiredFields.emplace_back(result.first);
+            }
+            // Let the user confirm after viewing the validation results
+            std::cout << "Press [Enter] to update fields..." << std::endl;
+            std::cin.ignore();
+            std::cin.get();
+        } else {
+            std::cout << "Product created successfully!" << std::endl;
+        }
+    } while (!requiredFields.empty());  // repeat input until new product is created
 }
 
 InventoryScreen::Options InventoryScreen::getUserSelection() {
@@ -173,8 +224,8 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
         case Options::PRODUCT_CREATE:
             createProduct();
             // Get the products from Core then cache the list
-            // queryProductsList();
-            // showLandingScreen();
+            queryProductsList();
+            showLandingScreen();
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;

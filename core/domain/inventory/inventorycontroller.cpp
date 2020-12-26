@@ -67,6 +67,8 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
         LOG_ERROR("Validation-message container is not initialized");
         return INVENTORYAPISTATUS::UNINITIALIZED;
     }
+    // Cleanup the container
+    validationResult->clear();
     // Validate fields
     {
         LOG_DEBUG("Validating fields");

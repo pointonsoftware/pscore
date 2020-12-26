@@ -55,9 +55,10 @@ class InventoryControlInterface {
      * Used to create or update a product
      * - Creates the product if the barcode does not exist in the database
      * - Updates the product using the barcode
-     * @param
-     * - [in] product data
-     * - [out] validation result (map[field, error message])
+     * @param [in] - product data
+     * @param [out] - validation result (map[field, error message])
+     *
+     * Note: This will empty the map container
     */
     virtual INVENTORYAPISTATUS save(const entity::Product& product,
                                     std::map<std::string, std::string>* validationResult) = 0;

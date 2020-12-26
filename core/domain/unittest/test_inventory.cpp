@@ -175,6 +175,19 @@ TEST_F(TestInventory, TestSaveWithInvalidPrices) {
     ASSERT_EQ(dummyValidationContainer.size(), 2);
 }
 
+TEST_F(TestInventory, TestSaveWithInvalidSellingPrice) {
+    // Fake that selling price is lesser than the original price
+    entity::Product dummyProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
+                 "Description", "DummyCategory", "SomeBrand",
+                 "SomeMeasurement", "12", "High", "10.00", "9.00",
+                 "DummySupplier", "DummySupplierCode");
+    std::map<std::string, std::string> dummyValidationContainer;
+    ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
+              INVENTORYAPISTATUS::FAILED);
+    // Validation result must contain one error
+    ASSERT_EQ(dummyValidationContainer.size(), 1);
+}
+
 TEST_F(TestInventory, TestCreateProduct) {
     std::map<std::string, std::string> dummyValidationContainer;
     ASSERT_EQ(inventoryController.save(validProduct, &dummyValidationContainer),

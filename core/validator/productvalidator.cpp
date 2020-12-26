@@ -125,6 +125,10 @@ ValidationStatus ProductValidator::validateSellingPrice() {
         addError(FIELD_SPRICE, "Selling price must only have two decimal places.");
         return ValidationStatus::S_INVALID_STRING;
     }
+    if (std::stod(mProduct.sellPrice()) < std::stod(mProduct.originalPrice())) {
+        addError(FIELD_SPRICE, "Selling price must be greater than or equal to the original price.");
+        return ValidationStatus::S_INVALID_VALUE;
+    }
     return ValidationStatus::S_OK;
 }
 

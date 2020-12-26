@@ -147,7 +147,6 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
 void EmployeeMgmtScreen::createEmployee() {
     SCREENCOMMON().showTopBanner("Create Employee");
     std::cout << "Type [space] for an empty entry" << std::endl;
-    std::map<std::string, std::string> validationResult;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
     // App must provide the employee ID
     entity::Employee newEmployee(app::utility::generateEmployeeID());
@@ -160,6 +159,7 @@ void EmployeeMgmtScreen::createEmployee() {
      *                   do you want to update this employee instead?"
     */
     do {
+        std::map<std::string, std::string> validationResult;
         fillEmployeeInformation(&newEmployee, failedFields);
         const domain::empmgmt::EMPLMGMTSTATUS status =
             [this, &newEmployee, &validationResult, &failedFields]() {

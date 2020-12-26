@@ -87,6 +87,7 @@ class Product {
 
     // Setters
     void setBarcode(const std::string& barcode);
+    void setSKU(const std::string& sku);
     void setName(const std::string& name);
     void setDescription(const std::string& description);
     void setCategory(const std::string& category);
