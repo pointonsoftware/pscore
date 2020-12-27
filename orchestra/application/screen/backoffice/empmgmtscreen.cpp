@@ -62,53 +62,36 @@ void EmployeeMgmtScreen::queryEmployeesList() {
 
 void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
                          const std::vector<std::string>& requiredFields) const {
-    // All fields are required by default
-    const bool isAllFieldsRequired = requiredFields.empty();
-    // Find the field from the "requiredFields" vector
-    auto requires = [requiredFields, isAllFieldsRequired](const std::string& field) {
-        if (!isAllFieldsRequired) {
-            return std::find(requiredFields.begin(), requiredFields.end(), field)
-                != requiredFields.end();
-        }
-        return true;
-    };
-    // Simulate an input area or text box of GUI
-    auto inputArea = [isAllFieldsRequired] (std::function<void(const std::string&)> func,
-                                            const std::string& label, bool fieldIsRequired) {
-        if (fieldIsRequired) {
-            func(SCREENCOMMON().getInput(label));
-        }
-    };
+    ScreenInterface::FieldHelper fieldHelper(requiredFields);
     // Basic info
-    inputArea(std::bind(&entity::Employee::setFirstName, employee,
-              std::placeholders::_1), "First Name", requires("Person.First.Name"));
-    inputArea(std::bind(&entity::Employee::setMiddleName, employee,
-              std::placeholders::_1), "Middle Name", requires("Person.Middle.Name"));
-    inputArea(std::bind(&entity::Employee::setLastName, employee,
-              std::placeholders::_1), "Last Name", requires("Person.Last.Name"));
-    inputArea(std::bind(&entity::Employee::setBirthdate, employee,
-              std::placeholders::_1), "Date of Birth (dd/mm/yyyy)",
-                                      requires("Person.Birthdate"));
-    inputArea(std::bind(&entity::Employee::setGender, employee,
-              std::placeholders::_1), "Gender (M/F)", requires("Person.Gender"));
-    inputArea(std::bind(&entity::Employee::setPosition, employee,
-              std::placeholders::_1), "Position", requires("Employee.Position"));
+    inputArea(std::bind(&entity::Employee::setFirstName, employee, std::placeholders::_1),
+              "First Name", fieldHelper.requires("Person.First.Name"));
+    inputArea(std::bind(&entity::Employee::setMiddleName, employee, std::placeholders::_1),
+              "Middle Name", fieldHelper.requires("Person.Middle.Name"));
+    inputArea(std::bind(&entity::Employee::setLastName, employee, std::placeholders::_1),
+              "Last Name", fieldHelper.requires("Person.Last.Name"));
+    inputArea(std::bind(&entity::Employee::setBirthdate, employee, std::placeholders::_1),
+              "Date of Birth (dd/mm/yyyy)", fieldHelper.requires("Person.Birthdate"));
+    inputArea(std::bind(&entity::Employee::setGender, employee, std::placeholders::_1),
+              "Gender (M/F)", fieldHelper.requires("Person.Gender"));
+    inputArea(std::bind(&entity::Employee::setPosition, employee, std::placeholders::_1),
+              "Position", fieldHelper.requires("Employee.Position"));
     // Address
     {
         entity::Address address = employee->address();
-        if (requires("Address.Line1")) {
+        if (fieldHelper.requires("Address.Line1")) {
             address.line1 = SCREENCOMMON().getInput("Address 1");
         }
-        if (requires("Address.Line2")) {
+        if (fieldHelper.requires("Address.Line2")) {
             address.line2 = SCREENCOMMON().getInput("Address 2");
         }
-        if (requires("Address.CityTown")) {
+        if (fieldHelper.requires("Address.CityTown")) {
             address.city_town = SCREENCOMMON().getInput("City/Town");
         }
-        if (requires("Address.Province")) {
+        if (fieldHelper.requires("Address.Province")) {
             address.province = SCREENCOMMON().getInput("Province");
         }
-        if (requires("Address.Zip")) {
+        if (fieldHelper.requires("Address.Zip")) {
             address.zip = SCREENCOMMON().getInput("Zip");
         }
         employee->setAddress(address);
@@ -116,25 +99,25 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     // Contact details
     {
         entity::ContactDetails contactDetails = employee->contactDetails();
-        if (requires("ContactDetails.Phone1")) {
+        if (fieldHelper.requires("ContactDetails.Phone1")) {
             contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
         }
-        if (requires("ContactDetails.Phone2")) {
+        if (fieldHelper.requires("ContactDetails.Phone2")) {
             contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
         }
-        if (requires("ContactDetails.Email")) {
+        if (fieldHelper.requires("ContactDetails.Email")) {
             contactDetails.email = SCREENCOMMON().getInput("Email Address");
         }
         employee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
         employee->setEmail(contactDetails.email);
     }
     // Ask if user wants to input a valid/government ID
-    if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
+    if (fieldHelper.requires("PersonalId.Type") || fieldHelper.requires("PersonalId.Number")) {
         entity::PersonalId personalId;
         bool idFieldsRequired = true;
         bool updateFields = false;
 
-        if (isAllFieldsRequired) {
+        if (requiredFields.empty()) {
             // Ask if user has a Valid ID
             idFieldsRequired = SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y";
         } else {
@@ -144,10 +127,10 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
         }
 
         if (idFieldsRequired) {
-            if (requires("PersonalId.Type")) {
+            if (fieldHelper.requires("PersonalId.Type")) {
                 personalId.type = SCREENCOMMON().getInput("ID Type");
             }
-            if (requires("PersonalId.Number")) {
+            if (fieldHelper.requires("PersonalId.Number")) {
                 personalId.id_number = SCREENCOMMON().getInput("ID Number");
             }
             if (updateFields) {
@@ -162,8 +145,8 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
 }
 
 void EmployeeMgmtScreen::createEmployee() {
-    std::cout << std::endl << "Add Employee - type [space] for empty entry" << std::endl;
-    std::map<std::string, std::string> validationResult;
+    SCREENCOMMON().showTopBanner("Create Employee");
+    std::cout << "Type [space] for an empty entry" << std::endl;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
     // App must provide the employee ID
     entity::Employee newEmployee(app::utility::generateEmployeeID());
@@ -176,6 +159,7 @@ void EmployeeMgmtScreen::createEmployee() {
      *                   do you want to update this employee instead?"
     */
     do {
+        std::map<std::string, std::string> validationResult;
         fillEmployeeInformation(&newEmployee, failedFields);
         const domain::empmgmt::EMPLMGMTSTATUS status =
             [this, &newEmployee, &validationResult, &failedFields]() {

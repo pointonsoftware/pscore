@@ -42,11 +42,15 @@ class InventoryController : public InventoryControlInterface {
 
     std::vector<entity::Product> list() override;
     entity::Product getProduct(const std::string& barcode) override;
+    INVENTORYAPISTATUS save(const entity::Product& product,
+                            std::map<std::string, std::string>* validationResult) override;
     INVENTORYAPISTATUS remove(const std::string& barcode) override;
 
  private:
     bool isExists(const std::string& barcode);
     std::vector<entity::Product>::iterator find(const std::string& barcode);
+    void create(const entity::Product& product);
+    void dumpValidationResult(const ValidationErrors& validationErrors) const;
 
     std::shared_ptr<InventoryDataInterface> mDataProvider;
     std::shared_ptr<InventoryViewInterface> mView;

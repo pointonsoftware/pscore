@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
 #define CORE_DOMAIN_INVENTORY_INTERFACE_INVENTORYIFACE_HPP_
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -50,6 +51,17 @@ class InventoryControlInterface {
      * Retrieves a product with the barcode
     */
     virtual entity::Product getProduct(const std::string& barcode) = 0;
+    /*!
+     * Used to create or update a product
+     * - Creates the product if the barcode does not exist in the database
+     * - Updates the product using the barcode
+     * @param [in] - product data
+     * @param [out] - validation result (map[field, error message])
+     *
+     * Note: This will empty the map container
+    */
+    virtual INVENTORYAPISTATUS save(const entity::Product& product,
+                                    std::map<std::string, std::string>* validationResult) = 0;
     /*!
      * Deletes a product
     */

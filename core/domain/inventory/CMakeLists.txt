@@ -18,5 +18,6 @@ target_link_libraries (
     inventory
     entity
     utility
+    validator
     ${MINGW_DEPENDENCY}
 )

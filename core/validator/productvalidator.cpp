@@ -27,6 +27,18 @@ namespace validator {
 
 ProductValidator::ProductValidator(const Product& product) : mProduct(product) {
     validationFunctions.emplace_back(std::bind(&ProductValidator::validateBarcode, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateSKU, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateName, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateDescription, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateCategory, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateBrand, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateUOM, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateStock, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateStatus, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateOriginalPrice, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateSellingPrice, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateSupplierName, this));
+    validationFunctions.emplace_back(std::bind(&ProductValidator::validateSupplierCode, this));
     validate();
 }
 
@@ -60,7 +72,14 @@ ValidationStatus ProductValidator::validateUOM() {
 }
 
 ValidationStatus ProductValidator::validateStock() {
-    return checkEmptyString(mProduct.stock(), FIELD_STOCK, "Stocks");
+    if (checkEmptyString(mProduct.stock(), FIELD_STOCK, "Stocks") != ValidationStatus::S_OK) {
+            return ValidationStatus::S_EMPTY;
+    }
+    if (!utility::isNumber(mProduct.stock())) {
+        addError(FIELD_STOCK, "Invalid stocks value.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
 }
 
 ValidationStatus ProductValidator::validateStatus() {
@@ -68,11 +87,49 @@ ValidationStatus ProductValidator::validateStatus() {
 }
 
 ValidationStatus ProductValidator::validateOriginalPrice() {
-    return checkEmptyString(mProduct.originalPrice(), FIELD_OPRICE, "Original Price");
+    if (checkEmptyString(mProduct.originalPrice(), FIELD_OPRICE, "Original Price")
+        != ValidationStatus::S_OK) {
+            return ValidationStatus::S_EMPTY;
+    }
+    if (mProduct.originalPrice().find(".") == std::string::npos) {
+        addError(FIELD_OPRICE, "Original price must contain a decimal point.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    if (!utility::isDouble(mProduct.originalPrice())) {
+        addError(FIELD_OPRICE, "Original price must be a valid value.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    if (mProduct.originalPrice().substr(mProduct.originalPrice().find(".")).length()
+        != Product::PRICE_DECIMAL_POINTS + 1) {  // + 1 since std::find also counts "."
+        addError(FIELD_OPRICE, "Original price must only have two decimal places.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
 }
 
 ValidationStatus ProductValidator::validateSellingPrice() {
-    return checkEmptyString(mProduct.sellPrice(), FIELD_SPRICE, "Selling Price");
+    if (checkEmptyString(mProduct.sellPrice(), FIELD_SPRICE, "Selling Price")
+        != ValidationStatus::S_OK) {
+            return ValidationStatus::S_EMPTY;
+    }
+    if (mProduct.sellPrice().find(".") == std::string::npos) {
+        addError(FIELD_SPRICE, "Selling price must contain a decimal point.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    if (!utility::isDouble(mProduct.sellPrice())) {
+        addError(FIELD_SPRICE, "Selling price must be a valid value.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    if (mProduct.sellPrice().substr(mProduct.sellPrice().find(".")).length()
+        != Product::PRICE_DECIMAL_POINTS + 1) {  // + 1 since std::find also counts "."
+        addError(FIELD_SPRICE, "Selling price must only have two decimal places.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    if (std::stod(mProduct.sellPrice()) < std::stod(mProduct.originalPrice())) {
+        addError(FIELD_SPRICE, "Sell price must be greater than or equal to the orig. price.");
+        return ValidationStatus::S_INVALID_VALUE;
+    }
+    return ValidationStatus::S_OK;
 }
 
 ValidationStatus ProductValidator::validateSupplierName() {

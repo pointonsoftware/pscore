@@ -33,7 +33,8 @@ enum ValidationStatus {
     S_OK             = 0,
     S_INVALID_STRING = 1,
     S_EMPTY          = 2,
-    S_INVALID_SIZE   = 3
+    S_INVALID_SIZE   = 3,
+    S_INVALID_VALUE  = 4
 };
 
 // map [field that failed, error message to display]

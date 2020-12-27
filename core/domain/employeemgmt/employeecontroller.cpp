@@ -124,6 +124,8 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
         LOG_ERROR("Validation-message container is not initialized");
         return EMPLMGMTSTATUS::UNINITIALIZED;
     }
+    // Cleanup the container
+    validationResult->clear();
     // Fill the validation results
     *(validationResult) = validateDetails(employee);
     /*!

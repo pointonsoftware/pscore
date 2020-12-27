@@ -87,6 +87,7 @@ class Product {
 
     // Setters
     void setBarcode(const std::string& barcode);
+    void setSKU(const std::string& sku);
     void setName(const std::string& name);
     void setDescription(const std::string& description);
     void setCategory(const std::string& category);
@@ -98,6 +99,8 @@ class Product {
     void setSellPrice(const std::string& sellPrice);
     void setSupplierName(const std::string& supplierName);
     void setSupplierCode(const std::string& supplierCode);
+
+    static const uint8_t PRICE_DECIMAL_POINTS = 2;
 
  private:
     std::string mBarcode;

@@ -50,6 +50,24 @@ std::vector<entity::Product> InventoryDataProvider::getProducts() {
     return products;
 }
 
+void InventoryDataProvider::create(const entity::Product& product) {
+    // INSERT INTO to the database
+    DATABASE().SELECT_PRODUCT_TABLE().emplace_back(db::StackDB::ProductTableItem {
+            product.barcode(),
+            product.sku(),
+            product.name(),
+            product.description(),
+            product.category(),
+            product.brand(),
+            product.uom(),
+            product.stock(),
+            product.status(),
+            product.originalPrice(),
+            product.sellPrice(),
+            product.supplierName(),
+            product.supplierCode()});
+}
+
 void InventoryDataProvider::removeWithBarcode(const std::string& barcode) {
     // Delete in PRODUCTS
     DATABASE().SELECT_PRODUCT_TABLE().erase(
