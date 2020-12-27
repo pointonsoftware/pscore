@@ -28,11 +28,13 @@
 #include <fieldhelper.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
-// data
-#include <inventorydata.hpp>
 
 namespace screen {
 namespace backoffice {
+
+InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock", "Price"},
+            { &entity::Product::name, &entity::Product::category,
+              &entity::Product::stock, &entity::Product::sellPrice }) {}
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
     mInventoryController = domain::inventory::createInventoryModule(
@@ -56,23 +58,12 @@ void InventoryScreen::showLandingScreen() const {
 }
 
 void InventoryScreen::queryProductsList() {
-    mProductGUITable = mInventoryController->list();
+    mTableHelper.setData(mInventoryController->list());
 }
 
 void InventoryScreen::showProducts() const {
     std::cout << std::endl;
-    // Display the columns
-    SCREENCOMMON().printColumns({"Product", "Category", "Stock", "Price"}, true);
-    // Display employees
-    for (unsigned int index = 0; index < mProductGUITable.size(); ++index) {
-        SCREENCOMMON().printColumns({
-            std::string("[" + std::to_string(index + 1) + "] "
-                         + mProductGUITable[index].name()),
-            mProductGUITable[index].category(),
-            mProductGUITable[index].stock(),
-            mProductGUITable[index].sellPrice()
-        });
-    }
+    mTableHelper.printTable();
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
@@ -84,7 +75,8 @@ void InventoryScreen::showOptions() const {
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {
-    const entity::Product& selectedProduct = mProductGUITable[mSelectedProductIndex - 1];
+    const entity::Product& selectedProduct =
+            mTableHelper.getData(mTableHelper.getCurrentIndex() - 1);
     SCREENCOMMON().showTopBanner("Product Information");
     screen::InformationScreen<entity::Product> infoScreen(selectedProduct);
     infoScreen.showItemIndex(showIndex);
@@ -93,10 +85,11 @@ void InventoryScreen::showProductDetails(bool showIndex) const {
 }
 
 void InventoryScreen::removeProduct() {
-    if (mInventoryController->remove(mProductGUITable[mSelectedProductIndex - 1].barcode())
-          == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
+    if (mInventoryController->remove(
+        mTableHelper.getData(mTableHelper.getCurrentIndex() - 1).barcode())
+        == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
        // Remove the product from our table
-       mProductGUITable.erase(mProductGUITable.begin() + (mSelectedProductIndex - 1));
+       mTableHelper.deleteData(mTableHelper.getCurrentIndex() - 1);
     }
 }
 
@@ -169,7 +162,7 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
     } else if (userInput == "b") {
         // We should return whatever was the previous screen
         // For now, we will check if user has selected an index (i.e. info screen is shown)
-        if (mSelectedProductIndex == 0) {
+        if (mTableHelper.getCurrentIndex() == 0) {
             return Options::DASHBOARD;
         }
         return Options::LANDING;
@@ -181,9 +174,9 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
          * If we're currently in the landing screen, go to product details.
          * Otherwise, return invalid.
         */
-        if (mSelectedProductIndex == 0) {
+        if (mTableHelper.getCurrentIndex() == 0) {
             // Store user input as the selected index
-            mSelectedProductIndex = std::stoi(userInput);
+            mTableHelper.setCurrentIndex(std::stoi(userInput));
             return Options::PRODUCT_DETAILS;
         }
     } else if (userInput == "d") {
@@ -200,22 +193,22 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     bool switchScreenIsRequired = false;
     switch (option) {
         case Options::LANDING:
-            mSelectedProductIndex = 0;  // reset whenever we go to landing
+            mTableHelper.setCurrentIndex(0);  // reset whenever we go to landing
             showLandingScreen();
             break;
         case Options::INVALID:
             invalidOptionSelected();
             break;
         case Options::PRODUCT_DETAILS:
-            if (mSelectedProductIndex > (mProductGUITable.size())) {
-                mSelectedProductIndex = 0;  // reset while we're in the landing screen
+            if (mTableHelper.getCurrentIndex() > (mTableHelper.getDataCount())) {
+                mTableHelper.setCurrentIndex(0);  // reset while we're in the landing screen
                 invalidOptionSelected();
             } else {
                 showProductDetails();
             }
             break;
         case Options::PRODUCT_REMOVE:
-            mSelectedProductIndex == 0 ?
+            mTableHelper.getCurrentIndex() == 0 ?
                 invalidOptionSelected() : removeProduct();
             /*!
              * Warning: recurssion here!!!

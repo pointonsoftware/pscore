@@ -29,6 +29,7 @@ add_executable (
     utility/idgenerator.cpp
     utility/screencommon.hpp
     utility/screencommon.cpp
+    utility/tablehelper.hpp
 )
 
 set (CONSOLE_APP_LINKER_EXCEPTION "")

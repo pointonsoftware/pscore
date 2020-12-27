@@ -18,9 +18,9 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_UTILITY_FIELDHELPER_HPP_
-#define ORCHESTRA_APPLICATION_UTILITY_FIELDHELPER_HPP_
-#include <algorithm>
+#ifndef ORCHESTRA_APPLICATION_UTILITY_TABLEHELPER_HPP_
+#define ORCHESTRA_APPLICATION_UTILITY_TABLEHELPER_HPP_
+#include <functional>
 #include <string>
 #include <vector>
 #include "screencommon.hpp"
@@ -28,26 +28,56 @@
 namespace app {
 namespace utility {
 
-class FieldHelper {
+template <typename T>
+class TableHelper {
  public:
-    explicit FieldHelper(const std::vector<std::string>& requiredFields)
-        : mRequiredFields(requiredFields) {}
-    FieldHelper() = delete;
-    // Find the field from the "requiredFields" vector
-    inline bool requires(const std::string& field) const {
-        if (mRequiredFields.empty()) {
-            // Field is required by default
-            return true;
-        }
-        return std::find(mRequiredFields.begin(), mRequiredFields.end(), field)
-               != mRequiredFields.end();
+    explicit TableHelper(const std::vector<std::string>& columns,
+                         const std::vector<std::function<std::string(const T&)>>& columnData)
+        : mCurrentIndex(0), mColumns(columns), mColumnData(columnData) {}
+    TableHelper() = delete;
+
+    inline void setData(const std::vector<T>& data) {
+        mTableList = data;
     }
+
+    inline T getData(const uint8_t index) const {
+        return mTableList[index];
+    }
+
+    inline void deleteData(const uint8_t index) {
+        mTableList.erase(mTableList.begin() + index);
+    }
+
+    inline void setCurrentIndex(const uint8_t index) {
+        mCurrentIndex = index;
+    }
+
+    inline uint8_t getCurrentIndex() const {
+        return mCurrentIndex;
+    }
+
+    inline uint8_t getDataCount() const {
+        return mTableList.size();
+    }
+
+    inline void printTable() const {
+        SCREENCOMMON().printColumns(mColumns, true);
+        for (unsigned int index = 0; index < mTableList.size(); ++index) {
+            SCREENCOMMON().printColumns({std::string("[" + std::to_string(index + 1) + "] "
+                                        + mColumnData[0](mTableList[index])),
+                                          mColumnData[1](mTableList[index]),
+                                          mColumnData[2](mTableList[index]),
+                                          mColumnData[3](mTableList[index])});
+        }
+    }
+
  private:
-    const std::vector<std::string>& mRequiredFields;
+    std::vector<T> mTableList;  // Represents the GUI table
+    uint8_t mCurrentIndex;  // 1-based index
+    const std::vector<std::string> mColumns;
+    const std::vector<std::function<std::string(const T&)>> mColumnData;
 };
-
-
 
 }  // namespace utility
 }  // namespace app
-#endif  // ORCHESTRA_APPLICATION_UTILITY_FIELDHELPER_HPP_
+#endif  // ORCHESTRA_APPLICATION_UTILITY_TABLEHELPER_HPP_

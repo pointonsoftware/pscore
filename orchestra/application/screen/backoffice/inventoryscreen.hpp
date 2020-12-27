@@ -26,8 +26,11 @@
 #include <vector>
 #include <domain/inventory/interface/inventoryviewif.hpp>
 #include <screeniface.hpp>
+#include <tablehelper.hpp>
 // Core
 #include <domain/inventory/interface/inventoryiface.hpp>
+// Data
+#include <inventorydata.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -35,7 +38,7 @@ namespace backoffice {
 class InventoryScreen : public screen::ScreenInterface,
                         public domain::inventory::InventoryViewInterface {
  public:
-    InventoryScreen() = default;
+    InventoryScreen();
     ~InventoryScreen() = default;
 
     // ScreenInterface
@@ -74,9 +77,8 @@ class InventoryScreen : public screen::ScreenInterface,
     void fillProductInformation(entity::Product* product,
                                 const std::vector<std::string>& requiredFields) const;
 
-    std::vector<entity::Product> mProductGUITable;  // Represents the GUI table
-    unsigned int mSelectedProductIndex = 0;  // 1-based index
     std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;
+    app::utility::TableHelper<entity::Product> mTableHelper;
 };
 
 }  // namespace backoffice
