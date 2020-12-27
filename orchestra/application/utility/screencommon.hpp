@@ -18,21 +18,62 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
-#include <future>
-#include <screendefines.hpp>
+#ifndef ORCHESTRA_APPLICATION_UTILITY_SCREENCOMMON_HPP_
+#define ORCHESTRA_APPLICATION_UTILITY_SCREENCOMMON_HPP_
+#include <functional>
+#include <string>
+#include <vector>
+
+#define SCREENCOMMON() screen::ScreenCommon::getInstance()
 
 namespace screen {
 
-class ScreenInterface {
+class ScreenCommon {
  public:
-    ScreenInterface() = default;
-    virtual ~ScreenInterface() = default;
+    ~ScreenCommon() = default;
+    static ScreenCommon& getInstance() {
+        static ScreenCommon instance;
+        return instance;
+    }
 
-    virtual void show(std::promise<defines::display>* promise) = 0;
+    void clearScreen() const;
+    void showTopBanner(const std::string& currentScreen) const;
+    void printTitleText(const std::string& text) const;
+    void printItemText(const std::string& label, const std::string& item) const;
+    void printColumns(const std::vector<std::string>& columns,
+                      bool isHeader = false, bool showColumnBorders = true) const;
+    void printHorizontalBorder(char borderCharacter) const;
+
+    std::string getInput(const std::string& label, unsigned int maxSize = 0) const;
+    std::string getYesNoInput(const std::string& label) const;
+
+    // Simulate an input area or text box of GUI
+    inline void inputArea(std::function<void(const std::string&)> func,
+                          const std::string& label, bool fieldIsRequired) const {
+        if (fieldIsRequired) {
+            func(SCREENCOMMON().getInput(label));
+        }
+    }
+
+ private:
+    struct Indent {
+        std::string start;
+        std::string end;
+    };
+
+    enum class VerticalAlignment {
+        LEFT,
+        CENTER,
+        RIGHT
+    };
+
+    ScreenCommon() = default;
+    Indent calculateIndents(VerticalAlignment vAlign,
+                            unsigned int width,
+                            const std::string& text) const;
+    const std::string getCoreVersion() const;
 };
 
 }  // namespace screen
 
-#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
+#endif  // ORCHESTRA_APPLICATION_UTILITY_SCREENCOMMON_HPP_

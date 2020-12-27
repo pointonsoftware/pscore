@@ -26,6 +26,7 @@
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
+#include <fieldhelper.hpp>
 #include <idgenerator.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -62,20 +63,20 @@ void EmployeeMgmtScreen::queryEmployeesList() {
 
 void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
                          const std::vector<std::string>& requiredFields) const {
-    ScreenInterface::FieldHelper fieldHelper(requiredFields);
+    app::utility::FieldHelper fieldHelper(requiredFields);
     // Basic info
-    inputArea(std::bind(&entity::Employee::setFirstName, employee, std::placeholders::_1),
-              "First Name", fieldHelper.requires("Person.First.Name"));
-    inputArea(std::bind(&entity::Employee::setMiddleName, employee, std::placeholders::_1),
-              "Middle Name", fieldHelper.requires("Person.Middle.Name"));
-    inputArea(std::bind(&entity::Employee::setLastName, employee, std::placeholders::_1),
-              "Last Name", fieldHelper.requires("Person.Last.Name"));
-    inputArea(std::bind(&entity::Employee::setBirthdate, employee, std::placeholders::_1),
-              "Date of Birth (dd/mm/yyyy)", fieldHelper.requires("Person.Birthdate"));
-    inputArea(std::bind(&entity::Employee::setGender, employee, std::placeholders::_1),
-              "Gender (M/F)", fieldHelper.requires("Person.Gender"));
-    inputArea(std::bind(&entity::Employee::setPosition, employee, std::placeholders::_1),
-              "Position", fieldHelper.requires("Employee.Position"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setFirstName, employee,
+        std::placeholders::_1), "First Name", fieldHelper.requires("Person.First.Name"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setMiddleName, employee,
+        std::placeholders::_1), "Middle Name", fieldHelper.requires("Person.Middle.Name"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setLastName, employee,
+        std::placeholders::_1), "Last Name", fieldHelper.requires("Person.Last.Name"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setBirthdate, employee,
+        std::placeholders::_1), "Birthdate (dd/mm/yyyy)", fieldHelper.requires("Person.Birthdate"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setGender, employee,
+        std::placeholders::_1), "Gender (M/F)", fieldHelper.requires("Person.Gender"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setPosition, employee,
+        std::placeholders::_1), "Position", fieldHelper.requires("Employee.Position"));
     // Address
     {
         entity::Address address = employee->address();

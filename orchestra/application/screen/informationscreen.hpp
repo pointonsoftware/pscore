@@ -23,10 +23,10 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
-#include "screencommon.hpp"
 #include "screendefines.hpp"
 #include <entity/employee.hpp>
 #include <entity/product.hpp>
+#include <screencommon.hpp>
 
 namespace screen {
 

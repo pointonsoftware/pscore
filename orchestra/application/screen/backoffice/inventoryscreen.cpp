@@ -25,6 +25,7 @@
 #include <memory>
 #include <general.hpp>  // pscore utility
 // view
+#include <fieldhelper.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
 // data
@@ -101,33 +102,33 @@ void InventoryScreen::removeProduct() {
 
 void InventoryScreen::fillProductInformation(entity::Product* product,
                                              const std::vector<std::string>& requiredFields) const {
-    ScreenInterface::FieldHelper fieldHelper(requiredFields);
-    inputArea(std::bind(&entity::Product::setBarcode, product, std::placeholders::_1),
-              "Barcode", fieldHelper.requires(entity::FIELD_BCODE));
-    inputArea(std::bind(&entity::Product::setSKU, product, std::placeholders::_1),
-              "SKU", fieldHelper.requires(entity::FIELD_SKU));
-    inputArea(std::bind(&entity::Product::setName, product, std::placeholders::_1),
-              "Name", fieldHelper.requires(entity::FIELD_PNAME));
-    inputArea(std::bind(&entity::Product::setDescription, product, std::placeholders::_1),
-              "Description", fieldHelper.requires(entity::FIELD_PDESC));
-    inputArea(std::bind(&entity::Product::setCategory, product, std::placeholders::_1),
-              "Category", fieldHelper.requires(entity::FIELD_CTGR));
-    inputArea(std::bind(&entity::Product::setBrand, product, std::placeholders::_1),
-              "Brand", fieldHelper.requires(entity::FIELD_BRAND));
-    inputArea(std::bind(&entity::Product::setUOM, product, std::placeholders::_1),
-              "UOM", fieldHelper.requires(entity::FIELD_UOM));
-    inputArea(std::bind(&entity::Product::setStock, product, std::placeholders::_1),
-              "Stock", fieldHelper.requires(entity::FIELD_STOCK));
-    inputArea(std::bind(&entity::Product::setStatus, product, std::placeholders::_1),
-              "Status", fieldHelper.requires(entity::FIELD_PSTATUS));
-    inputArea(std::bind(&entity::Product::setOriginalPrice, product, std::placeholders::_1),
-              "Orig. Price", fieldHelper.requires(entity::FIELD_OPRICE));
-    inputArea(std::bind(&entity::Product::setSellPrice, product, std::placeholders::_1),
-              "Sell Price", fieldHelper.requires(entity::FIELD_SPRICE));
-    inputArea(std::bind(&entity::Product::setSupplierName, product, std::placeholders::_1),
-              "Supplier", fieldHelper.requires(entity::FIELD_SPNAME));
-    inputArea(std::bind(&entity::Product::setSupplierCode, product, std::placeholders::_1),
-              "Supp. Code", fieldHelper.requires(entity::FIELD_SPCODE));
+    app::utility::FieldHelper fieldHelper(requiredFields);
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setBarcode, product,
+        std::placeholders::_1), "Barcode", fieldHelper.requires(entity::FIELD_BCODE));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSKU, product,
+        std::placeholders::_1), "SKU", fieldHelper.requires(entity::FIELD_SKU));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setName, product,
+        std::placeholders::_1), "Name", fieldHelper.requires(entity::FIELD_PNAME));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setDescription, product,
+        std::placeholders::_1), "Description", fieldHelper.requires(entity::FIELD_PDESC));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setCategory, product,
+        std::placeholders::_1), "Category", fieldHelper.requires(entity::FIELD_CTGR));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setBrand, product,
+        std::placeholders::_1), "Brand", fieldHelper.requires(entity::FIELD_BRAND));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setUOM, product,
+        std::placeholders::_1), "UOM", fieldHelper.requires(entity::FIELD_UOM));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setStock, product,
+        std::placeholders::_1), "Stock", fieldHelper.requires(entity::FIELD_STOCK));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setStatus, product,
+        std::placeholders::_1), "Status", fieldHelper.requires(entity::FIELD_PSTATUS));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setOriginalPrice, product,
+        std::placeholders::_1), "Orig. Price", fieldHelper.requires(entity::FIELD_OPRICE));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSellPrice, product,
+        std::placeholders::_1), "Sell Price", fieldHelper.requires(entity::FIELD_SPRICE));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSupplierName, product,
+        std::placeholders::_1), "Supplier", fieldHelper.requires(entity::FIELD_SPNAME));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSupplierCode, product,
+        std::placeholders::_1), "Supp. Code", fieldHelper.requires(entity::FIELD_SPCODE));
 }
 
 void InventoryScreen::createProduct() {

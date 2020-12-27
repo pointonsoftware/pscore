@@ -18,53 +18,36 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
+#ifndef ORCHESTRA_APPLICATION_UTILITY_FIELDHELPER_HPP_
+#define ORCHESTRA_APPLICATION_UTILITY_FIELDHELPER_HPP_
+#include <algorithm>
 #include <string>
 #include <vector>
+#include "screencommon.hpp"
 
-#define SCREENCOMMON() screen::ScreenCommon::getInstance()
+namespace app {
+namespace utility {
 
-namespace screen {
-
-class ScreenCommon {
+class FieldHelper {
  public:
-    ~ScreenCommon() = default;
-    static ScreenCommon& getInstance() {
-        static ScreenCommon instance;
-        return instance;
-    }
-
-    void clearScreen() const;
-    void showTopBanner(const std::string& currentScreen) const;
-    void printTitleText(const std::string& text) const;
-    void printItemText(const std::string& label, const std::string& item) const;
-    void printColumns(const std::vector<std::string>& columns,
-                      bool isHeader = false, bool showColumnBorders = true) const;
-    void printHorizontalBorder(char borderCharacter) const;
-
-    std::string getInput(const std::string& label, unsigned int maxSize = 0) const;
-    std::string getYesNoInput(const std::string& label) const;
-
+    explicit FieldHelper(const std::vector<std::string>& requiredFields)
+        : mRequiredFields(requiredFields) {}
+    FieldHelper() = delete;
+    // Find the field from the "requiredFields" vector
+    inline bool requires(const std::string& field) const {
+        if (mRequiredFields.empty()) {
+             // Field is required by default
+                 return true;
+            }
+            return std::find(mRequiredFields.begin(), mRequiredFields.end(), field)
+                    != mRequiredFields.end();
+        }
  private:
-    struct Indent {
-        std::string start;
-        std::string end;
-    };
-
-    enum class VerticalAlignment {
-        LEFT,
-        CENTER,
-        RIGHT
-    };
-
-    ScreenCommon() = default;
-    Indent calculateIndents(VerticalAlignment vAlign,
-                            unsigned int width,
-                            const std::string& text) const;
-    const std::string getCoreVersion() const;
+    const std::vector<std::string>& mRequiredFields;
 };
 
-}  // namespace screen
 
-#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENCOMMON_HPP_
+
+}  // namespace utility
+}  // namespace app
+#endif  // ORCHESTRA_APPLICATION_UTILITY_FIELDHELPER_HPP_

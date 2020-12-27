@@ -23,7 +23,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
-#include "screendefines.hpp"
+#include <screendefines.hpp>
 #include <cfg/config.hpp>  // utility
 
 constexpr char CORE_CONFIG[] = "psinfo.cfg";
