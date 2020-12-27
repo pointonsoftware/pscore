@@ -36,8 +36,14 @@ class TableHelper {
         : mCurrentIndex(0), mColumns(columns), mColumnData(columnData) {}
     TableHelper() = delete;
 
+    // Sets the table
     inline void setData(const std::vector<T>& data) {
         mTableList = data;
+    }
+
+    // Sets individual data
+    inline void setData(const uint8_t index, const T& data) {
+        mTableList[index] = data;
     }
 
     inline T getData(const uint8_t index) const {

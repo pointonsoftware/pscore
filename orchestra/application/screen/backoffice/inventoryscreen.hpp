@@ -27,9 +27,9 @@
 #include <domain/inventory/interface/inventoryviewif.hpp>
 #include <screeniface.hpp>
 #include <tablehelper.hpp>
-// Core
+// core
 #include <domain/inventory/interface/inventoryiface.hpp>
-// Data
+// data
 #include <inventorydata.hpp>
 
 namespace screen {

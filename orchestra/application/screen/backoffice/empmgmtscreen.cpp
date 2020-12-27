@@ -30,11 +30,14 @@
 #include <idgenerator.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
-// data
-#include <employeedata.hpp>
 
 namespace screen {
 namespace backoffice {
+
+EmployeeMgmtScreen::EmployeeMgmtScreen()
+    : mTableHelper({"Employee ID", "First Name", "Last Name", "Position"},
+            { &entity::Employee::ID, &entity::Employee::firstName,
+              &entity::Employee::lastName, &entity::Employee::position }) {}
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
     mCoreEmployeeMgmt = domain::empmgmt::createEmployeeMgmtModule(
@@ -58,7 +61,7 @@ void EmployeeMgmtScreen::showLandingScreen() const {
 }
 
 void EmployeeMgmtScreen::queryEmployeesList() {
-    mEmployeesGUITable = mCoreEmployeeMgmt->list();
+    mTableHelper.setData(mCoreEmployeeMgmt->list());
 }
 
 void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
@@ -233,7 +236,7 @@ void EmployeeMgmtScreen::updateEmployee() {
     {   // Update operation
         std::vector<std::string> requiredFields = { field };
         std::map<std::string, std::string> validationResult;
-        entity::Employee updateEmployee = mEmployeesGUITable[mSelectedEmployeeIndex - 1];
+        entity::Employee updateEmployee = mTableHelper.getData(mTableHelper.getCurrentIndex() - 1);
         do {
             fillEmployeeInformation(&updateEmployee, requiredFields);
             // Reset validation results
@@ -249,16 +252,16 @@ void EmployeeMgmtScreen::updateEmployee() {
                 std::cin.get();
             }
         } while (!validationResult.empty());  // repeat input until new employee is created
-        mEmployeesGUITable[mSelectedEmployeeIndex - 1] = updateEmployee;
+        mTableHelper.setData((mTableHelper.getCurrentIndex() - 1), updateEmployee);
     }
     showEmployeeInformation();  // refresh employee details screen
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
-    if (mCoreEmployeeMgmt->remove(mEmployeesGUITable[mSelectedEmployeeIndex - 1].ID())
+    if (mCoreEmployeeMgmt->remove(mTableHelper.getData(mTableHelper.getCurrentIndex() - 1).ID())
           == domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
        // Remove the user form
-       mEmployeesGUITable.erase(mEmployeesGUITable.begin() + (mSelectedEmployeeIndex - 1));
+       mTableHelper.deleteData((mTableHelper.getCurrentIndex() - 1));
     }
 }
 
@@ -290,18 +293,7 @@ const std::string EmployeeMgmtScreen::getEntityField(unsigned int index) const {
 
 void EmployeeMgmtScreen::showEmployees() const {
     std::cout << std::endl;
-    // Display the columns
-    SCREENCOMMON().printColumns({"Employee ID", "First Name", "Last Name", "Position"}, true);
-    // Display employees
-    for (unsigned int index = 0; index < mEmployeesGUITable.size(); ++index) {
-        SCREENCOMMON().printColumns({
-            std::string("[" + std::to_string(index + 1) + "] "
-                         + mEmployeesGUITable[index].ID()),
-            mEmployeesGUITable[index].firstName(),
-            mEmployeesGUITable[index].lastName(),
-            mEmployeesGUITable[index].position()
-        });
-    }
+    mTableHelper.printTable();
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
@@ -321,7 +313,7 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
     } else if (userInput == "b") {
         // We should return whatever was the previous screen
         // For now, we will check if user has selected an index (i.e. info screen is shown)
-        if (mSelectedEmployeeIndex == 0) {
+        if (mTableHelper.getCurrentIndex() == 0) {
             return Options::DASHBOARD;
         }
         return Options::LANDING;
@@ -333,9 +325,9 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
          * If we're currently in the landing screen, go to employee details.
          * Otherwise, return invalid.
         */
-        if (mSelectedEmployeeIndex == 0) {
+        if (mTableHelper.getCurrentIndex() == 0) {
             // Store user input as the selected index
-            mSelectedEmployeeIndex = std::stoi(userInput);
+            mTableHelper.setCurrentIndex(std::stoi(userInput));
             return Options::EMPLOYEE_DETAILS;
         }
     } else if (userInput == "c") {
@@ -355,15 +347,15 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
     switch (option) {
         case Options::LANDING:
             // Warning! Consider the recurssion in EMPLOYEE_REMOVE when making changes
-            mSelectedEmployeeIndex = 0;  // reset whenever we go to landing
+            mTableHelper.setCurrentIndex(0);  // reset whenever we go to landing
             showLandingScreen();
             break;
         case Options::INVALID:
             invalidOptionSelected();
             break;
         case Options::EMPLOYEE_DETAILS:
-            if (mSelectedEmployeeIndex > (mEmployeesGUITable.size())) {
-                 mSelectedEmployeeIndex = 0;  // reset while we're in the landing screen
+            if (mTableHelper.getCurrentIndex() > (mTableHelper.getDataCount())) {
+                mTableHelper.setCurrentIndex(0);  // reset while we're in the landing screen
                 invalidOptionSelected();
             } else {
                 showEmployeeInformation();
@@ -377,11 +369,11 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             break;
         case Options::EMPLOYEE_UPDATE:
             // Make sure an employee was selected from the list
-            mSelectedEmployeeIndex == 0 ?
+            mTableHelper.getCurrentIndex() == 0 ?
                 invalidOptionSelected() : updateEmployee();
             break;
         case Options::EMPLOYEE_REMOVE:
-            mSelectedEmployeeIndex == 0 ?
+            mTableHelper.getCurrentIndex() == 0 ?
                 invalidOptionSelected() : removeEmployee();
             /*!
              * Warning: recurssion here!!!
@@ -416,7 +408,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
      * Get the employeeID from employee GUI table
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
     */
-    const std::string& employeeID = mEmployeesGUITable[mSelectedEmployeeIndex - 1].ID();
+    const std::string& employeeID = mTableHelper.getData(mTableHelper.getCurrentIndex() - 1).ID();
     const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->get(employeeID);
     if (!selectedEmployee.ID().empty()) {
         // Valid employee, show the information screen!
