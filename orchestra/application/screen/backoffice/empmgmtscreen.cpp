@@ -34,6 +34,26 @@
 namespace screen {
 namespace backoffice {
 
+// Employee fields
+const std::vector<std::string> EmployeeMgmtScreen::employeeDomainFields {
+        "Person.First.Name",
+        "Person.Middle.Name",
+        "Person.Last.Name",
+        "Person.Birthdate",
+        "Person.Gender",
+        "Employee.Position",
+        "Address.Line1",
+        "Address.Line2",
+        "Address.CityTown",
+        "Address.Province",
+        "Address.Zip",
+        "ContactDetails.Phone1",
+        "ContactDetails.Phone2",
+        "ContactDetails.Email",
+        "PersonalId.Type",
+        "PersonalId.Number"
+};
+
 EmployeeMgmtScreen::EmployeeMgmtScreen()
     : mTableHelper({"Employee ID", "First Name", "Last Name", "Position"},
             { &entity::Employee::ID, &entity::Employee::firstName, &entity::Employee::lastName,
@@ -254,19 +274,7 @@ void EmployeeMgmtScreen::createEmployee() {
 void EmployeeMgmtScreen::updateEmployee() {
     showEmployeeInformation(true);  // true - request to show the index # of each data
     // Get the field to update
-    const std::string field = [this]() {
-        unsigned int index;
-        do {
-            // Ask the index from the user
-            std::string userInput = SCREENCOMMON().getInput("Input the data [number] to edit");
-            if (utility::isNumber(userInput)) {
-                index =  std::stoi(userInput);
-                break;
-            }
-         } while (1);  // Keep asking until a number is inputted
-        // Fetch the selected field
-        return getEntityField(index);
-    }();
+    const std::string field = SCREENCOMMON().getUpdateField(employeeDomainFields);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
@@ -287,32 +295,6 @@ void EmployeeMgmtScreen::updateEmployee() {
         } while (!validationResult.empty());  // repeat input until new employee is created
         mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);
     }
-}
-
-const std::string EmployeeMgmtScreen::getEntityField(unsigned int index) const {
-    static const std::vector<std::string> employeeDomainFields {
-        "Person.First.Name",
-        "Person.Middle.Name",
-        "Person.Last.Name",
-        "Person.Birthdate",
-        "Person.Gender",
-        "Employee.Position",
-        "Address.Line1",
-        "Address.Line2",
-        "Address.CityTown",
-        "Address.Province",
-        "Address.Zip",
-        "ContactDetails.Phone1",
-        "ContactDetails.Phone2",
-        "ContactDetails.Email",
-        "PersonalId.Type",
-        "PersonalId.Number"
-    };
-    if (index >= employeeDomainFields.size()) {
-        return "";
-    }
-    // Vector is a 0-based index
-    return employeeDomainFields[index - 1];
 }
 
 EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {

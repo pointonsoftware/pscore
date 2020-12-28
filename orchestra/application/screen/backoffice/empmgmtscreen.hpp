@@ -82,11 +82,11 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void removeEmployee();
     void fillEmployeeInformation(entity::Employee* employee,
                                  const std::vector<std::string>& requiredFields = {}) const;
-    const std::string getEntityField(unsigned int index) const;
 
     std::unique_ptr<domain::empmgmt::EmployeeMgmtControlInterface> mCoreEmployeeMgmt;
     app::utility::TableHelper<entity::Employee> mTableHelper;
     bool isShowingDetailsScreen;
+    static const std::vector<std::string> employeeDomainFields;
 };
 
 }  // namespace backoffice

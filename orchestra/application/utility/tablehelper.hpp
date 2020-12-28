@@ -86,7 +86,7 @@ class TableHelper {
 
  private:
     std::vector<T> mTableList;  // Represents the GUI table
-    uint8_t mCurrentIndex;  // 1-based index
+    uint8_t mCurrentIndex;  // 0-based index
     const std::vector<std::string> mColumns;
     const std::vector<std::function<std::string(const T&)>> mColumnData;
 };

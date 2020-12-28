@@ -74,6 +74,7 @@ class InventoryScreen : public screen::ScreenInterface,
     const std::string getEntityField(unsigned int index) const;
     void removeProduct();
     void createProduct();
+    void updateProduct();
     void fillProductInformation(entity::Product* product,
                                 const std::vector<std::string>& requiredFields) const;
 

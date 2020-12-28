@@ -52,6 +52,7 @@ class ScreenCommon {
     std::string getYesNoInput(const std::string& label) const;
     void inputArea(std::function<void(const std::string&)> func,
                    const std::string& label, bool fieldIsRequired = true) const;
+    const std::string getUpdateField(const std::vector<std::string>& fields) const;
 
  private:
     struct Indent {

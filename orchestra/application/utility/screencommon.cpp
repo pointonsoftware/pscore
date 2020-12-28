@@ -21,10 +21,11 @@
 #include "screencommon.hpp"
 #include <algorithm>
 #include <cstdlib>
+#include <general.hpp>  // pscore utility
 #include <iostream>
 #include <iomanip>
 #include <screendefines.hpp>
-#include <cfg/config.hpp>  // utility
+#include <cfg/config.hpp>  // pscore utility
 
 constexpr char CORE_CONFIG[] = "psinfo.cfg";
 constexpr char CORE_VERSION_MASK[] = "x.x.x";
@@ -164,6 +165,24 @@ void ScreenCommon::inputArea(std::function<void(const std::string&)> func,
     if (fieldIsRequired) {
         func(SCREENCOMMON().getInput(label));
     }
+}
+
+const std::string ScreenCommon::getUpdateField(const std::vector<std::string>& fields) const {
+    uint8_t index;
+    do {
+        // Ask the index from the user
+        std::string userInput = SCREENCOMMON().getInput("Input the data [number] to edit");
+        if (utility::isNumber(userInput)) {
+            index =  std::stoi(userInput);
+            break;
+        }
+    } while (1);  // Keep asking until a number is inputted
+    // Make sure this index is valid
+    if (index >= fields.size()) {
+        return "";
+    }
+    // Vector is a 0-based index
+    return fields[index - 1];
 }
 
 ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,

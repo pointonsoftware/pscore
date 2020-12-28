@@ -145,6 +145,11 @@ void InventoryScreen::createProduct() {
     } while (!requiredFields.empty());  // repeat input until new product is created
 }
 
+void InventoryScreen::updateProduct() {
+    showProductDetails(true);  // true - request to show the index # of each data
+    // getEntityField
+}
+
 InventoryScreen::Options InventoryScreen::getUserSelection() {
     std::string userInput;
     std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
