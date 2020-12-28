@@ -196,6 +196,22 @@ TEST_F(TestInventory, TestCreateProduct) {
     ASSERT_TRUE(dummyValidationContainer.empty());
 }
 
+TEST_F(TestInventory, TestUpdateProduct) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    const std::string newStockValue("10");
+    // Fake that there is at least one product data on record
+    EXPECT_CALL(*dpMock, getProducts())
+        .WillOnce(Return(std::vector<entity::Product>{validProduct}));
+    // Cache the list
+    inventoryController.list();
+    // Fake that we updated the stock cound
+    validProduct.setStock(newStockValue);
+    ASSERT_EQ(inventoryController.save(validProduct, &dummyValidationContainer),
+              INVENTORYAPISTATUS::SUCCESS);
+    ASSERT_STREQ(inventoryController.getProduct(validProduct.barcode()).stock().c_str(),
+                 newStockValue.c_str());
+}
+
 }  // namespace test
 }  // namespace inventory
 }  // namespace domain

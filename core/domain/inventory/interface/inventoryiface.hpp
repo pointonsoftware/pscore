@@ -33,10 +33,10 @@ namespace domain {
 namespace inventory {
 
 enum class INVENTORYAPISTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2,
-    NOT_FOUND     = 3
+    SUCCESS       = 0x00,
+    FAILED        = 0x01,
+    UNINITIALIZED = 0x02,
+    NOT_FOUND     = 0x03
 };
 
 class InventoryControlInterface {
