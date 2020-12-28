@@ -190,6 +190,10 @@ TEST_F(TestInventory, TestSaveWithInvalidSellingPrice) {
 
 TEST_F(TestInventory, TestCreateProduct) {
     std::map<std::string, std::string> dummyValidationContainer;
+
+    // Must perform the create call
+    EXPECT_CALL(*dpMock, create(_));
+
     ASSERT_EQ(inventoryController.save(validProduct, &dummyValidationContainer),
               INVENTORYAPISTATUS::SUCCESS);
     // Validation result must be empty
@@ -204,8 +208,13 @@ TEST_F(TestInventory, TestUpdateProduct) {
         .WillOnce(Return(std::vector<entity::Product>{validProduct}));
     // Cache the list
     inventoryController.list();
+
     // Fake that we updated the stock cound
     validProduct.setStock(newStockValue);
+
+    // Must perform the update call
+    EXPECT_CALL(*dpMock, update(_));
+
     ASSERT_EQ(inventoryController.save(validProduct, &dummyValidationContainer),
               INVENTORYAPISTATUS::SUCCESS);
     ASSERT_STREQ(inventoryController.getProduct(validProduct.barcode()).stock().c_str(),
