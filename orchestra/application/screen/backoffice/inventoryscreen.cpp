@@ -25,13 +25,17 @@
 #include <memory>
 #include <general.hpp>  // pscore utility
 // view
+#include <fieldhelper.hpp>
+#include <generalhelper.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
-// data
-#include <inventorydata.hpp>
 
 namespace screen {
 namespace backoffice {
+
+InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock", "Price"},
+            { &entity::Product::name, &entity::Product::category, &entity::Product::stock,
+              &entity::Product::sellPrice }), isShowingDetailsScreen(false) {}
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
     mInventoryController = domain::inventory::createInventoryModule(
@@ -55,23 +59,12 @@ void InventoryScreen::showLandingScreen() const {
 }
 
 void InventoryScreen::queryProductsList() {
-    mProductGUITable = mInventoryController->list();
+    mTableHelper.setData(mInventoryController->list());
 }
 
 void InventoryScreen::showProducts() const {
     std::cout << std::endl;
-    // Display the columns
-    SCREENCOMMON().printColumns({"Product", "Category", "Stock", "Price"}, true);
-    // Display employees
-    for (unsigned int index = 0; index < mProductGUITable.size(); ++index) {
-        SCREENCOMMON().printColumns({
-            std::string("[" + std::to_string(index + 1) + "] "
-                         + mProductGUITable[index].name()),
-            mProductGUITable[index].category(),
-            mProductGUITable[index].stock(),
-            mProductGUITable[index].sellPrice()
-        });
-    }
+    mTableHelper.printTable();
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
@@ -83,7 +76,7 @@ void InventoryScreen::showOptions() const {
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {
-    const entity::Product& selectedProduct = mProductGUITable[mSelectedProductIndex - 1];
+    const entity::Product& selectedProduct = mTableHelper.getSelectedData();
     SCREENCOMMON().showTopBanner("Product Information");
     screen::InformationScreen<entity::Product> infoScreen(selectedProduct);
     infoScreen.showItemIndex(showIndex);
@@ -92,42 +85,42 @@ void InventoryScreen::showProductDetails(bool showIndex) const {
 }
 
 void InventoryScreen::removeProduct() {
-    if (mInventoryController->remove(mProductGUITable[mSelectedProductIndex - 1].barcode())
-          == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
+    if (mInventoryController->remove(mTableHelper.getSelectedData().barcode())
+        == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
        // Remove the product from our table
-       mProductGUITable.erase(mProductGUITable.begin() + (mSelectedProductIndex - 1));
+       mTableHelper.deleteSelectedData();
     }
 }
 
 void InventoryScreen::fillProductInformation(entity::Product* product,
                                              const std::vector<std::string>& requiredFields) const {
-    ScreenInterface::FieldHelper fieldHelper(requiredFields);
-    inputArea(std::bind(&entity::Product::setBarcode, product, std::placeholders::_1),
-              "Barcode", fieldHelper.requires(entity::FIELD_BCODE));
-    inputArea(std::bind(&entity::Product::setSKU, product, std::placeholders::_1),
-              "SKU", fieldHelper.requires(entity::FIELD_SKU));
-    inputArea(std::bind(&entity::Product::setName, product, std::placeholders::_1),
-              "Name", fieldHelper.requires(entity::FIELD_PNAME));
-    inputArea(std::bind(&entity::Product::setDescription, product, std::placeholders::_1),
-              "Description", fieldHelper.requires(entity::FIELD_PDESC));
-    inputArea(std::bind(&entity::Product::setCategory, product, std::placeholders::_1),
-              "Category", fieldHelper.requires(entity::FIELD_CTGR));
-    inputArea(std::bind(&entity::Product::setBrand, product, std::placeholders::_1),
-              "Brand", fieldHelper.requires(entity::FIELD_BRAND));
-    inputArea(std::bind(&entity::Product::setUOM, product, std::placeholders::_1),
-              "UOM", fieldHelper.requires(entity::FIELD_UOM));
-    inputArea(std::bind(&entity::Product::setStock, product, std::placeholders::_1),
-              "Stock", fieldHelper.requires(entity::FIELD_STOCK));
-    inputArea(std::bind(&entity::Product::setStatus, product, std::placeholders::_1),
-              "Status", fieldHelper.requires(entity::FIELD_PSTATUS));
-    inputArea(std::bind(&entity::Product::setOriginalPrice, product, std::placeholders::_1),
-              "Orig. Price", fieldHelper.requires(entity::FIELD_OPRICE));
-    inputArea(std::bind(&entity::Product::setSellPrice, product, std::placeholders::_1),
-              "Sell Price", fieldHelper.requires(entity::FIELD_SPRICE));
-    inputArea(std::bind(&entity::Product::setSupplierName, product, std::placeholders::_1),
-              "Supplier", fieldHelper.requires(entity::FIELD_SPNAME));
-    inputArea(std::bind(&entity::Product::setSupplierCode, product, std::placeholders::_1),
-              "Supp. Code", fieldHelper.requires(entity::FIELD_SPCODE));
+    app::utility::FieldHelper fieldHelper(requiredFields);
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setBarcode, product,
+        std::placeholders::_1), "Barcode", fieldHelper.requires(entity::FIELD_BCODE));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSKU, product,
+        std::placeholders::_1), "SKU", fieldHelper.requires(entity::FIELD_SKU));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setName, product,
+        std::placeholders::_1), "Name", fieldHelper.requires(entity::FIELD_PNAME));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setDescription, product,
+        std::placeholders::_1), "Description", fieldHelper.requires(entity::FIELD_PDESC));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setCategory, product,
+        std::placeholders::_1), "Category", fieldHelper.requires(entity::FIELD_CTGR));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setBrand, product,
+        std::placeholders::_1), "Brand", fieldHelper.requires(entity::FIELD_BRAND));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setUOM, product,
+        std::placeholders::_1), "UOM", fieldHelper.requires(entity::FIELD_UOM));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setStock, product,
+        std::placeholders::_1), "Stock", fieldHelper.requires(entity::FIELD_STOCK));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setStatus, product,
+        std::placeholders::_1), "Status", fieldHelper.requires(entity::FIELD_PSTATUS));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setOriginalPrice, product,
+        std::placeholders::_1), "Orig. Price", fieldHelper.requires(entity::FIELD_OPRICE));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSellPrice, product,
+        std::placeholders::_1), "Sell Price", fieldHelper.requires(entity::FIELD_SPRICE));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSupplierName, product,
+        std::placeholders::_1), "Supplier", fieldHelper.requires(entity::FIELD_SPNAME));
+    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSupplierCode, product,
+        std::placeholders::_1), "Supp. Code", fieldHelper.requires(entity::FIELD_SPCODE));
 }
 
 void InventoryScreen::createProduct() {
@@ -144,15 +137,8 @@ void InventoryScreen::createProduct() {
         std::map<std::string, std::string> validationResult;
         if (mInventoryController->save(newProduct, &validationResult)
             != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
-            std::cout << "Invalid inputs:" << std::endl;
-            for (auto const &result : validationResult) {
-                std::cout << "- " << result.second << std::endl;
-                requiredFields.emplace_back(result.first);
-            }
-            // Let the user confirm after viewing the validation results
-            std::cout << "Press [Enter] to update fields..." << std::endl;
-            std::cin.ignore();
-            std::cin.get();
+            requiredFields = app::utility::extractMapKeys(validationResult);
+            SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
         } else {
             std::cout << "Product created successfully!" << std::endl;
         }
@@ -166,29 +152,23 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
     if (userInput == "x") {
         return Options::APP_EXIT;
     } else if (userInput == "b") {
-        // We should return whatever was the previous screen
-        // For now, we will check if user has selected an index (i.e. info screen is shown)
-        if (mSelectedProductIndex == 0) {
-            return Options::DASHBOARD;
-        }
-        return Options::LANDING;
+         // We should return whatever was the previous screen
+        // For now, we will check if the info screen is shown
+        return isShowingDetailsScreen ? Options::LANDING : Options::DASHBOARD;
     } else if (userInput == "0") {
         return Options::LOGOUT;
-    } else if (utility::isNumber(userInput)) {
-        /*!
-         * If the input is a number, check if we're in the landing screen.
-         * If we're currently in the landing screen, go to product details.
-         * Otherwise, return invalid.
-        */
-        if (mSelectedProductIndex == 0) {
-            // Store user input as the selected index
-            mSelectedProductIndex = std::stoi(userInput);
+    } else if (utility::isNumber(userInput) && !isShowingDetailsScreen) {
+        // Check if input is within the valid indexes
+        uint8_t input = std::stoi(userInput) - 1;
+        if (input < mTableHelper.getDataCount()) {
+            // Store user input as the selected index (zero based)
+            mTableHelper.setCurrentIndex(input);
             return Options::PRODUCT_DETAILS;
         }
-    } else if (userInput == "d") {
-        return Options::PRODUCT_REMOVE;
-    } else if (userInput == "c") {
-        return Options::PRODUCT_CREATE;
+    } else if (userInput == "d" && isShowingDetailsScreen) {
+            return Options::PRODUCT_REMOVE;
+    } else if (userInput == "c" && !isShowingDetailsScreen) {
+            return Options::PRODUCT_CREATE;
     }  // add more options here
 
     // Default invalid option
@@ -199,34 +179,28 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     bool switchScreenIsRequired = false;
     switch (option) {
         case Options::LANDING:
-            mSelectedProductIndex = 0;  // reset whenever we go to landing
+            // Warning: There are recurssions inside this switch-case()
+            // These must be considered when doing changes for Options::LANDING
+            queryProductsList();
             showLandingScreen();
+            isShowingDetailsScreen = false;  // Must set to false
             break;
         case Options::INVALID:
             invalidOptionSelected();
             break;
         case Options::PRODUCT_DETAILS:
-            if (mSelectedProductIndex > (mProductGUITable.size())) {
-                mSelectedProductIndex = 0;  // reset while we're in the landing screen
-                invalidOptionSelected();
-            } else {
-                showProductDetails();
-            }
+            showProductDetails();
+            isShowingDetailsScreen = true;  // Must set to true
             break;
         case Options::PRODUCT_REMOVE:
-            mSelectedProductIndex == 0 ?
-                invalidOptionSelected() : removeProduct();
-            /*!
-             * Warning: recurssion here!!!
-             * This must be considered when doing changes for Options::LANDING
-             */
+            removeProduct();
+            // Go back to landing screen after removing the product
             action(Options::LANDING, nextScreen);
             break;
         case Options::PRODUCT_CREATE:
             createProduct();
-            // Get the products from Core then cache the list
-            queryProductsList();
-            showLandingScreen();
+            // Go back to landing screen after creating the product
+            action(Options::LANDING, nextScreen);
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;

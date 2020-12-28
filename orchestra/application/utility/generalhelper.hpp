@@ -18,39 +18,28 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "idgenerator.hpp"
-#include <algorithm>
-#include <chrono>
-#include <ctime>
-#include <random>
+#ifndef ORCHESTRA_APPLICATION_UTILITY_GENERALHELPER_HPP_
+#define ORCHESTRA_APPLICATION_UTILITY_GENERALHELPER_HPP_
+#include <map>
 #include <string>
+#include <vector>
 
 namespace app {
 namespace utility {
-
-std::string getDate() {
-    typedef std::chrono::system_clock Clock;
-    auto now = Clock::now();
-    std::time_t now_c = Clock::to_time_t(now);
-    struct tm *parts = std::localtime(&now_c);
-    char buff[100];
-    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", parts->tm_year + 1900,
-                  parts->tm_mon + 1, parts->tm_mday);
-    return std::string(buff);
-}
-
-unsigned randomNumber(unsigned int low, unsigned int high) {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    // low = 0 ; high = 9  -  generates number for 0 to 9
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
-    return dist6(rng);
-}
-
-std::string generateEmployeeID() {
-    // Substring the last two digit of the year + unique_number
-    return getDate().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
-}
-
+/*!
+ * Generates an employee ID
+ * ID format - [YY][unique-five-digit-number]
+ * e.g. - 2021135
+*/
+extern std::string generateEmployeeID();
+/*!
+ * Returns a vector of map keys
+*/
+extern std::vector<std::string> extractMapKeys(const std::map<std::string, std::string>& map);
+/*!
+ * Returns a vector of map values
+*/
+extern std::vector<std::string> extractMapValues(const std::map<std::string, std::string>& map);
 }  // namespace utility
 }  // namespace app
+#endif  // ORCHESTRA_APPLICATION_UTILITY_GENERALHELPER_HPP_

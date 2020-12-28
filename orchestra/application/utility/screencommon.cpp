@@ -23,7 +23,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
-#include "screendefines.hpp"
+#include <screendefines.hpp>
 #include <cfg/config.hpp>  // utility
 
 constexpr char CORE_CONFIG[] = "psinfo.cfg";
@@ -39,21 +39,18 @@ void ScreenCommon::clearScreen() const {
 #endif
 }
 
-const std::string ScreenCommon::getCoreVersion() const {
-    static std::string version = CORE_VERSION_MASK;
-    if (version == CORE_VERSION_MASK) {
-        utility::Config config(CORE_CONFIG);
-        version = config.get("version", CORE_VERSION_MASK);
-    }
-    return version;
-}
-
-void ScreenCommon::printHorizontalBorder(char borderCharacter) const {
-    std::string borderString;
-    for (unsigned int i = 0; i <= defines::SCREEN_WIDTH; ++i) {
-        borderString += borderCharacter;
-    }
-    std::cout << borderString << std::endl;
+void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
+    clearScreen();
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
+    printTitleText("");
+    printTitleText(std::string("---- CORE "+ std::string(getCoreVersion()) +" ----"));
+    printTitleText("");
+    printTitleText("Console  Application");
+    printTitleText("");
+    printTitleText("Enter [x] if you want to exit");
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
+    printTitleText(currentScreen);
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
 }
 
 void ScreenCommon::printTitleText(const std::string& text) const {
@@ -72,45 +69,6 @@ void ScreenCommon::printItemText(const std::string& label, const std::string& it
     std::cout << std::left << std::setw(defines::LABEL_WIDTH)
               << label  << defines::LABEL_BOUNDARY << " "
               << item   << std::endl;
-}
-
-void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
-    clearScreen();
-    printHorizontalBorder(defines::BORDER_CHARACTER_1);
-    printTitleText("");
-    printTitleText(std::string("---- CORE "+ std::string(getCoreVersion()) +" ----"));
-    printTitleText("");
-    printTitleText("Console  Application");
-    printTitleText("");
-    printTitleText("Enter [x] if you want to exit");
-    printHorizontalBorder(defines::BORDER_CHARACTER_1);
-    printTitleText(currentScreen);
-    printHorizontalBorder(defines::BORDER_CHARACTER_1);
-}
-
-ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
-                                                    unsigned int width,
-                                                    const std::string& text) const {
-    Indent indents;
-    switch (vAlign) {
-        case VerticalAlignment::LEFT:
-            indents.start = " ";  // Left offset
-            indents.end = std::string((width - text.size() - 2), ' ');
-            break;
-        case VerticalAlignment::CENTER:
-            indents.start = std::string((width - text.size()) / 2, ' ');
-            indents.end = indents.start;
-            if (!(text.size() % 2)) {
-                indents.end = indents.start.substr(0, indents.start.size() - 1);
-            }
-            break;
-        case VerticalAlignment::RIGHT:
-            break;
-        default:
-            break;
-    }
-
-    return indents;
 }
 
 void ScreenCommon::printColumns(const std::vector<std::string>& columns,
@@ -143,6 +101,25 @@ void ScreenCommon::printColumns(const std::vector<std::string>& columns,
         // Print bottom border
         printHorizontalBorder(defines::BORDER_CHARACTER_2);
     }
+}
+
+void ScreenCommon::printHorizontalBorder(char borderCharacter) const {
+    std::string borderString;
+    for (unsigned int i = 0; i <= defines::SCREEN_WIDTH; ++i) {
+        borderString += borderCharacter;
+    }
+    std::cout << borderString << std::endl;
+}
+
+void ScreenCommon::printErrorList(const std::vector<std::string>& errors) const {
+    std::cout << "Invalid inputs:" << std::endl;
+    for (const std::string& error : errors) {
+         std::cout << "- " << error << std::endl;
+    }
+    // Let the user confirm after viewing the validation results
+    std::cout << "Press [Enter] to update fields..." << std::endl;
+    std::cin.ignore();
+    std::cin.get();
 }
 
 std::string ScreenCommon::getInput(const std::string& label, unsigned int maxSize) const {
@@ -180,6 +157,47 @@ std::string ScreenCommon::getYesNoInput(const std::string& label) const {
                        [](unsigned char c){ return std::tolower(c); });
     } while (userInput != "y" && userInput != "n");
     return userInput;
+}
+
+void ScreenCommon::inputArea(std::function<void(const std::string&)> func,
+                             const std::string& label, bool fieldIsRequired) const {
+    if (fieldIsRequired) {
+        func(SCREENCOMMON().getInput(label));
+    }
+}
+
+ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
+                                                    unsigned int width,
+                                                    const std::string& text) const {
+    Indent indents;
+    switch (vAlign) {
+        case VerticalAlignment::LEFT:
+            indents.start = " ";  // Left offset
+            indents.end = std::string((width - text.size() - 2), ' ');
+            break;
+        case VerticalAlignment::CENTER:
+            indents.start = std::string((width - text.size()) / 2, ' ');
+            indents.end = indents.start;
+            if (!(text.size() % 2)) {
+                indents.end = indents.start.substr(0, indents.start.size() - 1);
+            }
+            break;
+        case VerticalAlignment::RIGHT:
+            break;
+        default:
+            break;
+    }
+
+    return indents;
+}
+
+const std::string ScreenCommon::getCoreVersion() const {
+    static std::string version = CORE_VERSION_MASK;
+    if (version == CORE_VERSION_MASK) {
+        utility::Config config(CORE_CONFIG);
+        version = config.get("version", CORE_VERSION_MASK);
+    }
+    return version;
 }
 
 }  // namespace screen

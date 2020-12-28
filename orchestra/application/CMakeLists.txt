@@ -13,8 +13,6 @@ add_executable (
     screen/informationscreen.hpp
     screen/informationscreen.cpp
     screen/screeniface.hpp
-    screen/screencommon.hpp
-    screen/screencommon.cpp
     # Back office screen
     screen/backoffice/dashboardscreen.hpp
     screen/backoffice/dashboardscreen.cpp
@@ -26,8 +24,12 @@ add_executable (
     screen/login/loginscreen.hpp
     screen/login/loginscreen.cpp
     # Utility
-    utility/idgenerator.hpp
-    utility/idgenerator.cpp
+    utility/fieldhelper.hpp
+    utility/generalhelper.hpp
+    utility/generalhelper.cpp
+    utility/screencommon.hpp
+    utility/screencommon.cpp
+    utility/tablehelper.hpp
 )
 
 set (CONSOLE_APP_LINKER_EXCEPTION "")

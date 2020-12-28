@@ -26,8 +26,11 @@
 #include <vector>
 #include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
 #include <screeniface.hpp>
+#include <tablehelper.hpp>
 // core
 #include <domain/employeemgmt/interface/employeemgmtiface.hpp>
+// data
+#include <employeedata.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -35,7 +38,7 @@ namespace backoffice {
 class EmployeeMgmtScreen : public ScreenInterface,
                            public domain::empmgmt::EmployeeMgmtViewInterface {
  public:
-    EmployeeMgmtScreen() = default;
+    EmployeeMgmtScreen();
     ~EmployeeMgmtScreen() = default;
 
     // ScreenInterface
@@ -81,9 +84,9 @@ class EmployeeMgmtScreen : public ScreenInterface,
                                  const std::vector<std::string>& requiredFields = {}) const;
     const std::string getEntityField(unsigned int index) const;
 
-    std::vector<entity::Employee> mEmployeesGUITable;  // Represents the GUI employees-table
-    unsigned int mSelectedEmployeeIndex = 0;  // 1-based index
     std::unique_ptr<domain::empmgmt::EmployeeMgmtControlInterface> mCoreEmployeeMgmt;
+    app::utility::TableHelper<entity::Employee> mTableHelper;
+    bool isShowingDetailsScreen;
 };
 
 }  // namespace backoffice
