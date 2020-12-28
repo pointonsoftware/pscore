@@ -86,6 +86,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
 
     std::unique_ptr<domain::empmgmt::EmployeeMgmtControlInterface> mCoreEmployeeMgmt;
     app::utility::TableHelper<entity::Employee> mTableHelper;
+    bool isShowingDetailsScreen;
 };
 
 }  // namespace backoffice

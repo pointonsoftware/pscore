@@ -36,8 +36,8 @@ namespace backoffice {
 
 EmployeeMgmtScreen::EmployeeMgmtScreen()
     : mTableHelper({"Employee ID", "First Name", "Last Name", "Position"},
-            { &entity::Employee::ID, &entity::Employee::firstName,
-              &entity::Employee::lastName, &entity::Employee::position }) {}
+            { &entity::Employee::ID, &entity::Employee::firstName, &entity::Employee::lastName,
+              &entity::Employee::position }), isShowingDetailsScreen(false) {}
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
     mCoreEmployeeMgmt = domain::empmgmt::createEmployeeMgmtModule(
@@ -62,6 +62,51 @@ void EmployeeMgmtScreen::showLandingScreen() const {
 
 void EmployeeMgmtScreen::queryEmployeesList() {
     mTableHelper.setData(mCoreEmployeeMgmt->list());
+}
+
+void EmployeeMgmtScreen::showEmployees() const {
+    std::cout << std::endl;
+    mTableHelper.printTable();
+    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
+}
+
+void EmployeeMgmtScreen::showOptions() const {
+    std::cout << std::endl << std::endl;
+    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"},
+                                 true, false);
+    std::cout << std::endl;
+}
+
+void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
+    /*!
+     * Get the employeeID from employee GUI table
+     * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
+    */
+    const std::string& employeeID = mTableHelper.getSelectedData().ID();
+    const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->get(employeeID);
+    if (!selectedEmployee.ID().empty()) {
+        // Valid employee, show the information screen!
+        SCREENCOMMON().showTopBanner("Employee Information");
+        screen::InformationScreen<entity::Employee> infoScreen(selectedEmployee);
+        infoScreen.showItemIndex(showIndex);
+        /*!
+         * The sequence of calls below to InformationScreen should be in-sync with
+         * the entity fields in EmployeeMgmtScreen::getEntityField()
+        */
+        infoScreen.showBasicInformation();
+        infoScreen.showUserAddress();
+        infoScreen.showContactDetails();
+        infoScreen.showUserPersonalIds();
+        infoScreen.showOptions();
+    }
+}
+
+void EmployeeMgmtScreen::removeEmployee() {
+    if (mCoreEmployeeMgmt->remove(mTableHelper.getSelectedData().ID())
+          == domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
+       // Remove the user form
+       mTableHelper.deleteSelectedData();
+    }
 }
 
 void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
@@ -236,7 +281,7 @@ void EmployeeMgmtScreen::updateEmployee() {
     {   // Update operation
         std::vector<std::string> requiredFields = { field };
         std::map<std::string, std::string> validationResult;
-        entity::Employee updateEmployee = mTableHelper.getData(mTableHelper.getCurrentIndex() - 1);
+        entity::Employee updateEmployee = mTableHelper.getSelectedData();
         do {
             fillEmployeeInformation(&updateEmployee, requiredFields);
             // Reset validation results
@@ -252,16 +297,7 @@ void EmployeeMgmtScreen::updateEmployee() {
                 std::cin.get();
             }
         } while (!validationResult.empty());  // repeat input until new employee is created
-        mTableHelper.setData((mTableHelper.getCurrentIndex() - 1), updateEmployee);
-    }
-    showEmployeeInformation();  // refresh employee details screen
-}
-
-void EmployeeMgmtScreen::removeEmployee() {
-    if (mCoreEmployeeMgmt->remove(mTableHelper.getData(mTableHelper.getCurrentIndex() - 1).ID())
-          == domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
-       // Remove the user form
-       mTableHelper.deleteData((mTableHelper.getCurrentIndex() - 1));
+        mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);
     }
 }
 
@@ -291,19 +327,6 @@ const std::string EmployeeMgmtScreen::getEntityField(unsigned int index) const {
     return employeeDomainFields[index - 1];
 }
 
-void EmployeeMgmtScreen::showEmployees() const {
-    std::cout << std::endl;
-    mTableHelper.printTable();
-    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
-}
-
-void EmployeeMgmtScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"},
-                                 true, false);
-    std::cout << std::endl;
-}
-
 EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
     std::string userInput;
     std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
@@ -312,29 +335,23 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         return Options::APP_EXIT;
     } else if (userInput == "b") {
         // We should return whatever was the previous screen
-        // For now, we will check if user has selected an index (i.e. info screen is shown)
-        if (mTableHelper.getCurrentIndex() == 0) {
-            return Options::DASHBOARD;
-        }
-        return Options::LANDING;
+        // For now, we will check if the info screen is shown
+        return isShowingDetailsScreen ? Options::LANDING : Options::DASHBOARD;
     } else if (userInput == "0") {
         return Options::LOGOUT;
-    } else if (utility::isNumber(userInput)) {
-        /*!
-         * If the input is a number, check if we're in the landing screen.
-         * If we're currently in the landing screen, go to employee details.
-         * Otherwise, return invalid.
-        */
-        if (mTableHelper.getCurrentIndex() == 0) {
-            // Store user input as the selected index
-            mTableHelper.setCurrentIndex(std::stoi(userInput));
+    } else if (utility::isNumber(userInput) && !isShowingDetailsScreen) {
+        // Check if input is within the valid indexes
+        uint8_t input = std::stoi(userInput) - 1;
+        if (input < mTableHelper.getDataCount()) {
+            // Store user input as the selected index (zero based)
+            mTableHelper.setCurrentIndex(input);
             return Options::EMPLOYEE_DETAILS;
         }
-    } else if (userInput == "c") {
+    } else if (userInput == "c" && !isShowingDetailsScreen) {
         return Options::EMPLOYEE_CREATE;
-    } else if (userInput == "u") {
+    } else if (userInput == "u" && isShowingDetailsScreen) {
         return Options::EMPLOYEE_UPDATE;
-    } else if (userInput == "d") {
+    } else if (userInput == "d" && isShowingDetailsScreen) {
         return Options::EMPLOYEE_REMOVE;
     }  // add more options here
 
@@ -346,20 +363,18 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
     bool switchScreenIsRequired = false;
     switch (option) {
         case Options::LANDING:
-            // Warning! Consider the recurssion in EMPLOYEE_REMOVE when making changes
-            mTableHelper.setCurrentIndex(0);  // reset whenever we go to landing
+            // Warning: There are recurssions inside this switch-case()
+            // These must be considered when doing changes for Options::LANDING
+            queryEmployeesList();
             showLandingScreen();
+            isShowingDetailsScreen = false;  // Must set to false
             break;
         case Options::INVALID:
             invalidOptionSelected();
             break;
         case Options::EMPLOYEE_DETAILS:
-            if (mTableHelper.getCurrentIndex() > (mTableHelper.getDataCount())) {
-                mTableHelper.setCurrentIndex(0);  // reset while we're in the landing screen
-                invalidOptionSelected();
-            } else {
-                showEmployeeInformation();
-            }
+            showEmployeeInformation();
+            isShowingDetailsScreen = true;  // Must set to true
             break;
         case Options::EMPLOYEE_CREATE:
             createEmployee();
@@ -368,17 +383,11 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             showLandingScreen();
             break;
         case Options::EMPLOYEE_UPDATE:
-            // Make sure an employee was selected from the list
-            mTableHelper.getCurrentIndex() == 0 ?
-                invalidOptionSelected() : updateEmployee();
+            updateEmployee();
+            showEmployeeInformation();  // refresh employee details screen
             break;
         case Options::EMPLOYEE_REMOVE:
-            mTableHelper.getCurrentIndex() == 0 ?
-                invalidOptionSelected() : removeEmployee();
-            /*!
-             * Warning: recurssion here!!!
-             * This must be considered when doing changes for Options::LANDING
-             */
+            removeEmployee();
             action(Options::LANDING, nextScreen);
             break;
         case Options::DASHBOARD:
@@ -401,30 +410,6 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
 
 void EmployeeMgmtScreen::invalidOptionSelected() const {
     std::cout << "Sorry, that option is not yet available." << std::endl;
-}
-
-void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
-    /*!
-     * Get the employeeID from employee GUI table
-     * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
-    */
-    const std::string& employeeID = mTableHelper.getData(mTableHelper.getCurrentIndex() - 1).ID();
-    const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->get(employeeID);
-    if (!selectedEmployee.ID().empty()) {
-        // Valid employee, show the information screen!
-        SCREENCOMMON().showTopBanner("Employee Information");
-        screen::InformationScreen<entity::Employee> infoScreen(selectedEmployee);
-        infoScreen.showItemIndex(showIndex);
-        /*!
-         * The sequence of calls below to InformationScreen should be in-sync with
-         * the entity fields in EmployeeMgmtScreen::getEntityField()
-        */
-        infoScreen.showBasicInformation();
-        infoScreen.showUserAddress();
-        infoScreen.showContactDetails();
-        infoScreen.showUserPersonalIds();
-        infoScreen.showOptions();
-    }
 }
 
 void EmployeeMgmtScreen::showEmployeesEmptyPopup() {

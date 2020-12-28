@@ -46,18 +46,25 @@ class TableHelper {
         mTableList[index] = data;
     }
 
-    inline T getData(const uint8_t index) const {
-        return mTableList[index];
+    // Returns the current selected data
+    inline T getSelectedData() const {
+        return mTableList[mCurrentIndex];
     }
 
-    inline void deleteData(const uint8_t index) {
-        mTableList.erase(mTableList.begin() + index);
+    // Deletes the current selected data
+    inline void deleteSelectedData() {
+        mTableList.erase(mTableList.begin() + mCurrentIndex);
     }
 
+    // Index must be zero-based
     inline void setCurrentIndex(const uint8_t index) {
+        if (index >= getDataCount()) {
+            throw std::invalid_argument("Index is greater than the list size.");
+        }
         mCurrentIndex = index;
     }
 
+    // Index is zero-based
     inline uint8_t getCurrentIndex() const {
         return mCurrentIndex;
     }

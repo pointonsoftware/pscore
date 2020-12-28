@@ -33,8 +33,8 @@ namespace screen {
 namespace backoffice {
 
 InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock", "Price"},
-            { &entity::Product::name, &entity::Product::category,
-              &entity::Product::stock, &entity::Product::sellPrice }) {}
+            { &entity::Product::name, &entity::Product::category, &entity::Product::stock,
+              &entity::Product::sellPrice }), isShowingDetailsScreen(false) {}
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
     mInventoryController = domain::inventory::createInventoryModule(
@@ -75,8 +75,7 @@ void InventoryScreen::showOptions() const {
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {
-    const entity::Product& selectedProduct =
-            mTableHelper.getData(mTableHelper.getCurrentIndex() - 1);
+    const entity::Product& selectedProduct = mTableHelper.getSelectedData();
     SCREENCOMMON().showTopBanner("Product Information");
     screen::InformationScreen<entity::Product> infoScreen(selectedProduct);
     infoScreen.showItemIndex(showIndex);
@@ -85,11 +84,10 @@ void InventoryScreen::showProductDetails(bool showIndex) const {
 }
 
 void InventoryScreen::removeProduct() {
-    if (mInventoryController->remove(
-        mTableHelper.getData(mTableHelper.getCurrentIndex() - 1).barcode())
+    if (mInventoryController->remove(mTableHelper.getSelectedData().barcode())
         == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
        // Remove the product from our table
-       mTableHelper.deleteData(mTableHelper.getCurrentIndex() - 1);
+       mTableHelper.deleteSelectedData();
     }
 }
 
@@ -160,29 +158,23 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
     if (userInput == "x") {
         return Options::APP_EXIT;
     } else if (userInput == "b") {
-        // We should return whatever was the previous screen
-        // For now, we will check if user has selected an index (i.e. info screen is shown)
-        if (mTableHelper.getCurrentIndex() == 0) {
-            return Options::DASHBOARD;
-        }
-        return Options::LANDING;
+         // We should return whatever was the previous screen
+        // For now, we will check if the info screen is shown
+        return isShowingDetailsScreen ? Options::LANDING : Options::DASHBOARD;
     } else if (userInput == "0") {
         return Options::LOGOUT;
-    } else if (utility::isNumber(userInput)) {
-        /*!
-         * If the input is a number, check if we're in the landing screen.
-         * If we're currently in the landing screen, go to product details.
-         * Otherwise, return invalid.
-        */
-        if (mTableHelper.getCurrentIndex() == 0) {
-            // Store user input as the selected index
-            mTableHelper.setCurrentIndex(std::stoi(userInput));
+    } else if (utility::isNumber(userInput) && !isShowingDetailsScreen) {
+        // Check if input is within the valid indexes
+        uint8_t input = std::stoi(userInput) - 1;
+        if (input < mTableHelper.getDataCount()) {
+            // Store user input as the selected index (zero based)
+            mTableHelper.setCurrentIndex(input);
             return Options::PRODUCT_DETAILS;
         }
-    } else if (userInput == "d") {
-        return Options::PRODUCT_REMOVE;
-    } else if (userInput == "c") {
-        return Options::PRODUCT_CREATE;
+    } else if (userInput == "d" && isShowingDetailsScreen) {
+            return Options::PRODUCT_REMOVE;
+    } else if (userInput == "c" && !isShowingDetailsScreen) {
+            return Options::PRODUCT_CREATE;
     }  // add more options here
 
     // Default invalid option
@@ -193,34 +185,28 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     bool switchScreenIsRequired = false;
     switch (option) {
         case Options::LANDING:
-            mTableHelper.setCurrentIndex(0);  // reset whenever we go to landing
+            // Warning: There are recurssions inside this switch-case()
+            // These must be considered when doing changes for Options::LANDING
+            queryProductsList();
             showLandingScreen();
+            isShowingDetailsScreen = false;  // Must set to false
             break;
         case Options::INVALID:
             invalidOptionSelected();
             break;
         case Options::PRODUCT_DETAILS:
-            if (mTableHelper.getCurrentIndex() > (mTableHelper.getDataCount())) {
-                mTableHelper.setCurrentIndex(0);  // reset while we're in the landing screen
-                invalidOptionSelected();
-            } else {
-                showProductDetails();
-            }
+            showProductDetails();
+            isShowingDetailsScreen = true;  // Must set to true
             break;
         case Options::PRODUCT_REMOVE:
-            mTableHelper.getCurrentIndex() == 0 ?
-                invalidOptionSelected() : removeProduct();
-            /*!
-             * Warning: recurssion here!!!
-             * This must be considered when doing changes for Options::LANDING
-             */
+            removeProduct();
+            // Go back to landing screen after removing the product
             action(Options::LANDING, nextScreen);
             break;
         case Options::PRODUCT_CREATE:
             createProduct();
-            // Get the products from Core then cache the list
-            queryProductsList();
-            showLandingScreen();
+            // Go back to landing screen after creating the product
+            action(Options::LANDING, nextScreen);
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;

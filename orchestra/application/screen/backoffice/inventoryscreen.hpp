@@ -79,6 +79,7 @@ class InventoryScreen : public screen::ScreenInterface,
 
     std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;
     app::utility::TableHelper<entity::Product> mTableHelper;
+    bool isShowingDetailsScreen;
 };
 
 }  // namespace backoffice
