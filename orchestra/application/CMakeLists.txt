@@ -25,8 +25,8 @@ add_executable (
     screen/login/loginscreen.cpp
     # Utility
     utility/fieldhelper.hpp
-    utility/idgenerator.hpp
-    utility/idgenerator.cpp
+    utility/generalhelper.hpp
+    utility/generalhelper.cpp
     utility/screencommon.hpp
     utility/screencommon.cpp
     utility/tablehelper.hpp

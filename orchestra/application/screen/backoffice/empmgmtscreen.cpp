@@ -27,7 +27,7 @@
 #include <general.hpp>  // pscore utility
 // view
 #include <fieldhelper.hpp>
-#include <idgenerator.hpp>
+#include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
 
@@ -242,15 +242,8 @@ void EmployeeMgmtScreen::createEmployee() {
         failedFields.clear();
 
         if (status != domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
-            std::cout << "Invalid inputs:" << std::endl;
-            for (auto const &result : validationResult) {
-                std::cout << "- " << result.second << std::endl;
-                failedFields.emplace_back(result.first);
-            }
-            // Let the user confirm after viewing the validation results
-            std::cout << "Press [Enter] to update fields..." << std::endl;
-            std::cin.ignore();
-            std::cin.get();
+            failedFields = app::utility::extractMapKeys(validationResult);
+            SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
         } else {
             std::cout << "Employee " << newEmployee.getFullName()
                       << " added successfully!" << std::endl;
@@ -288,13 +281,8 @@ void EmployeeMgmtScreen::updateEmployee() {
             validationResult.clear();
             if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
                 domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
-                for (auto const &result : validationResult) {
-                    std::cout << "- " << result.second << std::endl;
-                }
-                // Let the user confirm after viewing the validation results
-                std::cout << "Press [Enter] to update fields..." << std::endl;
-                std::cin.ignore();
-                std::cin.get();
+                requiredFields = app::utility::extractMapKeys(validationResult);
+                SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
             }
         } while (!validationResult.empty());  // repeat input until new employee is created
         mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);

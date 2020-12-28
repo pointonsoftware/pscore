@@ -26,6 +26,7 @@
 #include <general.hpp>  // pscore utility
 // view
 #include <fieldhelper.hpp>
+#include <generalhelper.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
 
@@ -136,15 +137,8 @@ void InventoryScreen::createProduct() {
         std::map<std::string, std::string> validationResult;
         if (mInventoryController->save(newProduct, &validationResult)
             != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
-            std::cout << "Invalid inputs:" << std::endl;
-            for (auto const &result : validationResult) {
-                std::cout << "- " << result.second << std::endl;
-                requiredFields.emplace_back(result.first);
-            }
-            // Let the user confirm after viewing the validation results
-            std::cout << "Press [Enter] to update fields..." << std::endl;
-            std::cin.ignore();
-            std::cin.get();
+            requiredFields = app::utility::extractMapKeys(validationResult);
+            SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
         } else {
             std::cout << "Product created successfully!" << std::endl;
         }

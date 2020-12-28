@@ -18,7 +18,7 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "idgenerator.hpp"
+#include "generalhelper.hpp"
 #include <algorithm>
 #include <chrono>
 #include <ctime>
@@ -50,6 +50,22 @@ unsigned randomNumber(unsigned int low, unsigned int high) {
 std::string generateEmployeeID() {
     // Substring the last two digit of the year + unique_number
     return getDate().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
+}
+
+std::vector<std::string> extractMapKeys(const std::map<std::string, std::string>& map) {
+    std::vector<std::string> temp;
+    for (auto const &key : map) {
+        temp.emplace_back(key.first);
+    }
+    return temp;
+}
+
+std::vector<std::string> extractMapValues(const std::map<std::string, std::string>& map) {
+    std::vector<std::string> temp;
+    for (auto const &value : map) {
+        temp.emplace_back(value.second);
+    }
+    return temp;
 }
 
 }  // namespace utility

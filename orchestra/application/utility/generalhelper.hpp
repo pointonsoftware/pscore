@@ -18,9 +18,11 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_UTILITY_IDGENERATOR_HPP_
-#define ORCHESTRA_APPLICATION_UTILITY_IDGENERATOR_HPP_
+#ifndef ORCHESTRA_APPLICATION_UTILITY_GENERALHELPER_HPP_
+#define ORCHESTRA_APPLICATION_UTILITY_GENERALHELPER_HPP_
+#include <map>
 #include <string>
+#include <vector>
 
 namespace app {
 namespace utility {
@@ -30,7 +32,14 @@ namespace utility {
  * e.g. - 2021135
 */
 extern std::string generateEmployeeID();
-
+/*!
+ * Returns a vector of map keys
+*/
+extern std::vector<std::string> extractMapKeys(const std::map<std::string, std::string>& map);
+/*!
+ * Returns a vector of map values
+*/
+extern std::vector<std::string> extractMapValues(const std::map<std::string, std::string>& map);
 }  // namespace utility
 }  // namespace app
-#endif  // ORCHESTRA_APPLICATION_UTILITY_IDGENERATOR_HPP_
+#endif  // ORCHESTRA_APPLICATION_UTILITY_GENERALHELPER_HPP_
