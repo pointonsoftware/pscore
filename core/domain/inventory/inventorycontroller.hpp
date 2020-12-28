@@ -50,6 +50,7 @@ class InventoryController : public InventoryControlInterface {
     bool isExists(const std::string& barcode);
     std::vector<entity::Product>::iterator find(const std::string& barcode);
     void create(const entity::Product& product);
+    void update(const entity::Product& product);
     void dumpValidationResult(const ValidationErrors& validationErrors) const;
 
     std::shared_ptr<InventoryDataInterface> mDataProvider;

@@ -35,7 +35,6 @@ namespace backoffice {
 
 // Product fields
 const std::vector<std::string> InventoryScreen::productDomainFields {
-    "Product.Barcode",
     "Product.SKU",
     "Product.Name",
     "Product.Description",
@@ -177,11 +176,11 @@ void InventoryScreen::updateProduct() {
             fillProductInformation(&product, requiredFields);
             // Reset validation results
             validationResult.clear();
-            // if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
-            //     domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
-            //     requiredFields = app::utility::extractMapKeys(validationResult);
-            //     SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
-            // }
+            if (mInventoryController->save(product, &validationResult)
+                != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
+                requiredFields = app::utility::extractMapKeys(validationResult);
+                SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
+            }
         } while (!validationResult.empty());  // repeat input until new employee is created
         mTableHelper.setData((mTableHelper.getCurrentIndex()), product);
     }

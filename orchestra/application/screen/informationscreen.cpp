@@ -24,7 +24,7 @@ namespace screen {
 
 template <>
 void InformationScreen<entity::Employee>::showBasicInformation() {  // specialize for employee
-    SCREENCOMMON().printColumns({"Basic Information"}, true);
+    SCREENCOMMON().printColumns({"ID: " + mInfo->ID()}, true);
     printItem("First Name", mInfo->firstName());
     printItem("Middle Name", mInfo->middleName());
     printItem("Last Name", mInfo->lastName());
@@ -35,8 +35,7 @@ void InformationScreen<entity::Employee>::showBasicInformation() {  // specializ
 
 template <>
 void InformationScreen<entity::Product>::showBasicInformation() {  // specialize for product
-    SCREENCOMMON().printColumns({"Details"}, true);
-    printItem("Barcode", mInfo->barcode());
+    SCREENCOMMON().printColumns({"Barcode: " + mInfo->barcode()}, true);
     printItem("SKU", mInfo->sku());
     printItem("Name", mInfo->name());
     printItem("Description", mInfo->description());
