@@ -79,6 +79,36 @@ void InventoryDataProvider::removeWithBarcode(const std::string& barcode) {
         DATABASE().SELECT_PRODUCT_TABLE().end());
 }
 
+void InventoryDataProvider::update(const entity::Product& product) {
+    // UPDATE data in the database
+    std::vector<db::StackDB::ProductTableItem>::iterator it =
+        std::find_if(DATABASE().SELECT_PRODUCT_TABLE().begin(),
+                     DATABASE().SELECT_PRODUCT_TABLE().end(),
+                     [&product](const db::StackDB::ProductTableItem& e) {
+                                // We only match the product barcode for updating
+                                return e.barcode == product.barcode();
+                     });
+    if (it == DATABASE().SELECT_PRODUCT_TABLE().end()) {
+        // Not found
+        return;
+    }
+    // Actual update
+    *it = db::StackDB::ProductTableItem {
+            product.barcode(),
+            product.sku(),
+            product.name(),
+            product.description(),
+            product.category(),
+            product.brand(),
+            product.uom(),
+            product.stock(),
+            product.status(),
+            product.originalPrice(),
+            product.sellPrice(),
+            product.supplierName(),
+            product.supplierCode() };
+}
+
 }  // namespace inventory
 }  // namespace dataprovider
 
