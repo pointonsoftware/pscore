@@ -21,11 +21,11 @@
 #include "screencommon.hpp"
 #include <algorithm>
 #include <cstdlib>
-#include <general.hpp>  // pscore utility
 #include <iostream>
 #include <iomanip>
-#include <screendefines.hpp>
 #include <cfg/config.hpp>  // pscore utility
+#include <general.hpp>  // pscore utility
+#include <screendefines.hpp>
 
 constexpr char CORE_CONFIG[] = "psinfo.cfg";
 constexpr char CORE_VERSION_MASK[] = "x.x.x";
@@ -178,7 +178,7 @@ const std::string ScreenCommon::getUpdateField(const std::vector<std::string>& f
         }
     } while (1);  // Keep asking until a number is inputted
     // Make sure this index is valid
-    if (index >= fields.size()) {
+    if ((index == 0) || (index > fields.size())) {
         return "";
     }
     // Vector is a 0-based index

@@ -56,6 +56,7 @@ class InventoryScreen : public screen::ScreenInterface,
         PRODUCT_DETAILS,
         PRODUCT_REMOVE,
         PRODUCT_CREATE,
+        PRODUCT_UPDATE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -81,6 +82,7 @@ class InventoryScreen : public screen::ScreenInterface,
     std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;
     app::utility::TableHelper<entity::Product> mTableHelper;
     bool isShowingDetailsScreen;
+    static const std::vector<std::string> productDomainFields;
 };
 
 }  // namespace backoffice

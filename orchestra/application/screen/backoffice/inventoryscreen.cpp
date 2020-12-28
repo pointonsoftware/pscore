@@ -33,6 +33,23 @@
 namespace screen {
 namespace backoffice {
 
+// Product fields
+const std::vector<std::string> InventoryScreen::productDomainFields {
+    "Product.Barcode",
+    "Product.SKU",
+    "Product.Name",
+    "Product.Description",
+    "Product.Category",
+    "Product.Brand",
+    "Product.UOM",
+    "Product.Stock",
+    "Product.Status",
+    "Product.Original.Price",
+    "Product.Sell.Price",
+    "Product.Supplier.Name",
+    "Product.Supplier.Code"
+};
+
 InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock", "Price"},
             { &entity::Product::name, &entity::Product::category, &entity::Product::stock,
               &entity::Product::sellPrice }), isShowingDetailsScreen(false) {}
@@ -147,7 +164,27 @@ void InventoryScreen::createProduct() {
 
 void InventoryScreen::updateProduct() {
     showProductDetails(true);  // true - request to show the index # of each data
-    // getEntityField
+    const std::string field = SCREENCOMMON().getUpdateField(productDomainFields);
+    if (field.empty()) {
+        std::cout << "Invalid selection." << std::endl;
+        return;
+    }
+    {   // Update operation
+        std::vector<std::string> requiredFields = { field };
+        std::map<std::string, std::string> validationResult;
+        entity::Product product = mTableHelper.getSelectedData();
+        do {
+            fillProductInformation(&product, requiredFields);
+            // Reset validation results
+            validationResult.clear();
+            // if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
+            //     domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
+            //     requiredFields = app::utility::extractMapKeys(validationResult);
+            //     SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
+            // }
+        } while (!validationResult.empty());  // repeat input until new employee is created
+        mTableHelper.setData((mTableHelper.getCurrentIndex()), product);
+    }
 }
 
 InventoryScreen::Options InventoryScreen::getUserSelection() {
@@ -174,6 +211,8 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
             return Options::PRODUCT_REMOVE;
     } else if (userInput == "c" && !isShowingDetailsScreen) {
             return Options::PRODUCT_CREATE;
+    } else if (userInput == "u" && isShowingDetailsScreen) {
+            return Options::PRODUCT_UPDATE;
     }  // add more options here
 
     // Default invalid option
@@ -207,6 +246,10 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
             // Go back to landing screen after creating the product
             action(Options::LANDING, nextScreen);
             break;
+        case Options::PRODUCT_UPDATE:
+            updateProduct();
+            showProductDetails();  // refresh details screen
+            break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;
             nextScreen->set_value(defines::display::DASHBOARD);
@@ -223,29 +266,6 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
-}
-
-const std::string InventoryScreen::getEntityField(unsigned int index) const {
-    static const std::vector<std::string> productDomainFields {
-        "Product.Barcode",
-        "Product.SKU",
-        "Product.Name",
-        "Product.Description",
-        "Product.Category",
-        "Product.Brand",
-        "Product.UOM",
-        "Product.Stock",
-        "Product.Status",
-        "Product.Original.Price",
-        "Product.Sell.Price",
-        "Product.Supplier.Name",
-        "Product.Supplier.Code"
-    };
-    if (index >= productDomainFields.size()) {
-        return "";
-    }
-    // Vector is a 0-based index
-    return productDomainFields[index - 1];
 }
 
 void InventoryScreen::invalidOptionSelected() const {
