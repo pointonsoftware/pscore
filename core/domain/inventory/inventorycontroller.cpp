@@ -80,8 +80,12 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
         dumpValidationResult(*(validationResult));
         return INVENTORYAPISTATUS::FAILED;
     }
-    // Todo (code) - decide here if it's a create or update request
-    create(product);
+    // Decide if it's a create or update request
+    if (isExists(product.barcode())) {
+        update(product);
+    } else {
+        create(product);
+    }
     return INVENTORYAPISTATUS::SUCCESS;
 }
 
@@ -95,6 +99,21 @@ void InventoryController::create(const entity::Product& product) {
     */
     mCachedList.emplace_back(product);
     LOG_INFO("%s created with code %s", product.name().c_str(), product.barcode().c_str());
+}
+
+void InventoryController::update(const entity::Product& product) {
+    LOG_DEBUG("Updating product with code %s", product.barcode().c_str());
+    // Updating product
+    mDataProvider->update(product);
+    /*!
+     * Todo (code) - add checking if create is successful from dataprovider
+     * before updating the cache
+    */
+    // Update cache list
+    const std::vector<entity::Product>::iterator it = find(product.barcode());
+    *it = product;
+    mCachedList.emplace_back(product);
+    LOG_INFO("Product %s information updated", product.name().c_str());
 }
 
 void InventoryController::dumpValidationResult(const ValidationErrors& validationErrors) const {

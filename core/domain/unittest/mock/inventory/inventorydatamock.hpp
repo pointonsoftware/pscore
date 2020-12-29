@@ -37,6 +37,7 @@ class InventoryDataMock : public InventoryDataInterface {
     MOCK_METHOD(std::vector<entity::Product>, getProducts, ());
     MOCK_METHOD(void, removeWithBarcode, (const std::string& barcode));
     MOCK_METHOD(void, create, (const entity::Product& product));
+    MOCK_METHOD(void, update, (const entity::Product& product));
 };
 
 }  // namespace inventory
