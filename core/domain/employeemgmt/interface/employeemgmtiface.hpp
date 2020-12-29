@@ -60,7 +60,12 @@ class EmployeeMgmtControlInterface {
     /*!
      * Returns the info of the requested employee
     */
-    virtual entity::Employee get(const std::string& id) = 0;
+    virtual entity::Employee getEmployee(const std::string& employeeID) = 0;
+    /*!
+    * Returns the info of the requested user
+    * @param [in] - employeeID of the user
+    */
+    virtual entity::User getUser(const std::string& employeeID) = 0;
     /*!
      * The caller must provide the employeeID.
      * To create an employee, the employeeID must not exist from the database.

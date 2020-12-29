@@ -57,21 +57,32 @@ std::vector<entity::Employee> EmployeeMgmtController::list() {
     return mCachedList;
 }
 
-entity::Employee EmployeeMgmtController::get(const std::string& id) {
-    LOG_DEBUG("Getting employee %s", id.c_str());
-    const std::vector<entity::Employee>::iterator& iter = find(id);
-    if (iter != mCachedList.end()) {
-        LOG_INFO("Found employee %s", id.c_str());
-        return *iter;
-    } else {
+entity::Employee EmployeeMgmtController::getEmployee(const std::string& employeeID) {
+    LOG_DEBUG("Getting employee %s", employeeID.c_str());
+    const std::vector<entity::Employee>::iterator& iter = find(employeeID);
+    if (iter == mCachedList.end()) {
         LOG_ERROR("Employee was not found");
         return entity::Employee{};
     }
+    LOG_INFO("Found employee %s", employeeID.c_str());
+    return *iter;
+}
+
+entity::User EmployeeMgmtController::getUser(const std::string& employeeID) {
+    LOG_DEBUG("Retrieving user data of %s", employeeID.c_str());
+    const entity::User& user = mDataProvider->getUserData(employeeID);
+    // Todo - add a check if data provider operation was successful
+    if (user.userID().empty()) {
+        LOG_ERROR("User was not found");
+    } else {
+        LOG_INFO("Found user %s data.", user.userID().c_str());
+    }
+    return user;
 }
 
 void EmployeeMgmtController::create(const SaveEmployeeData& data) {
     const entity::Employee& newEmployee = data.employee;
-    LOG_DEBUG("EmployeeID %s generated", newEmployee.ID().c_str());
+    LOG_DEBUG("Creating employee %s", newEmployee.ID().c_str());
     // Adding new employee
     mDataProvider->create(newEmployee);
     /*!

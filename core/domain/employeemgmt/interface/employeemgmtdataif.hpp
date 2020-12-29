@@ -38,6 +38,10 @@ class EmployeeMgmtDataInterface {
     */
     virtual std::vector<entity::Employee> getEmployees() = 0;
     /*!
+     * Retrieves the user data of the employee
+    */
+    virtual entity::User getUserData(const std::string& employeeID) = 0;
+    /*!
      * Create an employee
     */
     virtual void create(const entity::Employee& employee) = 0;

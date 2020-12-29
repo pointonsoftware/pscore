@@ -27,6 +27,7 @@
 #include "interface/employeemgmtiface.hpp"
 
 // Entity
+#include <entity/employee.hpp>
 #include <entity/user.hpp>
 
 namespace domain {
@@ -41,7 +42,8 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
     ~EmployeeMgmtController() = default;
 
     std::vector<entity::Employee> list() override;
-    entity::Employee get(const std::string& id) override;
+    entity::Employee getEmployee(const std::string& employeeID) override;
+    entity::User getUser(const std::string& employeeID) override;
     EMPLMGMTSTATUS save(const SaveEmployeeData& employeeData) override;
     EMPLMGMTSTATUS remove(const std::string& employeeID) override;
     std::vector<entity::Employee> findByName(const std::string& fname,

@@ -49,6 +49,20 @@ std::vector<entity::Employee> EmployeeDataProvider::getEmployees() {
     return employees;
 }
 
+entity::User EmployeeDataProvider::getUserData(const std::string& employeeID) {
+    // SELECT * WHERE EMPLOYEEID = employeeID
+    const entity::User user = [employeeID]() {
+        for (const db::StackDB::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
+            if (temp.employeeID == employeeID) {
+                return entity::User(temp.userID, temp.role, temp.PIN,
+                                    temp.createdAt, temp.employeeID);
+            }
+        }
+        return entity::User();
+    }();
+    return user;
+}
+
 void EmployeeDataProvider::create(const entity::Employee& employee) {
     if (std::find_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
                             DATABASE().SELECT_EMPLOYEES_TABLE().end(),
@@ -216,13 +230,13 @@ void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee
     }
 }
 
-void EmployeeDataProvider::removeWithID(const std::string& id) {
+void EmployeeDataProvider::removeWithID(const std::string& employeeID) {
     // Delete in EMPLOYEES
     DATABASE().SELECT_EMPLOYEES_TABLE().erase(
         std::remove_if(DATABASE().SELECT_EMPLOYEES_TABLE().begin(),
                     DATABASE().SELECT_EMPLOYEES_TABLE().end(),
                     [&](const db::StackDB::EmployeeTableItem& e) {
-                        return e.employeeID == id;
+                        return e.employeeID == employeeID;
                     }),
         DATABASE().SELECT_EMPLOYEES_TABLE().end());
     // Delete the Address
@@ -230,7 +244,7 @@ void EmployeeDataProvider::removeWithID(const std::string& id) {
         std::remove_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
                     DATABASE().SELECT_ADDRESS_TABLE().end(),
                     [&](const db::StackDB::AddressTableItem& e) {
-                        return e.ID == id;
+                        return e.ID == employeeID;
                     }),
         DATABASE().SELECT_ADDRESS_TABLE().end());
     // Delete the Contacts
@@ -238,7 +252,7 @@ void EmployeeDataProvider::removeWithID(const std::string& id) {
         std::remove_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
                     DATABASE().SELECT_CONTACTS_TABLE().end(),
                     [&](const db::StackDB::ContactDetailsTableItem& e) {
-                        return e.ID == id;
+                        return e.ID == employeeID;
                     }),
         DATABASE().SELECT_CONTACTS_TABLE().end());
     // Delete the Personal ID
@@ -246,7 +260,7 @@ void EmployeeDataProvider::removeWithID(const std::string& id) {
         std::remove_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
                     DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
                     [&](const db::StackDB::PersonalIdTableItem& e) {
-                        return e.ID == id;
+                        return e.ID == employeeID;
                     }),
         DATABASE().SELECT_PERSONAL_ID_TABLE().end());
     // Delete associated user account
@@ -254,7 +268,7 @@ void EmployeeDataProvider::removeWithID(const std::string& id) {
         std::remove_if(DATABASE().SELECT_USERS_TABLE().begin(),
                     DATABASE().SELECT_USERS_TABLE().end(),
                     [&](const db::StackDB::UserTableItem& e) {
-                        return e.employeeID == id;
+                        return e.employeeID == employeeID;
                     }),
         DATABASE().SELECT_USERS_TABLE().end());
 }
