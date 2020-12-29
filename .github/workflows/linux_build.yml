@@ -1,0 +1,49 @@
+# Copyright (C) Pointon Software - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Written by Ben Ziv <pointonsoftware@gmail.com>, December 2020
+
+name: linux
+
+on: [pull_request]
+
+jobs:
+  windows:
+    name:  Ubuntu-Linux
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Code checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: CppLint
+      uses: actions/setup-python@v1
+      run: |
+       pip install cpplint
+       cpplint --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11 --linelength=100 --recursive core orchestra mock utility
+
+    - name: CppCheck
+      run: |
+       sudo apt-get install cppcheck
+       cppcheck --std=c++11 --enable=warning,style,performance,portability,information --quiet --suppress=missingIncludeSystem --error-exitcode=1 --inline-suppr core orchestra mock utility -icore/domain/unittest
+
+    - name: Build
+      run  : |
+       sudo apt-get install cmake
+       sudo apt-get install -qq g++-7
+       sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+       ./ci/ci_build.sh
+
+    - name: Unit test
+      run  : ./ci/ci_unittest.sh
+
+    - name: Code Coverage
+      run  : |
+       pip install --user cpp-coveralls
+       ./ci/ci_unittest.sh
+       coveralls -r . -e orchestra -e external -e utility -e core/entity -e core/validator --gcov-options '\-lp'
+
+    - name: Profile
+      run  : ./ci/ci_profiling.sh
