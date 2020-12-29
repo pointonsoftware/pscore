@@ -82,6 +82,11 @@ void DashboardScreen::showUserInformation() const {
         userInfoScreen.showContactDetails();
         userInfoScreen.showUserAddress();
         userInfoScreen.showUserPersonalIds();
+        // Show user data
+        {
+            screen::InformationScreen<entity::User> userDataScreen(mCurrentUser);
+            userDataScreen.showBasicInformation();
+        }
     } else {
         std::cout << "No data." << std::endl;
     }
@@ -90,7 +95,7 @@ void DashboardScreen::showUserInformation() const {
 }
 
 void DashboardScreen::invalidOptionSelected() const {
-    std::cout << "Invalid option! Please select a number from the menu." << std::endl;
+    std::cout << "Invalid option! Please select a choice from the menu." << std::endl;
 }
 
 DashboardScreen::Options DashboardScreen::getUserSelection() const {
