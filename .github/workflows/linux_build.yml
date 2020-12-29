@@ -19,7 +19,6 @@ jobs:
         submodules: recursive
 
     - name: CppLint
-      uses: actions/setup-python@v1
       run: |
        pip install cpplint
        cpplint --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11 --linelength=100 --recursive core orchestra mock utility
