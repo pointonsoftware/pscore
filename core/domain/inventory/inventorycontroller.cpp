@@ -106,7 +106,7 @@ void InventoryController::update(const entity::Product& product) {
     // Updating product
     mDataProvider->update(product);
     /*!
-     * Todo (code) - add checking if create is successful from dataprovider
+     * Todo (code) - add checking if update is successful from dataprovider
      * before updating the cache
     */
     // Update cache list

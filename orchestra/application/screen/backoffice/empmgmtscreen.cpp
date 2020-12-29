@@ -183,17 +183,8 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     // Ask if user wants to input a valid/government ID
     if (fieldHelper.requires("PersonalId.Type") || fieldHelper.requires("PersonalId.Number")) {
         entity::PersonalId personalId;
-        bool idFieldsRequired = true;
-        bool updateFields = false;
-
-        if (requiredFields.empty()) {
-            // Ask if user has a Valid ID
-            idFieldsRequired = SCREENCOMMON().getYesNoInput("Has valid/government ID (y/n)") == "y";
-        } else {
-            // WARNING! - this is assumming we're updating the first element of personalIds
-            personalId = employee->personalIds()[0];
-            updateFields = true;
-        }
+        // We're creating a new employee, ask if the employee has a Valid ID
+        bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
 
         if (idFieldsRequired) {
             if (fieldHelper.requires("PersonalId.Type")) {
@@ -201,11 +192,6 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
             }
             if (fieldHelper.requires("PersonalId.Number")) {
                 personalId.id_number = SCREENCOMMON().getInput("ID Number");
-            }
-            if (updateFields) {
-                // Delete the old id
-                // WARNING! - this is assumming we're updating the first element of personalIds
-                employee->deletePersonalId(0);
             }
             // Add a new one
             employee->addPersonalId(personalId.type, personalId.id_number);
@@ -276,6 +262,12 @@ void EmployeeMgmtScreen::updateEmployee() {
     // Get the field to update
     const std::string field = SCREENCOMMON().getUpdateField(employeeDomainFields);
     if (field.empty()) {
+        std::cout << "Invalid selection." << std::endl;
+        return;
+    }
+    // We currently don't support updating the Personal ID field due to code complexity
+    // Track - https://github.com/pointonsoftware/pscore/issues/106
+    if ((field == "PersonalId.Type") || (field == "PersonalId.Number")) {
         std::cout << "Invalid selection." << std::endl;
         return;
     }
