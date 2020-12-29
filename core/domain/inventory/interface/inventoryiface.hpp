@@ -58,7 +58,7 @@ class InventoryControlInterface {
      * @param [in] - product data
      * @param [out] - validation result (map[field, error message])
      *
-     * Note: This will empty the map container
+     * Note: This will reset the map container
     */
     virtual INVENTORYAPISTATUS save(const entity::Product& product,
                                     std::map<std::string, std::string>* validationResult) = 0;

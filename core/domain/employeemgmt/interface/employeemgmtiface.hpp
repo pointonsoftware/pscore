@@ -65,9 +65,9 @@ class EmployeeMgmtControlInterface {
      * The caller must provide the employeeID.
      * To create an employee, the employeeID must not exist from the database.
      * To update an employee, use an employee object retrieved through list() or get() call.
-     * - param [out]- map of [field, error message]
+     * @param [out] - map of [field, error message]
      *
-     * Note: This will empty the map container
+     * Note: This will reset the map container
     */
     virtual EMPLMGMTSTATUS save(const SaveEmployeeData& employeeData) = 0;
     /*!
