@@ -1,0 +1,27 @@
+# Copyright (C) Pointon Software - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Written by Ben Ziv <pointonsoftware@gmail.com>, September 2020
+
+name: Code coverage
+
+on: [pull_request, release]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Generate coverage report
+        run: |
+          rm -rf coverage_report
+          ./ci/ci_unittest.sh
+          gcov core/*.cpp -o core/
+          lcov --directory ./ --capture --output-file lcov_tmp.info -b ./
+          lcov --extract lcov_tmp.info "$(pwd)/*" --output-file lcov.info
+          genhtml lcov.info -o coverage_report --frame --legend --demangle-cpp
+          
+      - uses: actions/upload-artifact@v2
+        with:
+         name: Coverage results
+         path: coverage_report

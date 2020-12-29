@@ -3,7 +3,7 @@
 # Proprietary and confidential
 # Written by Ben Ziv <pointonsoftware@gmail.com>, September 2020
 
-name: windows
+name: Windows
 
 on: [pull_request, release]
 

@@ -3,12 +3,12 @@
 # Proprietary and confidential
 # Written by Ben Ziv <pointonsoftware@gmail.com>, December 2020
 
-name: linux
+name: Linux
 
 on: [pull_request]
 
 jobs:
-  windows:
+  build:
     name:  Ubuntu 18.04
     runs-on: ubuntu-18.04
 
@@ -41,9 +41,9 @@ jobs:
 
     - name: Code Coverage
       run  : |
-       pip install --user cpp-coveralls
+       gem install coveralls-lcov
        ./ci/ci_unittest.sh
-       python -m coveralls -r . -e orchestra -e external -e utility -e core/entity -e core/validator --gcov-options '\-lp'
+       coveralls-lcov -r . -e orchestra -e external -e utility -e core/entity -e core/validator --gcov-options '\-lp'
 
     - name: Profile
       run  : ./ci/ci_profiling.sh
