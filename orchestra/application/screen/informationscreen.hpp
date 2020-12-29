@@ -57,9 +57,9 @@ class InformationScreen {
         SCREENCOMMON().printColumns({"Personal Identification"}, true);
         for (size_t count = 1; count <= mInfo->personalIds().size(); ++count) {
             const std::string details(mInfo->personalIds()[count-1].type
-                                + " " + defines::DELIMETER_DASH + " "
-                                + mInfo->personalIds()[count-1].id_number);
-            printItem("ID " + std::to_string(count), details);
+                                      + " " + defines::DELIMETER_DASH + " "
+                                      + mInfo->personalIds()[count-1].id_number);
+            SCREENCOMMON().printItemText("ID " + std::to_string(count), details);
         }
     }
 

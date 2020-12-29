@@ -58,7 +58,7 @@ class EmployeeMgmtControlInterface {
     */
     virtual std::vector<entity::Employee> list() = 0;
     /*!
-     * Returns the info of the requested user
+     * Returns the info of the requested employee
     */
     virtual entity::Employee get(const std::string& id) = 0;
     /*!
