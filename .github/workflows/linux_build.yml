@@ -27,8 +27,7 @@ jobs:
     - name: CppCheck
       run: |
        sudo apt-get install cppcheck
-       cppcheck --std=c++11 --enable=warning,style,performance,portability,information --quiet --suppress=missingIncludeSystem --error-exitcode=1 --inline-suppr core orchestra mock utility -icore/domain/unittest
-       echo "CppCheck completed"
+       cppcheck --std=c++11 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem --error-exitcode=1 --inline-suppr core orchestra mock utility -icore/domain/unittest
 
     - name: Build
       run  : |
@@ -44,7 +43,7 @@ jobs:
       run  : |
        pip install --user cpp-coveralls
        ./ci/ci_unittest.sh
-       coveralls -r . -e orchestra -e external -e utility -e core/entity -e core/validator --gcov-options '\-lp'
+       python -m coveralls -r . -e orchestra -e external -e utility -e core/entity -e core/validator --gcov-options '\-lp'
 
     - name: Profile
       run  : ./ci/ci_profiling.sh
