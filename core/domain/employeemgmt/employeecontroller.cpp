@@ -72,11 +72,11 @@ entity::User EmployeeMgmtController::getUser(const std::string& employeeID) {
     LOG_DEBUG("Retrieving user data of %s", employeeID.c_str());
     const entity::User& user = mDataProvider->getUserData(employeeID);
     // Todo - add a check if data provider operation was successful
-    if (user.userID().empty()) {
+    if (user.userID().empty() || (user.employeeID() != employeeID)) {
         LOG_ERROR("User was not found");
-    } else {
-        LOG_INFO("Found user %s data.", user.userID().c_str());
+        return entity::User();
     }
+    LOG_INFO("Found user %s data.", user.userID().c_str());
     return user;
 }
 
