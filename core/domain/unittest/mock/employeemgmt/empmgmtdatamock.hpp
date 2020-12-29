@@ -37,6 +37,7 @@ class EmployeeMgmtDataMock : public EmployeeMgmtDataInterface {
     ~EmployeeMgmtDataMock() = default;
 
     MOCK_METHOD(std::vector<entity::Employee>, getEmployees, ());
+    MOCK_METHOD(entity::User, getUserData, (const std::string&));
     MOCK_METHOD(void, create, (const entity::Employee&));
     MOCK_METHOD(void, create, (const entity::User&));
     MOCK_METHOD(void, update, (const entity::Employee&));

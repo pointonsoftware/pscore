@@ -93,7 +93,7 @@ void StackDB::populateEmployees() {
             "10/10/2020",                 // B-date
             "M",                          // Gender
             "Cashier",                    // Position
-             "1",                         // Status - (0) Inactive (1) Active
+            "1",                          // Status - (0) Inactive (1) Active
             true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "BGAR567",                    // User ID <!Make sure this is unique>
@@ -127,7 +127,7 @@ void StackDB::populateEmployees() {
             "18/10/2020",                 // B-date
             "F",                          // Gender
             "Cashier",                    // Position
-             "1",                         // Status - (0) Inactive (1) Active
+            "1",                          // Status - (0) Inactive (1) Active
             true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "JDEL554",                    // User ID <!Make sure this is unique>
@@ -161,7 +161,7 @@ void StackDB::populateEmployees() {
             "17/10/1977",                 // B-date
             "M",                          // Gender
             "Security Guard",             // Position
-             "1",                         // Status - (0) Inactive (1) Active
+            "1",                          // Status - (0) Inactive (1) Active
             false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2054993",                    // Employee ID <!Same as employeeID>
@@ -189,7 +189,7 @@ void StackDB::populateEmployees() {
             "25/10/1988",                 // B-date
             "M",                          // Gender
             "Delivery Personnel",         // Position
-             "1",                         // Status - (0) Inactive (1) Active
+            "1",                          // Status - (0) Inactive (1) Active
             false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2073155",                    // Employee ID <!Same as employeeID>

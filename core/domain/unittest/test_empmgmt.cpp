@@ -113,7 +113,7 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeData) {
     // Cache the list
     empmgmtController.list();
     // Should return a valid employee data (valid Employee ID)
-    ASSERT_FALSE(empmgmtController.get(requestedID).ID().empty());
+    ASSERT_FALSE(empmgmtController.getEmployee(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
@@ -128,7 +128,7 @@ TEST_F(TestEmployeeManagement, TestGetEmployeeDataNotFound) {
     // Cache the list
     empmgmtController.list();
     // Should return an empty employee data (empty Employee ID)
-    ASSERT_TRUE(empmgmtController.get(requestedID).ID().empty());
+    ASSERT_TRUE(empmgmtController.getEmployee(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
@@ -146,7 +146,7 @@ TEST_F(TestEmployeeManagement, TestRemoveEmployee) {
     // Should be successful
     ASSERT_EQ(empmgmtController.remove(requestedID), EMPLMGMTSTATUS::SUCCESS);
     // The user ID should also be removed from the cachelist
-    ASSERT_TRUE(empmgmtController.get(requestedID).ID().empty());
+    ASSERT_TRUE(empmgmtController.getEmployee(requestedID).ID().empty());
 }
 
 TEST_F(TestEmployeeManagement, TestRemoveEmployeeNotFound) {
@@ -266,6 +266,27 @@ TEST_F(TestEmployeeManagement, TestUpdateUser) {
     ASSERT_EQ(empmgmtController.save(employeeData), EMPLMGMTSTATUS::SUCCESS);
     // Validation result should be empty
     ASSERT_TRUE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestEmployeeManagement, TestGetUserData) {
+    const std::string requestedID = "JDOE123";
+    // Fake that a valid user data is saved on record
+    EXPECT_CALL(*dpMock, getUserData(_))
+        .WillOnce(Return(
+                entity::User("DummyUserID", "", "", "", requestedID)));
+    // Should return a valid user data (valid User ID)
+    ASSERT_FALSE(empmgmtController.getUser(requestedID).userID().empty());
+}
+
+TEST_F(TestEmployeeManagement, TestGetUserDataNotFound) {
+    const std::string requestedID = "JDOE123";
+    const std::string storedEmployeeID = "PHIP567";
+    // Fake that we only have an employee with ID PHIP567
+    EXPECT_CALL(*dpMock, getUserData(_))
+        .WillOnce(Return(
+                entity::User("DummyUserID", "", "", "", storedEmployeeID)));
+    // Should return an empty user data (empty User ID)
+    ASSERT_TRUE(empmgmtController.getUser(requestedID).userID().empty());
 }
 }  // namespace test
 }  // namespace empmgmt

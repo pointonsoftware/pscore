@@ -103,7 +103,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
     */
     const std::string& employeeID = mTableHelper.getSelectedData().ID();
-    const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->get(employeeID);
+    const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->getEmployee(employeeID);
     if (!selectedEmployee.ID().empty()) {
         // Valid employee, show the information screen!
         SCREENCOMMON().showTopBanner("Employee Information");
@@ -117,6 +117,15 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
         infoScreen.showUserAddress();
         infoScreen.showContactDetails();
         infoScreen.showUserPersonalIds();
+
+        // Show user data
+        if (selectedEmployee.isSystemUser()) {
+            const entity::User& userdata = mCoreEmployeeMgmt->getUser(employeeID);
+            screen::InformationScreen<entity::User> userDataScreen(userdata);
+            userDataScreen.showBasicInformation();
+        }
+
+        // Options must be at the bottom
         infoScreen.showOptions();
     }
 }

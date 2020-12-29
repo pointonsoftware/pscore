@@ -34,6 +34,13 @@ void InformationScreen<entity::Employee>::showBasicInformation() {  // specializ
 }
 
 template <>
+void InformationScreen<entity::User>::showBasicInformation() {  // specialize for user
+    SCREENCOMMON().printColumns({"User Account Information"}, true);
+    SCREENCOMMON().printItemText("User ID", mInfo->userID());
+    SCREENCOMMON().printItemText("D/T Created", mInfo->createdAt());
+}
+
+template <>
 void InformationScreen<entity::Product>::showBasicInformation() {  // specialize for product
     SCREENCOMMON().printColumns({"Barcode: " + mInfo->barcode()}, true);
     printItem("SKU", mInfo->sku());
