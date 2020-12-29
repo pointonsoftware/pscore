@@ -26,6 +26,7 @@
 #include "screendefines.hpp"
 #include <entity/employee.hpp>
 #include <entity/product.hpp>
+#include <entity/user.hpp>
 #include <screencommon.hpp>
 
 namespace screen {
