@@ -9,7 +9,7 @@ on: [pull_request]
 
 jobs:
   windows:
-    name:  Ubuntu-Linux
+    name:  Ubuntu 18.04
     runs-on: ubuntu-18.04
 
     steps:
@@ -20,6 +20,7 @@ jobs:
 
     - name: CppLint
       run: |
+       pip install wheel
        pip install cpplint
        cpplint --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11 --linelength=100 --recursive core orchestra mock utility
 
