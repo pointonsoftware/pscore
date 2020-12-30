@@ -6,6 +6,7 @@
 name: Coverage Build
 
 on:
+  workflow_dispatch:
   schedule:
    - cron: "0 3 * * 5"
 
@@ -34,3 +35,4 @@ jobs:
       run  : |
        gcov core/*.cpp -o core/
        bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+       bash <(curl -Ls https://coverage.codacy.com/get.sh) report

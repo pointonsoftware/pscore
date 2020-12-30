@@ -10,6 +10,7 @@ name: ci
 # Canada time - 10pm Thrusday
 
 on:
+  workflow_dispatch:
   schedule:
   - cron: "0 3 * * 5"
 
