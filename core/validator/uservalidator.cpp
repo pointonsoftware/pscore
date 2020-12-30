@@ -75,15 +75,16 @@ ValidationStatus UserValidator::validateCreatedAt() {
     date_c_cmp = date_c;  // store original  to compare later
     std::time_t when = std::mktime(&date_c);  // normalize
     {
-        std::tm bt {};
 #if defined(__unix__)
+        std::tm bt {};
         localtime_r(&when, &bt);
 #elif defined(_MSC_VER)
+        std::tm bt {};
         localtime_s(&bt, &when);
 #else
         static std::mutex mtx;
         std::lock_guard<std::mutex> lock(mtx);
-        bt = *std::localtime(&when);
+        std::localtime(&when);
 #endif
     }
     // Compare with original

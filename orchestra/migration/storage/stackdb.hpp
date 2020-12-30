@@ -127,7 +127,7 @@ class StackDB {
     StackDB();
     // employees storage
     static std::vector<EmployeeTableItem> EMPLOYEES_TABLE;
-    // employees storage
+    // users storage
     static std::vector<UserTableItem> USERS_TABLE;
     // address storage - of all persons
     static std::vector<AddressTableItem> ADDRESS_TABLE;
