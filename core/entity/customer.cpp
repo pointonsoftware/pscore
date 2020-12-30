@@ -18,26 +18,18 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "employee.hpp"
+#include "customer.hpp"
 #include <string>
 
 namespace entity {
 
-Employee::Employee(const std::string& id,
+Customer::Customer(const std::string& id,
                    const std::string& firstname,
                    const std::string& middlename,
                    const std::string& lastname,
                    const std::string& birthdate,
-                   const std::string& gender,
-                   const std::string& position,
-                   const std::string& status,
-                   const bool isSystemUser)
-: Person{firstname, middlename, lastname, birthdate, gender},
-  mID(id), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
-    // Empty for now
-}
-
-Employee::Employee(const std::string& id) : mID(id) {
+                   const std::string& gender)
+: Person{firstname, middlename, lastname, birthdate, gender}, mID(id){
     // Empty for now
 }
 

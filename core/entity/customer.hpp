@@ -18,27 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "employee.hpp"
+#ifndef CORE_ENTITY_CUSTOMER_HPP_
+#define CORE_ENTITY_CUSTOMER_HPP_
+
 #include <string>
+#include "person.hpp"
 
 namespace entity {
 
-Employee::Employee(const std::string& id,
-                   const std::string& firstname,
-                   const std::string& middlename,
-                   const std::string& lastname,
-                   const std::string& birthdate,
-                   const std::string& gender,
-                   const std::string& position,
-                   const std::string& status,
-                   const bool isSystemUser)
-: Person{firstname, middlename, lastname, birthdate, gender},
-  mID(id), mPosition(position), mStatus(status), mIsSystemUser(isSystemUser) {
-    // Empty for now
-}
+// Fields
+constexpr char FIELD_CUSID[] = "Customer.ID";
 
-Employee::Employee(const std::string& id) : mID(id) {
-    // Empty for now
-}
+class Customer : public Person {
+ public:
+    Customer(const std::string& id,
+             const std::string& firstname,
+             const std::string& middlename,
+             const std::string& lastname,
+             const std::string& birthdate,
+             const std::string& gender);
+    Customer() = default;
+    ~Customer() = default;
+
+    inline std::string ID() const {
+        return mID;
+    }
+
+ protected:
+    std::string mID;
+};
 
 }  // namespace entity
+#endif  // CORE_ENTITY_CUSTOMER_HPP_
