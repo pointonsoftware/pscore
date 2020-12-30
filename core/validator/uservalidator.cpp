@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include "uservalidator.hpp"
 #include <iomanip>
+#include <mutex>
 #include <sstream>
 #include <general.hpp>  // pscore utility
 
@@ -75,10 +76,10 @@ ValidationStatus UserValidator::validateCreatedAt() {
     date_c_cmp = date_c;  // store original  to compare later
     std::time_t when = std::mktime(&date_c);  // normalize
     {
-#if defined(__unix__)
+#ifdef __unix__
         std::tm bt {};
         localtime_r(&when, &bt);
-#elif defined(_MSC_VER)
+#elif __WIN32__
         std::tm bt {};
         localtime_s(&bt, &when);
 #else
