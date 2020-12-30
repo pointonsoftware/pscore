@@ -153,8 +153,8 @@ void InventoryScreen::createProduct() {
         std::map<std::string, std::string> validationResult;
         if (mInventoryController->save(newProduct, &validationResult)
             != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
-            requiredFields = app::utility::extractMapKeys(validationResult);
-            SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
+            requiredFields = app::util::extractMapKeys(validationResult);
+            SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
         } else {
             std::cout << "Product created successfully!" << std::endl;
         }
@@ -178,8 +178,8 @@ void InventoryScreen::updateProduct() {
             validationResult.clear();
             if (mInventoryController->save(product, &validationResult)
                 != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
-                requiredFields = app::utility::extractMapKeys(validationResult);
-                SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
+                requiredFields = app::util::extractMapKeys(validationResult);
+                SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
             }
         } while (!validationResult.empty());  // repeat input until new employee is created
         mTableHelper.setData((mTableHelper.getCurrentIndex()), product);

@@ -168,7 +168,7 @@ void ScreenCommon::inputArea(std::function<void(const std::string&)> func,
 }
 
 const std::string ScreenCommon::getUpdateField(const std::vector<std::string>& fields) const {
-    uint8_t index;
+    uint8_t index = 0;
     do {
         // Ask the index from the user
         std::string userInput = SCREENCOMMON().getInput("Input the data [number] to edit");

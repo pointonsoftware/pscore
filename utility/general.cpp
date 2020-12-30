@@ -23,6 +23,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
+#include <mutex>
 #include <random>
 
 namespace utility {
@@ -54,17 +55,6 @@ std::string toLower(std::string str) {
     return str;
 }
 
-std::string getDate() {
-    typedef std::chrono::system_clock Clock;
-    auto now = Clock::now();
-    std::time_t now_c = Clock::to_time_t(now);
-    struct tm *parts = std::localtime(&now_c);
-    char buff[100];
-    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", parts->tm_year + 1900,
-                  parts->tm_mon + 1, parts->tm_mday);
-    return std::string(buff);
-}
-
 unsigned randomNumber(unsigned int low, unsigned int high) {
     std::random_device dev;
     std::mt19937 rng(dev());
@@ -73,15 +63,30 @@ unsigned randomNumber(unsigned int low, unsigned int high) {
     return dist6(rng);
 }
 
+/**
+ * Code based-from StackOverflow by Galik
+ * Author profile: https://stackoverflow.com/users/3807729/galik
+ *
+ * Original question: https://stackoverflow.com/q/38034033/3975468
+ * Answer: https://stackoverflow.com/a/38034148/3975468
+*/
 std::string currentDateTime() {
     typedef std::chrono::system_clock Clock;
     auto now = Clock::now();
     std::time_t now_c = Clock::to_time_t(now);
-    struct tm *parts = std::localtime(&now_c);
+    std::tm bt {};
+#ifdef __unix__
+    localtime_r(&now_c, &bt);
+#elif __WIN32__
+    localtime_s(&bt, &now_c);
+#else
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock(mtx);
+    bt = *std::localtime(&now_c);
+#endif
     char buff[100];
-    snprintf(buff, sizeof(buff), "%02u/%02u/%04u %02u:%02u:%02u", parts->tm_mday,
-                   parts->tm_mon + 1,  parts->tm_year + 1900, parts->tm_hour,
-                   parts->tm_min, parts->tm_sec);
+    snprintf(buff, sizeof(buff), "%04u-%02u-%02u %02u:%02u:%02u", bt.tm_year + 1900,
+                bt.tm_mon + 1, bt.tm_mday, bt.tm_hour, bt.tm_min, bt.tm_sec);
     return std::string(buff);
 }
 

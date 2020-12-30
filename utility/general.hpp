@@ -49,7 +49,7 @@ extern std::string toLower(std::string str);
 */
 extern unsigned int randomNumber(unsigned int low, unsigned int high);
 /*!
- * Returns the current date-time in "dd/mm/yyyy HH:MM:SS" form
+ * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
 */
 extern std::string currentDateTime();
 }  // namespace utility

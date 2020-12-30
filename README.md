@@ -61,17 +61,17 @@ CORE is a software engine that houses the common use-case algorithms used for bu
 ## Technical
 
 These are the tools and technology used in this project:
-- Language: C++17
-- Compiler: gcc-7
-- GUI: Qt Framework
-- Database: SQLite
-- Build system: CMake
-- Profiling: gprof
-- Library: C++ Standard Library
-- Unit test: gtest
-- Static tools: cpplint/cppcheck
-- CI: travis-ci
-- Platform: Linux, Windows, MinGW
+-   Language: C++17
+-   Compiler: gcc-7
+-   GUI: Qt Framework
+-   Database: SQLite
+-   Build system: CMake
+-   Profiling: gprof
+-   Library: C++ Standard Library
+-   Unit test: gtest
+-   Static tools: cpplint/cppcheck
+-   CI: travis-ci
+-   Platform: Linux, Windows, MinGW
 
 CORE is also designed to work with any GUI framework and database.
 
@@ -100,8 +100,8 @@ The repository has three main components:
 ### Pre-requisites
 
 These are the base requirements to build and use CORE.
- - Cmake
- - C++11-standard-compliant compiler
+-   Cmake
+-   C++11-standard-compliant compiler
 
 ---
 
@@ -115,44 +115,43 @@ Clone the repository to a local destination using git:
 
 ### How to build in Linux
 
-- Run `clean_build.sh`
-- Generated/output files are in pscore/build folder
+-   Run `clean_build.sh`
+-   Generated/output files are in pscore/build folder
 
 ---
 
 ### How to build in Windows
 
-- Open the root CMakeLists.txt file with your favorite IDE.
-- Hit Build!
+-   Open the root CMakeLists.txt file with your favorite IDE.
+-   Hit Build!
 
 ---
 
 ### Usage
 
 #### Libraries
-- Go to your build directory
-- The build generates **domain** libraries that contain the CORE use cases. These libraries can be linked to any executable.
+-   Go to your build directory
+-   The build generates **domain** libraries that contain the CORE use cases. These libraries can be linked to any executable.
 
 #### Executable
-- Go to your build directory
-- Inside the **bin** folder, run **console_app**.
-- This application is used to test the CORE APIs.
+-   Go to your build directory
+-   Inside the **bin** folder, run **console_app**.
+-   This application is used to test the CORE APIs.
 
 ---
 
 ### Screenshots
 
-- **Unreleased version** asks for the user's name and print it in the console using the logger utility class.
+-   **Unreleased version** asks for the user's name and print it in the console using the logger utility class.
 
 <p align="center">
   <img width="999" height="45" src="https://bit.ly/3j3WzWc">
 </p>
 
-- **console_app** v0.0.1 login screen:
+-   **console_app** v0.0.1 login screen:
 <p align="center">
   <img width="571" height="136" src="https://bit.ly/2Ex0SKL">
 </p>
-
 
 ---
 
@@ -162,22 +161,22 @@ The initial CORE [v0.0.4](https://github.com/pointonsoftware/pscore/releases/tag
 
 Below are the planned releases in the future:  
 
- - [**v0.1.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.1.0) - Full admin login/logout
- - [**v0.2.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.2.0) - Basic employee management
- - [**v0.3.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.3.0) - Basic employee management
- - **v0.4.0** - Basic customer management
- - **v0.5.0** - Basic POS
- - **v0.6.0** - Basic sales operations
- - **v1.0.0** - Basic accounting operations
- - **v1.x.x** - Improving the basic operations  
- - **v2.x.x** - Support for external hardwares like barcode scanner and receipt printer
+-   [**v0.1.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.1.0) - Full admin login/logout
+-   [**v0.2.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.2.0) - Basic employee management
+-   [**v0.3.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.3.0) - Basic employee management
+-   **v0.4.0** - Basic customer management
+-   **v0.5.0** - Basic POS
+-   **v0.6.0** - Basic sales operations
+-   **v1.0.0** - Basic accounting operations
+-   **v1.x.x** - Improving the basic operations  
+-   **v2.x.x** - Support for external hardwares like barcode scanner and receipt printer
 
 After CORE v1.0.0, it is planned that another project will be built to upgrade the **console_app** into a more user friendly, graphical user interface.
 
 ---
 
 ## Author
- - Ben Ziv - <pointonsoftware@gmail.com>
+-   Ben Ziv - pointonsoftware@gmail.com
 
 ---
 
@@ -192,18 +191,18 @@ A developer guide document is available in the [doc folder](doc/) and can be use
 ### Make a Pull Request
 
 Make sure that your master branch is up to date with CORE's master branch:
-```
+``` text
 git checkout master
 git pull upstream master
 ```
 
 Create your feature/developement branch and work on your change in this branch:
-```
+``` text
 git checkout -b dev/[yourbranchname]
 ```
 
 Then update your feature branch from your local copy of master, and push it!
-```
+``` text
 git pull --rebase origin master
 git push -u origin dev/[yourbranchname]
 ```
@@ -217,10 +216,10 @@ Travis-CI and GitHub actions will try to build and run several tests on your pul
 ### Merging a Pull Request
 
 A PR can only be merged into master if:
- - It has passed CI.
- - It has been approved by at least one maintainer.
- - It has no requested changes.
- - It is up to date with current master branch.  
+-   It has passed CI.
+-   It has been approved by at least one maintainer.
+-   It has no requested changes.
+-   It is up to date with current master branch.  
 
 The PR author is allowed to merge the PR if all of these conditions are met.
 

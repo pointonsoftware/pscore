@@ -22,34 +22,18 @@
 #include <algorithm>
 #include <chrono>
 #include <ctime>
+#include <mutex>
 #include <random>
 #include <string>
+#include <general.hpp>  // pscore utility
 
 namespace app {
-namespace utility {
-
-std::string getDate() {
-    typedef std::chrono::system_clock Clock;
-    auto now = Clock::now();
-    std::time_t now_c = Clock::to_time_t(now);
-    struct tm *parts = std::localtime(&now_c);
-    char buff[100];
-    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", parts->tm_year + 1900,
-                  parts->tm_mon + 1, parts->tm_mday);
-    return std::string(buff);
-}
-
-unsigned randomNumber(unsigned int low, unsigned int high) {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    // low = 0 ; high = 9  -  generates number for 0 to 9
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
-    return dist6(rng);
-}
+namespace util {
 
 std::string generateEmployeeID() {
     // Substring the last two digit of the year + unique_number
-    return getDate().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
+    return utility::currentDateTime().substr(2, 2) +
+           std::to_string(utility::randomNumber(10000, 99999));
 }
 
 std::vector<std::string> extractMapKeys(const std::map<std::string, std::string>& map) {
@@ -68,5 +52,5 @@ std::vector<std::string> extractMapValues(const std::map<std::string, std::strin
     return temp;
 }
 
-}  // namespace utility
+}  // namespace util
 }  // namespace app

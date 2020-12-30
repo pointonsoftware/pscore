@@ -129,16 +129,15 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
 
 EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData) {
     const entity::Employee& employee = employeeData.employee;
-    std::map<std::string, std::string>* validationResult = employeeData.validationResult;
     LOG_DEBUG("Saving employee information");
-    if (!validationResult) {
+    if (!employeeData.validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
         return EMPLMGMTSTATUS::UNINITIALIZED;
     }
     // Cleanup the container
-    validationResult->clear();
+    employeeData.validationResult->clear();
     // Fill the validation results
-    *(validationResult) = validateDetails(employee);
+    *(employeeData.validationResult) = validateDetails(employee);
     /*!
      * Todo (code) - the second check will determine if we're creating or updating.
      *               if we're updating, we don't need to validate PIN
@@ -148,12 +147,12 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
         // Validate PIN only
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN,
-                             "10/10/2020 10:10:10", "Proxy"));
-        validationResult->insert(validator.result().begin(), validator.result().end());
+                             "2020/10/10 10:10:10", "Proxy"));
+        employeeData.validationResult->insert(validator.result().begin(), validator.result().end());
     }
-    if (!validationResult->empty()) {
+    if (!employeeData.validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
-        dumpValidationResult(*(validationResult));
+        dumpValidationResult(*(employeeData.validationResult));
         return EMPLMGMTSTATUS::FAILED;
     }
     // Decide if it's a create or update request
