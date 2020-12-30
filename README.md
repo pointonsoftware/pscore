@@ -1,18 +1,56 @@
-<!--          PSCORE README v5.1         -->
+<!--          PSCORE README v6.0         -->
 <!-- Copyright (C) 2020 Pointon Software -->
 
 <p align="center">
   <img width="459" height="446" src="https://bit.ly/3kxZ6sj">
 </p>
 
+<!--                Labels               -->
 <p align="center">
+  <a href="https://github.com/pointonsoftware/pscore">
+    <img alt="Status"
+        src="https://www.repostatus.org/badges/latest/active.svg"/>
+  </a>
+  <a href="https://github.com/pointonsoftware/pscore/actions">
+    <img alt="CI"
+        src="https://github.com/pointonsoftware/pscore/workflows/ci/badge.svg"/>
+  </a>
+  <a href="https://travis-ci.com/github/pointonsoftware/pscore">
+    <img alt="Travis"
+        src="https://img.shields.io/travis/pointonsoftware/pscore.svg?label=travis"/>
+  </a>
   <a href="https://coveralls.io/github/pointonsoftware/pscore?branch=master">
-    <img alt="Coverage Status"
+    <img alt="Coveralls"
         src="https://coveralls.io/repos/github/pointonsoftware/pscore/badge.svg?branch=master"/>
   </a>
-  <a href="https://scan.coverity.com/projects/pointonsoftware-pscore">
-    <img alt="Coverity Scan Build Status"
-        src="https://scan.coverity.com/projects/22264/badge.svg"/>
+  <a href="https://codecov.io/gh/pointonsoftware/pscore">
+    <img alt="CodeCov"
+        src="https://codecov.io/gh/pointonsoftware/pscore/branch/master/graph/badge.svg?token=SMKPKG1QTQ"/>
+  </a>
+  <a href="https://www.codacy.com/gh/pointonsoftware/pscore/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pointonsoftware/pscore&amp;utm_campaign=Badge_Grade">
+    <img src="https://app.codacy.com/project/badge/Grade/afc52016e198400784c0bc516d15d77c"/>
+  </a>
+  <a href="https://lgtm.com/projects/g/pointonsoftware/pscore/context:cpp">
+    <img src="https://img.shields.io/lgtm/grade/cpp/github/pointonsoftware/pscore.svg?logo=lgtm&logoWidth=18"/>
+  </a>
+  <a href="https://lgtm.com/projects/g/pointonsoftware/pscore/alerts/">
+    <img src="https://img.shields.io/lgtm/alerts/github/pointonsoftware/pscore.svg?logo=lgtm&logoWidth=18"/>
+  </a>
+  <a href="https://github.com/pointonsoftware/pscore">
+    <img alt="LOC"
+        src="https://tokei.rs/b1/github/pointonsoftware/pscore"/>
+  </a>
+  <a href="https://github.com/pointonsoftware/pscore/issues">
+    <img alt="Open Issues"
+        src="https://isitmaintained.com/badge/open/pointonsoftware/pscore.svg"/>
+  </a>
+  <a href="https://github.com/pointonsoftware/pscore/tree/master/doc">
+    <img alt="Docs"
+        src="https://img.shields.io/badge/docs-0.7-informational"/>
+  </a>
+  <a href="https://www.gnu.org/licenses/agpl-3.0">
+    <img alt="License"
+        src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg"/>
   </a>
 </p>
 
@@ -39,17 +77,23 @@ CORE is also designed to work with any GUI framework and database.
 
 ---
 
-## Getting Started
+## Structure
 
-The repository consists of three main folders and their subfolders:
- - **core**
-    - domain - business workflow and components
-    - entity - business entities
- - **orchestra**
-    - application - presentation layer
-    - datamanager - database queries
-    - migration   - stack database
- - **utility** - helper classes like logger, fileio, etc.
+The repository has three main components:
+
+``` text
+.
+├── CMakeLists.txt
+├── core
+│   ├── domain - business workflow and components
+│   └── entity - business entities
+├── orchestra
+│   ├── application - presentation layer
+│   ├── datamanager - database queries
+│   └── migration   - dummy database
+└── utility
+    └── logger, fileio, etc.
+```
 
 ---
 
