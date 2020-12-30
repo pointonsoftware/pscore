@@ -28,15 +28,29 @@
 namespace app {
 namespace utility {
 
-std::string getDate() {
+/**
+ * Code based-from StackOverflow by Galik
+ * Author profile: https://stackoverflow.com/users/3807729/galik
+ *
+ * Original question: https://stackoverflow.com/q/38034033/3975468
+ * Answer: https://stackoverflow.com/a/38034148/3975468
+*/
+std::string getDateTime() {
     typedef std::chrono::system_clock Clock;
     auto now = Clock::now();
     std::time_t now_c = Clock::to_time_t(now);
-    struct tm *parts = std::localtime(&now_c);
+    std::tm bt {};
+#if defined(__unix__)
+    localtime_r(&now_c, &bt);
+#elif defined(_MSC_VER)
+    localtime_s(&bt, &now_c);
+#else
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock(mtx);
+    bt = *std::localtime(&now_c);
+#endif
     char buff[100];
-    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", parts->tm_year + 1900,
-                  parts->tm_mon + 1, parts->tm_mday);
-    return std::string(buff);
+    return {buff, std::strftime(buff, sizeof(buff), "%F %T", &bt)};
 }
 
 unsigned randomNumber(unsigned int low, unsigned int high) {
@@ -49,7 +63,7 @@ unsigned randomNumber(unsigned int low, unsigned int high) {
 
 std::string generateEmployeeID() {
     // Substring the last two digit of the year + unique_number
-    return getDate().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
+    return getDateTime().substr(2, 2) + std::to_string(randomNumber(10000, 99999));
 }
 
 std::vector<std::string> extractMapKeys(const std::map<std::string, std::string>& map) {

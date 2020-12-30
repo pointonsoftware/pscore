@@ -37,7 +37,17 @@ std::string LoggerInterface::getTimestamp() {
     std::chrono::system_clock::duration tp = now.time_since_epoch();
     tp -= std::chrono::duration_cast<std::chrono::seconds>(tp);
     time_t tt = std::chrono::system_clock::to_time_t(now);
-    return formatTimestamp(*localtime(&tt), tp);  // NOLINT(runtime/threadsafe_fn)
+    std::tm bt {};
+#if defined(__unix__)
+    localtime_r(&tt, &bt);
+#elif defined(_MSC_VER)
+    localtime_s(&bt, &tt);
+#else
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock(mtx);
+    bt = *std::localtime(&tt);
+#endif
+    return formatTimestamp(bt, tp);  // NOLINT(runtime/threadsafe_fn)
 }
 
 std::string LoggerInterface::getLogModeTerminalColor(const std::string& logMode) {

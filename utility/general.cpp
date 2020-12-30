@@ -54,17 +54,6 @@ std::string toLower(std::string str) {
     return str;
 }
 
-std::string getDate() {
-    typedef std::chrono::system_clock Clock;
-    auto now = Clock::now();
-    std::time_t now_c = Clock::to_time_t(now);
-    struct tm *parts = std::localtime(&now_c);
-    char buff[100];
-    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", parts->tm_year + 1900,
-                  parts->tm_mon + 1, parts->tm_mday);
-    return std::string(buff);
-}
-
 unsigned randomNumber(unsigned int low, unsigned int high) {
     std::random_device dev;
     std::mt19937 rng(dev());
@@ -77,12 +66,18 @@ std::string currentDateTime() {
     typedef std::chrono::system_clock Clock;
     auto now = Clock::now();
     std::time_t now_c = Clock::to_time_t(now);
-    struct tm *parts = std::localtime(&now_c);
+    std::tm bt {};
+#if defined(__unix__)
+    localtime_r(&now_c, &bt);
+#elif defined(_MSC_VER)
+    localtime_s(&bt, &now_c);
+#else
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock(mtx);
+    bt = *std::localtime(&now_c);
+#endif
     char buff[100];
-    snprintf(buff, sizeof(buff), "%02u/%02u/%04u %02u:%02u:%02u", parts->tm_mday,
-                   parts->tm_mon + 1,  parts->tm_year + 1900, parts->tm_hour,
-                   parts->tm_min, parts->tm_sec);
-    return std::string(buff);
+    return {buff, std::strftime(buff, sizeof(buff), "%F %T", &bt)};
 }
 
 }  // namespace utility

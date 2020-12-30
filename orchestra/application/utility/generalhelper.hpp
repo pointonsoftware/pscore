@@ -27,6 +27,11 @@
 namespace app {
 namespace utility {
 /*!
+ * Returns current date time
+ * Format - YYYY/MM/DD HH:MM:SS
+*/
+extern std::string getDateTime();
+/*!
  * Generates an employee ID
  * ID format - [YY][unique-five-digit-number]
  * e.g. - 2021135
