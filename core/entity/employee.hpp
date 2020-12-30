@@ -46,7 +46,7 @@ class Employee : public Person {
     Employee() = default;
     ~Employee() = default;
 
-    inline const std::string ID() const {
+    inline std::string ID() const {
         return mID;
     }
 
@@ -54,7 +54,7 @@ class Employee : public Person {
         mPosition = position;
     }
 
-    inline const std::string position() const {
+    inline std::string position() const {
         return mPosition;
     }
 
@@ -62,7 +62,7 @@ class Employee : public Person {
         mIsSystemUser = isUser;
     }
 
-    inline const bool isSystemUser() const {
+    inline bool isSystemUser() const {
         return mIsSystemUser;
     }
 
@@ -70,7 +70,7 @@ class Employee : public Person {
         mStatus = status;
     }
 
-    inline const std::string status() const {
+    inline std::string status() const {
         return mStatus;
     }
 
