@@ -15,7 +15,7 @@ on:
 
 jobs:
   windows:
-    name:  MinGW64
+    name:  Weekly Windows Build
     runs-on: windows-latest
 
     steps:
