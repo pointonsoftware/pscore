@@ -1,0 +1,36 @@
+# Copyright (C) Pointon Software - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Written by Ben Ziv <pointonsoftware@gmail.com>, December 2020
+
+name: Coverage Build
+
+on:
+  schedule:
+   - cron: "0 3 * * 5"
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Code checkout
+      uses: actions/checkout@v2
+      with:
+        ref: 'master'
+        submodules: recursive
+
+    - name: Build
+      run  : |
+       sudo apt-get install cmake
+       sudo apt-get install -qq g++-7
+       sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+       ./ci/ci_build.sh
+
+    - name: Unit test
+      run  : ./ci/ci_unittest.sh
+
+    - name: Code Coverage CodeCov
+      run  : |
+       gcov core/*.cpp -o core/
+       bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
