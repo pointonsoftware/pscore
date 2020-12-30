@@ -23,22 +23,22 @@ show_help() {
 }
 
 rebuild_app() {
-    cd $BIN_DIR
+    cd "$BIN_DIR"
     make
 }
 
 rebuild_lib() {
-    cd $LIB_DIR
+    cd "$LIB_DIR"
     make
 }
 
 clean_build() {
     # Clean bins
-    cd $BIN_DIR
+    cd "$BIN_DIR"
     ls -Q | grep -v .gitignore | xargs rm -rf
 
     # Clean libs
-    cd $LIB_DIR
+    cd "$LIB_DIR"
     ls -Q | grep -v .gitignore | xargs rm -rf
 
     echo "Cleaned!"
@@ -53,9 +53,9 @@ if [ $? != 0 ] ; then echo "Failed parsing options." >&2; exit 1; fi
 eval set -- "$OPTS"
 while true; do
     case "$1" in
-    -b | --build) cd $SCRIPT_DIR; ./build.sh; exit 0 ;;
+    -b | --build) cd "$SCRIPT_DIR"; ./build.sh; exit 0 ;;
     -c | --clean) clean_build; exit 0 ;;
-    -p | --profile) cd $SCRIPT_DIR; ./profiling.sh; exit 0 ;;
+    -p | --profile) cd "$SCRIPT_DIR"; ./profiling.sh; exit 0 ;;
     -a | --rbapp) rebuild_app; exit 0 ;;
     -l | --rblib) rebuild_lib; exit 0 ;;
     -h | --help) show_help; exit 0 ;;
