@@ -36,7 +36,7 @@ StackDB::StackDB() {
             "2020202",                    // Unique User ID
             "Admin",                      // Role
             "1251",                       // PIN <!Unique> <!Empty if non-user>
-            "12/01/2020 11:09:50",        // Created At
+            "2020/01/12 11:09:50",        // Created At
             ""});                         // No employee ID
     populateEmployees();
     populateProducts();
@@ -51,7 +51,7 @@ void StackDB::populateEmployees() {
             "BenZiv",                     // First name
             "Hero",                       // Middle name
             "Garcia",                     // Last name
-            "15/10/2020",                 // B-date
+            "2020/10/15",                 // B-date
             "M",                          // Gender
             "Manager",                    // Position
             "1",                          // Status - (0) Inactive (1) Active
@@ -60,7 +60,7 @@ void StackDB::populateEmployees() {
             "BGAR123",                    // User ID <!Make sure this is unique>
             "Manager",                    // Role
             "2020",                       // PIN
-            "10/01/2020 07:47:48",        // Created At
+            "2020/01/10 07:47:48",        // Created At
             "2014566"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2014566",                    // Employee ID <!Same as employeeID>
@@ -90,7 +90,7 @@ void StackDB::populateEmployees() {
             "Zandro",                     // First name
             "Slardar",                    // Middle name
             "Mage",                       // Last name
-            "10/10/2020",                 // B-date
+            "2020/10/10",                 // B-date
             "M",                          // Gender
             "Cashier",                    // Position
             "1",                          // Status - (0) Inactive (1) Active
@@ -99,7 +99,7 @@ void StackDB::populateEmployees() {
             "BGAR567",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
             "2021",                       // PIN
-            "10/02/2020 08:47:48",        // Created At
+            "2020/10/02 08:47:48",        // Created At
             "2019542"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2019542",                    // Employee ID <!Same as employeeID>
@@ -124,7 +124,7 @@ void StackDB::populateEmployees() {
             "Juana",                      // First name
             "Santos",                     // Middle name
             "Dela Cruz",                  // Last name
-            "18/10/2020",                 // B-date
+            "2020/10/18",                 // B-date
             "F",                          // Gender
             "Cashier",                    // Position
             "1",                          // Status - (0) Inactive (1) Active
@@ -133,7 +133,7 @@ void StackDB::populateEmployees() {
             "JDEL554",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
             "2022",                       // PIN
-            "10/05/2020 10:09:50",        // Created At
+            "2020/05/10 10:09:50",        // Created At
             "2098472"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2098472",                    // Employee ID <!Same as employeeID>
@@ -158,7 +158,7 @@ void StackDB::populateEmployees() {
             "Rodrigo",                    // First name
             "Roa",                        // Middle name
             "Duterte",                    // Last name
-            "17/10/1977",                 // B-date
+            "1977/10/17",                 // B-date
             "M",                          // Gender
             "Security Guard",             // Position
             "1",                          // Status - (0) Inactive (1) Active
@@ -186,7 +186,7 @@ void StackDB::populateEmployees() {
             "Manny",                      // First name
             "Pacman",                     // Middle name
             "Pacquiao",                   // Last name
-            "25/10/1988",                 // B-date
+            "1988/10/25",                 // B-date
             "M",                          // Gender
             "Delivery Personnel",         // Position
             "1",                          // Status - (0) Inactive (1) Active

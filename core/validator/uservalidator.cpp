@@ -71,10 +71,21 @@ ValidationStatus UserValidator::validateCreatedAt() {
     */
     std::istringstream date_s(mUser.createdAt());
     struct tm date_c, date_c_cmp;
-    date_s >> std::get_time(&date_c, "%d/%m/%Y %H:%M:%S");
+    date_s >> std::get_time(&date_c, "%Y/%m/%d %H:%M:%S");
     date_c_cmp = date_c;  // store original  to compare later
     std::time_t when = std::mktime(&date_c);  // normalize
-    std::localtime(&when);
+    {
+        std::tm bt {};
+#if defined(__unix__)
+        localtime_r(&when, &bt);
+#elif defined(_MSC_VER)
+        localtime_s(&bt, &when);
+#else
+        static std::mutex mtx;
+        std::lock_guard<std::mutex> lock(mtx);
+        bt = *std::localtime(&when);
+#endif
+    }
     // Compare with original
     if (date_c.tm_year != date_c_cmp.tm_year
         || date_c.tm_mon != date_c_cmp.tm_mon

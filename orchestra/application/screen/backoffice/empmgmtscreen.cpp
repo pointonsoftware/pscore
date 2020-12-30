@@ -149,7 +149,7 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     SCREENCOMMON().inputArea(std::bind(&entity::Employee::setLastName, employee,
         std::placeholders::_1), "Last Name", fieldHelper.requires("Person.Last.Name"));
     SCREENCOMMON().inputArea(std::bind(&entity::Employee::setBirthdate, employee,
-        std::placeholders::_1), "Birthdate (dd/mm/yyyy)", fieldHelper.requires("Person.Birthdate"));
+        std::placeholders::_1), "Birthdate (yyyy/mm/dd)", fieldHelper.requires("Person.Birthdate"));
     SCREENCOMMON().inputArea(std::bind(&entity::Employee::setGender, employee,
         std::placeholders::_1), "Gender (M/F)", fieldHelper.requires("Person.Gender"));
     SCREENCOMMON().inputArea(std::bind(&entity::Employee::setPosition, employee,
