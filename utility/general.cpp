@@ -63,6 +63,13 @@ unsigned randomNumber(unsigned int low, unsigned int high) {
     return dist6(rng);
 }
 
+/**
+ * Code based-from StackOverflow by Galik
+ * Author profile: https://stackoverflow.com/users/3807729/galik
+ *
+ * Original question: https://stackoverflow.com/q/38034033/3975468
+ * Answer: https://stackoverflow.com/a/38034148/3975468
+*/
 std::string currentDateTime() {
     typedef std::chrono::system_clock Clock;
     auto now = Clock::now();

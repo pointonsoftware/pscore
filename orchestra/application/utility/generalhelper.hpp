@@ -25,12 +25,7 @@
 #include <vector>
 
 namespace app {
-namespace utility {
-/*!
- * Returns current date time
- * Format - YYYY/MM/DD HH:MM:SS
-*/
-extern std::string getDateTime();
+namespace util {
 /*!
  * Generates an employee ID
  * ID format - [YY][unique-five-digit-number]
@@ -45,6 +40,6 @@ extern std::vector<std::string> extractMapKeys(const std::map<std::string, std::
  * Returns a vector of map values
 */
 extern std::vector<std::string> extractMapValues(const std::map<std::string, std::string>& map);
-}  // namespace utility
+}  // namespace util
 }  // namespace app
 #endif  // ORCHESTRA_APPLICATION_UTILITY_GENERALHELPER_HPP_

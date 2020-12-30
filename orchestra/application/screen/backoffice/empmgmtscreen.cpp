@@ -213,7 +213,7 @@ void EmployeeMgmtScreen::createEmployee() {
     std::cout << "Type [space] for an empty entry" << std::endl;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
     // App must provide the employee ID
-    entity::Employee newEmployee(app::utility::generateEmployeeID());
+    entity::Employee newEmployee(app::util::generateEmployeeID());
     // Todo (code) - let's default to ACTIVE for now
     newEmployee.setStatus("ACTIVE");
     /*!
@@ -257,8 +257,8 @@ void EmployeeMgmtScreen::createEmployee() {
         failedFields.clear();
 
         if (status != domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
-            failedFields = app::utility::extractMapKeys(validationResult);
-            SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
+            failedFields = app::util::extractMapKeys(validationResult);
+            SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
         } else {
             std::cout << "Employee " << newEmployee.getFullName()
                       << " added successfully!" << std::endl;
@@ -290,8 +290,8 @@ void EmployeeMgmtScreen::updateEmployee() {
             validationResult.clear();
             if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
                 domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
-                requiredFields = app::utility::extractMapKeys(validationResult);
-                SCREENCOMMON().printErrorList(app::utility::extractMapValues(validationResult));
+                requiredFields = app::util::extractMapKeys(validationResult);
+                SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
             }
         } while (!validationResult.empty());  // repeat input until new employee is created
         mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);
