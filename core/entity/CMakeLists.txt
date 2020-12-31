@@ -7,6 +7,8 @@ add_library (
     # Entities
     address.hpp
     contactdetails.hpp
+    customer.hpp
+    customer.cpp
     employee.hpp
     employee.cpp
     person.hpp
