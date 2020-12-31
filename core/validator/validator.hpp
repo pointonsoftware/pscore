@@ -22,7 +22,7 @@
 #define CORE_VALIDATOR_VALIDATOR_HPP_
 #include <functional>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -38,7 +38,7 @@ enum ValidationStatus {
 };
 
 // map [field that failed, error message to display]
-typedef std::unordered_map<std::string, std::string> Errors;
+typedef std::map<std::string, std::string> Errors;
 
 class Validator {
  public:

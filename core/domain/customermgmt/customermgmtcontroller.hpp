@@ -53,7 +53,7 @@ class CustomerManagementController : public CustomerManagementControlInterface {
 
     CustomerMgmtDataPtr mDataProvider;
     CustomerMgmtViewPtr mView;
-    std::vector<entity::Customer> mCachedList;  // List of products
+    std::vector<entity::Customer> mCachedList;  // List of customers
 };
 
 }  // namespace customermgmt

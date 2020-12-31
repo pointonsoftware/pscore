@@ -73,7 +73,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
     {
         LOG_DEBUG("Validating fields");
         entity::validator::ProductValidator validator(product);
-        validationResult->insert(validator.result().begin(), validator.result().end());
+        validationResult->merge(validator.result());
     }
     if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
