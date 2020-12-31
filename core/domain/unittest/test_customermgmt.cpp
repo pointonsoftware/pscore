@@ -39,17 +39,18 @@ namespace test {
 
 class TestCustomerMgmt : public testing::Test {
  public:
-    TestCustomerMgmt() : inventoryController(dpMock, viewMock) {
+    TestCustomerMgmt() : controller(dpMock, viewMock) {
         // Empty for now
     }
-
     ~TestCustomerMgmt() = default;
     void SetUp() {}
     void TearDown() {}
 
-    std::shared_ptr<InventoryDataMock> dpMock  = std::make_shared<InventoryDataMock>();
-    std::shared_ptr<InventoryViewMock> viewMock = std::make_shared<InventoryViewMock>();
-    InventoryController inventoryController;
+    std::shared_ptr<CustomerManagementDataMock> dpMock
+                    = std::make_shared<CustomerManagementDataMock>();
+    std::shared_ptr<CustomerManagementViewMock> viewMock
+                    = std::make_shared<CustomerManagementViewMock>();
+    CustomerManagementController controller;
 };
 
 TEST_F(TestCustomerMgmt, TestSuccess) {

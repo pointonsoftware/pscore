@@ -5,6 +5,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
 set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov --coverage ${CMAKE_EXE_LINKER_FLAGS}")
 
 set (SOURCES_UNDER_TEST
+    ${DOMAIN_DIRECTORY}/customermgmt/customermgmtcontroller.cpp
     ${DOMAIN_DIRECTORY}/dashboard/dashboardcontroller.cpp
     ${DOMAIN_DIRECTORY}/employeemgmt/employeecontroller.cpp
     ${DOMAIN_DIRECTORY}/inventory/inventorycontroller.cpp
