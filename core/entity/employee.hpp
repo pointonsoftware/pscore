@@ -74,7 +74,7 @@ class Employee : public Person {
         return mStatus;
     }
 
- protected:
+ private:
     std::string mID;
     std::string mPosition;
     std::string mStatus;

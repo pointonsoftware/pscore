@@ -33,6 +33,19 @@ namespace chargenerator {
  * result = JDOE123
 */
 extern std::string generateUID(const std::string& p1, const std::string& p2);
+/*!
+ * Generates the customer ID
+ * Format - CM[first-letter-of-param1][first-letter-of-param2][eight-alphanumeric-chars]
+ * e.g.
+ * p1 = John
+ * p2 = Doe
+ * result = CMJD12AB56CD
+*/
+extern std::string generateCustomerID(const std::string& p1, const std::string& p2);
+/*!
+ * Generates random alphanumeric strings
+*/
+extern std::string generateChars(const uint8_t len);
 }  // namespace chargenerator
 }  // namespace utility
 #endif  // UTILITY_GENERATOR_CHARGENERATOR_HPP_

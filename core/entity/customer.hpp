@@ -44,7 +44,7 @@ class Customer : public Person {
         return mID;
     }
 
- protected:
+ private:
     std::string mID;
 };
 

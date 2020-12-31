@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "chargenerator.hpp"
+#include <random>
 #include <string>
 #include <general.hpp>
 
@@ -28,6 +29,33 @@ namespace chargenerator {
 std::string generateUID(const std::string& p1, const std::string& p2) {
     // first-letter-of-param1 + first-three-letters-of-param2 + three-digit-unique-number
     return toUpper(p1.at(0) + p2.substr(0, 2) + std::to_string(randomNumber(100, 999)));
+}
+
+std::string generateCustomerID(const std::string& p1, const std::string& p2) {
+    // CM + first-letter-of-param1 + first-letter-of-param2 + eight-alphanumeric-chars
+    return toUpper("CM" + p1.at(0) + p2.at(0) + generateChars(8));
+}
+
+/**
+ * Code based-from StackOverflow by Galik
+ * Author profile: https://stackoverflow.com/users/3807729/galik
+ *
+ * Original question: https://stackoverflow.com/q/440133/3975468
+ * Answer: https://stackoverflow.com/a/24586587/3975468
+*/
+std::string generateChars(const uint8_t len) {
+    static auto& chrs = "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    thread_local static std::mt19937 rg {std::random_device {}()};
+    thread_local static
+        std::uniform_int_distribution<std::string::size_type> pick(0, sizeof(chrs) - 2);
+
+    std::string temp;
+    temp.reserve(len);
+    for (int i = 0; i < len; ++i) {
+        temp += chrs[pick(rg)];
+    }
+    return temp;
 }
 
 }  // namespace chargenerator

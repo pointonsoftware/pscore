@@ -29,7 +29,7 @@ Customer::Customer(const std::string& id,
                    const std::string& lastname,
                    const std::string& birthdate,
                    const std::string& gender)
-: Person{firstname, middlename, lastname, birthdate, gender}, mID(id){
+: Person{firstname, middlename, lastname, birthdate, gender}, mID(id) {
     // Empty for now
 }
 

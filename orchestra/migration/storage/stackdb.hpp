@@ -99,6 +99,15 @@ class StackDB {
         std::string supplier_code;
     };
 
+    struct CustomerTableItem {
+        std::string customerID;
+        std::string firstname;
+        std::string middlename;
+        std::string lastname;
+        std::string birthdate;
+        std::string gender;
+    };
+
     inline std::vector<EmployeeTableItem>& SELECT_EMPLOYEES_TABLE() const {
         return EMPLOYEES_TABLE;
     }
@@ -123,6 +132,10 @@ class StackDB {
         return PRODUCT_TABLE;
     }
 
+    inline std::vector<CustomerTableItem>& SELECT_CUSTOMER_TABLE() const {
+        return CUSTOMER_TABLE;
+    }
+
  private:
     StackDB();
     // employees storage
@@ -137,6 +150,8 @@ class StackDB {
     static std::vector<PersonalIdTableItem> PERSONAL_ID_TABLE;
     // product storage
     static std::vector<ProductTableItem> PRODUCT_TABLE;
+    // customer storage
+    static std::vector<CustomerTableItem> CUSTOMER_TABLE;
     void populateEmployees();
     void populateProducts();
 };
