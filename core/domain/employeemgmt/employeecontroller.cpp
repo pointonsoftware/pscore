@@ -148,7 +148,7 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN,
                              "2020/10/10 10:10:10", "Proxy"));
-        employeeData.validationResult->insert(validator.result().begin(), validator.result().end());
+        employeeData.validationResult->merge(validator.result());
     }
     if (!employeeData.validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
@@ -208,28 +208,28 @@ ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee&
      // validate key employee data
     {
         entity::validator::EmployeeValidator validator(employee);
-        validationErrors.insert(validator.result().begin(), validator.result().end());
+        validationErrors.merge(validator.result());
     }
     // validate basic information
     {
         entity::validator::PersonValidator validator(employee);
-        validationErrors.insert(validator.result().begin(), validator.result().end());
+        validationErrors.merge(validator.result());
     }
     // validate address
     {
         entity::validator::AddressValidator validator(employee.address());
-        validationErrors.insert(validator.result().begin(), validator.result().end());
+        validationErrors.merge(validator.result());
     }
     // validate contact information
     {
         entity::validator::ContactDetailsValidator validator(employee.contactDetails());
-        validationErrors.insert(validator.result().begin(), validator.result().end());
+        validationErrors.merge(validator.result());
     }
     // validate ID
     {
         for (const entity::PersonalId& personalId : employee.personalIds()) {
             entity::validator::PersonalIDValidator validator(personalId);
-            validationErrors.insert(validator.result().begin(), validator.result().end());
+            validationErrors.merge(validator.result());
         }
     }
     return validationErrors;

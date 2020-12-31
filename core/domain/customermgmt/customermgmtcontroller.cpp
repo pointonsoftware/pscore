@@ -37,7 +37,7 @@ CustomerManagementController::CustomerManagementController(
 }
 
 std::vector<entity::Customer> CustomerManagementController::list() {
-    LOG_DEBUG("Getting the list of products");
+    LOG_DEBUG("Getting the list of customers");
     return mCachedList;
 }
 
@@ -59,7 +59,7 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer&
     {
         LOG_DEBUG("Validating fields");
         entity::validator::PersonValidator validator(customer);
-        validationResult->insert(validator.result().begin(), validator.result().end());
+        validationResult->merge(validator.result());
     }
     if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
