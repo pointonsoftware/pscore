@@ -4,6 +4,9 @@ project (datamanager)
 add_library (
     datamanager
     STATIC
+    # customer management
+    customerdata.hpp
+    customerdata.cpp
     # dashboard
     dashboarddata.hpp
     dashboarddata.cpp

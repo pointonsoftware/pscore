@@ -1,6 +1,7 @@
 project (domain)
 
 # Domains
+add_subdirectory (customermgmt)
 add_subdirectory (dashboard)
 add_subdirectory (employeemgmt)
 add_subdirectory (inventory)

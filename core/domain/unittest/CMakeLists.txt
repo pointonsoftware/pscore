@@ -5,6 +5,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
 set (CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -lgcov --coverage ${CMAKE_EXE_LINKER_FLAGS}")
 
 set (SOURCES_UNDER_TEST
+    ${DOMAIN_DIRECTORY}/customermgmt/customermgmtcontroller.cpp
     ${DOMAIN_DIRECTORY}/dashboard/dashboardcontroller.cpp
     ${DOMAIN_DIRECTORY}/employeemgmt/employeecontroller.cpp
     ${DOMAIN_DIRECTORY}/inventory/inventorycontroller.cpp
@@ -15,6 +16,8 @@ add_executable (
     domain_unittest
     ${SOURCES_UNDER_TEST}
     # mocks
+    mock/customermgmt/customermgmtdatamock.hpp
+    mock/customermgmt/customermgmtviewmock.hpp
     mock/dashboard/dashboarddatamock.hpp
     mock/dashboard/dashboardviewmock.hpp
     mock/employeemgmt/empmgmtdatamock.hpp
@@ -25,6 +28,7 @@ add_executable (
     mock/login/loginviewmock.hpp
     # test suites
     test_main.cpp
+    test_customermgmt.cpp
     test_dashboard.cpp
     test_empmgmt.cpp
     test_inventory.cpp

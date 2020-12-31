@@ -14,6 +14,8 @@ add_executable (
     screen/informationscreen.cpp
     screen/screeniface.hpp
     # Back office screen
+    screen/backoffice/customermgmtscreen.hpp
+    screen/backoffice/customermgmtscreen.cpp
     screen/backoffice/dashboardscreen.hpp
     screen/backoffice/dashboardscreen.cpp
     screen/backoffice/empmgmtscreen.hpp
@@ -40,6 +42,7 @@ endif ()
 
 target_link_libraries (
     console_app
+    customermgmt
     dashboard
     datamanager
     empmgmt
