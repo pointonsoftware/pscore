@@ -15,6 +15,8 @@ add_executable (
     domain_unittest
     ${SOURCES_UNDER_TEST}
     # mocks
+    mock/customermgmt/customermgmtdatamock.hpp
+    mock/customermgmt/customermgmtviewmock.hpp
     mock/dashboard/dashboarddatamock.hpp
     mock/dashboard/dashboardviewmock.hpp
     mock/employeemgmt/empmgmtdatamock.hpp
@@ -25,6 +27,7 @@ add_executable (
     mock/login/loginviewmock.hpp
     # test suites
     test_main.cpp
+    test_customermgmt.cpp
     test_dashboard.cpp
     test_empmgmt.cpp
     test_inventory.cpp

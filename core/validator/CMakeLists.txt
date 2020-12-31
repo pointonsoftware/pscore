@@ -24,6 +24,7 @@ add_library (
 
 target_link_libraries (
     validator
+    entity
     utility
     ${MINGW_DEPENDENCY}
 )
