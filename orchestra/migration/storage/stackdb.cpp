@@ -29,6 +29,7 @@ std::vector<StackDB::AddressTableItem> StackDB::ADDRESS_TABLE;
 std::vector<StackDB::ContactDetailsTableItem> StackDB::CONTACTS_TABLE;
 std::vector<StackDB::PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
 std::vector<StackDB::ProductTableItem> StackDB::PRODUCT_TABLE;
+std::vector<StackDB::CustomerTableItem> StackDB::CUSTOMER_TABLE;
 
 StackDB::StackDB() {
     // Admin user
@@ -40,6 +41,7 @@ StackDB::StackDB() {
             ""});                         // No employee ID
     populateEmployees();
     populateProducts();
+    populateCustomers();
 }
 
 void StackDB::populateEmployees() {
@@ -289,6 +291,27 @@ void StackDB::populateProducts() {
             "6.00",                       // Selling Price
             "Pengavator",                 // Supplier name
             "PGVTOR"});                   // Supplier code
+}
+
+void StackDB::populateCustomers() {
+    // If you want to add a customer to our in-memory DB, put it here
+
+    //------- Copy starting from the line below
+    CUSTOMER_TABLE.emplace_back(CustomerTableItem{
+            "CMJD12AB56CD",               // Customer ID <!Make sure this is unique>
+            "John",                       // First name
+            "Trump",                      // Middle name
+            "Doe",                        // Last name
+            "1998/01/04",                 // B-date
+            "M"});                        // Gender
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "CMJD12AB56CD",               // Customer ID <!Same as CustomerID above>
+            "Back St., Boys Back",        // Line 1
+            "Alright",                    // Line 2
+            "Lapu-Lapu City",             // City/Town
+            "Cebu",                       // Province
+            "6015"});                     // ZIP
+    //------- End here
 }
 
 }  // namespace db
