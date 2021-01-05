@@ -60,7 +60,90 @@ void CustomerMgmtScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::customermgmt::createCustomerMgmtModule(
                     std::make_shared<dataprovider::customermgmt::CustomerDataProvider>(),
                     std::make_shared<CustomerMgmtScreen>());
-    promise->set_value(defines::display::DASHBOARD);
+    // Get the customers from Core then cache the list
+    queryCustomersList();
+    // Landing
+    showLandingScreen();
+    /*!
+     * Screen navigation
+     * Stay in the current screen until action() returns false (i.e. switch screen is required)
+    */
+    do {} while (action(getUserSelection(), promise));
+}
+
+void CustomerMgmtScreen::showLandingScreen() const {
+    SCREENCOMMON().showTopBanner("Customer Management");
+    showCustomers();
+    showOptions();
+}
+
+void CustomerMgmtScreen::queryCustomersList() {
+    mTableHelper.setData(mCoreController->list());
+}
+
+void CustomerMgmtScreen::showCustomers() const {
+    std::cout << std::endl;
+    mTableHelper.printTable();
+    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
+}
+
+void CustomerMgmtScreen::showOptions() const {
+    std::cout << std::endl << std::endl;
+    SCREENCOMMON().printColumns({"[b] - Back", "[0] - Logout"}, true, false);
+    std::cout << std::endl;
+}
+
+CustomerMgmtScreen::Options CustomerMgmtScreen::getUserSelection() {
+    std::string userInput;
+    std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
+
+    if (userInput == "x") {
+        return Options::APP_EXIT;
+    } else if (userInput == "b") {
+         // We should return whatever was the previous screen
+        // For now, we will check if the info screen is shown
+        return isShowingDetailsScreen ? Options::LANDING : Options::DASHBOARD;
+    } else if (userInput == "0") {
+        return Options::LOGOUT;
+    }  // add more options here
+
+    // Default invalid option
+    return Options::INVALID;
+}
+
+bool CustomerMgmtScreen::action(Options option, std::promise<defines::display>* nextScreen) {
+    bool switchScreenIsRequired = false;
+    switch (option) {
+        case Options::LANDING:
+            // Warning: There are recurssions inside this switch-case()
+            // These must be considered when doing changes for Options::LANDING
+            queryCustomersList();
+            showLandingScreen();
+            isShowingDetailsScreen = false;  // Must set to false
+            break;
+        case Options::INVALID:
+            invalidOptionSelected();
+            break;
+        case Options::DASHBOARD:
+            switchScreenIsRequired = true;
+            nextScreen->set_value(defines::display::DASHBOARD);
+            break;
+        case Options::LOGOUT:
+            switchScreenIsRequired = true;
+            nextScreen->set_value(defines::display::LOGIN);
+            break;
+        case Options::APP_EXIT:  // Fall-through
+        default:
+            switchScreenIsRequired = true;
+            nextScreen->set_value(defines::display::EXIT);
+            break;
+    }
+    // Return "false" if switch screen is required so we proceed to the next screen
+    return !switchScreenIsRequired;
+}
+
+void CustomerMgmtScreen::invalidOptionSelected() const {
+    std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
 void CustomerMgmtScreen::showListIsEmptyPopup() {
