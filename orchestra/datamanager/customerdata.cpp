@@ -28,8 +28,19 @@ namespace dataprovider {
 namespace customermgmt {
 
 std::vector<entity::Customer> CustomerDataProvider::getCustomers() {
-    // Empty for now
-    return {};
+    // SELECT Customers
+    std::vector<entity::Customer> customers;
+    for (const db::StackDB::CustomerTableItem& temp : DATABASE().SELECT_CUSTOMER_TABLE()) {
+        entity::Customer customer(
+            temp.customerID,
+            temp.firstname,
+            temp.middlename,
+            temp.lastname,
+            temp.birthdate,
+            temp.gender);
+        customers.emplace_back(customer);
+    }
+    return customers;
 }
 
 void CustomerDataProvider::create(const entity::Customer& customer) {

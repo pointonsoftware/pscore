@@ -29,6 +29,7 @@ std::vector<StackDB::AddressTableItem> StackDB::ADDRESS_TABLE;
 std::vector<StackDB::ContactDetailsTableItem> StackDB::CONTACTS_TABLE;
 std::vector<StackDB::PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
 std::vector<StackDB::ProductTableItem> StackDB::PRODUCT_TABLE;
+std::vector<StackDB::CustomerTableItem> StackDB::CUSTOMER_TABLE;
 
 StackDB::StackDB() {
     // Admin user
@@ -40,6 +41,7 @@ StackDB::StackDB() {
             ""});                         // No employee ID
     populateEmployees();
     populateProducts();
+    populateCustomers();
 }
 
 void StackDB::populateEmployees() {
@@ -289,6 +291,87 @@ void StackDB::populateProducts() {
             "6.00",                       // Selling Price
             "Pengavator",                 // Supplier name
             "PGVTOR"});                   // Supplier code
+}
+
+void StackDB::populateCustomers() {
+    // If you want to add a customer to our in-memory DB, put it here
+
+    //------- Copy starting from the line below
+    CUSTOMER_TABLE.emplace_back(CustomerTableItem {
+            "CMJD12AB56CD",               // Customer ID <!Make sure this is unique>
+            "John",                       // First name
+            "Trump",                      // Middle name
+            "Doe",                        // Last name
+            "1998/01/04",                 // B-date
+            "M"});                        // Gender
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "CMJD12AB56CD",               // Customer ID <!Same as CustomerID above>
+            "Back St., Boys Back",        // Line 1
+            "Alright",                    // Line 2
+            "Lapu-Lapu City",             // City/Town
+            "Cebu",                       // Province
+            "6015"});                     // ZIP
+    //------- End here
+
+    CUSTOMER_TABLE.emplace_back(CustomerTableItem {
+            "CMTP25XB56ZD",               // Customer ID <!Make sure this is unique>
+            "Thinking",                   // First name
+            "TP",                         // Middle name
+            "Pinoy",                      // Last name
+            "1995/04/09",                 // B-date
+            "M"});                        // Gender
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "CMTP25XB56ZD",               // Customer ID <!Same as CustomerID above>
+            "Highland St., Longliner",    // Line 1
+            "",                           // Line 2
+            "Some City",                  // City/Town
+            "Davao",                      // Province
+            "6000"});                     // ZIP
+
+    CUSTOMER_TABLE.emplace_back(CustomerTableItem {
+            "CMAR88TR15TC",               // Customer ID <!Make sure this is unique>
+            "April",                      // First name
+            "Boy",                        // Middle name
+            "Regino",                     // Last name
+            "1987/08/05",                 // B-date
+            "M"});                        // Gender
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "CMAR88TR15TC",               // Customer ID <!Same as CustomerID above>
+            "Tondo",                      // Line 1
+            "",                           // Line 2
+            "Metro Manila",               // City/Town
+            "Manila",                     // Province
+            "6000"});                     // ZIP
+
+    CUSTOMER_TABLE.emplace_back(CustomerTableItem {
+            "CMAA95TZ45FR",               // Customer ID <!Make sure this is unique>
+            "Alexa",                      // First name
+            "Speech",                     // Middle name
+            "Amazon",                     // Last name
+            "2001/10/03",                 // B-date
+            "F"});                        // Gender
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "CMAA95TZ45FR",               // Customer ID <!Same as CustomerID above>
+            "SamSam St., Local Area",     // Line 1
+            "",                           // Line 2
+            "Mandaue City",               // City/Town
+            "Cebu",                       // Province
+            "6014"});                     // ZIP
+
+    CUSTOMER_TABLE.emplace_back(CustomerTableItem {
+            "CMJB73YN64LB",               // Customer ID <!Make sure this is unique>
+            "Jeff",                       // First name
+            "Amazon",                     // Middle name
+            "Bezos",                      // Last name
+            "1975/01/12",                 // B-date
+            "M"});                        // Gender
+    ADDRESS_TABLE.emplace_back(AddressTableItem {
+            "CMJB73YN64LB",               // Customer ID <!Same as CustomerID above>
+            "Tabon, Purok 7",             // Line 1
+            "San Francisco",              // Line 2
+            "Dubai",                      // City/Town
+            "Bohol",                      // Province
+            "6314"});                     // ZIP
 }
 
 }  // namespace db

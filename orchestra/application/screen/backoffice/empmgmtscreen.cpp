@@ -92,8 +92,7 @@ void EmployeeMgmtScreen::showEmployees() const {
 
 void EmployeeMgmtScreen::showOptions() const {
     std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"},
-                                 true, false);
+    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
     std::cout << std::endl;
 }
 

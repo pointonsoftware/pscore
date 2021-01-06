@@ -154,6 +154,7 @@ class StackDB {
     static std::vector<CustomerTableItem> CUSTOMER_TABLE;
     void populateEmployees();
     void populateProducts();
+    void populateCustomers();
 };
 
 }  // namespace db

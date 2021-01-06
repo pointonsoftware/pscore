@@ -53,6 +53,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
         USER_DETAILS,
         EMPLOYEE_MGMT,
         INVENTORY_CTRL,
+        CUSTOMER_MGMT,
         // add more enums here
         LOGOUT,
         APP_EXIT,

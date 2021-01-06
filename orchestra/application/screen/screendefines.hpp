@@ -32,7 +32,8 @@ enum class display {
     LOGIN     = 0x101,
     DASHBOARD = 0x214,
     EMPMGMT   = 0x240,
-    INVENTORY = 0x140
+    INVENTORY = 0x140,
+    CUSTMGMT  = 0x810
 };
 
 constexpr unsigned int SCREEN_WIDTH = 80;

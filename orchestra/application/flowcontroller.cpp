@@ -35,6 +35,7 @@
 #include <screencommon.hpp>
 // screens
 #include <login/loginscreen.hpp>
+#include <backoffice/customermgmtscreen.hpp>
 #include <backoffice/dashboardscreen.hpp>
 #include <backoffice/empmgmtscreen.hpp>
 #include <backoffice/inventoryscreen.hpp>
@@ -82,6 +83,9 @@ void FlowController::show(const defines::display& screenToDisplay,
         case defines::display::INVENTORY:
             showInventoryCtrl(promise);
             break;
+        case defines::display::CUSTMGMT:
+            showCustomerMgmt(promise);
+            break;
         case defines::display::EXIT:  // fall-through
         default:
             // this case should not happen
@@ -112,6 +116,12 @@ void FlowController::showEmployeeMgmt(std::promise<defines::display>* promise) {
 void FlowController::showInventoryCtrl(std::promise<defines::display>* promise) {
     backoffice::InventoryScreen theScreen;
     std::thread spawnScreenProcess(&backoffice::InventoryScreen::show, &theScreen, promise);
+    spawnScreenProcess.join();
+}
+
+void FlowController::showCustomerMgmt(std::promise<defines::display>* promise) {
+    backoffice::CustomerMgmtScreen theScreen;
+    std::thread spawnScreenProcess(&backoffice::CustomerMgmtScreen::show, &theScreen, promise);
     spawnScreenProcess.join();
 }
 

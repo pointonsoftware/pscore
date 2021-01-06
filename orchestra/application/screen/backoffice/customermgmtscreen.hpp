@@ -49,6 +49,25 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     void showSuccessfullyRemoved(const std::string& customerName) override;
 
  private:
+       // Screen options - this represents the buttons in a GUI
+    enum class Options {
+        LANDING,
+        DASHBOARD,
+        // add more enums here
+        LOGOUT,
+        APP_EXIT,
+        INVALID
+        // Warning! Don't add anything here.
+        // New enum values must be added before LOGOUT
+    };
+    void showLandingScreen() const;
+    void queryCustomersList();
+    void showCustomers() const;
+    void showOptions() const;
+    Options getUserSelection();
+    bool action(Options option, std::promise<defines::display>* nextScreen);
+    void invalidOptionSelected() const;
+
     std::unique_ptr<domain::customermgmt::CustomerManagementControlInterface> mCoreController;
     app::utility::TableHelper<entity::Customer> mTableHelper;
     bool isShowingDetailsScreen;
