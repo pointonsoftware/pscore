@@ -53,8 +53,21 @@ class TestCustomerMgmt : public testing::Test {
     CustomerManagementController controller;
 };
 
-TEST_F(TestCustomerMgmt, TestSuccess) {
-    SUCCEED() << "Successful";
+TEST_F(TestCustomerMgmt, TestGetCustomersList) {
+    // Fake that there is at least one customer data on record
+    EXPECT_CALL(*dpMock, getCustomers())
+        .WillOnce(Return(std::vector<entity::Customer>{entity::Customer()}));
+    // The list should not be empty
+    ASSERT_FALSE(controller.list().empty());
+}
+
+TEST_F(TestCustomerMgmt, TestGetCustomersListEmpty) {
+    // Fake that there is no customer data on record
+    EXPECT_CALL(*dpMock, getCustomers())
+        .WillOnce(Return(std::vector<entity::Customer>{}));
+    EXPECT_CALL(*viewMock, showListIsEmptyPopup());
+    // The list should be empty
+    ASSERT_TRUE(controller.list().empty());
 }
 
 }  // namespace test
