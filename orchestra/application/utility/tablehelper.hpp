@@ -76,12 +76,16 @@ class TableHelper {
     inline void printTable() const {
         SCREENCOMMON().printColumns(mColumns, true);
         if (!mTableList.empty()) {
-            for (unsigned int index = 0; index < mTableList.size(); ++index) {
-                SCREENCOMMON().printColumns({std::string("[" + std::to_string(index + 1) + "] "
-                                            + mColumnData[0](mTableList[index])),
-                                            mColumnData[1](mTableList[index]),
-                                            mColumnData[2](mTableList[index]),
-                                            mColumnData[3](mTableList[index])});
+            // Print rows
+            for (unsigned int rowIndex = 0; rowIndex < mTableList.size(); ++rowIndex) {
+                // Print columns of each row
+                std::vector<std::string> column =
+                    { std::string("[" + std::to_string(rowIndex + 1) + "] "
+                                                + mColumnData[0](mTableList[rowIndex])) };
+                for (unsigned int columnIndex = 1; columnIndex < mColumns.size(); ++columnIndex) {
+                    column.emplace_back(mColumnData[columnIndex](mTableList[rowIndex]));
+                }
+                SCREENCOMMON().printColumns(column);
             }
         } else {
             SCREENCOMMON().printTitleText("No data.");

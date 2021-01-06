@@ -26,9 +26,8 @@
 namespace domain {
 namespace customermgmt {
 
-CustomerManagementController::CustomerManagementController(
-            const CustomerMgmtDataPtr& data,
-            const CustomerMgmtViewPtr& view) {
+CustomerManagementController::CustomerManagementController(const CustomerMgmtDataPtr& data,
+                                                           const CustomerMgmtViewPtr& view) {
     if ((data == nullptr) || (view == nullptr)) {
         throw std::invalid_argument("Received a nulltpr argument");
     }
@@ -38,6 +37,13 @@ CustomerManagementController::CustomerManagementController(
 
 std::vector<entity::Customer> CustomerManagementController::list() {
     LOG_DEBUG("Getting the list of customers");
+    mCachedList = mDataProvider->getCustomers();
+    if (mCachedList.empty()) {
+        LOG_WARN("There are no customers on record");
+        mView->showListIsEmptyPopup();
+        return {};
+    }
+    LOG_INFO("Successfully retrieved customers list. Size: %d", mCachedList.size());
     return mCachedList;
 }
 
