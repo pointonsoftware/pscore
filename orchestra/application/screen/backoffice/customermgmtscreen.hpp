@@ -53,6 +53,7 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     enum class Options {
         LANDING,
         DASHBOARD,
+        CUSTOMER_DETAILS,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -63,6 +64,7 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     void showLandingScreen() const;
     void queryCustomersList();
     void showCustomers() const;
+    void showCustomerDetails(bool showIndex = false) const;
     void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);

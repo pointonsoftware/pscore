@@ -49,7 +49,14 @@ std::vector<entity::Customer> CustomerManagementController::list() {
 
 entity::Customer CustomerManagementController::get(const std::string& id) {
     LOG_DEBUG("Getting customer %s data", id.c_str());
-    return entity::Customer{};
+    const std::vector<entity::Customer>::iterator& iter = find(id);
+    if (iter != mCachedList.end()) {
+        LOG_INFO("Found customer %s", id.c_str());
+        return *iter;
+    } else {
+        LOG_ERROR("Requested customer was not found");
+        return entity::Customer{};
+    }
 }
 
 CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer& customer,
@@ -94,6 +101,11 @@ void CustomerManagementController::dumpValidationResult(
 CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id) {
     LOG_DEBUG("Removing customer %s", id.c_str());
     return CUSTOMERMGMTAPISTATUS::SUCCESS;
+}
+
+std::vector<entity::Customer>::iterator CustomerManagementController::find(const std::string& id) {
+    return std::find_if(mCachedList.begin(), mCachedList.end(),
+                [&id](const entity::Customer& e) { return e.ID() == id; });
 }
 
 CustomerMgmtControllerPtr createCustomerMgmtModule(

@@ -57,4 +57,14 @@ void InformationScreen<entity::Product>::showBasicInformation() {  // specialize
     printItem("Suppl. Code", mInfo->supplierCode());
 }
 
+template <>
+void InformationScreen<entity::Customer>::showBasicInformation() {  // specialize for customer
+    SCREENCOMMON().printColumns({"ID: " + mInfo->ID()}, true);
+    printItem("First Name", mInfo->firstName());
+    printItem("Middle Name", mInfo->middleName());
+    printItem("Last Name", mInfo->lastName());
+    printItem("Birthdate", mInfo->birthdate());
+    printItem("Gender", mInfo->gender());
+}
+
 }  // namespace screen

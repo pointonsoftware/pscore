@@ -36,6 +36,9 @@ class CustomerDataProvider : public domain::customermgmt::CustomerManagementData
     void create(const entity::Customer& customer) override;
     void update(const entity::Customer& customer) override;
     void remove(const std::string& id) override;
+
+ private:
+    void fillOtherDetails(entity::Customer* customer) const;
 };
 
 }  // namespace customermgmt

@@ -24,6 +24,7 @@
 #include <iostream>
 #include <string>
 #include "screendefines.hpp"
+#include <entity/customer.hpp>
 #include <entity/employee.hpp>
 #include <entity/product.hpp>
 #include <entity/user.hpp>
@@ -45,7 +46,7 @@ class InformationScreen {
         printItem("Email", mInfo->contactDetails().email);
     }
 
-    void showUserAddress() {
+    void showAddress() {
         SCREENCOMMON().printColumns({"Address"}, true);
         printItem("Address 1", mInfo->address().line1);
         printItem("Address 2", mInfo->address().line2);
@@ -54,7 +55,7 @@ class InformationScreen {
         printItem("Zip Code", mInfo->address().zip);
     }
 
-    void showUserPersonalIds() {
+    void showPersonalIds() {
         SCREENCOMMON().printColumns({"Personal Identification"}, true);
         for (size_t count = 1; count <= mInfo->personalIds().size(); ++count) {
             const std::string details(mInfo->personalIds()[count-1].type
