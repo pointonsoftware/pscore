@@ -33,7 +33,7 @@
 namespace screen {
 namespace backoffice {
 
-// Product fields
+// Customer fields
 const std::vector<std::string> CustomerMgmtScreen::domainFields {
         "Person.First.Name",
         "Person.Middle.Name",
@@ -87,6 +87,18 @@ void CustomerMgmtScreen::showCustomers() const {
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
+void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
+    const entity::Customer& selectedCustomer = mTableHelper.getSelectedData();
+    SCREENCOMMON().showTopBanner("Customer Information");
+    screen::InformationScreen<entity::Customer> infoScreen(selectedCustomer);
+    infoScreen.showItemIndex(showIndex);
+    infoScreen.showBasicInformation();
+    infoScreen.showAddress();
+    infoScreen.showContactDetails();
+    infoScreen.showPersonalIds();
+    infoScreen.showOptions();
+}
+
 void CustomerMgmtScreen::showOptions() const {
     std::cout << std::endl << std::endl;
     SCREENCOMMON().printColumns({"[b] - Back", "[0] - Logout"}, true, false);
@@ -105,6 +117,14 @@ CustomerMgmtScreen::Options CustomerMgmtScreen::getUserSelection() {
         return isShowingDetailsScreen ? Options::LANDING : Options::DASHBOARD;
     } else if (userInput == "0") {
         return Options::LOGOUT;
+    } else if (utility::isNumber(userInput) && !isShowingDetailsScreen) {
+        // Check if input is within the valid indexes
+        uint8_t input = std::stoi(userInput) - 1;
+        if (input < mTableHelper.getDataCount()) {
+            // Store user input as the selected index (zero based)
+            mTableHelper.setCurrentIndex(input);
+            return Options::CUSTOMER_DETAILS;
+        }
     }  // add more options here
 
     // Default invalid option
@@ -123,6 +143,10 @@ bool CustomerMgmtScreen::action(Options option, std::promise<defines::display>* 
             break;
         case Options::INVALID:
             invalidOptionSelected();
+            break;
+        case Options::CUSTOMER_DETAILS:
+            showCustomerDetails();
+            isShowingDetailsScreen = true;  // Must set to true
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;

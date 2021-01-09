@@ -84,8 +84,8 @@ TEST_F(TestInventory, TestGetProductData) {
                                 "", "", "", "")}));
     // Cache the list
     inventoryController.list();
-    // Should return a valid product data (valid SKU)
-    ASSERT_FALSE(inventoryController.getProduct(requestedBarcode).sku().empty());
+    // Should return a valid product data (valid barcode)
+    ASSERT_FALSE(inventoryController.getProduct(requestedBarcode).barcode().empty());
 }
 
 TEST_F(TestInventory, TestGetProductDataNotFound) {
@@ -99,8 +99,8 @@ TEST_F(TestInventory, TestGetProductDataNotFound) {
                                 "", "", "", "")}));
     // Cache the list
     inventoryController.list();
-    // Should return an empty product data (empty SKU)
-    ASSERT_TRUE(inventoryController.getProduct(requestedBarcode).sku().empty());
+    // Should return an empty product data (empty barcode)
+    ASSERT_TRUE(inventoryController.getProduct(requestedBarcode).barcode().empty());
 }
 
 TEST_F(TestInventory, TestRemoveProduct) {

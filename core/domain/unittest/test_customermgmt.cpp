@@ -70,6 +70,35 @@ TEST_F(TestCustomerMgmt, TestGetCustomersListEmpty) {
     ASSERT_TRUE(controller.list().empty());
 }
 
+TEST_F(TestCustomerMgmt, TestGetCustomerData) {
+    const std::string requestedID = "CMAA95TZ45FR";
+    // Fake that the customer data is saved on record
+    EXPECT_CALL(*dpMock, getCustomers())
+        .WillOnce(Return(
+            std::vector<entity::Customer>{
+                entity::Customer(requestedID, "DummyFName", "DummyMName", "DummyLName",
+                "DummyBDate", "DummyGender")}));
+    // Cache the list
+    controller.list();
+    // Should return a valid customer data (valid ID)
+    ASSERT_FALSE(controller.get(requestedID).ID().empty());
+}
+
+TEST_F(TestCustomerMgmt, TestGetCustomerDataNotFound) {
+    const std::string requestedID = "CMAA95TZ45FR";
+    const std::string storedCustomer = "CMJB73YN64LB";
+    // Fake that we only have a customer with barcode CMJB73YN64LB
+    EXPECT_CALL(*dpMock, getCustomers())
+        .WillOnce(Return(
+            std::vector<entity::Customer>{
+                entity::Customer(storedCustomer, "DummyFName", "DummyMName", "DummyLName",
+                                "DummyBDate", "DummyGender")}));
+    // Cache the list
+    controller.list();
+    // Should return a valid customer data (valid ID)
+    ASSERT_TRUE(controller.get(requestedID).ID().empty());
+}
+
 }  // namespace test
 }  // namespace customermgmt
 }  // namespace domain

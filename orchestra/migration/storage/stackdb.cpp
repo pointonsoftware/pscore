@@ -311,6 +311,15 @@ void StackDB::populateCustomers() {
             "Lapu-Lapu City",             // City/Town
             "Cebu",                       // Province
             "6015"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "CMJD12AB56CD",               // Customer ID <!Same as CustomerID above>
+            "",                           // Email
+            "09123334567",                // Contact number 1
+            ""});                         // Contact number 2
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "CMJD12AB56CD",               // Customer ID <!Same as CustomerID above>
+            "SSS",                        // Type
+            "014-135-188-813"});          // ID-number
     //------- End here
 
     CUSTOMER_TABLE.emplace_back(CustomerTableItem {
@@ -327,6 +336,15 @@ void StackDB::populateCustomers() {
             "Some City",                  // City/Town
             "Davao",                      // Province
             "6000"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "CMTP25XB56ZD",               // Customer ID <!Same as CustomerID above>
+            "",                           // Email
+            "09181113245",                // Contact number 1
+            ""});                         // Contact number 2
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "CMTP25XB56ZD",               // Customer ID <!Same as CustomerID above>
+            "SSS",                        // Type
+            "014-135-188-813"});          // ID-number
 
     CUSTOMER_TABLE.emplace_back(CustomerTableItem {
             "CMAR88TR15TC",               // Customer ID <!Make sure this is unique>
@@ -342,6 +360,15 @@ void StackDB::populateCustomers() {
             "Metro Manila",               // City/Town
             "Manila",                     // Province
             "6000"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "CMAR88TR15TC",               // Customer ID <!Same as CustomerID above>
+            "",                           // Email
+            "09181113245",                // Contact number 1
+            ""});                         // Contact number 2
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "CMAR88TR15TC",               // Customer ID <!Same as CustomerID above>
+            "SSS",                        // Type
+            "014-135-188-813"});          // ID-number
 
     CUSTOMER_TABLE.emplace_back(CustomerTableItem {
             "CMAA95TZ45FR",               // Customer ID <!Make sure this is unique>
@@ -357,6 +384,15 @@ void StackDB::populateCustomers() {
             "Mandaue City",               // City/Town
             "Cebu",                       // Province
             "6014"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "CMAA95TZ45FR",               // Customer ID <!Same as CustomerID above>
+            "",                           // Email
+            "09181113245",                // Contact number 1
+            ""});                         // Contact number 2
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "CMAA95TZ45FR",               // Customer ID <!Same as CustomerID above>
+            "SSS",                        // Type
+            "014-135-188-813"});          // ID-number
 
     CUSTOMER_TABLE.emplace_back(CustomerTableItem {
             "CMJB73YN64LB",               // Customer ID <!Make sure this is unique>
@@ -372,6 +408,15 @@ void StackDB::populateCustomers() {
             "Dubai",                      // City/Town
             "Bohol",                      // Province
             "6314"});                     // ZIP
+    CONTACTS_TABLE.emplace_back(ContactDetailsTableItem {
+            "CMJB73YN64LB",               // Customer ID <!Same as CustomerID above>
+            "",                           // Email
+            "09181113245",                // Contact number 1
+            ""});                         // Contact number 2
+    PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
+            "CMJB73YN64LB",               // Customer ID <!Same as CustomerID above>
+            "SSS",                        // Type
+            "014-135-188-813"});          // ID-number
 }
 
 }  // namespace db

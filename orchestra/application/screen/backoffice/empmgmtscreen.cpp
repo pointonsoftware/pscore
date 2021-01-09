@@ -113,9 +113,9 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
          * the entity fields in EmployeeMgmtScreen::getEntityField()
         */
         infoScreen.showBasicInformation();
-        infoScreen.showUserAddress();
+        infoScreen.showAddress();
         infoScreen.showContactDetails();
-        infoScreen.showUserPersonalIds();
+        infoScreen.showPersonalIds();
 
         // Show user data
         if (selectedEmployee.isSystemUser()) {

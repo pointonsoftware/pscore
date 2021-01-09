@@ -38,6 +38,7 @@ std::vector<entity::Customer> CustomerDataProvider::getCustomers() {
             temp.lastname,
             temp.birthdate,
             temp.gender);
+        fillOtherDetails(&customer);
         customers.emplace_back(customer);
     }
     return customers;
@@ -53,6 +54,49 @@ void CustomerDataProvider::update(const entity::Customer& customer) {
 
 void CustomerDataProvider::remove(const std::string& id) {
     // Empty for now
+}
+
+void CustomerDataProvider::fillOtherDetails(entity::Customer* customer) const {
+        // Get Address
+        [&customer]() {
+            const std::vector<db::StackDB::AddressTableItem>::iterator it =
+                    std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
+                            DATABASE().SELECT_ADDRESS_TABLE().end(),
+                            [&customer](const db::StackDB::AddressTableItem& e) {
+                               return e.ID == customer->ID();
+                            });
+            if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
+                customer->setAddress({
+                    it->line1,
+                    it->line2,
+                    it->city_town,
+                    it->province,
+                    it->zip,
+                });
+            }
+        }();
+        // Get Contact details
+        [&customer]() {
+            const std::vector<db::StackDB::ContactDetailsTableItem>::iterator it =
+                    std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
+                                DATABASE().SELECT_CONTACTS_TABLE().end(),
+                                [&customer](const db::StackDB::ContactDetailsTableItem& e) {
+                                    return e.ID == customer->ID();
+                                });
+            if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
+                customer->setPhoneNumbers(it->phone_number_1, it->phone_number_2);
+                customer->setEmail(it->email);
+            }
+        }();
+        // Get personal IDs
+        [&customer]() {
+            for (const db::StackDB::PersonalIdTableItem& e :
+                 DATABASE().SELECT_PERSONAL_ID_TABLE()) {
+                if (e.ID == customer->ID()) {
+                    customer->addPersonalId(e.type, e.id_number);
+                }
+            }
+        }();
 }
 
 }  // namespace customermgmt

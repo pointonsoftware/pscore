@@ -81,8 +81,8 @@ void DashboardScreen::showUserInformation() const {
         screen::InformationScreen<entity::Employee> userInfoScreen(emp);
         userInfoScreen.showBasicInformation();
         userInfoScreen.showContactDetails();
-        userInfoScreen.showUserAddress();
-        userInfoScreen.showUserPersonalIds();
+        userInfoScreen.showAddress();
+        userInfoScreen.showPersonalIds();
         // Show user data
         {
             screen::InformationScreen<entity::User> userDataScreen(mCurrentUser);
