@@ -79,7 +79,7 @@ class InventoryScreen : public screen::ScreenInterface,
     void fillProductInformation(entity::Product* product,
                                 const std::vector<std::string>& requiredFields) const;
 
-    std::unique_ptr<domain::inventory::InventoryControlInterface> mInventoryController;
+    domain::inventory::InventoryControllerPtr mInventoryController;
     app::utility::TableHelper<entity::Product> mTableHelper;
     bool isShowingDetailsScreen;
     static const std::vector<std::string> productDomainFields;
