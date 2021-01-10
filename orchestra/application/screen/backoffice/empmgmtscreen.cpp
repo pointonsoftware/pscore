@@ -292,7 +292,7 @@ void EmployeeMgmtScreen::updateEmployee() {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
             }
-        } while (!validationResult.empty());  // repeat input until new employee is created
+        } while (!validationResult.empty());  // repeat input until data is updated
         mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);
     }
 }

@@ -100,8 +100,12 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer&
         dumpValidationResult(*(validationResult));
         return CUSTOMERMGMTAPISTATUS::FAILED;
     }
-    // Todo: decide if it's a create or update request
-    create(customer);
+    // Decide if it's a create or update request
+    if (isExists(customer.ID())) {
+        update(customer);
+    } else {
+        create(customer);
+    }
     return CUSTOMERMGMTAPISTATUS::SUCCESS;
 }
 
@@ -132,6 +136,40 @@ void CustomerManagementController::create(const entity::Customer& data) {
 
 void CustomerManagementController::update(const entity::Customer& customer) {
     LOG_DEBUG("Updating customer data", customer.ID().c_str());
+    // Update actual data
+    mDataProvider->update(customer);
+    // Update cache list
+    const std::vector<entity::Customer>::iterator it = find(customer.ID());
+    *it = customer;
+    LOG_INFO("Customer %s information updated", customer.ID().c_str());
+}
+
+CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id) {
+    LOG_DEBUG("Removing customer %s", id.c_str());
+    const std::vector<entity::Customer>::iterator it = find(id);
+    if (it == mCachedList.end()) {
+        LOG_ERROR("Customer with ID %s was not found in the cache list", id.c_str());
+        mView->showDataNotReadyScreen();
+        return CUSTOMERMGMTAPISTATUS::NOT_FOUND;
+    }
+    mDataProvider->remove(id);
+    /*!
+     * Todo (code) - check if mDataProvider successfully removed the customer
+     * E.g. failure: mDataprovider lost db connection
+    */
+    // Remove from cache
+    mCachedList.erase(it);
+    mView->showSuccessfullyRemoved(id);
+    return CUSTOMERMGMTAPISTATUS::SUCCESS;
+}
+
+bool CustomerManagementController::isExists(const std::string& id) {
+    return find(id) != mCachedList.end();
+}
+
+std::vector<entity::Customer>::iterator CustomerManagementController::find(const std::string& id) {
+    return std::find_if(mCachedList.begin(), mCachedList.end(),
+                [&id](const entity::Customer& e) { return e.ID() == id; });
 }
 
 void CustomerManagementController::dumpValidationResult(
@@ -140,16 +178,6 @@ void CustomerManagementController::dumpValidationResult(
     for (auto const &result : validationErrors) {
         LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
     }
-}
-
-CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id) {
-    LOG_DEBUG("Removing customer %s", id.c_str());
-    return CUSTOMERMGMTAPISTATUS::SUCCESS;
-}
-
-std::vector<entity::Customer>::iterator CustomerManagementController::find(const std::string& id) {
-    return std::find_if(mCachedList.begin(), mCachedList.end(),
-                [&id](const entity::Customer& e) { return e.ID() == id; });
 }
 
 CustomerMgmtControllerPtr createCustomerMgmtModule(
