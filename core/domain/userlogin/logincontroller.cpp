@@ -28,8 +28,8 @@
 namespace domain {
 namespace login {
 
-LoginController::LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
-                                 const std::shared_ptr<LoginViewIface>& view) {
+LoginController::LoginController(const LoginDataPtr& dataprovider,
+                                 const LoginViewPtr& view) {
     if ((dataprovider == nullptr) || (view == nullptr)) {
         throw std::invalid_argument("Received a nulltpr argument");
     }
@@ -106,9 +106,8 @@ bool LoginController::isUserValid(const entity::User& userInfo) const {
     return !userInfo.userID().empty();
 }
 
-std::unique_ptr<LoginControlInterface> createLoginModule(
-    const std::shared_ptr<LoginDataProviderIface>& dataprovider,
-    const std::shared_ptr<LoginViewIface>& view) {
+LoginControllerPtr createLoginModule(const LoginDataPtr& dataprovider,
+                                     const LoginViewPtr& view) {
     return std::make_unique<LoginController>(dataprovider, view);
 }
 

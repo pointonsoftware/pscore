@@ -40,10 +40,13 @@ class LoginControlInterface {
     virtual bool authenticate(const std::string& id, const std::string& pin) = 0;
 };
 
+typedef std::shared_ptr<LoginDataProviderIface> LoginDataPtr;
+typedef std::shared_ptr<LoginViewIface> LoginViewPtr;
+typedef std::unique_ptr<LoginControlInterface> LoginControllerPtr;
+
 // Lib APIs
-extern "C" CORE_API std::unique_ptr<LoginControlInterface> createLoginModule(
-    const std::shared_ptr<LoginDataProviderIface>& dataprovider,
-    const std::shared_ptr<LoginViewIface>& view);
+extern "C" CORE_API LoginControllerPtr createLoginModule
+                    (const LoginDataPtr& dataprovider, const LoginViewPtr& view);
 
 }  // namespace login
 }  // namespace domain
