@@ -54,6 +54,7 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
         LANDING,
         DASHBOARD,
         CUSTOMER_DETAILS,
+        CUSTOMER_CREATE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -65,10 +66,13 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     void queryCustomersList();
     void showCustomers() const;
     void showCustomerDetails(bool showIndex = false) const;
+    void createCustomer();
     void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
     void invalidOptionSelected() const;
+    void fillCustomerInformation(entity::Customer* customer,
+                                 const std::vector<std::string>& requiredFields) const;
 
     std::unique_ptr<domain::customermgmt::CustomerManagementControlInterface> mCoreController;
     app::utility::TableHelper<entity::Customer> mTableHelper;

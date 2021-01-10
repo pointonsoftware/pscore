@@ -20,7 +20,11 @@
 **************************************************************************************************/
 #include "customermgmtcontroller.hpp"
 #include <memory>
+#include <generator/chargenerator.hpp>
 #include <logger/loghelper.hpp>
+#include <validator/addressvalidator.hpp>
+#include <validator/contactdetailsvalidator.hpp>
+#include <validator/personalidvalidator.hpp>
 #include <validator/personvalidator.hpp>
 
 namespace domain {
@@ -68,22 +72,62 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer&
     }
     // Cleanup the container
     validationResult->clear();
-    // Validate fields
+    // Validate customer
     {
         LOG_DEBUG("Validating fields");
         entity::validator::PersonValidator validator(customer);
         validationResult->merge(validator.result());
+    }
+    // validate address
+    {
+        entity::validator::AddressValidator validator(customer.address());
+        validationResult->merge(validator.result());
+    }
+    // validate contact information
+    {
+        entity::validator::ContactDetailsValidator validator(customer.contactDetails());
+        validationResult->merge(validator.result());
+    }
+    // validate ID
+    {
+        for (const entity::PersonalId& personalId : customer.personalIds()) {
+            entity::validator::PersonalIDValidator validator(personalId);
+            validationResult->merge(validator.result());
+        }
     }
     if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
         dumpValidationResult(*(validationResult));
         return CUSTOMERMGMTAPISTATUS::FAILED;
     }
+    // Todo: decide if it's a create or update request
+    create(customer);
     return CUSTOMERMGMTAPISTATUS::SUCCESS;
 }
 
-void CustomerManagementController::create(const entity::Customer& customer) {
-    LOG_DEBUG("Creating customer data", customer.ID().c_str());
+void CustomerManagementController::create(const entity::Customer& data) {
+    // Gnerate ID and create a new customer
+    entity::Customer newCustomer(
+        // Todo (code) - need to ensure this ID is unique
+        utility::chargenerator::generateCustomerID(data.firstName(), data.lastName()),
+        data.firstName(), data.middleName(), data.lastName(), data.birthdate(),
+        data.gender());
+    newCustomer.setAddress(data.address());
+    newCustomer.setPhoneNumbers(data.contactDetails().phone_number_1,
+                                data.contactDetails().phone_number_2);
+    for (const entity::PersonalId& id : data.personalIds()) {
+        newCustomer.addPersonalId(id.type, id.id_number);
+    }
+    LOG_DEBUG("Creating customer data %s", newCustomer.ID().c_str());
+    // Adding new customer
+    mDataProvider->create(newCustomer);
+    /*!
+     * Todo (code) - add checking if create is successful from dataprovider
+     * before updating the cache
+    */
+    mCachedList.emplace_back(newCustomer);
+    LOG_INFO("Customer %s %s added", newCustomer.firstName().c_str(),
+                                     newCustomer.lastName().c_str());
 }
 
 void CustomerManagementController::update(const entity::Customer& customer) {

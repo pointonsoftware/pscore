@@ -99,9 +99,99 @@ void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
     infoScreen.showOptions();
 }
 
+void CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
+                         const std::vector<std::string>& requiredFields) const {
+    app::utility::FieldHelper fieldHelper(requiredFields);
+    // Basic info
+    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setFirstName, customer,
+        std::placeholders::_1), "First Name", fieldHelper.requires("Person.First.Name"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setMiddleName, customer,
+        std::placeholders::_1), "Middle Name", fieldHelper.requires("Person.Middle.Name"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setLastName, customer,
+        std::placeholders::_1), "Last Name", fieldHelper.requires("Person.Last.Name"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setBirthdate, customer,
+        std::placeholders::_1), "Birthdate (yyyy/mm/dd)", fieldHelper.requires("Person.Birthdate"));
+    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setGender, customer,
+        std::placeholders::_1), "Gender (M/F)", fieldHelper.requires("Person.Gender"));
+    // Address
+    {
+        entity::Address address = customer->address();
+        if (fieldHelper.requires("Address.Line1")) {
+            address.line1 = SCREENCOMMON().getInput("Address 1");
+        }
+        if (fieldHelper.requires("Address.Line2")) {
+            address.line2 = SCREENCOMMON().getInput("Address 2");
+        }
+        if (fieldHelper.requires("Address.CityTown")) {
+            address.city_town = SCREENCOMMON().getInput("City/Town");
+        }
+        if (fieldHelper.requires("Address.Province")) {
+            address.province = SCREENCOMMON().getInput("Province");
+        }
+        if (fieldHelper.requires("Address.Zip")) {
+            address.zip = SCREENCOMMON().getInput("Zip");
+        }
+        customer->setAddress(address);
+    }
+    // Contact details
+    {
+        entity::ContactDetails contactDetails = customer->contactDetails();
+        if (fieldHelper.requires("ContactDetails.Phone1")) {
+            contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
+        }
+        if (fieldHelper.requires("ContactDetails.Phone2")) {
+            contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
+        }
+        if (fieldHelper.requires("ContactDetails.Email")) {
+            contactDetails.email = SCREENCOMMON().getInput("Email Address");
+        }
+        customer->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
+        customer->setEmail(contactDetails.email);
+    }
+    // Ask if user wants to input a valid/government ID
+    if (fieldHelper.requires("PersonalId.Type") || fieldHelper.requires("PersonalId.Number")) {
+        entity::PersonalId personalId;
+        // We're creating a new customer, ask if the customer has a Valid ID
+        bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
+
+        if (idFieldsRequired) {
+            if (fieldHelper.requires("PersonalId.Type")) {
+                personalId.type = SCREENCOMMON().getInput("ID Type");
+            }
+            if (fieldHelper.requires("PersonalId.Number")) {
+                personalId.id_number = SCREENCOMMON().getInput("ID Number");
+            }
+            // Add a new one
+            customer->addPersonalId(personalId.type, personalId.id_number);
+        }
+    }
+}
+
+void CustomerMgmtScreen::createCustomer() {
+    SCREENCOMMON().showTopBanner("Create Customer");
+    std::cout << "Type [space] for an empty entry" << std::endl;
+    std::vector<std::string> requiredFields;  // Used to request re-input of failed fields
+    entity::Customer newCustomer;
+    do {
+        // Input customer details
+        fillCustomerInformation(&newCustomer, requiredFields);
+        // Reset after filling the fields
+        requiredFields.clear();
+
+        std::map<std::string, std::string> validationResult;
+        if (mCoreController->save(newCustomer, &validationResult)
+            != domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
+            requiredFields = app::util::extractMapKeys(validationResult);
+            SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
+        } else {
+            std::cout << "Customer created successfully!" << std::endl;
+        }
+    } while (!requiredFields.empty());  // repeat input until new customer is created
+}
+
 void CustomerMgmtScreen::showOptions() const {
     std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[0] - Logout"}, true, false);
+    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
     std::cout << std::endl;
 }
 
@@ -125,6 +215,8 @@ CustomerMgmtScreen::Options CustomerMgmtScreen::getUserSelection() {
             mTableHelper.setCurrentIndex(input);
             return Options::CUSTOMER_DETAILS;
         }
+    } else if (userInput == "c" && !isShowingDetailsScreen) {
+            return Options::CUSTOMER_CREATE;
     }  // add more options here
 
     // Default invalid option
@@ -147,6 +239,11 @@ bool CustomerMgmtScreen::action(Options option, std::promise<defines::display>* 
         case Options::CUSTOMER_DETAILS:
             showCustomerDetails();
             isShowingDetailsScreen = true;  // Must set to true
+            break;
+        case Options::CUSTOMER_CREATE:
+            createCustomer();
+            // Go back to landing screen after creating the customer
+            action(Options::LANDING, nextScreen);
             break;
         case Options::DASHBOARD:
             switchScreenIsRequired = true;

@@ -43,17 +43,166 @@ std::vector<entity::Customer> CustomerDataProvider::getCustomers() {
     }
     return customers;
 }
-
+void CustomerDataProvider::writeOtherDetails(const entity::Customer& customer) const {
+    DATABASE().SELECT_ADDRESS_TABLE().emplace_back(db::StackDB::AddressTableItem {
+            customer.ID(),
+            customer.address().line1,
+            customer.address().line2,
+            customer.address().city_town,
+            customer.address().province,
+            customer.address().zip});
+    DATABASE().SELECT_CONTACTS_TABLE().emplace_back(db::StackDB::ContactDetailsTableItem {
+            customer.ID(),
+            customer.contactDetails().email,
+            customer.contactDetails().phone_number_1,
+            customer.contactDetails().phone_number_2});
+    for (unsigned int i = 0; i < customer.personalIds().size(); i++) {
+        DATABASE().SELECT_PERSONAL_ID_TABLE().emplace_back(db::StackDB::PersonalIdTableItem {
+                customer.ID(),
+                customer.personalIds()[i].type,
+                customer.personalIds()[i].id_number});
+    }
+}
 void CustomerDataProvider::create(const entity::Customer& customer) {
-    // Empty for now
+    if (std::find_if(DATABASE().SELECT_CUSTOMER_TABLE().begin(),
+                            DATABASE().SELECT_CUSTOMER_TABLE().end(),
+                            [&customer](const db::StackDB::CustomerTableItem& c) {
+                               return c.customerID == customer.ID();
+                            }) != DATABASE().SELECT_CUSTOMER_TABLE().end()) {
+        // If ID exists, don't proceed!
+        return;
+    }
+    DATABASE().SELECT_CUSTOMER_TABLE().emplace_back(db::StackDB::CustomerTableItem {
+            customer.ID(),
+            customer.firstName(),
+            customer.middleName(),
+            customer.lastName(),
+            customer.birthdate(),
+            customer.gender()});
+
+    writeOtherDetails(customer);
 }
 
 void CustomerDataProvider::update(const entity::Customer& customer) {
-    // Empty for now
+    // Updating customer basic info
+    {
+        std::vector<db::StackDB::CustomerTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_CUSTOMER_TABLE().begin(),
+                                    DATABASE().SELECT_CUSTOMER_TABLE().end(),
+                                    [&customer](const db::StackDB::CustomerTableItem& c) {
+                                        // We only match the customer ID for updating
+                                        return c.customerID == customer.ID();
+                                    });
+        if (it == DATABASE().SELECT_CUSTOMER_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::CustomerTableItem {
+                customer.ID(),
+                customer.firstName(),
+                customer.middleName(),
+                customer.lastName(),
+                customer.birthdate(),
+                customer.gender()};
+    }
+    // Updating customer address
+    {
+        std::vector<db::StackDB::AddressTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
+                                    DATABASE().SELECT_ADDRESS_TABLE().end(),
+                                    [&customer](const db::StackDB::AddressTableItem& e) {
+                                        // We only match the ID for updating
+                                        return e.ID == customer.ID();
+                                    });
+        if (it == DATABASE().SELECT_ADDRESS_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::AddressTableItem {
+            customer.ID(),
+            customer.address().line1,
+            customer.address().line2,
+            customer.address().city_town,
+            customer.address().province,
+            customer.address().zip};
+    }
+    // Updating customer contacts
+    {
+        std::vector<db::StackDB::ContactDetailsTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
+                                    DATABASE().SELECT_CONTACTS_TABLE().end(),
+                                    [&customer](const db::StackDB::ContactDetailsTableItem& e) {
+                                        // We only match the customer ID for updating
+                                        return e.ID == customer.ID();
+                                    });
+        if (it == DATABASE().SELECT_CONTACTS_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::ContactDetailsTableItem {
+            customer.ID(),
+            customer.contactDetails().email,
+            customer.contactDetails().phone_number_1,
+            customer.contactDetails().phone_number_2};
+    }
+    // Updating customer personal ID
+    {
+        // Todo (code) - currently supports updating the first personal ID only
+        std::vector<db::StackDB::PersonalIdTableItem>::iterator it =
+            std::find_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
+                                    DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
+                                    [&customer](const db::StackDB::PersonalIdTableItem& e) {
+                                        // We only match the customer ID for updating
+                                        return e.ID == customer.ID();
+                                    });
+        if (it == DATABASE().SELECT_PERSONAL_ID_TABLE().end()) {
+            // Not found
+            return;
+        }
+        // Actual update
+        *it = db::StackDB::PersonalIdTableItem {
+                customer.ID(),
+                customer.personalIds()[0].type,
+                customer.personalIds()[0].id_number};
+    }
 }
 
 void CustomerDataProvider::remove(const std::string& id) {
-    // Empty for now
+    // Delete customer
+    DATABASE().SELECT_CUSTOMER_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_CUSTOMER_TABLE().begin(),
+                    DATABASE().SELECT_CUSTOMER_TABLE().end(),
+                    [&](const db::StackDB::CustomerTableItem& c) {
+                        return c.customerID == id;
+                    }),
+        DATABASE().SELECT_CUSTOMER_TABLE().end());
+    // Delete the Address
+    DATABASE().SELECT_ADDRESS_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
+                    DATABASE().SELECT_ADDRESS_TABLE().end(),
+                    [&](const db::StackDB::AddressTableItem& e) {
+                        return e.ID == id;
+                    }),
+        DATABASE().SELECT_ADDRESS_TABLE().end());
+    // Delete the Contacts
+    DATABASE().SELECT_CONTACTS_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
+                    DATABASE().SELECT_CONTACTS_TABLE().end(),
+                    [&](const db::StackDB::ContactDetailsTableItem& e) {
+                        return e.ID == id;
+                    }),
+        DATABASE().SELECT_CONTACTS_TABLE().end());
+    // Delete the Personal ID
+    DATABASE().SELECT_PERSONAL_ID_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_PERSONAL_ID_TABLE().begin(),
+                    DATABASE().SELECT_PERSONAL_ID_TABLE().end(),
+                    [&](const db::StackDB::PersonalIdTableItem& e) {
+                        return e.ID == id;
+                    }),
+        DATABASE().SELECT_PERSONAL_ID_TABLE().end());
 }
 
 void CustomerDataProvider::fillOtherDetails(entity::Customer* customer) const {

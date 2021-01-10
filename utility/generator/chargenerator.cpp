@@ -32,8 +32,8 @@ std::string generateUID(const std::string& p1, const std::string& p2) {
 }
 
 std::string generateCustomerID(const std::string& p1, const std::string& p2) {
-    // CM + first-letter-of-param1 + first-letter-of-param2 + eight-alphanumeric-chars
-    return toUpper("CM" + p1.at(0) + p2.at(0) + generateChars(8));
+    // CM + first-letter-of-param1 + first-two-letters-of-param2 + 6-alphanumeric-chars
+    return "CM" + toUpper(p1.at(0) + p2.substr(0, 2)) + generateChars(6);
 }
 
 /**
