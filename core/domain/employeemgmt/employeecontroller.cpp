@@ -35,9 +35,8 @@
 namespace domain {
 namespace empmgmt {
 
-EmployeeMgmtController::EmployeeMgmtController(
-                                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
-                                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
+EmployeeMgmtController::EmployeeMgmtController(const EmpMgmtDataPtr& data,
+                                               const EmpMgmtViewPtr& view) {
     if ((data == nullptr) || (view == nullptr)) {
         throw std::invalid_argument("Received a nulltpr argument");
     }
@@ -242,9 +241,8 @@ void EmployeeMgmtController::dumpValidationResult(const ValidationErrors& valida
     }
 }
 
-std::unique_ptr<EmployeeMgmtControlInterface> createEmployeeMgmtModule(
-                    const std::shared_ptr<EmployeeMgmtDataInterface>& data,
-                    const std::shared_ptr<EmployeeMgmtViewInterface>& view) {
+EmpMgmtControllerPtr createEmployeeMgmtModule(const EmpMgmtDataPtr& data,
+                                              const EmpMgmtViewPtr& view) {
     return std::make_unique<EmployeeMgmtController>(data, view);
 }
 

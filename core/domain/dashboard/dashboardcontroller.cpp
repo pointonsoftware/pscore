@@ -122,9 +122,8 @@ bool DashboardController::isUserValid(const entity::User& userInfo) const {
     return !userInfo.userID().empty();
 }
 
-std::unique_ptr<DashboardControlInterface> createDashboardModule(
-            const std::shared_ptr<DashboardDataInterface>& data,
-            const std::shared_ptr<DashboardViewInterface>& view) {
+DashboardControllerPtr createDashboardModule(const DashboardDataPtr& data,
+                                             const DashboardViewPtr& view) {
     return std::make_unique<DashboardController>(data, view);
 }
 
