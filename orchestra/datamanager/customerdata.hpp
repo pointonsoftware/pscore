@@ -39,6 +39,7 @@ class CustomerDataProvider : public domain::customermgmt::CustomerManagementData
 
  private:
     void fillOtherDetails(entity::Customer* customer) const;
+    void writeOtherDetails(const entity::Customer& customer) const;
 };
 
 }  // namespace customermgmt

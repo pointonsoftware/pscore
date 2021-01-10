@@ -45,6 +45,13 @@ class TestCustomerMgmt : public testing::Test {
     ~TestCustomerMgmt() = default;
     void SetUp() {}
     void TearDown() {}
+    // Helper function
+    entity::Customer makeValidCustomer() const {
+        entity::Customer temp("", "John", "", "Doe", "", "M");
+        temp.setAddress({"DummyL1", "DummyL2", "DummyTown", "DummyProv", ""});
+        temp.addPersonalId("Driver's License", "PC13-72021-20");
+        return temp;
+    }
 
     std::shared_ptr<CustomerManagementDataMock> dpMock
                     = std::make_shared<CustomerManagementDataMock>();
@@ -71,7 +78,7 @@ TEST_F(TestCustomerMgmt, TestGetCustomersListEmpty) {
 }
 
 TEST_F(TestCustomerMgmt, TestGetCustomerData) {
-    const std::string requestedID = "CMAA95TZ45FR";
+    const std::string requestedID = "CMAA95TZ45";
     // Fake that the customer data is saved on record
     EXPECT_CALL(*dpMock, getCustomers())
         .WillOnce(Return(
@@ -85,9 +92,9 @@ TEST_F(TestCustomerMgmt, TestGetCustomerData) {
 }
 
 TEST_F(TestCustomerMgmt, TestGetCustomerDataNotFound) {
-    const std::string requestedID = "CMAA95TZ45FR";
-    const std::string storedCustomer = "CMJB73YN64LB";
-    // Fake that we only have a customer with barcode CMJB73YN64LB
+    const std::string requestedID = "CMAA95TZ45";
+    const std::string storedCustomer = "CMJB73YN64";
+    // Fake that we only have a customer with barcode CMJB73YN64
     EXPECT_CALL(*dpMock, getCustomers())
         .WillOnce(Return(
             std::vector<entity::Customer>{
@@ -97,6 +104,54 @@ TEST_F(TestCustomerMgmt, TestGetCustomerDataNotFound) {
     controller.list();
     // Should return a valid customer data (valid ID)
     ASSERT_TRUE(controller.get(requestedID).ID().empty());
+}
+
+TEST_F(TestCustomerMgmt, TestSaveWithNullValidationContainer) {
+    ASSERT_EQ(controller.save(entity::Customer(), nullptr),
+              CUSTOMERMGMTAPISTATUS::UNINITIALIZED);
+}
+
+TEST_F(TestCustomerMgmt, TestSaveWithEmptyCustomerData) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    ASSERT_EQ(controller.save(entity::Customer(), &dummyValidationContainer),
+              CUSTOMERMGMTAPISTATUS::FAILED);
+    // Validation result must not be empty
+    ASSERT_FALSE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestCustomerMgmt, TestCreateCustomer) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    // DP create must be called
+    EXPECT_CALL(*dpMock, create(Matcher<const entity::Customer&>(_)));
+    // Should be successful
+    ASSERT_EQ(controller.save(makeValidCustomer(), &dummyValidationContainer),
+              CUSTOMERMGMTAPISTATUS::SUCCESS);
+    // Validation result should be empty
+    ASSERT_TRUE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestCustomerMgmt, TestCreateCustomerWithInvalidAddress) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    entity::Customer dummy("", "John", "", "Doe", "", "M");
+    dummy.setAddress({"DummyL1", "DummyL2", "", ""});
+    // Should fail
+    ASSERT_EQ(controller.save(dummy, &dummyValidationContainer),
+              CUSTOMERMGMTAPISTATUS::FAILED);
+    // Validation result must not be empty
+    ASSERT_FALSE(dummyValidationContainer.empty());
+}
+
+TEST_F(TestCustomerMgmt, TestCreateCustomerWithInvalidPhone) {
+    std::map<std::string, std::string> dummyValidationContainer;
+    entity::Customer dummy("", "John", "", "Doe", "", "M");
+    dummy.setAddress({"DummyL1", "DummyL2", "DummyTown", "DummyProv", "ZIP"});
+    // Invalid size and characters
+    dummy.setPhoneNumbers("12312312", "aaaaa");
+    // Should fail
+    ASSERT_EQ(controller.save(dummy, &dummyValidationContainer),
+              CUSTOMERMGMTAPISTATUS::FAILED);
+    // Validation result must not be empty
+    ASSERT_FALSE(dummyValidationContainer.empty());
 }
 
 }  // namespace test

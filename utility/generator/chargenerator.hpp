@@ -35,11 +35,11 @@ namespace chargenerator {
 extern std::string generateUID(const std::string& p1, const std::string& p2);
 /*!
  * Generates the customer ID
- * Format - CM[first-letter-of-param1][first-letter-of-param2][eight-alphanumeric-chars]
+ * Format - CM[first-letter-of-param1][first-two-letters-of-param2][six-alphanumeric-chars]
  * e.g.
  * p1 = John
  * p2 = Doe
- * result = CMJD12AB56CD
+ * result = CMJDO12AB56
 */
 extern std::string generateCustomerID(const std::string& p1, const std::string& p2);
 /*!
