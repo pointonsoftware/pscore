@@ -55,6 +55,8 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
         DASHBOARD,
         CUSTOMER_DETAILS,
         CUSTOMER_CREATE,
+        CUSTOMER_UPDATE,
+        CUSTOMER_REMOVE,
         // add more enums here
         LOGOUT,
         APP_EXIT,
@@ -67,6 +69,8 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     void showCustomers() const;
     void showCustomerDetails(bool showIndex = false) const;
     void createCustomer();
+    void updateCustomer();
+    void removeCustomer();
     void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);

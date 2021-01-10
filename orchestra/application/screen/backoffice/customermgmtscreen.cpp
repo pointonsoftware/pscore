@@ -77,6 +77,12 @@ void CustomerMgmtScreen::showLandingScreen() const {
     showOptions();
 }
 
+void CustomerMgmtScreen::showOptions() const {
+    std::cout << std::endl << std::endl;
+    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
+    std::cout << std::endl;
+}
+
 void CustomerMgmtScreen::queryCustomersList() {
     mTableHelper.setData(mCoreController->list());
 }
@@ -189,10 +195,45 @@ void CustomerMgmtScreen::createCustomer() {
     } while (!requiredFields.empty());  // repeat input until new customer is created
 }
 
-void CustomerMgmtScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
+void CustomerMgmtScreen::updateCustomer() {
+    showCustomerDetails(true);  // true - request to show the index # of each data
+    // Get the field to update
+    const std::string field = SCREENCOMMON().getUpdateField(domainFields);
+    if (field.empty()) {
+        std::cout << "Invalid selection." << std::endl;
+        return;
+    }
+    // We currently don't support updating the Personal ID field due to code complexity
+    // Track - https://github.com/pointonsoftware/pscore/issues/106
+    if ((field == "PersonalId.Type") || (field == "PersonalId.Number")) {
+        std::cout << "Invalid selection." << std::endl;
+        return;
+    }
+    {
+        // Update operation
+        std::vector<std::string> requiredFields = { field };
+        std::map<std::string, std::string> validationResult;
+        entity::Customer customerData = mTableHelper.getSelectedData();
+        do {
+            fillCustomerInformation(&customerData, requiredFields);
+            // Reset validation results
+            validationResult.clear();
+            if (mCoreController->save(customerData, &validationResult) !=
+                domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
+                requiredFields = app::util::extractMapKeys(validationResult);
+                SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
+            }
+        } while (!validationResult.empty());  // repeat input until data is updated
+        mTableHelper.setData((mTableHelper.getCurrentIndex()), customerData);
+    }
+}
+
+void CustomerMgmtScreen::removeCustomer() {
+    if (mCoreController->remove(mTableHelper.getSelectedData().ID())
+          == domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
+       // Remove the customer form
+       mTableHelper.deleteSelectedData();
+    }
 }
 
 CustomerMgmtScreen::Options CustomerMgmtScreen::getUserSelection() {
@@ -216,7 +257,11 @@ CustomerMgmtScreen::Options CustomerMgmtScreen::getUserSelection() {
             return Options::CUSTOMER_DETAILS;
         }
     } else if (userInput == "c" && !isShowingDetailsScreen) {
-            return Options::CUSTOMER_CREATE;
+        return Options::CUSTOMER_CREATE;
+    } else if (userInput == "u" && isShowingDetailsScreen) {
+        return Options::CUSTOMER_UPDATE;
+    } else if (userInput == "d" && isShowingDetailsScreen) {
+        return Options::CUSTOMER_REMOVE;
     }  // add more options here
 
     // Default invalid option
@@ -243,6 +288,14 @@ bool CustomerMgmtScreen::action(Options option, std::promise<defines::display>* 
         case Options::CUSTOMER_CREATE:
             createCustomer();
             // Go back to landing screen after creating the customer
+            action(Options::LANDING, nextScreen);
+            break;
+        case Options::CUSTOMER_UPDATE:
+            updateCustomer();
+            showCustomerDetails();  // refresh employee details screen
+            break;
+        case Options::CUSTOMER_REMOVE:
+            removeCustomer();
             action(Options::LANDING, nextScreen);
             break;
         case Options::DASHBOARD:

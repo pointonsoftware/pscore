@@ -50,6 +50,7 @@ class CustomerManagementController : public CustomerManagementControlInterface {
     void create(const entity::Customer& customer);
     void update(const entity::Customer& customer);
     void dumpValidationResult(const ValidationErrors& validationErrors) const;
+    bool isExists(const std::string& id);
     std::vector<entity::Customer>::iterator find(const std::string& id);
 
     CustomerMgmtDataPtr mDataProvider;
