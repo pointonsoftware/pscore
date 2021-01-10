@@ -36,8 +36,8 @@ enum class DASHSTATUS {
 
 class DashboardController : public DashboardControlInterface {
  public:
-    explicit DashboardController(const std::shared_ptr<DashboardDataInterface>& data,
-                                 const std::shared_ptr<DashboardViewInterface>& view);
+    explicit DashboardController(const DashboardDataPtr& data,
+                                 const DashboardViewPtr& view);
     virtual ~DashboardController() = default;
 
     void setCurrentUserId(const std::string& userID) override;
@@ -45,8 +45,8 @@ class DashboardController : public DashboardControlInterface {
     entity::Employee getUserDetails(const entity::User& user) override;
 
  private:
-    std::shared_ptr<DashboardDataInterface> mDataProvider;
-    std::shared_ptr<DashboardViewInterface> mView;
+    DashboardDataPtr mDataProvider;
+    DashboardViewPtr mView;
     std::string mCurrentUserID;
     DASHSTATUS getUserData(entity::User* container) const;
     DASHSTATUS getEmployeeData(const std::string& employeeID, entity::Employee* container) const;

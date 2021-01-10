@@ -78,7 +78,7 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     void fillCustomerInformation(entity::Customer* customer,
                                  const std::vector<std::string>& requiredFields) const;
 
-    std::unique_ptr<domain::customermgmt::CustomerManagementControlInterface> mCoreController;
+    domain::customermgmt::CustomerMgmtControllerPtr mCoreController;
     app::utility::TableHelper<entity::Customer> mTableHelper;
     bool isShowingDetailsScreen;
     static const std::vector<std::string> domainFields;
