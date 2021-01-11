@@ -68,7 +68,7 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
     void invalidOptionSelected() const;
     Options getUserSelection() const;
     bool action(Options option, std::promise<defines::display>* nextScreen) const;
-    std::unique_ptr<domain::dashboard::DashboardControlInterface> mCoreDashboard;
+    domain::dashboard::DashboardControllerPtr mCoreDashboard;
 };
 
 }  // namespace backoffice

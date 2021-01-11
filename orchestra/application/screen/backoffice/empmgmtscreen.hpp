@@ -83,7 +83,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void fillEmployeeInformation(entity::Employee* employee,
                                  const std::vector<std::string>& requiredFields = {}) const;
 
-    std::unique_ptr<domain::empmgmt::EmployeeMgmtControlInterface> mCoreEmployeeMgmt;
+    domain::empmgmt::EmpMgmtControllerPtr mCoreEmployeeMgmt;
     app::utility::TableHelper<entity::Employee> mTableHelper;
     bool isShowingDetailsScreen;
     static const std::vector<std::string> employeeDomainFields;

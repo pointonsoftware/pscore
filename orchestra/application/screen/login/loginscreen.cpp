@@ -56,7 +56,7 @@ void LoginScreen::show(std::promise<defines::display>* promise) {
 }
 
 bool LoginScreen::onLogin(const std::string& id, const std::string& pin) {
-    std::unique_ptr<domain::login::LoginControlInterface> auth
+    domain::login::LoginControllerPtr auth
          = domain::login::createLoginModule(
                     std::make_shared<dataprovider::login::LoginDataProvider>(),
                     std::make_shared<LoginScreen>(*this));

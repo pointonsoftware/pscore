@@ -36,8 +36,8 @@ typedef std::map<std::string, std::string> ValidationErrors;
 
 class InventoryController : public InventoryControlInterface {
  public:
-    explicit InventoryController(const std::shared_ptr<InventoryDataInterface>& data,
-                                 const std::shared_ptr<InventoryViewInterface>& view);
+    explicit InventoryController(const InventoryDataPtr& data,
+                                 const InventoryViewPtr& view);
     ~InventoryController() = default;
 
     std::vector<entity::Product> list() override;
@@ -53,8 +53,8 @@ class InventoryController : public InventoryControlInterface {
     void update(const entity::Product& product);
     void dumpValidationResult(const ValidationErrors& validationErrors) const;
 
-    std::shared_ptr<InventoryDataInterface> mDataProvider;
-    std::shared_ptr<InventoryViewInterface> mView;
+    InventoryDataPtr mDataProvider;
+    InventoryViewPtr mView;
     std::vector<entity::Product> mCachedList;  // List of products
 };
 

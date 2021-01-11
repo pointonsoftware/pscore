@@ -37,8 +37,8 @@ typedef std::map<std::string, std::string> ValidationErrors;
 
 class EmployeeMgmtController : public EmployeeMgmtControlInterface {
  public:
-    explicit EmployeeMgmtController(const std::shared_ptr<EmployeeMgmtDataInterface>& data,
-                                    const std::shared_ptr<EmployeeMgmtViewInterface>& view);
+    explicit EmployeeMgmtController(const EmpMgmtDataPtr& data,
+                                    const EmpMgmtViewPtr& view);
     ~EmployeeMgmtController() = default;
 
     std::vector<entity::Employee> list() override;
@@ -50,8 +50,8 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
                                              const std::string& lname) override;
 
  private:
-    std::shared_ptr<EmployeeMgmtDataInterface> mDataProvider;
-    std::shared_ptr<EmployeeMgmtViewInterface> mView;
+    EmpMgmtDataPtr mDataProvider;
+    EmpMgmtViewPtr mView;
     std::vector<entity::Employee> mCachedList;  // List of employees
 
     bool isExists(const std::string& id);

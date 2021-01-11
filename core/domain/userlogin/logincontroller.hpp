@@ -41,12 +41,12 @@ enum class AUTHSTATUS {
 
 class LoginController : public LoginControlInterface {
  public:
-    explicit LoginController(const std::shared_ptr<LoginDataProviderIface>& dataprovider,
-                            const std::shared_ptr<LoginViewIface>& view);
+    explicit LoginController(const LoginDataPtr& dataprovider,
+                             const LoginViewPtr& view);
     bool authenticate(const std::string& id, const std::string& pin) override;
  private:
-    std::shared_ptr<LoginDataProviderIface> mDataProvider;
-    std::shared_ptr<LoginViewIface> mView;
+    LoginDataPtr mDataProvider;
+    LoginViewPtr mView;
     AUTHSTATUS getUser(const std::string& id, entity::User* user);
     bool isPinValid(const std::string& pin) const;
     bool isUserValid(const entity::User& userInfo) const;
