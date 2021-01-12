@@ -55,8 +55,6 @@ class CustomerManagementController : public CustomerManagementControlInterface,
     bool isExists(const std::string& id);
     std::vector<entity::Customer>::iterator find(const std::string& id);
 
-    CustomerMgmtDataPtr mDataProvider;
-    CustomerMgmtViewPtr mView;
     std::vector<entity::Customer> mCachedList;  // List of customers
 };
 

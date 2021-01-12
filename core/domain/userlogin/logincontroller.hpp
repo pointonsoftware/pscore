@@ -47,9 +47,8 @@ class LoginController : public LoginControlInterface,
     explicit LoginController(const LoginDataPtr& dataprovider,
                              const LoginViewPtr& view);
     bool authenticate(const std::string& id, const std::string& pin) override;
+
  private:
-    LoginDataPtr mDataProvider;
-    LoginViewPtr mView;
     AUTHSTATUS getUser(const std::string& id, entity::User* user);
     bool isPinValid(const std::string& pin) const;
     bool isUserValid(const entity::User& userInfo) const;

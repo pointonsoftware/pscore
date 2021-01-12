@@ -49,8 +49,6 @@ class DashboardController : public DashboardControlInterface,
     entity::Employee getUserDetails(const entity::User& user) override;
 
  private:
-    DashboardDataPtr mDataProvider;
-    DashboardViewPtr mView;
     std::string mCurrentUserID;
     DASHSTATUS getUserData(entity::User* container) const;
     DASHSTATUS getEmployeeData(const std::string& employeeID, entity::Employee* container) const;

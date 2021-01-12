@@ -53,8 +53,6 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface,
                                              const std::string& lname) override;
 
  private:
-    EmpMgmtDataPtr mDataProvider;
-    EmpMgmtViewPtr mView;
     std::vector<entity::Employee> mCachedList;  // List of employees
 
     bool isExists(const std::string& id);

@@ -55,8 +55,6 @@ class InventoryController : public InventoryControlInterface,
     void create(const entity::Product& product);
     void update(const entity::Product& product);
 
-    InventoryDataPtr mDataProvider;
-    InventoryViewPtr mView;
     std::vector<entity::Product> mCachedList;  // List of products
 };
 
