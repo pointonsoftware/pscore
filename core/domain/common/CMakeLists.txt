@@ -4,8 +4,9 @@ project (common)
 add_library (
     domaincommon
     STATIC
-    librarycommon.hpp
+    cachecontroller.hpp
     basecontroller.hpp
+    librarycommon.hpp
 )
 
 target_link_libraries (

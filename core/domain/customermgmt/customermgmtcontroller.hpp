@@ -52,10 +52,6 @@ class CustomerManagementController : public CustomerManagementControlInterface,
  private:
     void create(const entity::Customer& customer);
     void update(const entity::Customer& customer);
-    bool isExists(const std::string& id);
-    std::vector<entity::Customer>::iterator find(const std::string& id);
-
-    std::vector<entity::Customer> mCachedList;  // List of customers
 };
 
 }  // namespace customermgmt

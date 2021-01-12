@@ -53,10 +53,6 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface,
                                              const std::string& lname) override;
 
  private:
-    std::vector<entity::Employee> mCachedList;  // List of employees
-
-    bool isExists(const std::string& id);
-    std::vector<entity::Employee>::iterator find(const std::string& id);
     ValidationErrors validateDetails(const entity::Employee& employee) const;
 
     void create(const SaveEmployeeData& data);

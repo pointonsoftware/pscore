@@ -18,42 +18,93 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_COMMON_BASECONTROLLER_HPP_
-#define CORE_DOMAIN_COMMON_BASECONTROLLER_HPP_
+#ifndef CORE_DOMAIN_COMMON_CACHECONTROLLER_HPP_
+#define CORE_DOMAIN_COMMON_CACHECONTROLLER_HPP_
 #include <functional>
-#include <map>
-#include <memory>
 #include <string>
 #include <vector>
-#include <logger/loghelper.hpp>
-#include "cachecontroller.hpp"
 
 namespace domain {
 
-typedef std::map<std::string, std::string> ValidationErrors;
+/*!
+ * Cache list wrapper
+*/
 
-template <typename DpType, typename ViewType, typename EntityType>
-class BaseController {
+template <typename EntityType>
+class CacheController {
  public:
-    BaseController() = default;
-    virtual ~BaseController() = default;
+    CacheController() = default;
+    virtual ~CacheController() = default;
 
- protected:
     /*!
-     * Logs the validation results for debugging purposes
+     * Sets cached data
     */
-    void dumpValidationResult(const ValidationErrors& errors) const {
-      LOG_DEBUG("Dumping validation result");
-      for (auto const &result : errors) {
-         LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
-      }
+    void fill(const std::vector<EntityType>& list) {
+        mCachedList = list;
     }
 
-    std::shared_ptr<DpType> mDataProvider;
-    std::shared_ptr<ViewType> mView;
-    CacheController<EntityType> mCachedList;
+    /*!
+     * Returns a copy of cached data
+    */
+    const std::vector<EntityType>& get() {
+        return mCachedList;
+    }
+
+    /*!
+     * Adds data to the list
+    */
+    void insert(const EntityType& data) {
+        mCachedList.emplace_back(data);
+    }
+
+    /*!
+     * Removes data to the list
+    */
+    void erase(const typename std::vector<EntityType>::iterator it) {
+        mCachedList.erase(it);
+    }
+
+    /*!
+     * Checks if cache list is not empty
+    */
+    bool hasData() {
+        return !mCachedList.empty();
+    }
+
+    /*!
+     * Returns cache size
+    */
+    size_t dataCount() {
+        return mCachedList.size();
+    }
+
+    /*!
+     * Returns an iterator referring to the past-the-end element in the cache list
+    */
+    typename std::vector<EntityType>::iterator endOfData() {
+        return mCachedList.end();
+    }
+
+    /*!
+     * @param [in] 1 - the key or id string that you want to find
+     * @param [in] 2 - the entity function that returns their key or id (e.g. ID() or barcode())
+    */
+    typename std::vector<EntityType>::iterator find(const std::string& key,
+                                               std::function<std::string(const EntityType&)> fn) {
+         return std::find_if(mCachedList.begin(), mCachedList.end(),
+                     [&key, &fn](const EntityType& e) { return fn(e) == key; });
+    }
+
+    /*!
+     * See BaseController::find() for paramater details
+    */
+    bool isExists(const std::string& key, std::function<std::string(const EntityType&)> fn) {
+         return find(key, fn) != mCachedList.end();
+    }
+
+ private:
+    std::vector<EntityType> mCachedList;
 };
 
 }  // namespace domain
-
-#endif  // CORE_DOMAIN_COMMON_BASECONTROLLER_HPP_
+#endif  // CORE_DOMAIN_COMMON_CACHECONTROLLER_HPP_
