@@ -25,7 +25,7 @@
 #include <map>
 #include <vector>
 #include "interface/employeemgmtiface.hpp"
-
+#include <domain/common/basecontroller.hpp>
 // Entity
 #include <entity/employee.hpp>
 #include <entity/user.hpp>
@@ -35,7 +35,10 @@ namespace empmgmt {
 
 typedef std::map<std::string, std::string> ValidationErrors;
 
-class EmployeeMgmtController : public EmployeeMgmtControlInterface {
+class EmployeeMgmtController : public EmployeeMgmtControlInterface,
+                               public BaseController<EmployeeMgmtDataInterface,
+                                                     EmployeeMgmtViewInterface,
+                                                     entity::Employee> {
  public:
     explicit EmployeeMgmtController(const EmpMgmtDataPtr& data,
                                     const EmpMgmtViewPtr& view);
@@ -57,7 +60,6 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface {
     bool isExists(const std::string& id);
     std::vector<entity::Employee>::iterator find(const std::string& id);
     ValidationErrors validateDetails(const entity::Employee& employee) const;
-    void dumpValidationResult(const ValidationErrors& validationErrors) const;
 
     void create(const SaveEmployeeData& data);
     void createUser(const entity::Employee& employee, const std::string& pin) const;

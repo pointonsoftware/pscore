@@ -18,51 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#define CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
-#include <memory>
-#include <string>
-#include "dashboarddataif.hpp"
-#include "dashboardviewif.hpp"
-#include <domain/common/librarycommon.hpp>
-#include <entity/user.hpp>
-#include <entity/employee.hpp>
+#ifndef CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_
+#define CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_
 
-namespace domain {
-namespace dashboard {
+#if defined(__GNUC__)
+    // Linux
+    #define CORE_API __attribute__ ((__visibility__("default")))
+#elif defined(WIN32)
+    // Windows
+    #ifdef BUILD_CORE_DLL
+        #define CORE_API __declspec(dllexport)
+    #else
+        #define CORE_API __declspec(dllimport)
+    #endif
+#endif
 
-class DashboardControlInterface {
- public:
-    DashboardControlInterface() = default;
-    virtual ~DashboardControlInterface() = default;
-
-    /*!
-     * Sets the current user ID
-     * Warning: it is the caller's responsibility to provide a valid userID
-    */
-    virtual void setCurrentUserId(const std::string& userID) = 0;
-    /*!
-     * Returns the current user
-     * Note: Has to be paired with setCurrentUserId(); otherwise, will return empty
-    */
-    virtual entity::User getCurrentUser() = 0;
-    /*!
-     * Returns more user information through the employee entity
-     * Note: Has to be paired with setCurrentUserId() and the user must have an employeeID;
-     *       otherwise, will return empty.
-    */
-    virtual entity::Employee getUserDetails(const entity::User& user) = 0;
-};
-
-typedef std::shared_ptr<DashboardDataInterface> DashboardDataPtr;
-typedef std::shared_ptr<DashboardViewInterface> DashboardViewPtr;
-typedef std::unique_ptr<DashboardControlInterface> DashboardControllerPtr;
-
-// Lib APIs
-extern "C" CORE_API DashboardControllerPtr createDashboardModule
-                    (const DashboardDataPtr& data, const DashboardViewPtr& view);
-
-}  // namespace dashboard
-}  // namespace domain
-
-#endif  // CORE_DOMAIN_DASHBOARD_INTERFACE_DASHBOARDIFACE_HPP_
+#endif  // CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_

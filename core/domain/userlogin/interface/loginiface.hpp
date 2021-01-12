@@ -22,7 +22,7 @@
 #define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINIFACE_HPP_
 #include <memory>
 #include <string>
-#include <domain/librarycommon.hpp>
+#include <domain/common/librarycommon.hpp>
 #include "logindataif.hpp"
 #include "loginviewif.hpp"
 

@@ -172,14 +172,6 @@ std::vector<entity::Customer>::iterator CustomerManagementController::find(const
                 [&id](const entity::Customer& e) { return e.ID() == id; });
 }
 
-void CustomerManagementController::dumpValidationResult(
-                const ValidationErrors& validationErrors) const {
-    LOG_DEBUG("Dumping validation result");
-    for (auto const &result : validationErrors) {
-        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
-    }
-}
-
 CustomerMgmtControllerPtr createCustomerMgmtModule(
                     const CustomerMgmtDataPtr& data,
                     const CustomerMgmtViewPtr& view) {

@@ -26,7 +26,7 @@
 #include <vector>
 #include "employeemgmtdataif.hpp"
 #include "employeemgmtviewif.hpp"
-#include <domain/librarycommon.hpp>
+#include <domain/common/librarycommon.hpp>
 #include <entity/user.hpp>
 
 namespace domain {

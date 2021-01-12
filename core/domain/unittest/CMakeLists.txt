@@ -43,6 +43,7 @@ endif ()
 
 target_link_libraries (
     domain_unittest
+    domaincommon
     entity
     validator
     gtest

@@ -26,7 +26,7 @@
 #include "interface/loginiface.hpp"
 #include "interface/logindataif.hpp"
 #include "interface/loginviewif.hpp"
-
+#include <domain/common/basecontroller.hpp>
 // Entity
 #include <entity/user.hpp>
 
@@ -39,7 +39,10 @@ enum class AUTHSTATUS {
     UNINITIALIZED = 2
 };
 
-class LoginController : public LoginControlInterface {
+class LoginController : public LoginControlInterface,
+                        public BaseController<LoginDataProviderIface,
+                                              LoginViewIface,
+                                              entity::User>  {
  public:
     explicit LoginController(const LoginDataPtr& dataprovider,
                              const LoginViewPtr& view);

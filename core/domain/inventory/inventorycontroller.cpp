@@ -116,13 +116,6 @@ void InventoryController::update(const entity::Product& product) {
     LOG_INFO("Product %s information updated", product.name().c_str());
 }
 
-void InventoryController::dumpValidationResult(const ValidationErrors& validationErrors) const {
-    LOG_DEBUG("Dumping validation result");
-    for (auto const &result : validationErrors) {
-        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
-    }
-}
-
 INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
     LOG_DEBUG("Removing product %s", barcode.c_str());
     const std::vector<entity::Product>::iterator it = find(barcode);

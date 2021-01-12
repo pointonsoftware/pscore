@@ -26,7 +26,7 @@
 #include <vector>
 #include "customermgmtdataif.hpp"
 #include "customermgmtviewif.hpp"
-#include <domain/librarycommon.hpp>
+#include <domain/common/librarycommon.hpp>
 #include <entity/customer.hpp>
 
 namespace domain {

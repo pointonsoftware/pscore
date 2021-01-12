@@ -234,13 +234,6 @@ ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee&
     return validationErrors;
 }
 
-void EmployeeMgmtController::dumpValidationResult(const ValidationErrors& validationErrors) const {
-    LOG_DEBUG("Dumping validation result");
-    for (auto const &result : validationErrors) {
-        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
-    }
-}
-
 EmpMgmtControllerPtr createEmployeeMgmtModule(const EmpMgmtDataPtr& data,
                                               const EmpMgmtViewPtr& view) {
     return std::make_unique<EmployeeMgmtController>(data, view);
