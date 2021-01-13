@@ -25,13 +25,13 @@
 #include <string>
 #include <domain/dashboard/interface/dashboardiface.hpp>
 #include <domain/dashboard/interface/dashboardviewif.hpp>
-#include <screeniface.hpp>
+#include <screenbase.hpp>
 #include <entity/user.hpp>
 
 namespace screen {
 namespace backoffice {
 
-class DashboardScreen : public ScreenInterface, public domain::dashboard::DashboardViewInterface {
+class DashboardScreen : public ScreenBase, public domain::dashboard::DashboardViewInterface {
  public:
     explicit DashboardScreen(const std::string& userID);
     ~DashboardScreen() = default;

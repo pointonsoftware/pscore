@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,21 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
+#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENBASE_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_SCREENBASE_HPP_
 #include <future>
 #include <screendefines.hpp>
 
 namespace screen {
 
-class ScreenInterface {
+class ScreenBase {
  public:
-    ScreenInterface() = default;
-    virtual ~ScreenInterface() = default;
+    ScreenBase() = default;
+    virtual ~ScreenBase() = default;
 
     virtual void show(std::promise<defines::display>* promise) = 0;
 };
 
 }  // namespace screen
 
-#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENIFACE_HPP_
+#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENBASE_HPP_

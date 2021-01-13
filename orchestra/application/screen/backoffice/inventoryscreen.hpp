@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 #include <domain/inventory/interface/inventoryviewif.hpp>
-#include <screeniface.hpp>
+#include <screenbase.hpp>
 #include <tablehelper.hpp>
 // core
 #include <domain/inventory/interface/inventoryiface.hpp>
@@ -35,7 +35,7 @@
 namespace screen {
 namespace backoffice {
 
-class InventoryScreen : public screen::ScreenInterface,
+class InventoryScreen : public screen::ScreenBase,
                         public domain::inventory::InventoryViewInterface {
  public:
     InventoryScreen();

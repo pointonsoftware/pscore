@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 #include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
-#include <screeniface.hpp>
+#include <screenbase.hpp>
 #include <tablehelper.hpp>
 // core
 #include <domain/employeemgmt/interface/employeemgmtiface.hpp>
@@ -35,7 +35,7 @@
 namespace screen {
 namespace backoffice {
 
-class EmployeeMgmtScreen : public ScreenInterface,
+class EmployeeMgmtScreen : public ScreenBase,
                            public domain::empmgmt::EmployeeMgmtViewInterface {
  public:
     EmployeeMgmtScreen();

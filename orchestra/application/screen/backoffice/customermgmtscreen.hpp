@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 #include <domain/customermgmt/interface/customermgmtviewif.hpp>
-#include <screeniface.hpp>
+#include <screenbase.hpp>
 #include <tablehelper.hpp>
 // core
 #include <domain/customermgmt/interface/customermgmtiface.hpp>
@@ -35,7 +35,7 @@
 namespace screen {
 namespace backoffice {
 
-class CustomerMgmtScreen : public screen::ScreenInterface,
+class CustomerMgmtScreen : public screen::ScreenBase,
                            public domain::customermgmt::CustomerManagementViewInterface {
  public:
     CustomerMgmtScreen();

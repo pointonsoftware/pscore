@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,41 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
-#include <string>
-#include <future>
-#include <domain/userlogin/interface/loginviewif.hpp>
-#include <screenbase.hpp>
+#include "screenbase.hpp"
 
 namespace screen {
-namespace login {
 
-class LoginScreen : public screen::ScreenBase, public domain::login::LoginViewIface {
- public:
-    LoginScreen() = default;
-    ~LoginScreen() = default;
-
-    // Public API
-
-    /*!
-     * Returns the userID of the logged user
-    */
-    std::string getUserID() const;
-
-    // ScreenInterface
-    void show(std::promise<defines::display>* promise) override;
-
-    // Domain interface implementation
-    void showUserNotFoundScreen() override;
-    void showDataNotReadyScreen() override;
-
- private:
-    std::string mUserID;
-    // Return true if successful
-    bool onLogin(const std::string& id, const std::string& pin);
-};
-
-}  // namespace login
 }  // namespace screen
-#endif  // ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
