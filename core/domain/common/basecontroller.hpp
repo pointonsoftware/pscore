@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,19 +18,43 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_LIBRARYCOMMON_HPP_
-#define CORE_DOMAIN_LIBRARYCOMMON_HPP_
+#ifndef CORE_DOMAIN_COMMON_BASECONTROLLER_HPP_
+#define CORE_DOMAIN_COMMON_BASECONTROLLER_HPP_
+#include <functional>
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+#include <logger/loghelper.hpp>
+#include "cachecontroller.hpp"
 
-#if defined(__GNUC__)
-    // Linux
-    #define CORE_API __attribute__ ((__visibility__("default")))
-#elif defined(WIN32)
-    // Windows
-    #ifdef BUILD_CORE_DLL
-        #define CORE_API __declspec(dllexport)
-    #else
-        #define CORE_API __declspec(dllimport)
-    #endif
-#endif
+namespace domain {
 
-#endif  // CORE_DOMAIN_LIBRARYCOMMON_HPP_
+template <typename DpType, typename ViewType, typename EntityType>
+class BaseController {
+ public:
+    BaseController() = default;
+    virtual ~BaseController() = default;
+
+ protected:
+    /*!
+     * Logs the validation results for debugging purposes
+    */
+    typedef std::map<std::string, std::string> ValidationErrors;
+    void dumpValidationResult(const ValidationErrors& errors) const {
+      LOG_DEBUG("Dumping validation result");
+      for (auto const &result : errors) {
+         LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
+      }
+    }
+
+    typedef std::pair<std::string, std::function<std::string(const EntityType&)>> Keys;
+    std::shared_ptr<DpType> mDataProvider;
+    std::shared_ptr<ViewType> mView;
+    CacheController<EntityType> mCachedList;
+};
+
+}  // namespace domain
+
+#endif  // CORE_DOMAIN_COMMON_BASECONTROLLER_HPP_

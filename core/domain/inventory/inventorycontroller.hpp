@@ -25,7 +25,7 @@
 #include <map>
 #include <vector>
 #include "interface/inventoryiface.hpp"
-
+#include <domain/common/basecontroller.hpp>
 // Entity
 #include <entity/product.hpp>
 
@@ -34,7 +34,10 @@ namespace inventory {
 
 typedef std::map<std::string, std::string> ValidationErrors;
 
-class InventoryController : public InventoryControlInterface {
+class InventoryController : public InventoryControlInterface,
+                            public BaseController<InventoryDataInterface,
+                                                  InventoryViewInterface,
+                                                  entity::Product>  {
  public:
     explicit InventoryController(const InventoryDataPtr& data,
                                  const InventoryViewPtr& view);
@@ -47,15 +50,8 @@ class InventoryController : public InventoryControlInterface {
     INVENTORYAPISTATUS remove(const std::string& barcode) override;
 
  private:
-    bool isExists(const std::string& barcode);
-    std::vector<entity::Product>::iterator find(const std::string& barcode);
     void create(const entity::Product& product);
     void update(const entity::Product& product);
-    void dumpValidationResult(const ValidationErrors& validationErrors) const;
-
-    InventoryDataPtr mDataProvider;
-    InventoryViewPtr mView;
-    std::vector<entity::Product> mCachedList;  // List of products
 };
 
 }  // namespace inventory

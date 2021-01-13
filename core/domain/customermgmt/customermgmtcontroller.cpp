@@ -41,30 +41,30 @@ CustomerManagementController::CustomerManagementController(const CustomerMgmtDat
 
 std::vector<entity::Customer> CustomerManagementController::list() {
     LOG_DEBUG("Getting the list of customers");
-    mCachedList = mDataProvider->getCustomers();
-    if (mCachedList.empty()) {
+    mCachedList.fill(mDataProvider->getCustomers());
+    if (!mCachedList.hasData()) {
         LOG_WARN("There are no customers on record");
         mView->showListIsEmptyPopup();
         return {};
     }
-    LOG_INFO("Successfully retrieved customers list. Size: %d", mCachedList.size());
-    return mCachedList;
+    LOG_INFO("Successfully retrieved customers list. Size: %d", mCachedList.dataCount());
+    return mCachedList.get();
 }
 
 entity::Customer CustomerManagementController::get(const std::string& id) {
     LOG_DEBUG("Getting customer %s data", id.c_str());
-    const std::vector<entity::Customer>::iterator& iter = find(id);
-    if (iter != mCachedList.end()) {
-        LOG_INFO("Found customer %s", id.c_str());
-        return *iter;
-    } else {
+    const std::vector<entity::Customer>::iterator& iter =
+                     mCachedList.find(id, &entity::Customer::ID);
+    if (iter == mCachedList.endOfData()) {
         LOG_ERROR("Requested customer was not found");
         return entity::Customer{};
     }
+    LOG_INFO("Found customer %s", id.c_str());
+    return *iter;
 }
 
 CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer& customer,
-                                                ValidationErrors* validationResult) {
+                                                         ValidationErrors* validationResult) {
     LOG_DEBUG("Saving customer information");
     if (!validationResult) {
         LOG_ERROR("Validation-message container is not initialized");
@@ -101,7 +101,7 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer&
         return CUSTOMERMGMTAPISTATUS::FAILED;
     }
     // Decide if it's a create or update request
-    if (isExists(customer.ID())) {
+    if (mCachedList.isExists(customer.ID(), &entity::Customer::ID)) {
         update(customer);
     } else {
         create(customer);
@@ -129,7 +129,7 @@ void CustomerManagementController::create(const entity::Customer& data) {
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
     */
-    mCachedList.emplace_back(newCustomer);
+    mCachedList.insert(newCustomer);
     LOG_INFO("Customer %s %s added", newCustomer.firstName().c_str(),
                                      newCustomer.lastName().c_str());
 }
@@ -139,15 +139,16 @@ void CustomerManagementController::update(const entity::Customer& customer) {
     // Update actual data
     mDataProvider->update(customer);
     // Update cache list
-    const std::vector<entity::Customer>::iterator it = find(customer.ID());
+    const std::vector<entity::Customer>::iterator it =
+                    mCachedList.find(customer.ID(), &entity::Customer::ID);
     *it = customer;
     LOG_INFO("Customer %s information updated", customer.ID().c_str());
 }
 
 CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id) {
     LOG_DEBUG("Removing customer %s", id.c_str());
-    const std::vector<entity::Customer>::iterator it = find(id);
-    if (it == mCachedList.end()) {
+    const std::vector<entity::Customer>::iterator it = mCachedList.find(id, &entity::Customer::ID);
+    if (it == mCachedList.endOfData()) {
         LOG_ERROR("Customer with ID %s was not found in the cache list", id.c_str());
         mView->showDataNotReadyScreen();
         return CUSTOMERMGMTAPISTATUS::NOT_FOUND;
@@ -161,23 +162,6 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id
     mCachedList.erase(it);
     mView->showSuccessfullyRemoved(id);
     return CUSTOMERMGMTAPISTATUS::SUCCESS;
-}
-
-bool CustomerManagementController::isExists(const std::string& id) {
-    return find(id) != mCachedList.end();
-}
-
-std::vector<entity::Customer>::iterator CustomerManagementController::find(const std::string& id) {
-    return std::find_if(mCachedList.begin(), mCachedList.end(),
-                [&id](const entity::Customer& e) { return e.ID() == id; });
-}
-
-void CustomerManagementController::dumpValidationResult(
-                const ValidationErrors& validationErrors) const {
-    LOG_DEBUG("Dumping validation result");
-    for (auto const &result : validationErrors) {
-        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
-    }
 }
 
 CustomerMgmtControllerPtr createCustomerMgmtModule(

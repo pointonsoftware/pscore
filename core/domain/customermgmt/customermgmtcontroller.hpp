@@ -25,7 +25,7 @@
 #include <map>
 #include <vector>
 #include "interface/customermgmtiface.hpp"
-
+#include <domain/common/basecontroller.hpp>
 // Entity
 #include <entity/customer.hpp>
 
@@ -34,7 +34,10 @@ namespace customermgmt {
 
 typedef std::map<std::string, std::string> ValidationErrors;
 
-class CustomerManagementController : public CustomerManagementControlInterface {
+class CustomerManagementController : public CustomerManagementControlInterface,
+                                     public BaseController<CustomerManagementDataInterface,
+                                                           CustomerManagementViewInterface,
+                                                           entity::Customer> {
  public:
     explicit CustomerManagementController(const CustomerMgmtDataPtr& data,
                                           const CustomerMgmtViewPtr& view);
@@ -49,13 +52,6 @@ class CustomerManagementController : public CustomerManagementControlInterface {
  private:
     void create(const entity::Customer& customer);
     void update(const entity::Customer& customer);
-    void dumpValidationResult(const ValidationErrors& validationErrors) const;
-    bool isExists(const std::string& id);
-    std::vector<entity::Customer>::iterator find(const std::string& id);
-
-    CustomerMgmtDataPtr mDataProvider;
-    CustomerMgmtViewPtr mView;
-    std::vector<entity::Customer> mCachedList;  // List of customers
 };
 
 }  // namespace customermgmt

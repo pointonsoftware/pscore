@@ -38,20 +38,21 @@ InventoryController::InventoryController(const InventoryDataPtr& data,
 
 std::vector<entity::Product> InventoryController::list() {
     LOG_DEBUG("Getting the list of products");
-    mCachedList = mDataProvider->getProducts();
-    if (mCachedList.empty()) {
+    mCachedList.fill(mDataProvider->getProducts());
+    if (!mCachedList.hasData()) {
         LOG_WARN("There are no products on record");
         mView->showProductsEmptyPopup();
         return {};
     }
-    LOG_INFO("Successfully retrieved products list. Size: %d", mCachedList.size());
-    return mCachedList;
+    LOG_INFO("Successfully retrieved products list. Size: %d", mCachedList.dataCount());
+    return mCachedList.get();
 }
 
 entity::Product InventoryController::getProduct(const std::string& barcode) {
     LOG_DEBUG("Getting product %s", barcode.c_str());
-    const std::vector<entity::Product>::iterator& iter = find(barcode);
-    if (iter != mCachedList.end()) {
+    const std::vector<entity::Product>::iterator& iter =
+                mCachedList.find(barcode, &entity::Product::barcode);
+    if (iter != mCachedList.endOfData()) {
         LOG_INFO("Found product %s", barcode.c_str());
         return *iter;
     } else {
@@ -81,7 +82,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
         return INVENTORYAPISTATUS::FAILED;
     }
     // Decide if it's a create or update request
-    if (isExists(product.barcode())) {
+    if (mCachedList.isExists(product.barcode(), &entity::Product::barcode)) {
         update(product);
     } else {
         create(product);
@@ -97,7 +98,7 @@ void InventoryController::create(const entity::Product& product) {
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
     */
-    mCachedList.emplace_back(product);
+    mCachedList.insert(product);
     LOG_INFO("%s created with code %s", product.name().c_str(), product.barcode().c_str());
 }
 
@@ -110,23 +111,17 @@ void InventoryController::update(const entity::Product& product) {
      * before updating the cache
     */
     // Update cache list
-    const std::vector<entity::Product>::iterator it = find(product.barcode());
+    const std::vector<entity::Product>::iterator it =
+                     mCachedList.find(product.barcode(), &entity::Product::barcode);
     *it = product;
-    mCachedList.emplace_back(product);
     LOG_INFO("Product %s information updated", product.name().c_str());
-}
-
-void InventoryController::dumpValidationResult(const ValidationErrors& validationErrors) const {
-    LOG_DEBUG("Dumping validation result");
-    for (auto const &result : validationErrors) {
-        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
-    }
 }
 
 INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
     LOG_DEBUG("Removing product %s", barcode.c_str());
-    const std::vector<entity::Product>::iterator it = find(barcode);
-    if (it == mCachedList.end()) {
+    const std::vector<entity::Product>::iterator it =
+                     mCachedList.find(barcode, &entity::Product::barcode);
+    if (it == mCachedList.endOfData()) {
         LOG_ERROR("Product %s was not found in the cache list", barcode.c_str());
         mView->showDataNotReadyScreen();
         return INVENTORYAPISTATUS::NOT_FOUND;
@@ -141,17 +136,6 @@ INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
     mView->showSuccessfullyRemoved(barcode);
     LOG_INFO("Successfully removed product %s", barcode.c_str());
     return INVENTORYAPISTATUS::SUCCESS;
-}
-
-bool InventoryController::isExists(const std::string& barcode) {
-    return find(barcode) != mCachedList.end();
-}
-
-std::vector<entity::Product>::iterator InventoryController::find(const std::string& barcode) {
-    return std::find_if(mCachedList.begin(), mCachedList.end(),
-                [&barcode](const entity::Product& e) {
-                    return e.barcode() == barcode;
-                });
 }
 
 InventoryControllerPtr createInventoryModule(const InventoryDataPtr& data,

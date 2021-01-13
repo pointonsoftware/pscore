@@ -26,7 +26,7 @@
 #include <vector>
 #include "inventorydataif.hpp"
 #include "inventoryviewif.hpp"
-#include <domain/librarycommon.hpp>
+#include <domain/common/librarycommon.hpp>
 #include <entity/product.hpp>
 
 namespace domain {

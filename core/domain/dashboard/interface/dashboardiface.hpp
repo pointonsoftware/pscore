@@ -24,7 +24,7 @@
 #include <string>
 #include "dashboarddataif.hpp"
 #include "dashboardviewif.hpp"
-#include <domain/librarycommon.hpp>
+#include <domain/common/librarycommon.hpp>
 #include <entity/user.hpp>
 #include <entity/employee.hpp>
 

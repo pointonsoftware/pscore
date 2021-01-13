@@ -46,20 +46,21 @@ EmployeeMgmtController::EmployeeMgmtController(const EmpMgmtDataPtr& data,
 
 std::vector<entity::Employee> EmployeeMgmtController::list() {
     LOG_DEBUG("Getting the list of employees");
-    mCachedList = mDataProvider->getEmployees();
-    if (mCachedList.empty()) {
+    mCachedList.fill(mDataProvider->getEmployees());
+    if (!mCachedList.hasData()) {
         LOG_WARN("There are no employees on record");
         mView->showEmployeesEmptyPopup();
         return {};
     }
-    LOG_INFO("Successfully retrieved employees list. Size: %d", mCachedList.size());
-    return mCachedList;
+    LOG_INFO("Successfully retrieved employees list. Size: %d", mCachedList.dataCount());
+    return mCachedList.get();
 }
 
 entity::Employee EmployeeMgmtController::getEmployee(const std::string& employeeID) {
     LOG_DEBUG("Getting employee %s", employeeID.c_str());
-    const std::vector<entity::Employee>::iterator& iter = find(employeeID);
-    if (iter == mCachedList.end()) {
+    const std::vector<entity::Employee>::iterator& iter =
+                     mCachedList.find(employeeID, &entity::Employee::ID);
+    if (iter == mCachedList.endOfData()) {
         LOG_ERROR("Employee was not found");
         return entity::Employee{};
     }
@@ -88,7 +89,7 @@ void EmployeeMgmtController::create(const SaveEmployeeData& data) {
      * Todo (code) - add checking if create is successful from dataprovider
      * before updating the cache
     */
-    mCachedList.emplace_back(newEmployee);
+    mCachedList.insert(newEmployee);
     LOG_INFO("Employee %s %s added", newEmployee.firstName().c_str(),
                                      newEmployee.lastName().c_str());
     if (newEmployee.isSystemUser()) {
@@ -121,7 +122,8 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
         LOG_INFO("User role updated to %s", employee.position().c_str());
     }
     // Update cache list
-    const std::vector<entity::Employee>::iterator it = find(employee.ID());
+    const std::vector<entity::Employee>::iterator it =
+                     mCachedList.find(employee.ID(), &entity::Employee::ID);
     *it = employee;
     LOG_INFO("Employee %s information updated", employee.ID().c_str());
 }
@@ -142,7 +144,8 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
      *               if we're updating, we don't need to validate PIN
      *               until we support User Information update
     */
-    if (employee.isSystemUser() && !isExists(employee.ID())) {
+    if (employee.isSystemUser() &&
+        !mCachedList.isExists(employee.ID(), &entity::Employee::ID)) {
         // Validate PIN only
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN,
@@ -155,7 +158,7 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
         return EMPLMGMTSTATUS::FAILED;
     }
     // Decide if it's a create or update request
-    if (isExists(employee.ID())) {
+    if (mCachedList.isExists(employee.ID(), &entity::Employee::ID)) {
         update(employeeData);
     } else {
         create(employeeData);
@@ -165,8 +168,9 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
 
 EMPLMGMTSTATUS EmployeeMgmtController::remove(const std::string& employeeID) {
     LOG_DEBUG("Removing employee with ID %s", employeeID.c_str());
-    const std::vector<entity::Employee>::iterator it = find(employeeID);
-    if (it == mCachedList.end()) {
+    const std::vector<entity::Employee>::iterator it =
+                     mCachedList.find(employeeID, &entity::Employee::ID);
+    if (it == mCachedList.endOfData()) {
         LOG_ERROR("Employee with ID %s was not found in the cache list", employeeID.c_str());
         mView->showDataNotReadyScreen();
         return EMPLMGMTSTATUS::NOT_FOUND;
@@ -191,15 +195,6 @@ std::vector<entity::Employee> EmployeeMgmtController::findByName(const std::stri
      *             - otherwise, return empty
     */
     return {};
-}
-
-bool EmployeeMgmtController::isExists(const std::string& id) {
-    return find(id) != mCachedList.end();
-}
-
-std::vector<entity::Employee>::iterator EmployeeMgmtController::find(const std::string& id) {
-    return std::find_if(mCachedList.begin(), mCachedList.end(), [&id](const entity::Employee& e) {
-                return e.ID() == id; });
 }
 
 ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee& employee) const {
@@ -232,13 +227,6 @@ ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee&
         }
     }
     return validationErrors;
-}
-
-void EmployeeMgmtController::dumpValidationResult(const ValidationErrors& validationErrors) const {
-    LOG_DEBUG("Dumping validation result");
-    for (auto const &result : validationErrors) {
-        LOG_DEBUG(std::string(result.first + " -> " + result.second).c_str());
-    }
 }
 
 EmpMgmtControllerPtr createEmployeeMgmtModule(const EmpMgmtDataPtr& data,

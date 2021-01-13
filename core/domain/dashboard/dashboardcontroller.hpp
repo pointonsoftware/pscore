@@ -23,6 +23,7 @@
 #include <memory>
 #include <string>
 #include "interface/dashboardiface.hpp"
+#include <domain/common/basecontroller.hpp>
 #include <entity/user.hpp>
 
 namespace domain {
@@ -34,7 +35,10 @@ enum class DASHSTATUS {
     UNINITIALIZED = 2
 };
 
-class DashboardController : public DashboardControlInterface {
+class DashboardController : public DashboardControlInterface,
+                            public BaseController<DashboardDataInterface,
+                                                  DashboardViewInterface,
+                                                  entity::User> {
  public:
     explicit DashboardController(const DashboardDataPtr& data,
                                  const DashboardViewPtr& view);
@@ -45,8 +49,6 @@ class DashboardController : public DashboardControlInterface {
     entity::Employee getUserDetails(const entity::User& user) override;
 
  private:
-    DashboardDataPtr mDataProvider;
-    DashboardViewPtr mView;
     std::string mCurrentUserID;
     DASHSTATUS getUserData(entity::User* container) const;
     DASHSTATUS getEmployeeData(const std::string& employeeID, entity::Employee* container) const;

@@ -18,42 +18,19 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERLOGIN_LOGINCONTROLLER_HPP_
-#define CORE_DOMAIN_USERLOGIN_LOGINCONTROLLER_HPP_
+#ifndef CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_
+#define CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_
 
-#include <memory>
-#include <string>
-#include "interface/loginiface.hpp"
-#include "interface/logindataif.hpp"
-#include "interface/loginviewif.hpp"
-#include <domain/common/basecontroller.hpp>
-// Entity
-#include <entity/user.hpp>
+#if defined(__GNUC__)
+    // Linux
+    #define CORE_API __attribute__ ((__visibility__("default")))
+#elif defined(WIN32)
+    // Windows
+    #ifdef BUILD_CORE_DLL
+        #define CORE_API __declspec(dllexport)
+    #else
+        #define CORE_API __declspec(dllimport)
+    #endif
+#endif
 
-namespace domain {
-namespace login {
-
-enum class AUTHSTATUS {
-    SUCCESS       = 0,
-    FAILED        = 1,
-    UNINITIALIZED = 2
-};
-
-class LoginController : public LoginControlInterface,
-                        public BaseController<LoginDataProviderIface,
-                                              LoginViewIface,
-                                              entity::User>  {
- public:
-    explicit LoginController(const LoginDataPtr& dataprovider,
-                             const LoginViewPtr& view);
-    bool authenticate(const std::string& id, const std::string& pin) override;
-
- private:
-    AUTHSTATUS getUser(const std::string& id, entity::User* user);
-    bool isPinValid(const std::string& pin) const;
-    bool isUserValid(const entity::User& userInfo) const;
-};
-
-}  // namespace login
-}  // namespace domain
-#endif  // CORE_DOMAIN_USERLOGIN_LOGINCONTROLLER_HPP_
+#endif  // CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_
