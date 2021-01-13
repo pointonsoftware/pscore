@@ -24,13 +24,12 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 #include <logger/loghelper.hpp>
 #include "cachecontroller.hpp"
 
 namespace domain {
-
-typedef std::map<std::string, std::string> ValidationErrors;
 
 template <typename DpType, typename ViewType, typename EntityType>
 class BaseController {
@@ -42,6 +41,7 @@ class BaseController {
     /*!
      * Logs the validation results for debugging purposes
     */
+    typedef std::map<std::string, std::string> ValidationErrors;
     void dumpValidationResult(const ValidationErrors& errors) const {
       LOG_DEBUG("Dumping validation result");
       for (auto const &result : errors) {
@@ -49,6 +49,7 @@ class BaseController {
       }
     }
 
+    typedef std::pair<std::string, std::function<std::string(const EntityType&)>> Keys;
     std::shared_ptr<DpType> mDataProvider;
     std::shared_ptr<ViewType> mView;
     CacheController<EntityType> mCachedList;

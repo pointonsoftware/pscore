@@ -9,8 +9,4 @@ add_library (
     librarycommon.hpp
 )
 
-target_link_libraries (
-    domaincommon
-    entity
-    ${MINGW_DEPENDENCY}
-)
+set_target_properties(domaincommon PROPERTIES LINKER_LANGUAGE CXX)
