@@ -20,22 +20,22 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
-#include <future>
-#include <memory>
 #include <string>
 #include <vector>
+// Core
 #include <domain/inventory/interface/inventoryviewif.hpp>
-#include <screenbase.hpp>
-#include <tablehelper.hpp>
-// core
 #include <domain/inventory/interface/inventoryiface.hpp>
-// data
 #include <inventorydata.hpp>
+// Screens
+#include "backofficescreenbase.hpp"
+#include <screeniface.hpp>
 
 namespace screen {
 namespace backoffice {
 
-class InventoryScreen : public screen::ScreenBase<domain::inventory::InventoryControllerPtr>,
+class InventoryScreen : public screen::ScreenInterface,
+                        public BackOfficeScreenBase
+                               <domain::inventory::InventoryControllerPtr>,
                         public domain::inventory::InventoryViewInterface {
  public:
     InventoryScreen();
@@ -49,21 +49,6 @@ class InventoryScreen : public screen::ScreenBase<domain::inventory::InventoryCo
     void showSuccessfullyRemoved(const std::string& barcode) override;
 
  private:
-      // Screen options - this represents the buttons in a GUI
-    enum class Options {
-        LANDING,
-        DASHBOARD,
-        PRODUCT_DETAILS,
-        PRODUCT_REMOVE,
-        PRODUCT_CREATE,
-        PRODUCT_UPDATE,
-        // add more enums here
-        LOGOUT,
-        APP_EXIT,
-        INVALID
-        // Warning! Don't add anything here.
-        // New enum values must be added before LOGOUT
-    };
     void showLandingScreen() const;
     void queryProductsList();
     void showProducts() const;
@@ -78,10 +63,8 @@ class InventoryScreen : public screen::ScreenBase<domain::inventory::InventoryCo
     void updateProduct();
     void fillProductInformation(entity::Product* product,
                                 const std::vector<std::string>& requiredFields) const;
-
     app::utility::TableHelper<entity::Product> mTableHelper;
     bool isShowingDetailsScreen;
-    static const std::vector<std::string> productDomainFields;
 };
 
 }  // namespace backoffice

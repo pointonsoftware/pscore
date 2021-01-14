@@ -54,10 +54,10 @@ void LoginScreen::show(std::promise<defines::display>* promise) {
 }
 
 bool LoginScreen::onLogin(const std::string& id, const std::string& pin) {
-    mCoreController = domain::login::createLoginModule(
-                    std::make_shared<dataprovider::login::LoginDataProvider>(),
-                    std::make_shared<LoginScreen>());
-    return mCoreController->authenticate(id, pin);
+    domain::login::LoginControllerPtr coreController = domain::login::createLoginModule(
+                            std::make_shared<dataprovider::login::LoginDataProvider>(),
+                            std::make_shared<LoginScreen>());
+    return coreController->authenticate(id, pin);
 }
 
 std::string LoginScreen::getUserID() const {

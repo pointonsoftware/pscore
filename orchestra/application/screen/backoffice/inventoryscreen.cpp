@@ -23,6 +23,8 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <string>
+#include <vector>
 #include <general.hpp>  // pscore utility
 // view
 #include <fieldhelper.hpp>
@@ -34,7 +36,7 @@ namespace screen {
 namespace backoffice {
 
 // Product fields
-const std::vector<std::string> InventoryScreen::productDomainFields {
+const std::vector<std::string> DOMAIN_FIELDS {
     "Product.SKU",
     "Product.Name",
     "Product.Description",
@@ -162,7 +164,7 @@ void InventoryScreen::createProduct() {
 
 void InventoryScreen::updateProduct() {
     showProductDetails(true);  // true - request to show the index # of each data
-    const std::string field = SCREENCOMMON().getUpdateField(productDomainFields);
+    const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
@@ -203,14 +205,14 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
         if (input < mTableHelper.getDataCount()) {
             // Store user input as the selected index (zero based)
             mTableHelper.setCurrentIndex(input);
-            return Options::PRODUCT_DETAILS;
+            return Options::OP_READ;
         }
     } else if (userInput == "d" && isShowingDetailsScreen) {
-            return Options::PRODUCT_REMOVE;
+            return Options::OP_DELETE;
     } else if (userInput == "c" && !isShowingDetailsScreen) {
-            return Options::PRODUCT_CREATE;
+            return Options::OP_CREATE;
     } else if (userInput == "u" && isShowingDetailsScreen) {
-            return Options::PRODUCT_UPDATE;
+            return Options::OP_UPDATE;
     }  // add more options here
 
     // Default invalid option
@@ -230,21 +232,21 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
         case Options::INVALID:
             invalidOptionSelected();
             break;
-        case Options::PRODUCT_DETAILS:
+        case Options::OP_READ:
             showProductDetails();
             isShowingDetailsScreen = true;  // Must set to true
             break;
-        case Options::PRODUCT_REMOVE:
+        case Options::OP_DELETE:
             removeProduct();
             // Go back to landing screen after removing the product
             action(Options::LANDING, nextScreen);
             break;
-        case Options::PRODUCT_CREATE:
+        case Options::OP_CREATE:
             createProduct();
             // Go back to landing screen after creating the product
             action(Options::LANDING, nextScreen);
             break;
-        case Options::PRODUCT_UPDATE:
+        case Options::OP_UPDATE:
             updateProduct();
             showProductDetails();  // refresh details screen
             break;

@@ -12,9 +12,9 @@ add_executable (
     # Common screens
     screen/informationscreen.hpp
     screen/informationscreen.cpp
-    screen/screenbase.hpp
-    screen/screenbase.cpp
+    screen/screeniface.hpp
     # Back office screen
+    screen/backoffice/backofficescreenbase.hpp
     screen/backoffice/customermgmtscreen.hpp
     screen/backoffice/customermgmtscreen.cpp
     screen/backoffice/dashboardscreen.hpp

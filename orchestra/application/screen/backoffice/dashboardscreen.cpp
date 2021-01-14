@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include "dashboardscreen.hpp"
 #include <iostream>
+#include <memory>
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -110,7 +111,7 @@ DashboardScreen::Options DashboardScreen::getUserSelection() const {
     } else if (userInput == "0") {
         return Options::LOGOUT;
     } else if (userInput == "1") {
-        return Options::USER_DETAILS;
+        return Options::USER_PROFILE;
     } else if (userInput == "2") {
         return Options::EMPLOYEE_MGMT;
     } else if (userInput == "3") {
@@ -129,7 +130,7 @@ bool DashboardScreen::action(Options option, std::promise<defines::display>* nex
         case Options::LANDING:
             showLandingScreen();
             break;
-        case Options::USER_DETAILS:
+        case Options::USER_PROFILE:
             showUserInformation();
             break;
         case Options::INVALID:

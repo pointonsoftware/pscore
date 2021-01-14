@@ -18,25 +18,41 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_SCREENBASE_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_SCREENBASE_HPP_
-#include <future>
-#include <screendefines.hpp>
+#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_BACKOFFICESCREENBASE_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_BACKOFFICESCREENBASE_HPP_
+#include <tablehelper.hpp>
 
 namespace screen {
 
 template <class ControllerType>
-class ScreenBase {
+class BackOfficeScreenBase {
  public:
-    ScreenBase() = default;
-    virtual ~ScreenBase() = default;
-
-    virtual void show(std::promise<defines::display>* promise) = 0;
+    BackOfficeScreenBase() = default;
+    virtual ~BackOfficeScreenBase() = default;
 
  protected:
+    // Screen options - this represents the buttons in a GUI
+    enum class Options {
+        LANDING,
+        DASHBOARD,
+        USER_PROFILE,
+        EMPLOYEE_MGMT,
+        INVENTORY_CTRL,
+        CUSTOMER_MGMT,
+        OP_CREATE,
+        OP_READ,
+        OP_UPDATE,
+        OP_DELETE,
+        // add more enums here
+        LOGOUT,
+        APP_EXIT,
+        INVALID
+        // Warning! Don't add anything here.
+        // New enum values must be added before LOGOUT
+    };
     ControllerType mCoreController;
 };
 
 }  // namespace screen
 
-#endif  // ORCHESTRA_APPLICATION_SCREEN_SCREENBASE_HPP_
+#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_BACKOFFICESCREENBASE_HPP_

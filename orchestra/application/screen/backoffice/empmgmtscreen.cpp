@@ -21,8 +21,9 @@
 #include "empmgmtscreen.hpp"
 #include <functional>
 #include <iostream>
-#include <string>
 #include <map>
+#include <memory>
+#include <string>
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
@@ -35,7 +36,7 @@ namespace screen {
 namespace backoffice {
 
 // Employee fields
-const std::vector<std::string> EmployeeMgmtScreen::employeeDomainFields {
+const std::vector<std::string> DOMAIN_FIELDS {
         "Person.First.Name",
         "Person.Middle.Name",
         "Person.Last.Name",
@@ -268,7 +269,7 @@ void EmployeeMgmtScreen::createEmployee() {
 void EmployeeMgmtScreen::updateEmployee() {
     showEmployeeInformation(true);  // true - request to show the index # of each data
     // Get the field to update
-    const std::string field = SCREENCOMMON().getUpdateField(employeeDomainFields);
+    const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
@@ -315,14 +316,14 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         if (input < mTableHelper.getDataCount()) {
             // Store user input as the selected index (zero based)
             mTableHelper.setCurrentIndex(input);
-            return Options::EMPLOYEE_DETAILS;
+            return Options::OP_READ;
         }
     } else if (userInput == "c" && !isShowingDetailsScreen) {
-        return Options::EMPLOYEE_CREATE;
+        return Options::OP_CREATE;
     } else if (userInput == "u" && isShowingDetailsScreen) {
-        return Options::EMPLOYEE_UPDATE;
+        return Options::OP_UPDATE;
     } else if (userInput == "d" && isShowingDetailsScreen) {
-        return Options::EMPLOYEE_REMOVE;
+        return Options::OP_DELETE;
     }  // add more options here
 
     // Default invalid option
@@ -342,21 +343,21 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
         case Options::INVALID:
             invalidOptionSelected();
             break;
-        case Options::EMPLOYEE_DETAILS:
+        case Options::OP_READ:
             showEmployeeInformation();
             isShowingDetailsScreen = true;  // Must set to true
             break;
-        case Options::EMPLOYEE_CREATE:
+        case Options::OP_CREATE:
             createEmployee();
             // Get the employees from Core then cache the list
             queryEmployeesList();
             showLandingScreen();
             break;
-        case Options::EMPLOYEE_UPDATE:
+        case Options::OP_UPDATE:
             updateEmployee();
             showEmployeeInformation();  // refresh employee details screen
             break;
-        case Options::EMPLOYEE_REMOVE:
+        case Options::OP_DELETE:
             removeEmployee();
             action(Options::LANDING, nextScreen);
             break;

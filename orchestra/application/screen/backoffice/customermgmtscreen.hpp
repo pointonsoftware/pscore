@@ -20,22 +20,21 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_CUSTOMERMGMTSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_CUSTOMERMGMTSCREEN_HPP_
-#include <future>
-#include <memory>
 #include <string>
 #include <vector>
-#include <domain/customermgmt/interface/customermgmtviewif.hpp>
-#include <screenbase.hpp>
-#include <tablehelper.hpp>
-// core
+// Core
 #include <domain/customermgmt/interface/customermgmtiface.hpp>
-// data
+#include <domain/customermgmt/interface/customermgmtviewif.hpp>
 #include <customerdata.hpp>
+// Screens
+#include "backofficescreenbase.hpp"
+#include <screeniface.hpp>
 
 namespace screen {
 namespace backoffice {
 
-class CustomerMgmtScreen : public screen::ScreenBase<domain::customermgmt::CustomerMgmtCtrlPtr>,
+class CustomerMgmtScreen : public screen::ScreenInterface,
+                           public BackOfficeScreenBase<domain::customermgmt::CustomerMgmtCtrlPtr>,
                            public domain::customermgmt::CustomerManagementViewInterface {
  public:
     CustomerMgmtScreen();
@@ -49,21 +48,6 @@ class CustomerMgmtScreen : public screen::ScreenBase<domain::customermgmt::Custo
     void showSuccessfullyRemoved(const std::string& customerName) override;
 
  private:
-       // Screen options - this represents the buttons in a GUI
-    enum class Options {
-        LANDING,
-        DASHBOARD,
-        CUSTOMER_DETAILS,
-        CUSTOMER_CREATE,
-        CUSTOMER_UPDATE,
-        CUSTOMER_REMOVE,
-        // add more enums here
-        LOGOUT,
-        APP_EXIT,
-        INVALID
-        // Warning! Don't add anything here.
-        // New enum values must be added before LOGOUT
-    };
     void showLandingScreen() const;
     void queryCustomersList();
     void showCustomers() const;
@@ -80,7 +64,6 @@ class CustomerMgmtScreen : public screen::ScreenBase<domain::customermgmt::Custo
 
     app::utility::TableHelper<entity::Customer> mTableHelper;
     bool isShowingDetailsScreen;
-    static const std::vector<std::string> domainFields;
 };
 
 }  // namespace backoffice
