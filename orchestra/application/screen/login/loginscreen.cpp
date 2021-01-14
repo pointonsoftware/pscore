@@ -23,8 +23,6 @@
 #include <memory>
 // view
 #include <screencommon.hpp>
-// core
-#include <domain/userlogin/interface/loginiface.hpp>
 // data
 #include <logindata.hpp>
 
@@ -56,11 +54,10 @@ void LoginScreen::show(std::promise<defines::display>* promise) {
 }
 
 bool LoginScreen::onLogin(const std::string& id, const std::string& pin) {
-    domain::login::LoginControllerPtr auth
-         = domain::login::createLoginModule(
+    mCoreController = domain::login::createLoginModule(
                     std::make_shared<dataprovider::login::LoginDataProvider>(),
-                    std::make_shared<LoginScreen>(*this));
-    return auth->authenticate(id, pin);
+                    std::make_shared<LoginScreen>());
+    return mCoreController->authenticate(id, pin);
 }
 
 std::string LoginScreen::getUserID() const {

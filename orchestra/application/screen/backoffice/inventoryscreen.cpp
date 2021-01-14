@@ -54,7 +54,7 @@ InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock
               &entity::Product::sellPrice }), isShowingDetailsScreen(false) {}
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
-    mInventoryController = domain::inventory::createInventoryModule(
+    mCoreController = domain::inventory::createInventoryModule(
                     std::make_shared<dataprovider::inventory::InventoryDataProvider>(),
                     std::make_shared<InventoryScreen>());
     // Get the products from Core then cache the list
@@ -75,7 +75,7 @@ void InventoryScreen::showLandingScreen() const {
 }
 
 void InventoryScreen::queryProductsList() {
-    mTableHelper.setData(mInventoryController->list());
+    mTableHelper.setData(mCoreController->list());
 }
 
 void InventoryScreen::showProducts() const {
@@ -100,7 +100,7 @@ void InventoryScreen::showProductDetails(bool showIndex) const {
 }
 
 void InventoryScreen::removeProduct() {
-    if (mInventoryController->remove(mTableHelper.getSelectedData().barcode())
+    if (mCoreController->remove(mTableHelper.getSelectedData().barcode())
         == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
        // Remove the product from our table
        mTableHelper.deleteSelectedData();
@@ -150,7 +150,7 @@ void InventoryScreen::createProduct() {
         requiredFields.clear();
 
         std::map<std::string, std::string> validationResult;
-        if (mInventoryController->save(newProduct, &validationResult)
+        if (mCoreController->save(newProduct, &validationResult)
             != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
             requiredFields = app::util::extractMapKeys(validationResult);
             SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
@@ -175,7 +175,7 @@ void InventoryScreen::updateProduct() {
             fillProductInformation(&product, requiredFields);
             // Reset validation results
             validationResult.clear();
-            if (mInventoryController->save(product, &validationResult)
+            if (mCoreController->save(product, &validationResult)
                 != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));

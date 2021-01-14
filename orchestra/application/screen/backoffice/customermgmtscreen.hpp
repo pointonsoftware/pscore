@@ -35,7 +35,7 @@
 namespace screen {
 namespace backoffice {
 
-class CustomerMgmtScreen : public screen::ScreenBase,
+class CustomerMgmtScreen : public screen::ScreenBase<domain::customermgmt::CustomerMgmtCtrlPtr>,
                            public domain::customermgmt::CustomerManagementViewInterface {
  public:
     CustomerMgmtScreen();
@@ -78,7 +78,6 @@ class CustomerMgmtScreen : public screen::ScreenBase,
     void fillCustomerInformation(entity::Customer* customer,
                                  const std::vector<std::string>& requiredFields) const;
 
-    domain::customermgmt::CustomerMgmtControllerPtr mCoreController;
     app::utility::TableHelper<entity::Customer> mTableHelper;
     bool isShowingDetailsScreen;
     static const std::vector<std::string> domainFields;

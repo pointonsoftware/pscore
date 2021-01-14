@@ -60,7 +60,7 @@ EmployeeMgmtScreen::EmployeeMgmtScreen()
               &entity::Employee::position }), isShowingDetailsScreen(false) {}
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
-    mCoreEmployeeMgmt = domain::empmgmt::createEmployeeMgmtModule(
+    mCoreController = domain::empmgmt::createEmployeeMgmtModule(
                     std::make_shared<dataprovider::empmgmt::EmployeeDataProvider>(),
                     std::make_shared<EmployeeMgmtScreen>());
     // Get the employees from Core then cache the list
@@ -81,7 +81,7 @@ void EmployeeMgmtScreen::showLandingScreen() const {
 }
 
 void EmployeeMgmtScreen::queryEmployeesList() {
-    mTableHelper.setData(mCoreEmployeeMgmt->list());
+    mTableHelper.setData(mCoreController->list());
 }
 
 void EmployeeMgmtScreen::showEmployees() const {
@@ -102,7 +102,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
     */
     const std::string& employeeID = mTableHelper.getSelectedData().ID();
-    const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->getEmployee(employeeID);
+    const entity::Employee& selectedEmployee = mCoreController->getEmployee(employeeID);
     if (!selectedEmployee.ID().empty()) {
         // Valid employee, show the information screen!
         SCREENCOMMON().showTopBanner("Employee Information");
@@ -119,7 +119,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
 
         // Show user data
         if (selectedEmployee.isSystemUser()) {
-            const entity::User& userdata = mCoreEmployeeMgmt->getUser(employeeID);
+            const entity::User& userdata = mCoreController->getUser(employeeID);
             screen::InformationScreen<entity::User> userDataScreen(userdata);
             userDataScreen.showBasicInformation();
         }
@@ -130,7 +130,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
-    if (mCoreEmployeeMgmt->remove(mTableHelper.getSelectedData().ID())
+    if (mCoreController->remove(mTableHelper.getSelectedData().ID())
           == domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
        // Remove the user form
        mTableHelper.deleteSelectedData();
@@ -242,13 +242,13 @@ void EmployeeMgmtScreen::createEmployee() {
 
             if (!isSystemUser) {
                 // non-user, add the employee
-                return mCoreEmployeeMgmt->save({newEmployee, "", &validationResult});
+                return mCoreController->save({newEmployee, "", &validationResult});
             } else {
                 // Employee is a system user
                 newEmployee.setIsSystemUser(true);
                 // User PIN
                 const std::string pin = SCREENCOMMON().getInput("PIN");
-                return mCoreEmployeeMgmt->save({newEmployee, pin, &validationResult});
+                return mCoreController->save({newEmployee, pin, &validationResult});
             }
         }();
 
@@ -287,7 +287,7 @@ void EmployeeMgmtScreen::updateEmployee() {
             fillEmployeeInformation(&updateEmployee, requiredFields);
             // Reset validation results
             validationResult.clear();
-            if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
+            if (mCoreController->save({updateEmployee, "", &validationResult}) !=
                 domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));

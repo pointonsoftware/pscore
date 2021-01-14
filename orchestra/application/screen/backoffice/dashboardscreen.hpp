@@ -31,7 +31,8 @@
 namespace screen {
 namespace backoffice {
 
-class DashboardScreen : public ScreenBase, public domain::dashboard::DashboardViewInterface {
+class DashboardScreen : public ScreenBase<domain::dashboard::DashboardControllerPtr>,
+                        public domain::dashboard::DashboardViewInterface {
  public:
     explicit DashboardScreen(const std::string& userID);
     ~DashboardScreen() = default;
@@ -68,7 +69,6 @@ class DashboardScreen : public ScreenBase, public domain::dashboard::DashboardVi
     void invalidOptionSelected() const;
     Options getUserSelection() const;
     bool action(Options option, std::promise<defines::display>* nextScreen) const;
-    domain::dashboard::DashboardControllerPtr mCoreDashboard;
 };
 
 }  // namespace backoffice

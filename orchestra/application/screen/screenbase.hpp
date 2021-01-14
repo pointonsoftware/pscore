@@ -25,12 +25,16 @@
 
 namespace screen {
 
+template <class ControllerType>
 class ScreenBase {
  public:
     ScreenBase() = default;
     virtual ~ScreenBase() = default;
 
     virtual void show(std::promise<defines::display>* promise) = 0;
+
+ protected:
+    ControllerType mCoreController;
 };
 
 }  // namespace screen

@@ -35,11 +35,11 @@ DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
 }
 
 void DashboardScreen::show(std::promise<defines::display>* promise) {
-    mCoreDashboard = domain::dashboard::createDashboardModule(
+    mCoreController = domain::dashboard::createDashboardModule(
                 std::make_shared<dataprovider::dashboard::DashboardDataProvider>(),
                 std::make_shared<DashboardScreen>(mUserID));
-    mCoreDashboard->setCurrentUserId(mUserID);
-    mCurrentUser = mCoreDashboard->getCurrentUser();
+    mCoreController->setCurrentUserId(mUserID);
+    mCurrentUser = mCoreController->getCurrentUser();
 
     if (!mCurrentUser.userID().empty()) {
         // Valid user, proceed to menu selection
@@ -77,7 +77,7 @@ void DashboardScreen::showOptions() const {
 void DashboardScreen::showUserInformation() const {
     SCREENCOMMON().showTopBanner("User Information");
     if (!mCurrentUser.employeeID().empty()) {
-        entity::Employee emp = mCoreDashboard->getUserDetails(mCurrentUser);
+        entity::Employee emp = mCoreController->getUserDetails(mCurrentUser);
         screen::InformationScreen<entity::Employee> userInfoScreen(emp);
         userInfoScreen.showBasicInformation();
         userInfoScreen.showContactDetails();

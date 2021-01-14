@@ -35,7 +35,7 @@
 namespace screen {
 namespace backoffice {
 
-class InventoryScreen : public screen::ScreenBase,
+class InventoryScreen : public screen::ScreenBase<domain::inventory::InventoryControllerPtr>,
                         public domain::inventory::InventoryViewInterface {
  public:
     InventoryScreen();
@@ -79,7 +79,6 @@ class InventoryScreen : public screen::ScreenBase,
     void fillProductInformation(entity::Product* product,
                                 const std::vector<std::string>& requiredFields) const;
 
-    domain::inventory::InventoryControllerPtr mInventoryController;
     app::utility::TableHelper<entity::Product> mTableHelper;
     bool isShowingDetailsScreen;
     static const std::vector<std::string> productDomainFields;

@@ -22,13 +22,16 @@
 #define ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
 #include <string>
 #include <future>
+// core
+#include <domain/userlogin/interface/loginiface.hpp>
 #include <domain/userlogin/interface/loginviewif.hpp>
 #include <screenbase.hpp>
 
 namespace screen {
 namespace login {
 
-class LoginScreen : public screen::ScreenBase, public domain::login::LoginViewIface {
+class LoginScreen : public screen::ScreenBase<domain::login::LoginControllerPtr>,
+                    public domain::login::LoginViewIface {
  public:
     LoginScreen() = default;
     ~LoginScreen() = default;
