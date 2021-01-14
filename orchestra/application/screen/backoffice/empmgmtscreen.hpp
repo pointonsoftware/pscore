@@ -55,10 +55,8 @@ class EmployeeMgmtScreen : public ScreenInterface,
  private:
     void showLandingScreen() const;
     void showEmployees() const;
-    void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    void invalidOptionSelected() const;
     void showEmployeeInformation(bool showIndex = false) const;
     void queryEmployeesList();
     void createEmployee();

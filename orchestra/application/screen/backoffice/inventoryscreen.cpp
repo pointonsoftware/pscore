@@ -86,12 +86,6 @@ void InventoryScreen::showProducts() const {
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
-void InventoryScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
-}
-
 void InventoryScreen::showProductDetails(bool showIndex) const {
     const entity::Product& selectedProduct = mTableHelper.getSelectedData();
     SCREENCOMMON().showTopBanner("Product Information");
@@ -266,10 +260,6 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
-}
-
-void InventoryScreen::invalidOptionSelected() const {
-    std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
 void InventoryScreen::showProductsEmptyPopup() {

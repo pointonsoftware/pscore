@@ -55,10 +55,9 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     void createCustomer();
     void updateCustomer();
     void removeCustomer();
-    void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    void invalidOptionSelected() const;
+
     void fillCustomerInformation(entity::Customer* customer,
                                  const std::vector<std::string>& requiredFields) const;
 

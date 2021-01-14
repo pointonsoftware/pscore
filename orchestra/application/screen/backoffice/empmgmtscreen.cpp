@@ -91,12 +91,6 @@ void EmployeeMgmtScreen::showEmployees() const {
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
-void EmployeeMgmtScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
-}
-
 void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
     /*!
      * Get the employeeID from employee GUI table
@@ -377,10 +371,6 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
-}
-
-void EmployeeMgmtScreen::invalidOptionSelected() const {
-    std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
 void EmployeeMgmtScreen::showEmployeesEmptyPopup() {

@@ -96,10 +96,6 @@ void DashboardScreen::showUserInformation() const {
     std::cout << "Enter [b] to go back." << std::endl;
 }
 
-void DashboardScreen::invalidOptionSelected() const {
-    std::cout << "Invalid option! Please select a choice from the menu." << std::endl;
-}
-
 DashboardScreen::Options DashboardScreen::getUserSelection() const {
     std::string userInput;
     std::cout << std::endl << "> "; std::cin >> userInput;

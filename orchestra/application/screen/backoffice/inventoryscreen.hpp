@@ -52,10 +52,8 @@ class InventoryScreen : public screen::ScreenInterface,
     void showLandingScreen() const;
     void queryProductsList();
     void showProducts() const;
-    void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    void invalidOptionSelected() const;
     void showProductDetails(bool showIndex = false) const;
     const std::string getEntityField(unsigned int index) const;
     void removeProduct();

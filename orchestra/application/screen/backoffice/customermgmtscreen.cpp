@@ -77,12 +77,6 @@ void CustomerMgmtScreen::showLandingScreen() const {
     showOptions();
 }
 
-void CustomerMgmtScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
-}
-
 void CustomerMgmtScreen::queryCustomersList() {
     mTableHelper.setData(mCoreController->list());
 }
@@ -314,10 +308,6 @@ bool CustomerMgmtScreen::action(Options option, std::promise<defines::display>* 
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
-}
-
-void CustomerMgmtScreen::invalidOptionSelected() const {
-    std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
 void CustomerMgmtScreen::showListIsEmptyPopup() {
