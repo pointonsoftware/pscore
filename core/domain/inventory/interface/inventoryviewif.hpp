@@ -30,17 +30,17 @@ class InventoryViewInterface {
     InventoryViewInterface() = default;
     virtual ~InventoryViewInterface() = default;
 
-    /*!
-     * showProductsEmptyPopup
-    */
+    /**
+     *  showProductsEmptyPopup
+     */
     virtual void showProductsEmptyPopup() = 0;
-    /*!
-     * showDataNotReadyScreen
-    */
+    /**
+     *  showDataNotReadyScreen
+     */
     virtual void showDataNotReadyScreen() = 0;
-    /*!
-     * showSuccessfullyRemoved
-    */
+    /**
+     *  showSuccessfullyRemoved
+     */
     virtual void showSuccessfullyRemoved(const std::string& barcode) = 0;
 };
 

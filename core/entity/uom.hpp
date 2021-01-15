@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,30 +18,36 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
-#define CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
+#ifndef CORE_ENTITY_UOM_HPP_
+#define CORE_ENTITY_UOM_HPP_
+
 #include <string>
-#include <entity/user.hpp>
 
-namespace domain {
-namespace login {
+namespace entity {
 
-class LoginDataProviderIface {
+class UnitOfMeasurement {
  public:
-    LoginDataProviderIface() = default;
-    virtual ~LoginDataProviderIface() = default;
+    UnitOfMeasurement() = default;
+    ~UnitOfMeasurement() = default;
+    UnitOfMeasurement(const std::string& id, const std::string& name,
+                      const std::string& abbreviation)
+                     : mID(id), mName(name), mAbbreviation(abbreviation) {}
 
-    /**
-     *  entity::User findUserByID(const std::string& id)
-     *  Looks for the user that's assigned with the ID argument
-     *  Will return empty user.userID() if user is not found.
-     *
-     *  [in] input ID
-     *  [return] user entity class
-     */
-    virtual entity::User findUserByID(const std::string& id) = 0;
+    std::string ID() const {
+        return mID;
+    }
+    std::string name() const {
+        return mName;
+    }
+    std::string abbreviation() const {
+        return mAbbreviation;
+    }
+
+ private:
+    std::string mID;
+    std::string mName;
+    std::string mAbbreviation;
 };
 
-}  // namespace login
-}  // namespace domain
-#endif  // CORE_DOMAIN_USERLOGIN_INTERFACE_LOGINDATAIF_HPP_
+}  // namespace entity
+#endif  // CORE_ENTITY_UOM_HPP_

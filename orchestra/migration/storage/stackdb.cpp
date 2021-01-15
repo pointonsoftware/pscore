@@ -30,6 +30,8 @@ std::vector<StackDB::ContactDetailsTableItem> StackDB::CONTACTS_TABLE;
 std::vector<StackDB::PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
 std::vector<StackDB::ProductTableItem> StackDB::PRODUCT_TABLE;
 std::vector<StackDB::CustomerTableItem> StackDB::CUSTOMER_TABLE;
+std::vector<StackDB::UOMTableItem> StackDB::UOM_TABLE;
+
 
 StackDB::StackDB() {
     // Admin user
@@ -42,6 +44,7 @@ StackDB::StackDB() {
     populateEmployees();
     populateProducts();
     populateCustomers();
+    populateUOM();
 }
 
 void StackDB::populateEmployees() {
@@ -223,7 +226,7 @@ void StackDB::populateProducts() {
             "Original flavor",            // Description
             "Grocery",                    // Category
             "Jack n Jill",                // Brand
-            "piece",                      // Unit of measurement
+            "pc",                         // Unit of measurement (check the UOM_TABLE)
             "10",                         // Stocks remaining
             "High",                       // Status
             "8.00",                       // Original Price
@@ -239,7 +242,7 @@ void StackDB::populateProducts() {
             "Cooking oil",                // Description
             "Grocery",                    // Category
             "No Brand",                   // Brand
-            "cup",                        // Unit of measurement
+            "cp",                         // Unit of measurement (check the UOM_TABLE)
             "100",                        // Stocks remaining
             "High",                       // Status
             "5.00",                       // Original Price
@@ -254,7 +257,7 @@ void StackDB::populateProducts() {
             "Sugar",                      // Description
             "Grocery",                    // Category
             "No Brand",                   // Brand
-            "gram",                       // Unit of measurement
+            "g",                          // Unit of measurement (check the UOM_TABLE)
             "100",                        // Stocks remaining
             "High",                       // Status
             "5.00",                       // Original Price
@@ -269,7 +272,7 @@ void StackDB::populateProducts() {
             "Paracetamol",                // Description
             "Medicine",                   // Category
             "Unilab",                     // Brand
-            "piece",                      // Unit of measurement
+            "pc",                         // Unit of measurement (check the UOM_TABLE)
             "20",                         // Stocks remaining
             "High",                       // Status
             "5.00",                       // Original Price
@@ -284,7 +287,7 @@ void StackDB::populateProducts() {
             "Coke 1L bottle",             // Description
             "Beverage",                   // Category
             "Coca Cola",                  // Brand
-            "piece",                      // Unit of measurement
+            "pc",                         // Unit of measurement (check the UOM_TABLE)
             "20",                         // Stocks remaining
             "High",                       // Status
             "5.00",                       // Original Price
@@ -417,6 +420,38 @@ void StackDB::populateCustomers() {
             "CMJB73YN64LB",               // Customer ID <!Same as CustomerID above>
             "SSS",                        // Type
             "014-135-188-813"});          // ID-number
+}
+
+void StackDB::populateUOM() {
+    // If you want to add a unit of measurement to our in-memory DB, put it here
+
+    //------- Copy starting from the line below
+    UOM_TABLE.emplace_back(UOMTableItem {
+            "1",                          // ID <!Make sure this is unique>
+            "Liter",                      // Unit Name
+            "L"});                        // Abbreviation
+    //------- End here
+
+    UOM_TABLE.emplace_back(UOMTableItem {
+            "2",                          // ID <!Make sure this is unique>
+            "Milliliter",                 // Unit Name
+            "mL"});                       // Abbreviation
+    UOM_TABLE.emplace_back(UOMTableItem {
+            "3",                          // ID <!Make sure this is unique>
+            "Kilogram",                   // Unit Name
+            "kg"});                       // Abbreviation
+    UOM_TABLE.emplace_back(UOMTableItem {
+            "4",                          // ID <!Make sure this is unique>
+            "Gram",                       // Unit Name
+            "g"});                        // Abbreviation
+    UOM_TABLE.emplace_back(UOMTableItem {
+            "5",                          // ID <!Make sure this is unique>
+            "Piece",                      // Unit Name
+            "pc"});                       // Abbreviation
+    UOM_TABLE.emplace_back(UOMTableItem {
+            "6",                          // ID <!Make sure this is unique>
+            "Cup",                        // Unit Name
+            "cp"});                       // Abbreviation
 }
 
 }  // namespace db

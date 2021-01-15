@@ -43,28 +43,28 @@ class CustomerManagementControlInterface {
  public:
     CustomerManagementControlInterface() = default;
     virtual ~CustomerManagementControlInterface() = default;
-    /*!
-     * Gets the list of all customers
-    */
+    /**
+     *  Gets the list of all customers
+     */
     virtual std::vector<entity::Customer> list() = 0;
-    /*!
-     * Retrieves a customer
-    */
+    /**
+     *  Retrieves a customer
+     */
     virtual entity::Customer get(const std::string& id) = 0;
-    /*!
-     * Used to create or update a customer
-     * - Creates the customer if the customerID does not exist in the database
-     * - Updates the customer using the customerID
-     * @param [in] - customer data
-     * @param [out] - validation result (map[field, error message])
+    /**
+     *  Used to create or update a customer
+     *  - Creates the customer if the customerID does not exist in the database
+     *  - Updates the customer using the customerID
+     *  @param [in] - customer data
+     *  @param [out] - validation result (map[field, error message])
      *
-     * Note: This will reset the map container
-    */
+     *  Note: This will reset the map container
+     */
     virtual CUSTOMERMGMTAPISTATUS save(const entity::Customer& customer,
                                        std::map<std::string, std::string>* validationResult) = 0;
-    /*!
-     * Deletes a customer
-    */
+    /**
+     *  Deletes a customer
+     */
     virtual CUSTOMERMGMTAPISTATUS remove(const std::string& id) = 0;
 };
 

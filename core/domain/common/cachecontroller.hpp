@@ -26,9 +26,9 @@
 
 namespace domain {
 
-/*!
- * Cache list wrapper
-*/
+ /**
+ *  Cache list wrapper
+ */
 
 template <typename EntityType>
 class CacheController {
@@ -36,68 +36,68 @@ class CacheController {
     CacheController() = default;
     virtual ~CacheController() = default;
 
-    /*!
-     * Sets cached data
-    */
+    /**
+     *  Sets cached data
+     */
     void fill(const std::vector<EntityType>& list) {
         mCachedList = list;
     }
 
-    /*!
-     * Returns a copy of cached data
-    */
+    /**
+     *  Returns a copy of cached data
+     */
     const std::vector<EntityType>& get() {
         return mCachedList;
     }
 
-    /*!
-     * Adds data to the list
-    */
+    /**
+     *  Adds data to the list
+     */
     void insert(const EntityType& data) {
         mCachedList.emplace_back(data);
     }
 
-    /*!
-     * Removes data to the list
-    */
+    /**
+     *  Removes data to the list
+     */
     void erase(const typename std::vector<EntityType>::iterator it) {
         mCachedList.erase(it);
     }
 
-    /*!
-     * Checks if cache list is not empty
-    */
+    /**
+     *  Checks if cache list is not empty
+     */
     bool hasData() {
         return !mCachedList.empty();
     }
 
-    /*!
-     * Returns cache size
-    */
+    /**
+     *  Returns cache size
+     */
     size_t dataCount() {
         return mCachedList.size();
     }
 
-    /*!
-     * Returns an iterator referring to the past-the-end element in the cache list
-    */
+    /**
+     *  Returns an iterator referring to the past-the-end element in the cache list
+     */
     typename std::vector<EntityType>::iterator endOfData() {
         return mCachedList.end();
     }
 
-    /*!
-     * @param [in] 1 - the key or id string that you want to find
-     * @param [in] 2 - the entity function that returns their key or id (e.g. ID() or barcode())
-    */
+    /**
+     *  @param [in] 1 - the key or id string that you want to find
+     *  @param [in] 2 - the entity function that returns their key or id (e.g. ID() or barcode())
+     */
     typename std::vector<EntityType>::iterator find(const std::string& key,
                                                std::function<std::string(const EntityType&)> fn) {
          return std::find_if(mCachedList.begin(), mCachedList.end(),
                      [&key, &fn](const EntityType& e) { return fn(e) == key; });
     }
 
-    /*!
-     * See BaseController::find() for paramater details
-    */
+    /**
+     *  See BaseController::find() for paramater details
+     */
     bool isExists(const std::string& key, std::function<std::string(const EntityType&)> fn) {
          return find(key, fn) != mCachedList.end();
     }

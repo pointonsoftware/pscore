@@ -32,13 +32,13 @@ class LoginViewIface {
     virtual ~LoginViewIface() = default;
 
     /**
-    * user not found
-    */
+     * User not found
+     */
     virtual void showUserNotFoundScreen() = 0;
 
     /**
-    * will be called if something went wrong with the database
-    */
+     * Will be called if something went wrong with the database
+     */
     virtual void showDataNotReadyScreen() = 0;
 };
 

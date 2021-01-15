@@ -34,6 +34,7 @@ InventoryController::InventoryController(const InventoryDataPtr& data,
     }
     mDataProvider = data;
     mView = view;
+    mCachedUOMs.fill(mDataProvider->getUOMs());
 }
 
 std::vector<entity::Product> InventoryController::list() {
@@ -135,6 +136,45 @@ INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
     mCachedList.erase(it);
     mView->showSuccessfullyRemoved(barcode);
     LOG_INFO("Successfully removed product %s", barcode.c_str());
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
+INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uom) {
+    LOG_DEBUG("Adding new unit of measurement %s", uom.name().c_str());
+    if (mCachedUOMs.isExists(uom.ID(), &entity::UnitOfMeasurement::ID)) {
+        LOG_ERROR("Unit of measurement ID %s already exists", uom.ID().c_str());
+        return INVENTORYAPISTATUS::FAILED;
+    }
+    if (mCachedUOMs.isExists(uom.name(), &entity::UnitOfMeasurement::name)) {
+        LOG_ERROR("Unit of measurement %s already exists", uom.name().c_str());
+        return INVENTORYAPISTATUS::FAILED;
+    }
+    if (mCachedUOMs.isExists(uom.abbreviation(), &entity::UnitOfMeasurement::abbreviation)) {
+        LOG_ERROR("Unit of measurement abbreviation %s already exists", uom.abbreviation().c_str());
+        return INVENTORYAPISTATUS::FAILED;
+    }
+    // Add to DB
+    mDataProvider->createUOM(uom);
+    // Add to cache
+    mCachedUOMs.insert(uom);
+    LOG_INFO("Successfully added uom %s", uom.name().c_str());
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
+INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
+    const std::vector<entity::UnitOfMeasurement>::iterator it =
+                     mCachedUOMs.find(id, &entity::UnitOfMeasurement::ID);
+    LOG_DEBUG("Removing unit of measurement %s", it->name().c_str());
+    if (it == mCachedUOMs.endOfData()) {
+        LOG_ERROR("Unit of measurement ID %s was not found.", id.c_str());
+        mView->showDataNotReadyScreen();
+        return INVENTORYAPISTATUS::NOT_FOUND;
+    }
+    // Remove from DB
+    mDataProvider->removeUOM(id);
+    // Remove from cache
+    mCachedUOMs.erase(it);
+    LOG_INFO("Successfully removed uom %s", id.c_str());
     return INVENTORYAPISTATUS::SUCCESS;
 }
 

@@ -109,6 +109,32 @@ void InventoryDataProvider::update(const entity::Product& product) {
             product.supplierCode() };
 }
 
+std::vector<entity::UnitOfMeasurement> InventoryDataProvider::getUOMs() {
+    // SELECT UOMs
+    std::vector<entity::UnitOfMeasurement> uoms;
+    for (const db::StackDB::UOMTableItem& temp : DATABASE().SELECT_UOM_TABLE()) {
+        uoms.emplace_back(entity::UnitOfMeasurement(temp.ID, temp.unit_name, temp.abbreviation));
+    }
+    return uoms;
+}
+
+void InventoryDataProvider::createUOM(const entity::UnitOfMeasurement& uom) {
+    // INSERT INTO to the database
+    DATABASE().SELECT_UOM_TABLE().emplace_back(db::StackDB::UOMTableItem{
+                                               uom.ID(), uom.name(), uom.abbreviation()});
+}
+
+void InventoryDataProvider::removeUOM(const std::string& id) {
+    // Delete in UOMs
+    DATABASE().SELECT_UOM_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_UOM_TABLE().begin(),
+                    DATABASE().SELECT_UOM_TABLE().end(),
+                    [&](const db::StackDB::UOMTableItem& e) {
+                        return e.ID == id;
+                    }),
+        DATABASE().SELECT_UOM_TABLE().end());
+}
+
 }  // namespace inventory
 }  // namespace dataprovider
 

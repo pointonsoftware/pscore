@@ -36,20 +36,20 @@ class DashboardControlInterface {
     DashboardControlInterface() = default;
     virtual ~DashboardControlInterface() = default;
 
-    /*!
-     * Sets the current user ID
-     * Warning: it is the caller's responsibility to provide a valid userID
+    /**
+     *  Sets the current user ID
+     *  Warning: it is the caller's responsibility to provide a valid userID
     */
     virtual void setCurrentUserId(const std::string& userID) = 0;
-    /*!
-     * Returns the current user
-     * Note: Has to be paired with setCurrentUserId(); otherwise, will return empty
+    /**
+     *  Returns the current user
+     *  Note: Has to be paired with setCurrentUserId(); otherwise, will return empty
     */
     virtual entity::User getCurrentUser() = 0;
-    /*!
-     * Returns more user information through the employee entity
-     * Note: Has to be paired with setCurrentUserId() and the user must have an employeeID;
-     *       otherwise, will return empty.
+    /**
+     *  Returns more user information through the employee entity
+     *  Note: Has to be paired with setCurrentUserId() and the user must have an employeeID;
+     *        otherwise, will return empty.
     */
     virtual entity::Employee getUserDetails(const entity::User& user) = 0;
 };

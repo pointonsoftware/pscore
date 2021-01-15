@@ -38,6 +38,9 @@ class InventoryDataMock : public InventoryDataInterface {
     MOCK_METHOD(void, removeWithBarcode, (const std::string& barcode));
     MOCK_METHOD(void, create, (const entity::Product& product));
     MOCK_METHOD(void, update, (const entity::Product& product));
+    MOCK_METHOD(std::vector<entity::UnitOfMeasurement>, getUOMs, ());
+    MOCK_METHOD(void, createUOM, (const entity::UnitOfMeasurement& uom));
+    MOCK_METHOD(void, removeUOM, (const std::string& id));
 };
 
 }  // namespace inventory

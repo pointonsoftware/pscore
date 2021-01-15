@@ -31,17 +31,17 @@ class DashboardViewInterface {
 
     // Public API
 
-    /*!
-     * showUserNotFound
-    */
+    /**
+     *  showUserNotFound
+     */
     virtual void showUserNotFound() = 0;
-    /*!
-     * showInvalidOptionPopup
-    */
+    /**
+     *  showInvalidOptionPopup
+     */
     virtual void showInvalidOptionPopup() = 0;
-    /*!
-     * showDataNotReadyScreen
-    */
+    /**
+     *  showDataNotReadyScreen
+     */
     virtual void showDataNotReadyScreen() = 0;
 };
 

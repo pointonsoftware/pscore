@@ -31,23 +31,23 @@ class DashboardDataInterface {
  public:
     DashboardDataInterface() = default;
     virtual ~DashboardDataInterface() = default;
-    /*!
-     * entity::User getUserByID(const std::string& userID)
-     * Looks for the user with userid
-     * Will return user->userID empty if user is not found.
+    /**
+     *  entity::User getUserByID(const std::string& userID)
+     *  Looks for the user with userid
+     *  Will return user->userID empty if user is not found.
      *
-     * [in] input userID
-     * [return] user entity
+     *  [in] input userID
+     *  [return] user entity
     */
     virtual entity::User getUserByID(const std::string& userID) = 0;
-    /*!
-     * entity::Employee getEmployeeInformation(const std::string& employeeID)
-     * Used to retrieve the user information from employee database
-     * The employeeID parameter must be coming from getUserByID() API
+    /**
+     *  entity::Employee getEmployeeInformation(const std::string& employeeID)
+     *  Used to retrieve the user information from employee database
+     *  The employeeID parameter must be coming from getUserByID() API
      *
-     * [in] employeeID
-     * [return] employee entity
-    */
+     *  [in] employeeID
+     *  [return] employee entity
+     */
     virtual entity::Employee getEmployeeInformation(const std::string& employeeID) = 0;
 };
 

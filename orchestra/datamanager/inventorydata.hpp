@@ -36,6 +36,9 @@ class InventoryDataProvider : public domain::inventory::InventoryDataInterface {
     void create(const entity::Product& product) override;
     void removeWithBarcode(const std::string& barcode) override;
     void update(const entity::Product& product) override;
+    std::vector<entity::UnitOfMeasurement> getUOMs() override;
+    void createUOM(const entity::UnitOfMeasurement& uom) override;
+    void removeUOM(const std::string& id) override;
 };
 
 }  // namespace inventory

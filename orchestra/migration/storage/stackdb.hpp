@@ -108,6 +108,12 @@ class StackDB {
         std::string gender;
     };
 
+    struct UOMTableItem {
+        std::string ID;
+        std::string unit_name;
+        std::string abbreviation;
+    };
+
     inline std::vector<EmployeeTableItem>& SELECT_EMPLOYEES_TABLE() const {
         return EMPLOYEES_TABLE;
     }
@@ -136,6 +142,10 @@ class StackDB {
         return CUSTOMER_TABLE;
     }
 
+    inline std::vector<UOMTableItem>& SELECT_UOM_TABLE() const {
+        return UOM_TABLE;
+    }
+
  private:
     StackDB();
     // employees storage
@@ -152,9 +162,13 @@ class StackDB {
     static std::vector<ProductTableItem> PRODUCT_TABLE;
     // customer storage
     static std::vector<CustomerTableItem> CUSTOMER_TABLE;
+    // unit of measurement storage
+    static std::vector<UOMTableItem> UOM_TABLE;
+
     void populateEmployees();
     void populateProducts();
     void populateCustomers();
+    void populateUOM();
 };
 
 }  // namespace db
