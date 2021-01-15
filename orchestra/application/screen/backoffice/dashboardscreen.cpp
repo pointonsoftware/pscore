@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include "dashboardscreen.hpp"
 #include <iostream>
+#include <memory>
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -35,11 +36,11 @@ DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
 }
 
 void DashboardScreen::show(std::promise<defines::display>* promise) {
-    mCoreDashboard = domain::dashboard::createDashboardModule(
+    mCoreController = domain::dashboard::createDashboardModule(
                 std::make_shared<dataprovider::dashboard::DashboardDataProvider>(),
                 std::make_shared<DashboardScreen>(mUserID));
-    mCoreDashboard->setCurrentUserId(mUserID);
-    mCurrentUser = mCoreDashboard->getCurrentUser();
+    mCoreController->setCurrentUserId(mUserID);
+    mCurrentUser = mCoreController->getCurrentUser();
 
     if (!mCurrentUser.userID().empty()) {
         // Valid user, proceed to menu selection
@@ -77,7 +78,7 @@ void DashboardScreen::showOptions() const {
 void DashboardScreen::showUserInformation() const {
     SCREENCOMMON().showTopBanner("User Information");
     if (!mCurrentUser.employeeID().empty()) {
-        entity::Employee emp = mCoreDashboard->getUserDetails(mCurrentUser);
+        entity::Employee emp = mCoreController->getUserDetails(mCurrentUser);
         screen::InformationScreen<entity::Employee> userInfoScreen(emp);
         userInfoScreen.showBasicInformation();
         userInfoScreen.showContactDetails();
@@ -95,10 +96,6 @@ void DashboardScreen::showUserInformation() const {
     std::cout << "Enter [b] to go back." << std::endl;
 }
 
-void DashboardScreen::invalidOptionSelected() const {
-    std::cout << "Invalid option! Please select a choice from the menu." << std::endl;
-}
-
 DashboardScreen::Options DashboardScreen::getUserSelection() const {
     std::string userInput;
     std::cout << std::endl << "> "; std::cin >> userInput;
@@ -110,7 +107,7 @@ DashboardScreen::Options DashboardScreen::getUserSelection() const {
     } else if (userInput == "0") {
         return Options::LOGOUT;
     } else if (userInput == "1") {
-        return Options::USER_DETAILS;
+        return Options::USER_PROFILE;
     } else if (userInput == "2") {
         return Options::EMPLOYEE_MGMT;
     } else if (userInput == "3") {
@@ -129,7 +126,7 @@ bool DashboardScreen::action(Options option, std::promise<defines::display>* nex
         case Options::LANDING:
             showLandingScreen();
             break;
-        case Options::USER_DETAILS:
+        case Options::USER_PROFILE:
             showUserInformation();
             break;
         case Options::INVALID:

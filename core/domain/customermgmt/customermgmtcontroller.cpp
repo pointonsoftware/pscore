@@ -164,7 +164,7 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id
     return CUSTOMERMGMTAPISTATUS::SUCCESS;
 }
 
-CustomerMgmtControllerPtr createCustomerMgmtModule(
+CustomerMgmtCtrlPtr createCustomerMgmtModule(
                     const CustomerMgmtDataPtr& data,
                     const CustomerMgmtViewPtr& view) {
     return std::make_unique<CustomerManagementController>(data, view);

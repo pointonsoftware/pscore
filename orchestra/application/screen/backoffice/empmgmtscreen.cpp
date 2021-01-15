@@ -21,8 +21,9 @@
 #include "empmgmtscreen.hpp"
 #include <functional>
 #include <iostream>
-#include <string>
 #include <map>
+#include <memory>
+#include <string>
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
@@ -35,7 +36,7 @@ namespace screen {
 namespace backoffice {
 
 // Employee fields
-const std::vector<std::string> EmployeeMgmtScreen::employeeDomainFields {
+const std::vector<std::string> DOMAIN_FIELDS {
         "Person.First.Name",
         "Person.Middle.Name",
         "Person.Last.Name",
@@ -60,7 +61,7 @@ EmployeeMgmtScreen::EmployeeMgmtScreen()
               &entity::Employee::position }), isShowingDetailsScreen(false) {}
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
-    mCoreEmployeeMgmt = domain::empmgmt::createEmployeeMgmtModule(
+    mCoreController = domain::empmgmt::createEmployeeMgmtModule(
                     std::make_shared<dataprovider::empmgmt::EmployeeDataProvider>(),
                     std::make_shared<EmployeeMgmtScreen>());
     // Get the employees from Core then cache the list
@@ -81,7 +82,7 @@ void EmployeeMgmtScreen::showLandingScreen() const {
 }
 
 void EmployeeMgmtScreen::queryEmployeesList() {
-    mTableHelper.setData(mCoreEmployeeMgmt->list());
+    mTableHelper.setData(mCoreController->list());
 }
 
 void EmployeeMgmtScreen::showEmployees() const {
@@ -90,19 +91,13 @@ void EmployeeMgmtScreen::showEmployees() const {
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
-void EmployeeMgmtScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
-}
-
 void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
     /*!
      * Get the employeeID from employee GUI table
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
     */
     const std::string& employeeID = mTableHelper.getSelectedData().ID();
-    const entity::Employee& selectedEmployee = mCoreEmployeeMgmt->getEmployee(employeeID);
+    const entity::Employee& selectedEmployee = mCoreController->getEmployee(employeeID);
     if (!selectedEmployee.ID().empty()) {
         // Valid employee, show the information screen!
         SCREENCOMMON().showTopBanner("Employee Information");
@@ -119,7 +114,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
 
         // Show user data
         if (selectedEmployee.isSystemUser()) {
-            const entity::User& userdata = mCoreEmployeeMgmt->getUser(employeeID);
+            const entity::User& userdata = mCoreController->getUser(employeeID);
             screen::InformationScreen<entity::User> userDataScreen(userdata);
             userDataScreen.showBasicInformation();
         }
@@ -130,7 +125,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
-    if (mCoreEmployeeMgmt->remove(mTableHelper.getSelectedData().ID())
+    if (mCoreController->remove(mTableHelper.getSelectedData().ID())
           == domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
        // Remove the user form
        mTableHelper.deleteSelectedData();
@@ -242,13 +237,13 @@ void EmployeeMgmtScreen::createEmployee() {
 
             if (!isSystemUser) {
                 // non-user, add the employee
-                return mCoreEmployeeMgmt->save({newEmployee, "", &validationResult});
+                return mCoreController->save({newEmployee, "", &validationResult});
             } else {
                 // Employee is a system user
                 newEmployee.setIsSystemUser(true);
                 // User PIN
                 const std::string pin = SCREENCOMMON().getInput("PIN");
-                return mCoreEmployeeMgmt->save({newEmployee, pin, &validationResult});
+                return mCoreController->save({newEmployee, pin, &validationResult});
             }
         }();
 
@@ -268,7 +263,7 @@ void EmployeeMgmtScreen::createEmployee() {
 void EmployeeMgmtScreen::updateEmployee() {
     showEmployeeInformation(true);  // true - request to show the index # of each data
     // Get the field to update
-    const std::string field = SCREENCOMMON().getUpdateField(employeeDomainFields);
+    const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
@@ -287,7 +282,7 @@ void EmployeeMgmtScreen::updateEmployee() {
             fillEmployeeInformation(&updateEmployee, requiredFields);
             // Reset validation results
             validationResult.clear();
-            if (mCoreEmployeeMgmt->save({updateEmployee, "", &validationResult}) !=
+            if (mCoreController->save({updateEmployee, "", &validationResult}) !=
                 domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
@@ -315,14 +310,14 @@ EmployeeMgmtScreen::Options EmployeeMgmtScreen::getUserSelection() {
         if (input < mTableHelper.getDataCount()) {
             // Store user input as the selected index (zero based)
             mTableHelper.setCurrentIndex(input);
-            return Options::EMPLOYEE_DETAILS;
+            return Options::OP_READ;
         }
     } else if (userInput == "c" && !isShowingDetailsScreen) {
-        return Options::EMPLOYEE_CREATE;
+        return Options::OP_CREATE;
     } else if (userInput == "u" && isShowingDetailsScreen) {
-        return Options::EMPLOYEE_UPDATE;
+        return Options::OP_UPDATE;
     } else if (userInput == "d" && isShowingDetailsScreen) {
-        return Options::EMPLOYEE_REMOVE;
+        return Options::OP_DELETE;
     }  // add more options here
 
     // Default invalid option
@@ -342,21 +337,21 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
         case Options::INVALID:
             invalidOptionSelected();
             break;
-        case Options::EMPLOYEE_DETAILS:
+        case Options::OP_READ:
             showEmployeeInformation();
             isShowingDetailsScreen = true;  // Must set to true
             break;
-        case Options::EMPLOYEE_CREATE:
+        case Options::OP_CREATE:
             createEmployee();
             // Get the employees from Core then cache the list
             queryEmployeesList();
             showLandingScreen();
             break;
-        case Options::EMPLOYEE_UPDATE:
+        case Options::OP_UPDATE:
             updateEmployee();
             showEmployeeInformation();  // refresh employee details screen
             break;
-        case Options::EMPLOYEE_REMOVE:
+        case Options::OP_DELETE:
             removeEmployee();
             action(Options::LANDING, nextScreen);
             break;
@@ -376,10 +371,6 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
-}
-
-void EmployeeMgmtScreen::invalidOptionSelected() const {
-    std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
 void EmployeeMgmtScreen::showEmployeesEmptyPopup() {

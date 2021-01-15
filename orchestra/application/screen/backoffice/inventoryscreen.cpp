@@ -23,6 +23,8 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <string>
+#include <vector>
 #include <general.hpp>  // pscore utility
 // view
 #include <fieldhelper.hpp>
@@ -34,7 +36,7 @@ namespace screen {
 namespace backoffice {
 
 // Product fields
-const std::vector<std::string> InventoryScreen::productDomainFields {
+const std::vector<std::string> DOMAIN_FIELDS {
     "Product.SKU",
     "Product.Name",
     "Product.Description",
@@ -54,7 +56,7 @@ InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock
               &entity::Product::sellPrice }), isShowingDetailsScreen(false) {}
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
-    mInventoryController = domain::inventory::createInventoryModule(
+    mCoreController = domain::inventory::createInventoryModule(
                     std::make_shared<dataprovider::inventory::InventoryDataProvider>(),
                     std::make_shared<InventoryScreen>());
     // Get the products from Core then cache the list
@@ -75,19 +77,13 @@ void InventoryScreen::showLandingScreen() const {
 }
 
 void InventoryScreen::queryProductsList() {
-    mTableHelper.setData(mInventoryController->list());
+    mTableHelper.setData(mCoreController->list());
 }
 
 void InventoryScreen::showProducts() const {
     std::cout << std::endl;
     mTableHelper.printTable();
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
-}
-
-void InventoryScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {
@@ -100,7 +96,7 @@ void InventoryScreen::showProductDetails(bool showIndex) const {
 }
 
 void InventoryScreen::removeProduct() {
-    if (mInventoryController->remove(mTableHelper.getSelectedData().barcode())
+    if (mCoreController->remove(mTableHelper.getSelectedData().barcode())
         == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
        // Remove the product from our table
        mTableHelper.deleteSelectedData();
@@ -150,7 +146,7 @@ void InventoryScreen::createProduct() {
         requiredFields.clear();
 
         std::map<std::string, std::string> validationResult;
-        if (mInventoryController->save(newProduct, &validationResult)
+        if (mCoreController->save(newProduct, &validationResult)
             != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
             requiredFields = app::util::extractMapKeys(validationResult);
             SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
@@ -162,7 +158,7 @@ void InventoryScreen::createProduct() {
 
 void InventoryScreen::updateProduct() {
     showProductDetails(true);  // true - request to show the index # of each data
-    const std::string field = SCREENCOMMON().getUpdateField(productDomainFields);
+    const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
@@ -175,7 +171,7 @@ void InventoryScreen::updateProduct() {
             fillProductInformation(&product, requiredFields);
             // Reset validation results
             validationResult.clear();
-            if (mInventoryController->save(product, &validationResult)
+            if (mCoreController->save(product, &validationResult)
                 != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
@@ -203,14 +199,14 @@ InventoryScreen::Options InventoryScreen::getUserSelection() {
         if (input < mTableHelper.getDataCount()) {
             // Store user input as the selected index (zero based)
             mTableHelper.setCurrentIndex(input);
-            return Options::PRODUCT_DETAILS;
+            return Options::OP_READ;
         }
     } else if (userInput == "d" && isShowingDetailsScreen) {
-            return Options::PRODUCT_REMOVE;
+            return Options::OP_DELETE;
     } else if (userInput == "c" && !isShowingDetailsScreen) {
-            return Options::PRODUCT_CREATE;
+            return Options::OP_CREATE;
     } else if (userInput == "u" && isShowingDetailsScreen) {
-            return Options::PRODUCT_UPDATE;
+            return Options::OP_UPDATE;
     }  // add more options here
 
     // Default invalid option
@@ -230,21 +226,21 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
         case Options::INVALID:
             invalidOptionSelected();
             break;
-        case Options::PRODUCT_DETAILS:
+        case Options::OP_READ:
             showProductDetails();
             isShowingDetailsScreen = true;  // Must set to true
             break;
-        case Options::PRODUCT_REMOVE:
+        case Options::OP_DELETE:
             removeProduct();
             // Go back to landing screen after removing the product
             action(Options::LANDING, nextScreen);
             break;
-        case Options::PRODUCT_CREATE:
+        case Options::OP_CREATE:
             createProduct();
             // Go back to landing screen after creating the product
             action(Options::LANDING, nextScreen);
             break;
-        case Options::PRODUCT_UPDATE:
+        case Options::OP_UPDATE:
             updateProduct();
             showProductDetails();  // refresh details screen
             break;
@@ -264,10 +260,6 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
-}
-
-void InventoryScreen::invalidOptionSelected() const {
-    std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
 void InventoryScreen::showProductsEmptyPopup() {

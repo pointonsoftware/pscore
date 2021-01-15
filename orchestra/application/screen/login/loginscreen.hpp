@@ -20,8 +20,10 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_LOGIN_LOGINSCREEN_HPP_
-#include <string>
 #include <future>
+#include <string>
+// core
+#include <domain/userlogin/interface/loginiface.hpp>
 #include <domain/userlogin/interface/loginviewif.hpp>
 #include <screeniface.hpp>
 

@@ -20,18 +20,21 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_DASHBOARDSCREEN_HPP_
-#include <future>
-#include <memory>
 #include <string>
+// Core
 #include <domain/dashboard/interface/dashboardiface.hpp>
 #include <domain/dashboard/interface/dashboardviewif.hpp>
-#include <screeniface.hpp>
 #include <entity/user.hpp>
+// Screens
+#include "backofficescreenbase.hpp"
+#include <screeniface.hpp>
 
 namespace screen {
 namespace backoffice {
 
-class DashboardScreen : public ScreenInterface, public domain::dashboard::DashboardViewInterface {
+class DashboardScreen : public ScreenInterface,
+                        public BackOfficeScreenBase<domain::dashboard::DashboardControllerPtr>,
+                        public domain::dashboard::DashboardViewInterface {
  public:
     explicit DashboardScreen(const std::string& userID);
     ~DashboardScreen() = default;
@@ -47,28 +50,12 @@ class DashboardScreen : public ScreenInterface, public domain::dashboard::Dashbo
  private:
     std::string mUserID;
     entity::User mCurrentUser;
-    // Dashboard options - this represents the buttons in a GUI
-    enum class Options {
-        LANDING,
-        USER_DETAILS,
-        EMPLOYEE_MGMT,
-        INVENTORY_CTRL,
-        CUSTOMER_MGMT,
-        // add more enums here
-        LOGOUT,
-        APP_EXIT,
-        INVALID
-        // Warning! Don't add anything here.
-        // New enum values must be added before LOGOUT
-    };
     void menuSelection(std::promise<defines::display>* promise) const;
     void showLandingScreen() const;
-    void showOptions() const;
+    void showOptions() const override;
     void showUserInformation() const;
-    void invalidOptionSelected() const;
     Options getUserSelection() const;
     bool action(Options option, std::promise<defines::display>* nextScreen) const;
-    domain::dashboard::DashboardControllerPtr mCoreDashboard;
 };
 
 }  // namespace backoffice

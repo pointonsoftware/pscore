@@ -20,22 +20,22 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
-#include <future>
-#include <memory>
 #include <string>
 #include <vector>
+// Core
 #include <domain/inventory/interface/inventoryviewif.hpp>
-#include <screeniface.hpp>
-#include <tablehelper.hpp>
-// core
 #include <domain/inventory/interface/inventoryiface.hpp>
-// data
 #include <inventorydata.hpp>
+// Screens
+#include "backofficescreenbase.hpp"
+#include <screeniface.hpp>
 
 namespace screen {
 namespace backoffice {
 
 class InventoryScreen : public screen::ScreenInterface,
+                        public BackOfficeScreenBase
+                               <domain::inventory::InventoryControllerPtr>,
                         public domain::inventory::InventoryViewInterface {
  public:
     InventoryScreen();
@@ -49,28 +49,11 @@ class InventoryScreen : public screen::ScreenInterface,
     void showSuccessfullyRemoved(const std::string& barcode) override;
 
  private:
-      // Screen options - this represents the buttons in a GUI
-    enum class Options {
-        LANDING,
-        DASHBOARD,
-        PRODUCT_DETAILS,
-        PRODUCT_REMOVE,
-        PRODUCT_CREATE,
-        PRODUCT_UPDATE,
-        // add more enums here
-        LOGOUT,
-        APP_EXIT,
-        INVALID
-        // Warning! Don't add anything here.
-        // New enum values must be added before LOGOUT
-    };
     void showLandingScreen() const;
     void queryProductsList();
     void showProducts() const;
-    void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    void invalidOptionSelected() const;
     void showProductDetails(bool showIndex = false) const;
     const std::string getEntityField(unsigned int index) const;
     void removeProduct();
@@ -78,11 +61,8 @@ class InventoryScreen : public screen::ScreenInterface,
     void updateProduct();
     void fillProductInformation(entity::Product* product,
                                 const std::vector<std::string>& requiredFields) const;
-
-    domain::inventory::InventoryControllerPtr mInventoryController;
     app::utility::TableHelper<entity::Product> mTableHelper;
     bool isShowingDetailsScreen;
-    static const std::vector<std::string> productDomainFields;
 };
 
 }  // namespace backoffice

@@ -20,22 +20,21 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_EMPMGMTSCREEN_HPP_
-#include <future>
-#include <memory>
 #include <string>
 #include <vector>
-#include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
-#include <screeniface.hpp>
-#include <tablehelper.hpp>
-// core
+// Core
 #include <domain/employeemgmt/interface/employeemgmtiface.hpp>
-// data
+#include <domain/employeemgmt/interface/employeemgmtviewif.hpp>
 #include <employeedata.hpp>
+// Screens
+#include "backofficescreenbase.hpp"
+#include <screeniface.hpp>
 
 namespace screen {
 namespace backoffice {
 
 class EmployeeMgmtScreen : public ScreenInterface,
+                           public BackOfficeScreenBase<domain::empmgmt::EmpMgmtControllerPtr>,
                            public domain::empmgmt::EmployeeMgmtViewInterface {
  public:
     EmployeeMgmtScreen();
@@ -54,27 +53,10 @@ class EmployeeMgmtScreen : public ScreenInterface,
                                      const std::string& userID) override;
 
  private:
-     // Screen options - this represents the buttons in a GUI
-    enum class Options {
-        LANDING,
-        DASHBOARD,
-        EMPLOYEE_DETAILS,
-        EMPLOYEE_CREATE,
-        EMPLOYEE_REMOVE,
-        EMPLOYEE_UPDATE,
-        // add more enums here
-        LOGOUT,
-        APP_EXIT,
-        INVALID
-        // Warning! Don't add anything here.
-        // New enum values must be added before LOGOUT
-    };
     void showLandingScreen() const;
     void showEmployees() const;
-    void showOptions() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    void invalidOptionSelected() const;
     void showEmployeeInformation(bool showIndex = false) const;
     void queryEmployeesList();
     void createEmployee();
@@ -82,11 +64,8 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void removeEmployee();
     void fillEmployeeInformation(entity::Employee* employee,
                                  const std::vector<std::string>& requiredFields = {}) const;
-
-    domain::empmgmt::EmpMgmtControllerPtr mCoreEmployeeMgmt;
     app::utility::TableHelper<entity::Employee> mTableHelper;
     bool isShowingDetailsScreen;
-    static const std::vector<std::string> employeeDomainFields;
 };
 
 }  // namespace backoffice

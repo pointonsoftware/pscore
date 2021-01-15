@@ -34,7 +34,7 @@ namespace screen {
 namespace backoffice {
 
 // Customer fields
-const std::vector<std::string> CustomerMgmtScreen::domainFields {
+const std::vector<std::string> DOMAIN_FIELDS {
         "Person.First.Name",
         "Person.Middle.Name",
         "Person.Last.Name",
@@ -75,12 +75,6 @@ void CustomerMgmtScreen::showLandingScreen() const {
     SCREENCOMMON().showTopBanner("Customer Management");
     showCustomers();
     showOptions();
-}
-
-void CustomerMgmtScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
 }
 
 void CustomerMgmtScreen::queryCustomersList() {
@@ -198,7 +192,7 @@ void CustomerMgmtScreen::createCustomer() {
 void CustomerMgmtScreen::updateCustomer() {
     showCustomerDetails(true);  // true - request to show the index # of each data
     // Get the field to update
-    const std::string field = SCREENCOMMON().getUpdateField(domainFields);
+    const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
@@ -254,14 +248,14 @@ CustomerMgmtScreen::Options CustomerMgmtScreen::getUserSelection() {
         if (input < mTableHelper.getDataCount()) {
             // Store user input as the selected index (zero based)
             mTableHelper.setCurrentIndex(input);
-            return Options::CUSTOMER_DETAILS;
+            return Options::OP_READ;
         }
     } else if (userInput == "c" && !isShowingDetailsScreen) {
-        return Options::CUSTOMER_CREATE;
+        return Options::OP_CREATE;
     } else if (userInput == "u" && isShowingDetailsScreen) {
-        return Options::CUSTOMER_UPDATE;
+        return Options::OP_UPDATE;
     } else if (userInput == "d" && isShowingDetailsScreen) {
-        return Options::CUSTOMER_REMOVE;
+        return Options::OP_DELETE;
     }  // add more options here
 
     // Default invalid option
@@ -281,20 +275,20 @@ bool CustomerMgmtScreen::action(Options option, std::promise<defines::display>* 
         case Options::INVALID:
             invalidOptionSelected();
             break;
-        case Options::CUSTOMER_DETAILS:
+        case Options::OP_READ:
             showCustomerDetails();
             isShowingDetailsScreen = true;  // Must set to true
             break;
-        case Options::CUSTOMER_CREATE:
+        case Options::OP_CREATE:
             createCustomer();
             // Go back to landing screen after creating the customer
             action(Options::LANDING, nextScreen);
             break;
-        case Options::CUSTOMER_UPDATE:
+        case Options::OP_UPDATE:
             updateCustomer();
             showCustomerDetails();  // refresh employee details screen
             break;
-        case Options::CUSTOMER_REMOVE:
+        case Options::OP_DELETE:
             removeCustomer();
             action(Options::LANDING, nextScreen);
             break;
@@ -314,10 +308,6 @@ bool CustomerMgmtScreen::action(Options option, std::promise<defines::display>* 
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
-}
-
-void CustomerMgmtScreen::invalidOptionSelected() const {
-    std::cout << "Sorry, that option is not yet available." << std::endl;
 }
 
 void CustomerMgmtScreen::showListIsEmptyPopup() {
