@@ -59,7 +59,7 @@ void StackDB::populateEmployees() {
             "2020/10/15",                 // B-date
             "M",                          // Gender
             "Manager",                    // Position
-            "1",                          // Status - (0) Inactive (1) Active
+            "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
             true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "BGAR123",                    // User ID <!Make sure this is unique>
@@ -98,7 +98,7 @@ void StackDB::populateEmployees() {
             "2020/10/10",                 // B-date
             "M",                          // Gender
             "Cashier",                    // Position
-            "1",                          // Status - (0) Inactive (1) Active
+            "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
             true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "BGAR567",                    // User ID <!Make sure this is unique>
@@ -132,7 +132,7 @@ void StackDB::populateEmployees() {
             "2020/10/18",                 // B-date
             "F",                          // Gender
             "Cashier",                    // Position
-            "1",                          // Status - (0) Inactive (1) Active
+            "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
             true});                       // System user
     USERS_TABLE.emplace_back(UserTableItem {
             "JDEL554",                    // User ID <!Make sure this is unique>
@@ -166,7 +166,7 @@ void StackDB::populateEmployees() {
             "1977/10/17",                 // B-date
             "M",                          // Gender
             "Security Guard",             // Position
-            "1",                          // Status - (0) Inactive (1) Active
+            "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
             false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2054993",                    // Employee ID <!Same as employeeID>
@@ -194,7 +194,7 @@ void StackDB::populateEmployees() {
             "1988/10/25",                 // B-date
             "M",                          // Gender
             "Delivery Personnel",         // Position
-            "1",                          // Status - (0) Inactive (1) Active
+            "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
             false});                      // System user
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2073155",                    // Employee ID <!Same as employeeID>
