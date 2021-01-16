@@ -48,6 +48,7 @@ class InventoryController : public InventoryControlInterface,
     INVENTORYAPISTATUS save(const entity::Product& product,
                             std::map<std::string, std::string>* validationResult) override;
     INVENTORYAPISTATUS remove(const std::string& barcode) override;
+    std::vector<entity::UnitOfMeasurement> getMeasurementList() override;
     INVENTORYAPISTATUS save(const entity::UnitOfMeasurement& uom) override;
     INVENTORYAPISTATUS removeUOM(const std::string& id) override;
 

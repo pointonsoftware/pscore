@@ -66,11 +66,17 @@ class InventoryControlInterface {
      */
     virtual INVENTORYAPISTATUS remove(const std::string& barcode) = 0;
     /**
+     *  Returns the unit of measurement list
+     */
+    virtual std::vector<entity::UnitOfMeasurement> getMeasurementList() = 0;
+    /**
      *  Used to add a unit of measurement
+     *  Note: Must be paired with getMeasurementList()
      */
     virtual INVENTORYAPISTATUS save(const entity::UnitOfMeasurement& uom) = 0;
     /**
      *  Used to delete a unit of measurement
+     *  Note: Must be paired with getMeasurementList()
      */
     virtual INVENTORYAPISTATUS removeUOM(const std::string& id) = 0;
 };

@@ -78,6 +78,7 @@ void InventoryScreen::showLandingScreen() const {
 
 void InventoryScreen::queryProductsList() {
     mTableHelper.setData(mCoreController->list());
+    mCoreController->getMeasurementList();
 }
 
 void InventoryScreen::showProducts() const {
@@ -150,6 +151,7 @@ void InventoryScreen::createProduct() {
             != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
             requiredFields = app::util::extractMapKeys(validationResult);
             SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
+            checkAndPrintUOMError(requiredFields);
         } else {
             std::cout << "Product created successfully!" << std::endl;
         }
@@ -175,6 +177,7 @@ void InventoryScreen::updateProduct() {
                 != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
+                checkAndPrintUOMError(requiredFields);
             }
         } while (!validationResult.empty());  // repeat input until new employee is created
         mTableHelper.setData((mTableHelper.getCurrentIndex()), product);
@@ -260,6 +263,17 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
+}
+
+void InventoryScreen::checkAndPrintUOMError(const std::vector<std::string>& requiredFields) const {
+    if (std::find(requiredFields.begin(), requiredFields.end(), entity::FIELD_UOM)
+        != requiredFields.end()) {
+        std::cout << "List of valid units:" << std::endl;
+        for (const entity::UnitOfMeasurement& uom : mCoreController->getMeasurementList()) {
+             std::cout << "- " << uom.abbreviation() << std::endl;
+        }
+        std::cout << std::endl;
+    }
 }
 
 void InventoryScreen::showProductsEmptyPopup() {

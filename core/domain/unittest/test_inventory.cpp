@@ -42,7 +42,7 @@ class TestInventory : public testing::Test {
     TestInventory() : inventoryController(dpMock, viewMock),
     validProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
                  "Description", "DummyCategory", "SomeBrand",
-                 "SomeMeasurement", "12", "High", "10.00", "12.00",
+                 "L", "12", "High", "10.00", "12.00",
                  "DummySupplier", "DummySupplierCode") {
         // Empty for now
     }
@@ -166,9 +166,17 @@ TEST_F(TestInventory, TestSaveWithInvalidStock) {
 TEST_F(TestInventory, TestSaveWithInvalidPrices) {
     entity::Product dummyProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
                  "Description", "DummyCategory", "SomeBrand",
-                 "SomeMeasurement", "12", "High", "10.000", "text.00",
+                 "L", "12", "High", "10.000", "text.00",
                  "DummySupplier", "DummySupplierCode");
     std::map<std::string, std::string> dummyValidationContainer;
+
+    // Setup valid UOM
+    EXPECT_CALL(*dpMock, getUOMs())
+        .WillOnce(Return(
+                std::vector<entity::UnitOfMeasurement>{
+                    entity::UnitOfMeasurement("1", "Liter", "L")}));
+    inventoryController.getMeasurementList();
+
     ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
               INVENTORYAPISTATUS::FAILED);
     // Validation result must contain two errors
@@ -179,17 +187,77 @@ TEST_F(TestInventory, TestSaveWithInvalidSellingPrice) {
     // Fake that selling price is lesser than the original price
     entity::Product dummyProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
                  "Description", "DummyCategory", "SomeBrand",
-                 "SomeMeasurement", "12", "High", "10.00", "9.00",
+                 "L", "12", "High", "10.00", "9.00",
                  "DummySupplier", "DummySupplierCode");
     std::map<std::string, std::string> dummyValidationContainer;
+
+    // Setup valid UOM
+    EXPECT_CALL(*dpMock, getUOMs())
+        .WillOnce(Return(
+                std::vector<entity::UnitOfMeasurement>{
+                    entity::UnitOfMeasurement("1", "Liter", "L")}));
+    inventoryController.getMeasurementList();
+
     ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
               INVENTORYAPISTATUS::FAILED);
     // Validation result must contain one error
     ASSERT_EQ(dummyValidationContainer.size(), 1);
 }
 
+TEST_F(TestInventory, TestSaveWithInvalidUOM) {
+    // Fake that selling price is lesser than the original price
+    entity::Product dummyProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
+                 "Description", "DummyCategory", "SomeBrand",
+                 // Fake that the measurement is invalid
+                 "InvalidMeasureMent", "12", "High", "9.00", "10.00",
+                 "DummySupplier", "DummySupplierCode");
+    std::map<std::string, std::string> dummyValidationContainer;
+
+    // Fake that we have a valid UOM that will be compared with "InvalidMeasureMent"
+    EXPECT_CALL(*dpMock, getUOMs())
+        .WillOnce(Return(
+                std::vector<entity::UnitOfMeasurement>{
+                    entity::UnitOfMeasurement("1", "Liter", "L")}));
+    inventoryController.getMeasurementList();
+
+    ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
+              INVENTORYAPISTATUS::FAILED);
+    // Validation result must contain one error
+    ASSERT_EQ(dummyValidationContainer.size(), 1);
+}
+
+TEST_F(TestInventory, TestSaveWithEmptyUOMRecord) {
+    // Fake that selling price is lesser than the original price
+    entity::Product dummyProduct("DUMMY-BARCODE-123", "DUMMY-SKU", "ProductName",
+                 "Description", "DummyCategory", "SomeBrand",
+                 // Fake that the measurement is invalid
+                 "InvalidMeasureMent", "12", "High", "9.00", "10.00",
+                 "DummySupplier", "DummySupplierCode");
+    std::map<std::string, std::string> dummyValidationContainer;
+
+    // Fake that we don't have any saved UOM
+    EXPECT_CALL(*dpMock, getUOMs())
+        .WillOnce(Return(
+                std::vector<entity::UnitOfMeasurement>{}));
+    inventoryController.getMeasurementList();
+
+    // Should succeed
+    ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
+              INVENTORYAPISTATUS::SUCCESS);
+    // Validation result must be empty
+    ASSERT_TRUE(dummyValidationContainer.empty());
+}
+
+
 TEST_F(TestInventory, TestCreateProduct) {
     std::map<std::string, std::string> dummyValidationContainer;
+
+    // Setup valid UOM
+    EXPECT_CALL(*dpMock, getUOMs())
+        .WillOnce(Return(
+                std::vector<entity::UnitOfMeasurement>{
+                    entity::UnitOfMeasurement("1", "Liter", "L")}));
+    inventoryController.getMeasurementList();
 
     // Must perform the create call
     EXPECT_CALL(*dpMock, create(_));
@@ -208,6 +276,13 @@ TEST_F(TestInventory, TestUpdateProduct) {
         .WillOnce(Return(std::vector<entity::Product>{validProduct}));
     // Cache the list
     inventoryController.list();
+
+    // Setup valid UOM
+    EXPECT_CALL(*dpMock, getUOMs())
+        .WillOnce(Return(
+                std::vector<entity::UnitOfMeasurement>{
+                    entity::UnitOfMeasurement("1", "Liter", "L")}));
+    inventoryController.getMeasurementList();
 
     // Fake that we updated the stock cound
     validProduct.setStock(newStockValue);

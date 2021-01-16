@@ -25,7 +25,8 @@
 namespace entity {
 namespace validator {
 
-ProductValidator::ProductValidator(const Product& product) : mProduct(product) {
+ProductValidator::ProductValidator(const Product& product, const std::vector<std::string>& uoms)
+    : mProduct(product), mUOMs(uoms) {
     validationFunctions.emplace_back(std::bind(&ProductValidator::validateBarcode, this));
     validationFunctions.emplace_back(std::bind(&ProductValidator::validateSKU, this));
     validationFunctions.emplace_back(std::bind(&ProductValidator::validateName, this));
@@ -68,7 +69,20 @@ ValidationStatus ProductValidator::validateBrand() {
 }
 
 ValidationStatus ProductValidator::validateUOM() {
-    return checkEmptyString(mProduct.uom(), FIELD_UOM, "Unit of Measurement");
+    if (checkEmptyString(mProduct.uom(), FIELD_UOM, "Unit of Measurement")
+        != ValidationStatus::S_OK) {
+            return ValidationStatus::S_EMPTY;
+    }
+    if (mUOMs.empty()) {
+        // We don't have anything to compare, return OK
+        return ValidationStatus::S_OK;
+    }
+    if (std::find_if(mUOMs.begin(), mUOMs.end(),
+        [this](const std::string& e) { return e == mProduct.uom(); }) == mUOMs.end()) {
+        addError(FIELD_UOM, "Invalid unit of measurement.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
+    return ValidationStatus::S_OK;
 }
 
 ValidationStatus ProductValidator::validateStock() {

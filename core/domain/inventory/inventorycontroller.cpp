@@ -34,7 +34,6 @@ InventoryController::InventoryController(const InventoryDataPtr& data,
     }
     mDataProvider = data;
     mView = view;
-    mCachedUOMs.fill(mDataProvider->getUOMs());
 }
 
 std::vector<entity::Product> InventoryController::list() {
@@ -74,7 +73,15 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
     // Validate fields
     {
         LOG_DEBUG("Validating fields");
-        entity::validator::ProductValidator validator(product);
+        entity::validator::ProductValidator validator(product,
+            // Set valid UOM abbreviations
+            [this]() {
+                std::vector<std::string> uomAbbr;
+                for (const entity::UnitOfMeasurement& uom : mCachedUOMs.get()) {
+                    uomAbbr.emplace_back(uom.abbreviation());
+                }
+                return uomAbbr;
+            }());
         validationResult->merge(validator.result());
     }
     if (!validationResult->empty()) {
@@ -139,6 +146,11 @@ INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
     return INVENTORYAPISTATUS::SUCCESS;
 }
 
+std::vector<entity::UnitOfMeasurement> InventoryController::getMeasurementList() {
+    mCachedUOMs.fill(mDataProvider->getUOMs());
+    return mCachedUOMs.get();
+}
+
 INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uom) {
     LOG_DEBUG("Adding new unit of measurement %s", uom.name().c_str());
     if (mCachedUOMs.isExists(uom.ID(), &entity::UnitOfMeasurement::ID)) {
@@ -162,14 +174,15 @@ INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uo
 }
 
 INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
+    LOG_DEBUG("Removing unit of measurement");
     const std::vector<entity::UnitOfMeasurement>::iterator it =
                      mCachedUOMs.find(id, &entity::UnitOfMeasurement::ID);
-    LOG_DEBUG("Removing unit of measurement %s", it->name().c_str());
     if (it == mCachedUOMs.endOfData()) {
         LOG_ERROR("Unit of measurement ID %s was not found.", id.c_str());
         mView->showDataNotReadyScreen();
         return INVENTORYAPISTATUS::NOT_FOUND;
     }
+    LOG_INFO("Removing %s", it->name().c_str());
     // Remove from DB
     mDataProvider->removeUOM(id);
     // Remove from cache
