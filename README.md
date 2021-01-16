@@ -1,4 +1,4 @@
-<!--          PSCORE README v6.0         -->
+<!--          PSCORE README v6.1         -->
 <!-- Copyright (C) 2020 Pointon Software -->
 
 <p align="center">
@@ -79,7 +79,7 @@ CORE is also designed to work with any GUI framework and database.
 
 ## Structure
 
-The repository has three main components:
+The repository consists of three main components:
 
 ``` text
 .
@@ -164,9 +164,9 @@ Below are the planned releases in the future:
 -   [**v0.1.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.1.0) - Full admin login/logout
 -   [**v0.2.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.2.0) - Basic employee management
 -   [**v0.3.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.3.0) - Basic employee management
--   **v0.4.0** - Basic customer management
--   **v0.5.0** - Basic POS
--   **v0.6.0** - Basic sales operations
+-   [**v0.4.0**](https://github.com/pointonsoftware/pscore/releases/tag/v0.4.0) - Basic customer management
+-   **v0.5.0** - Basic sales operations
+-   **v0.6.0** - Basic POS
 -   **v1.0.0** - Basic accounting operations
 -   **v1.x.x** - Improving the basic operations  
 -   **v2.x.x** - Support for external hardwares like barcode scanner and receipt printer
