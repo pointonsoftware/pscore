@@ -32,21 +32,21 @@ class CustomerManagementDataInterface {
     CustomerManagementDataInterface() = default;
     virtual ~CustomerManagementDataInterface() = default;
 
-    /*!
-     * Retrieves the all customers from the database
-    */
+    /**
+     *  Retrieves the all customers from the database
+     */
     virtual std::vector<entity::Customer> getCustomers() = 0;
-    /*!
-     * Create a customer
-    */
+    /**
+     *  Create a customer
+     */
     virtual void create(const entity::Customer& customer) = 0;
-    /*!
-     * Update a customer
-    */
+    /**
+     *  Update a customer
+     */
     virtual void update(const entity::Customer& customer) = 0;
-    /*!
-     * Removes the customer from the database
-    */
+    /**
+     *  Removes the customer from the database
+     */
     virtual void remove(const std::string& id) = 0;
 };
 

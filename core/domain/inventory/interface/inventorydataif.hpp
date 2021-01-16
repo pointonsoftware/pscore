@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <entity/product.hpp>
+#include <entity/uom.hpp>
 
 namespace domain {
 namespace inventory {
@@ -32,22 +33,34 @@ class InventoryDataInterface {
     InventoryDataInterface() = default;
     virtual ~InventoryDataInterface() = default;
 
-    /*!
-     * Retrieves the all the products from the database
-    */
+    /**
+     *  Retrieves the all the products from the database
+     */
     virtual std::vector<entity::Product> getProducts() = 0;
-    /*!
-     * Create a product
-    */
+    /**
+     *  Create a product
+     */
     virtual void create(const entity::Product& product) = 0;
-    /*!
-     * Update a product
-    */
+    /**
+     *  Update a product
+     */
     virtual void update(const entity::Product& product) = 0;
-    /*!
-     * Removes the product from the database
-    */
+    /**
+     *  Removes the product from the database
+     */
     virtual void removeWithBarcode(const std::string& barcode) = 0;
+    /**
+     *  Returns all the registered UOMs
+     */
+    virtual std::vector<entity::UnitOfMeasurement> getUOMs() = 0;
+    /**
+     *  Add a unit of measurement
+     */
+    virtual void createUOM(const entity::UnitOfMeasurement& uom) = 0;
+    /**
+     *  Remove a unit of measurement
+     */
+    virtual void removeUOM(const std::string& id) = 0;
 };
 
 }  // namespace inventory

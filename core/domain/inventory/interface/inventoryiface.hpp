@@ -27,7 +27,6 @@
 #include "inventorydataif.hpp"
 #include "inventoryviewif.hpp"
 #include <domain/common/librarycommon.hpp>
-#include <entity/product.hpp>
 
 namespace domain {
 namespace inventory {
@@ -43,29 +42,43 @@ class InventoryControlInterface {
  public:
     InventoryControlInterface() = default;
     virtual ~InventoryControlInterface() = default;
-    /*!
-     * Gets the list of all products
-    */
+    /**
+     *  Gets the list of all products
+     */
     virtual std::vector<entity::Product> list() = 0;
-    /*!
-     * Retrieves a product with the barcode
-    */
+    /**
+     *  Retrieves a product with the barcode
+     */
     virtual entity::Product getProduct(const std::string& barcode) = 0;
-    /*!
-     * Used to create or update a product
-     * - Creates the product if the barcode does not exist in the database
-     * - Updates the product using the barcode
-     * @param [in] - product data
-     * @param [out] - validation result (map[field, error message])
+    /**
+     *  Used to create or update a product
+     *  - Creates the product if the barcode does not exist in the database
+     *  - Updates the product using the barcode
+     *  @param [in] - product data
+     *  @param [out] - validation result (map[field, error message])
      *
-     * Note: This will reset the map container
-    */
+     *  Note: This will reset the map container
+     */
     virtual INVENTORYAPISTATUS save(const entity::Product& product,
                                     std::map<std::string, std::string>* validationResult) = 0;
-    /*!
+    /**
      * Deletes a product
-    */
+     */
     virtual INVENTORYAPISTATUS remove(const std::string& barcode) = 0;
+    /**
+     *  Returns the unit of measurement list
+     */
+    virtual std::vector<entity::UnitOfMeasurement> getMeasurementList() = 0;
+    /**
+     *  Used to add a unit of measurement
+     *  Note: Must be paired with getMeasurementList()
+     */
+    virtual INVENTORYAPISTATUS save(const entity::UnitOfMeasurement& uom) = 0;
+    /**
+     *  Used to delete a unit of measurement
+     *  Note: Must be paired with getMeasurementList()
+     */
+    virtual INVENTORYAPISTATUS removeUOM(const std::string& id) = 0;
 };
 
 typedef std::shared_ptr<InventoryDataInterface> InventoryDataPtr;

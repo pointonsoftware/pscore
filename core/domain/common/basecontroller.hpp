@@ -38,9 +38,9 @@ class BaseController {
     virtual ~BaseController() = default;
 
  protected:
-    /*!
-     * Logs the validation results for debugging purposes
-    */
+    /**
+     *  Logs the validation results for debugging purposes
+     */
     typedef std::map<std::string, std::string> ValidationErrors;
     void dumpValidationResult(const ValidationErrors& errors) const {
       LOG_DEBUG("Dumping validation result");

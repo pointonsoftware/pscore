@@ -61,6 +61,8 @@ class InventoryScreen : public screen::ScreenInterface,
     void updateProduct();
     void fillProductInformation(entity::Product* product,
                                 const std::vector<std::string>& requiredFields) const;
+    void checkAndPrintUOMError(const std::vector<std::string>& requiredFields) const;
+
     app::utility::TableHelper<entity::Product> mTableHelper;
     bool isShowingDetailsScreen;
 };

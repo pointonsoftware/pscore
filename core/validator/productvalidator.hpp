@@ -21,6 +21,7 @@
 #ifndef CORE_VALIDATOR_PRODUCTVALIDATOR_HPP_
 #define CORE_VALIDATOR_PRODUCTVALIDATOR_HPP_
 #include <string>
+#include <vector>
 // Parent
 #include "validator.hpp"
 // Entity
@@ -39,11 +40,12 @@ namespace validator {
 
 class ProductValidator : public Validator {
  public:
-    explicit ProductValidator(const Product& product);
+    explicit ProductValidator(const Product& product, const std::vector<std::string>& uoms);
     ~ProductValidator() = default;
 
  private:
     const Product mProduct;
+    const std::vector<std::string> mUOMs;
     // Validation functions
     ValidationStatus validateBarcode();
     ValidationStatus validateSKU();

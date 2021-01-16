@@ -30,17 +30,17 @@ class CustomerManagementViewInterface {
     CustomerManagementViewInterface() = default;
     virtual ~CustomerManagementViewInterface() = default;
 
-    /*!
-     * show customer list is empty popup
-    */
+    /**
+     *  show customer list is empty popup
+     */
     virtual void showListIsEmptyPopup() = 0;
-    /*!
-     * showDataNotReadyScreen
-    */
+    /**
+     *  showDataNotReadyScreen
+     */
     virtual void showDataNotReadyScreen() = 0;
-    /*!
-     * showSuccessfullyRemoved
-    */
+    /**
+     *  showSuccessfullyRemoved
+     */
     virtual void showSuccessfullyRemoved(const std::string& customerName) = 0;
 };
 
