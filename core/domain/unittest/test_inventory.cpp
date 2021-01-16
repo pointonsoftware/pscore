@@ -175,7 +175,6 @@ TEST_F(TestInventory, TestSaveWithInvalidPrices) {
         .WillOnce(Return(
                 std::vector<entity::UnitOfMeasurement>{
                     entity::UnitOfMeasurement("1", "Liter", "L")}));
-    inventoryController.getMeasurementList();
 
     ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
               INVENTORYAPISTATUS::FAILED);
@@ -196,7 +195,6 @@ TEST_F(TestInventory, TestSaveWithInvalidSellingPrice) {
         .WillOnce(Return(
                 std::vector<entity::UnitOfMeasurement>{
                     entity::UnitOfMeasurement("1", "Liter", "L")}));
-    inventoryController.getMeasurementList();
 
     ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
               INVENTORYAPISTATUS::FAILED);
@@ -218,7 +216,6 @@ TEST_F(TestInventory, TestSaveWithInvalidUOM) {
         .WillOnce(Return(
                 std::vector<entity::UnitOfMeasurement>{
                     entity::UnitOfMeasurement("1", "Liter", "L")}));
-    inventoryController.getMeasurementList();
 
     ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
               INVENTORYAPISTATUS::FAILED);
@@ -239,7 +236,6 @@ TEST_F(TestInventory, TestSaveWithEmptyUOMRecord) {
     EXPECT_CALL(*dpMock, getUOMs())
         .WillOnce(Return(
                 std::vector<entity::UnitOfMeasurement>{}));
-    inventoryController.getMeasurementList();
 
     // Should succeed
     ASSERT_EQ(inventoryController.save(dummyProduct, &dummyValidationContainer),
@@ -257,7 +253,6 @@ TEST_F(TestInventory, TestCreateProduct) {
         .WillOnce(Return(
                 std::vector<entity::UnitOfMeasurement>{
                     entity::UnitOfMeasurement("1", "Liter", "L")}));
-    inventoryController.getMeasurementList();
 
     // Must perform the create call
     EXPECT_CALL(*dpMock, create(_));
@@ -282,7 +277,6 @@ TEST_F(TestInventory, TestUpdateProduct) {
         .WillOnce(Return(
                 std::vector<entity::UnitOfMeasurement>{
                     entity::UnitOfMeasurement("1", "Liter", "L")}));
-    inventoryController.getMeasurementList();
 
     // Fake that we updated the stock cound
     validProduct.setStock(newStockValue);

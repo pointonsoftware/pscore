@@ -77,7 +77,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
             // Set valid UOM abbreviations
             [this]() {
                 std::vector<std::string> uomAbbr;
-                for (const entity::UnitOfMeasurement& uom : mCachedUOMs.get()) {
+                for (const entity::UnitOfMeasurement& uom : getMeasurementList()) {
                     uomAbbr.emplace_back(uom.abbreviation());
                 }
                 return uomAbbr;

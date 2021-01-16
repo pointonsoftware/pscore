@@ -78,7 +78,6 @@ void InventoryScreen::showLandingScreen() const {
 
 void InventoryScreen::queryProductsList() {
     mTableHelper.setData(mCoreController->list());
-    mCoreController->getMeasurementList();
 }
 
 void InventoryScreen::showProducts() const {
