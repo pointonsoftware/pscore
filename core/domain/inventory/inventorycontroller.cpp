@@ -179,7 +179,6 @@ INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
                      mCachedUOMs.find(id, &entity::UnitOfMeasurement::ID);
     if (it == mCachedUOMs.endOfData()) {
         LOG_ERROR("Unit of measurement ID %s was not found.", id.c_str());
-        mView->showDataNotReadyScreen();
         return INVENTORYAPISTATUS::NOT_FOUND;
     }
     LOG_INFO("Removing %s", it->name().c_str());
