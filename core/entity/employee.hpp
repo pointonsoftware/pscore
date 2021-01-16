@@ -29,7 +29,7 @@ namespace entity {
 // Fields
 constexpr char FIELD_EMPID[] = "Employee.ID";
 constexpr char FIELD_EPOS[] = "Employee.Position";
-constexpr char FIELD_ESTATUS[] = "Employee.Status";
+constexpr char FIELD_ESTATUS[] = "Employee.Status";  // ACTIVE, ON-LEAVE or INACTIVE
 
 class Employee : public Person {
  public:

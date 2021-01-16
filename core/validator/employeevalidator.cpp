@@ -53,6 +53,12 @@ ValidationStatus EmployeeValidator::validateStatus() {
         addError(FIELD_ESTATUS, "Employee status must not be empty.");
         return ValidationStatus::S_EMPTY;
     }
+    if (utility::toUpper(mEmployee.status()) != "ACTIVE"
+        && utility::toUpper(mEmployee.status()) != "ON-LEAVE"
+        && utility::toUpper(mEmployee.status()) != "INACTIVE") {
+        addError(FIELD_ESTATUS, "Employee status must be ACTIVE, ON-LEAVE or INACTIVE.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
     return ValidationStatus::S_OK;
 }
 
