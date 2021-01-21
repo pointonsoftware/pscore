@@ -30,13 +30,8 @@ namespace domain {
 namespace dashboard {
 
 DashboardController::DashboardController(const DashboardDataPtr& data,
-                                         const DashboardViewPtr& view) {
-    if ((data == nullptr) || (view == nullptr)) {
-        throw std::invalid_argument("Received a nulltpr argument");
-    }
-    mDataProvider = data;
-    mView = view;
-}
+                                         const DashboardViewPtr& view)
+                                         : BaseController(data, view) {}
 
 void DashboardController::setCurrentUserId(const std::string& userID) {
     if (!userID.empty()) {

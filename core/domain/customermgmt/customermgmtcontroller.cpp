@@ -31,13 +31,8 @@ namespace domain {
 namespace customermgmt {
 
 CustomerManagementController::CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                                           const CustomerMgmtViewPtr& view) {
-    if ((data == nullptr) || (view == nullptr)) {
-        throw std::invalid_argument("Received a nulltpr argument");
-    }
-    mDataProvider = data;
-    mView = view;
-}
+                                                           const CustomerMgmtViewPtr& view)
+                                                           : BaseController(data, view) {}
 
 std::vector<entity::Customer> CustomerManagementController::list() {
     LOG_DEBUG("Getting the list of customers");

@@ -34,7 +34,14 @@ namespace domain {
 template <typename DpType, typename ViewType, typename EntityType>
 class BaseController {
  public:
-    BaseController() = default;
+    explicit BaseController(const std::shared_ptr<DpType> data,
+                            const std::shared_ptr<ViewType> view) {
+        if ((data == nullptr) || (view == nullptr)) {
+           throw std::invalid_argument("Received a nulltpr argument");
+        }
+        mDataProvider = data;
+        mView = view;
+    }
     virtual ~BaseController() = default;
 
  protected:
