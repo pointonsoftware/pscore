@@ -31,7 +31,6 @@ InventoryController::InventoryController(const InventoryDataPtr& data,
                                          const InventoryViewPtr& view)
                                          : BaseController(data, view) {
     mCachedList.setEntityKeyFn(&entity::Product::barcode);
-    mCachedUOMs.setEntityKeyFn(&entity::UnitOfMeasurement::ID);
 }
 
 std::vector<entity::Product> InventoryController::list() {
@@ -149,14 +148,17 @@ std::vector<entity::UnitOfMeasurement> InventoryController::getMeasurementList()
 
 INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uom) {
     LOG_DEBUG("Adding new unit of measurement %s", uom.name().c_str());
+    mCachedUOMs.setEntityKeyFn(&entity::UnitOfMeasurement::ID);
     if (mCachedUOMs.isExists(uom.ID())) {
         LOG_ERROR("Unit of measurement ID %s already exists", uom.ID().c_str());
         return INVENTORYAPISTATUS::FAILED;
     }
+    mCachedUOMs.setEntityKeyFn(&entity::UnitOfMeasurement::name);
     if (mCachedUOMs.isExists(uom.name())) {
         LOG_ERROR("Unit of measurement %s already exists", uom.name().c_str());
         return INVENTORYAPISTATUS::FAILED;
     }
+    mCachedUOMs.setEntityKeyFn(&entity::UnitOfMeasurement::abbreviation);
     if (mCachedUOMs.isExists(uom.abbreviation())) {
         LOG_ERROR("Unit of measurement abbreviation %s already exists", uom.abbreviation().c_str());
         return INVENTORYAPISTATUS::FAILED;
@@ -171,6 +173,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uo
 
 INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
     LOG_DEBUG("Removing unit of measurement");
+    mCachedUOMs.setEntityKeyFn(&entity::UnitOfMeasurement::ID);
     const std::vector<entity::UnitOfMeasurement>::iterator it = mCachedUOMs.find(id);
     if (it == mCachedUOMs.endOfData()) {
         LOG_ERROR("Unit of measurement ID %s was not found.", id.c_str());
