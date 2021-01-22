@@ -29,7 +29,10 @@ namespace inventory {
 
 InventoryController::InventoryController(const InventoryDataPtr& data,
                                          const InventoryViewPtr& view)
-                                         : BaseController(data, view) {}
+                                         : BaseController(data, view) {
+    mCachedList.setEntityKeyFn(&entity::Product::barcode);
+    mCachedUOMs.setEntityKeyFn(&entity::UnitOfMeasurement::ID);
+}
 
 std::vector<entity::Product> InventoryController::list() {
     LOG_DEBUG("Getting the list of products");
@@ -46,7 +49,7 @@ std::vector<entity::Product> InventoryController::list() {
 entity::Product InventoryController::getProduct(const std::string& barcode) {
     LOG_DEBUG("Getting product %s", barcode.c_str());
     const std::vector<entity::Product>::iterator& iter =
-                mCachedList.find(barcode, &entity::Product::barcode);
+                mCachedList.find(barcode);
     if (iter != mCachedList.endOfData()) {
         LOG_INFO("Found product %s", barcode.c_str());
         return *iter;
@@ -85,7 +88,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
         return INVENTORYAPISTATUS::FAILED;
     }
     // Decide if it's a create or update request
-    if (mCachedList.isExists(product.barcode(), &entity::Product::barcode)) {
+    if (mCachedList.isExists(product.barcode())) {
         update(product);
     } else {
         create(product);
@@ -115,7 +118,7 @@ void InventoryController::update(const entity::Product& product) {
     */
     // Update cache list
     const std::vector<entity::Product>::iterator it =
-                     mCachedList.find(product.barcode(), &entity::Product::barcode);
+                     mCachedList.find(product.barcode());
     *it = product;
     LOG_INFO("Product %s information updated", product.name().c_str());
 }
@@ -123,7 +126,7 @@ void InventoryController::update(const entity::Product& product) {
 INVENTORYAPISTATUS InventoryController::remove(const std::string& barcode) {
     LOG_DEBUG("Removing product %s", barcode.c_str());
     const std::vector<entity::Product>::iterator it =
-                     mCachedList.find(barcode, &entity::Product::barcode);
+                     mCachedList.find(barcode);
     if (it == mCachedList.endOfData()) {
         LOG_ERROR("Product %s was not found in the cache list", barcode.c_str());
         mView->showDataNotReadyScreen();
@@ -148,15 +151,15 @@ std::vector<entity::UnitOfMeasurement> InventoryController::getMeasurementList()
 
 INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uom) {
     LOG_DEBUG("Adding new unit of measurement %s", uom.name().c_str());
-    if (mCachedUOMs.isExists(uom.ID(), &entity::UnitOfMeasurement::ID)) {
+    if (mCachedUOMs.isExists(uom.ID())) {
         LOG_ERROR("Unit of measurement ID %s already exists", uom.ID().c_str());
         return INVENTORYAPISTATUS::FAILED;
     }
-    if (mCachedUOMs.isExists(uom.name(), &entity::UnitOfMeasurement::name)) {
+    if (mCachedUOMs.isExists(uom.name())) {
         LOG_ERROR("Unit of measurement %s already exists", uom.name().c_str());
         return INVENTORYAPISTATUS::FAILED;
     }
-    if (mCachedUOMs.isExists(uom.abbreviation(), &entity::UnitOfMeasurement::abbreviation)) {
+    if (mCachedUOMs.isExists(uom.abbreviation())) {
         LOG_ERROR("Unit of measurement abbreviation %s already exists", uom.abbreviation().c_str());
         return INVENTORYAPISTATUS::FAILED;
     }
@@ -171,7 +174,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uo
 INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
     LOG_DEBUG("Removing unit of measurement");
     const std::vector<entity::UnitOfMeasurement>::iterator it =
-                     mCachedUOMs.find(id, &entity::UnitOfMeasurement::ID);
+                     mCachedUOMs.find(id);
     if (it == mCachedUOMs.endOfData()) {
         LOG_ERROR("Unit of measurement ID %s was not found.", id.c_str());
         return INVENTORYAPISTATUS::NOT_FOUND;

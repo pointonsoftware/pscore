@@ -86,24 +86,36 @@ class CacheController {
     }
 
     /**
-     *  @param [in] 1 - the key or id string that you want to find
-     *  @param [in] 2 - the entity function that returns their key or id (e.g. ID() or barcode())
+     *  Sets the function (ptr) that returns the entity ID
      */
-    typename std::vector<EntityType>::iterator find(const std::string& key,
-                                               std::function<std::string(const EntityType&)> fn) {
-         return std::find_if(mCachedList.begin(), mCachedList.end(),
-                     [&key, &fn](const EntityType& e) { return fn(e) == key; });
+    void setEntityKeyFn(const std::function<std::string(const EntityType&)> entiyKeyFn) {
+        mEntiyKeyFn = entiyKeyFn;
     }
 
     /**
-     *  See BaseController::find() for paramater details
+     *  @param [in] - the key or id string that you want to find
+     *  Note: Use setEntityKeyFn() prior to calling this function
      */
-    bool isExists(const std::string& key, std::function<std::string(const EntityType&)> fn) {
+    typename std::vector<EntityType>::iterator find(const std::string& key) {
+        if (!mEntiyKeyFn) {
+            throw std::runtime_error("Entity key is not usable.");
+        }
+        return std::find_if(mCachedList.begin(), mCachedList.end(),
+                    [&key, &fn](const EntityType& e) { return fn(e) == key; });
+    }
+
+    /**
+     *  @param [in] - the key or id string that you want to find
+     *  Note: Use setEntityKeyFn() prior to calling this function
+     */
+    bool isExists(const std::string& key) {
          return find(key, fn) != mCachedList.end();
     }
 
  private:
     std::vector<EntityType> mCachedList;
+    // The function that returns the key ID of the entity
+    std::function<std::string(const EntityType&)> mEntiyKeyFn;
 };
 
 }  // namespace domain

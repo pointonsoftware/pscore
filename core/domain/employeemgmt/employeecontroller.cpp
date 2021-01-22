@@ -37,7 +37,9 @@ namespace empmgmt {
 
 EmployeeMgmtController::EmployeeMgmtController(const EmpMgmtDataPtr& data,
                                                const EmpMgmtViewPtr& view)
-                                               : BaseController(data, view) {}
+                                               : BaseController(data, view) {
+    mCachedList.setEntityKeyFn(&entity::Employee::ID);
+}
 
 std::vector<entity::Employee> EmployeeMgmtController::list() {
     LOG_DEBUG("Getting the list of employees");
@@ -54,7 +56,7 @@ std::vector<entity::Employee> EmployeeMgmtController::list() {
 entity::Employee EmployeeMgmtController::getEmployee(const std::string& employeeID) {
     LOG_DEBUG("Getting employee %s", employeeID.c_str());
     const std::vector<entity::Employee>::iterator& iter =
-                     mCachedList.find(employeeID, &entity::Employee::ID);
+                     mCachedList.find(employeeID);
     if (iter == mCachedList.endOfData()) {
         LOG_ERROR("Employee was not found");
         return entity::Employee{};
@@ -118,7 +120,7 @@ void EmployeeMgmtController::update(const SaveEmployeeData& data) {
     }
     // Update cache list
     const std::vector<entity::Employee>::iterator it =
-                     mCachedList.find(employee.ID(), &entity::Employee::ID);
+                     mCachedList.find(employee.ID());
     *it = employee;
     LOG_INFO("Employee %s information updated", employee.ID().c_str());
 }
@@ -140,7 +142,7 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
      *               until we support User Information update
     */
     if (employee.isSystemUser() &&
-        !mCachedList.isExists(employee.ID(), &entity::Employee::ID)) {
+        !mCachedList.isExists(employee.ID())) {
         // Validate PIN only
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN,
@@ -153,7 +155,7 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
         return EMPLMGMTSTATUS::FAILED;
     }
     // Decide if it's a create or update request
-    if (mCachedList.isExists(employee.ID(), &entity::Employee::ID)) {
+    if (mCachedList.isExists(employee.ID())) {
         update(employeeData);
     } else {
         create(employeeData);
@@ -164,7 +166,7 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
 EMPLMGMTSTATUS EmployeeMgmtController::remove(const std::string& employeeID) {
     LOG_DEBUG("Removing employee with ID %s", employeeID.c_str());
     const std::vector<entity::Employee>::iterator it =
-                     mCachedList.find(employeeID, &entity::Employee::ID);
+                     mCachedList.find(employeeID);
     if (it == mCachedList.endOfData()) {
         LOG_ERROR("Employee with ID %s was not found in the cache list", employeeID.c_str());
         mView->showDataNotReadyScreen();

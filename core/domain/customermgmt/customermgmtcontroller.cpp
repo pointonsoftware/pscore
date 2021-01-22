@@ -32,7 +32,9 @@ namespace customermgmt {
 
 CustomerManagementController::CustomerManagementController(const CustomerMgmtDataPtr& data,
                                                            const CustomerMgmtViewPtr& view)
-                                                           : BaseController(data, view) {}
+                                                           : BaseController(data, view) {
+    mCachedList.setEntityKeyFn(&entity::Customer::ID);
+}
 
 std::vector<entity::Customer> CustomerManagementController::list() {
     LOG_DEBUG("Getting the list of customers");
@@ -49,7 +51,7 @@ std::vector<entity::Customer> CustomerManagementController::list() {
 entity::Customer CustomerManagementController::get(const std::string& id) {
     LOG_DEBUG("Getting customer %s data", id.c_str());
     const std::vector<entity::Customer>::iterator& iter =
-                     mCachedList.find(id, &entity::Customer::ID);
+                     mCachedList.find(id);
     if (iter == mCachedList.endOfData()) {
         LOG_ERROR("Requested customer was not found");
         return entity::Customer{};
@@ -96,7 +98,7 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer&
         return CUSTOMERMGMTAPISTATUS::FAILED;
     }
     // Decide if it's a create or update request
-    if (mCachedList.isExists(customer.ID(), &entity::Customer::ID)) {
+    if (mCachedList.isExists(customer.ID())) {
         update(customer);
     } else {
         create(customer);
@@ -135,14 +137,14 @@ void CustomerManagementController::update(const entity::Customer& customer) {
     mDataProvider->update(customer);
     // Update cache list
     const std::vector<entity::Customer>::iterator it =
-                    mCachedList.find(customer.ID(), &entity::Customer::ID);
+                    mCachedList.find(customer.ID());
     *it = customer;
     LOG_INFO("Customer %s information updated", customer.ID().c_str());
 }
 
 CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id) {
     LOG_DEBUG("Removing customer %s", id.c_str());
-    const std::vector<entity::Customer>::iterator it = mCachedList.find(id, &entity::Customer::ID);
+    const std::vector<entity::Customer>::iterator it = mCachedList.find(id);
     if (it == mCachedList.endOfData()) {
         LOG_ERROR("Customer with ID %s was not found in the cache list", id.c_str());
         mView->showDataNotReadyScreen();
