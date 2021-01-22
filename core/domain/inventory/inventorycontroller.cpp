@@ -28,13 +28,8 @@ namespace domain {
 namespace inventory {
 
 InventoryController::InventoryController(const InventoryDataPtr& data,
-                                         const InventoryViewPtr& view) {
-    if ((data == nullptr) || (view == nullptr)) {
-        throw std::invalid_argument("Received a nulltpr argument");
-    }
-    mDataProvider = data;
-    mView = view;
-}
+                                         const InventoryViewPtr& view)
+                                         : BaseController(data, view) {}
 
 std::vector<entity::Product> InventoryController::list() {
     LOG_DEBUG("Getting the list of products");

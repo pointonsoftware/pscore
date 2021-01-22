@@ -29,13 +29,7 @@ namespace domain {
 namespace login {
 
 LoginController::LoginController(const LoginDataPtr& dataprovider,
-                                 const LoginViewPtr& view) {
-    if ((dataprovider == nullptr) || (view == nullptr)) {
-        throw std::invalid_argument("Received a nulltpr argument");
-    }
-    mDataProvider = dataprovider;
-    mView = view;
-}
+                                 const LoginViewPtr& view) : BaseController(dataprovider, view) {}
 
 bool LoginController::authenticate(const std::string& id, const std::string& pin) {
     if (id.empty()) {

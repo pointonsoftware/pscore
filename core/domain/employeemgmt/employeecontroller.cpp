@@ -36,13 +36,8 @@ namespace domain {
 namespace empmgmt {
 
 EmployeeMgmtController::EmployeeMgmtController(const EmpMgmtDataPtr& data,
-                                               const EmpMgmtViewPtr& view) {
-    if ((data == nullptr) || (view == nullptr)) {
-        throw std::invalid_argument("Received a nulltpr argument");
-    }
-    mDataProvider = data;
-    mView = view;
-}
+                                               const EmpMgmtViewPtr& view)
+                                               : BaseController(data, view) {}
 
 std::vector<entity::Employee> EmployeeMgmtController::list() {
     LOG_DEBUG("Getting the list of employees");
