@@ -94,11 +94,11 @@ class CacheController {
 
     /**
      *  @param [in] - the key or id string that you want to find
-     *  Note: Use setEntityKeyFn() prior to calling this function
+     *  Note: This throws a runtime error; Use setEntityKeyFn() prior to calling this function.
      */
     typename std::vector<EntityType>::iterator find(const std::string& key) {
         if (!mEntiyKeyFn) {
-            throw std::runtime_error("Entity key is not usable.");
+            throw std::runtime_error("Entity function key is not usable.");
         }
         return std::find_if(mCachedList.begin(), mCachedList.end(),
                     [&key, &fn](const EntityType& e) { return fn(e) == key; });
@@ -106,7 +106,7 @@ class CacheController {
 
     /**
      *  @param [in] - the key or id string that you want to find
-     *  Note: Use setEntityKeyFn() prior to calling this function
+     *  Note: This throws a runtime error; Use setEntityKeyFn() prior to calling this function.
      */
     bool isExists(const std::string& key) {
          return find(key, fn) != mCachedList.end();

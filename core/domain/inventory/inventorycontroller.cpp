@@ -48,8 +48,7 @@ std::vector<entity::Product> InventoryController::list() {
 
 entity::Product InventoryController::getProduct(const std::string& barcode) {
     LOG_DEBUG("Getting product %s", barcode.c_str());
-    const std::vector<entity::Product>::iterator& iter =
-                mCachedList.find(barcode);
+    const std::vector<entity::Product>::iterator& iter = mCachedList.find(barcode);
     if (iter != mCachedList.endOfData()) {
         LOG_INFO("Found product %s", barcode.c_str());
         return *iter;
@@ -117,8 +116,7 @@ void InventoryController::update(const entity::Product& product) {
      * before updating the cache
     */
     // Update cache list
-    const std::vector<entity::Product>::iterator it =
-                     mCachedList.find(product.barcode());
+    const std::vector<entity::Product>::iterator it = mCachedList.find(product.barcode());
     *it = product;
     LOG_INFO("Product %s information updated", product.name().c_str());
 }
@@ -173,8 +171,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::UnitOfMeasurement& uo
 
 INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
     LOG_DEBUG("Removing unit of measurement");
-    const std::vector<entity::UnitOfMeasurement>::iterator it =
-                     mCachedUOMs.find(id);
+    const std::vector<entity::UnitOfMeasurement>::iterator it = mCachedUOMs.find(id);
     if (it == mCachedUOMs.endOfData()) {
         LOG_ERROR("Unit of measurement ID %s was not found.", id.c_str());
         return INVENTORYAPISTATUS::NOT_FOUND;

@@ -50,8 +50,7 @@ std::vector<entity::Customer> CustomerManagementController::list() {
 
 entity::Customer CustomerManagementController::get(const std::string& id) {
     LOG_DEBUG("Getting customer %s data", id.c_str());
-    const std::vector<entity::Customer>::iterator& iter =
-                     mCachedList.find(id);
+    const std::vector<entity::Customer>::iterator& iter = mCachedList.find(id);
     if (iter == mCachedList.endOfData()) {
         LOG_ERROR("Requested customer was not found");
         return entity::Customer{};
@@ -136,8 +135,7 @@ void CustomerManagementController::update(const entity::Customer& customer) {
     // Update actual data
     mDataProvider->update(customer);
     // Update cache list
-    const std::vector<entity::Customer>::iterator it =
-                    mCachedList.find(customer.ID());
+    const std::vector<entity::Customer>::iterator it = mCachedList.find(customer.ID());
     *it = customer;
     LOG_INFO("Customer %s information updated", customer.ID().c_str());
 }
