@@ -58,7 +58,16 @@ const std::vector<std::string> DOMAIN_FIELDS {
 EmployeeMgmtScreen::EmployeeMgmtScreen()
     : mTableHelper({"Employee ID", "First Name", "Last Name", "Position"},
             { &entity::Employee::ID, &entity::Employee::firstName, &entity::Employee::lastName,
-              &entity::Employee::position }), isShowingDetailsScreen(false) {}
+              &entity::Employee::position }), isShowingDetailsScreen(false) {
+    // Basic info
+    empFieldHelper.addField({entity::FIELD_FNAME, "First Name", &entity::Employee::setFirstName});
+    empFieldHelper.addField({entity::FIELD_MNAME, "Middle Name", &entity::Employee::setMiddleName});
+    empFieldHelper.addField({entity::FIELD_LNAME, "Last Name", &entity::Employee::setLastName});
+    empFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
+                            &entity::Employee::setBirthdate});
+    empFieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)", &entity::Employee::setGender});
+    empFieldHelper.addField({entity::FIELD_EPOS, "Position", &entity::Employee::setPosition});
+}
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::empmgmt::createEmployeeMgmtModule(
@@ -132,38 +141,36 @@ void EmployeeMgmtScreen::removeEmployee() {
     }
 }
 
-void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
+void EmployeeMgmtScreen::fillOtherEmployeeInformation(entity::Employee* employee,
                          const std::vector<std::string>& requiredFields) const {
-    app::utility::FieldHelper fieldHelper(requiredFields);
-    // Basic info
-    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setFirstName, employee,
-        std::placeholders::_1), "First Name", fieldHelper.requires("Person.First.Name"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setMiddleName, employee,
-        std::placeholders::_1), "Middle Name", fieldHelper.requires("Person.Middle.Name"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setLastName, employee,
-        std::placeholders::_1), "Last Name", fieldHelper.requires("Person.Last.Name"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setBirthdate, employee,
-        std::placeholders::_1), "Birthdate (yyyy/mm/dd)", fieldHelper.requires("Person.Birthdate"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setGender, employee,
-        std::placeholders::_1), "Gender (M/F)", fieldHelper.requires("Person.Gender"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Employee::setPosition, employee,
-        std::placeholders::_1), "Position", fieldHelper.requires("Employee.Position"));
+    const auto& requires = [&requiredFields](const std::string& field) {
+        if (requiredFields.empty()) {
+            // All fields are requested by default
+            return true;
+        }
+        return std::find(requiredFields.begin(), requiredFields.end(), field)
+                         != requiredFields.end();
+    };
+    /**
+     *  Todo (code) - add support to cancel input request
+     *  see: https://github.com/pointonsoftware/pscore/issues/202
+     */
     // Address
     {
         entity::Address address = employee->address();
-        if (fieldHelper.requires("Address.Line1")) {
+        if (requires("Address.Line1")) {
             address.line1 = SCREENCOMMON().getInput("Address 1");
         }
-        if (fieldHelper.requires("Address.Line2")) {
+        if (requires("Address.Line2")) {
             address.line2 = SCREENCOMMON().getInput("Address 2");
         }
-        if (fieldHelper.requires("Address.CityTown")) {
+        if (requires("Address.CityTown")) {
             address.city_town = SCREENCOMMON().getInput("City/Town");
         }
-        if (fieldHelper.requires("Address.Province")) {
+        if (requires("Address.Province")) {
             address.province = SCREENCOMMON().getInput("Province");
         }
-        if (fieldHelper.requires("Address.Zip")) {
+        if (requires("Address.Zip")) {
             address.zip = SCREENCOMMON().getInput("Zip");
         }
         employee->setAddress(address);
@@ -171,29 +178,29 @@ void EmployeeMgmtScreen::fillEmployeeInformation(entity::Employee* employee,
     // Contact details
     {
         entity::ContactDetails contactDetails = employee->contactDetails();
-        if (fieldHelper.requires("ContactDetails.Phone1")) {
+        if (requires("ContactDetails.Phone1")) {
             contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
         }
-        if (fieldHelper.requires("ContactDetails.Phone2")) {
+        if (requires("ContactDetails.Phone2")) {
             contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
         }
-        if (fieldHelper.requires("ContactDetails.Email")) {
+        if (requires("ContactDetails.Email")) {
             contactDetails.email = SCREENCOMMON().getInput("Email Address");
         }
         employee->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
         employee->setEmail(contactDetails.email);
     }
     // Ask if user wants to input a valid/government ID
-    if (fieldHelper.requires("PersonalId.Type") || fieldHelper.requires("PersonalId.Number")) {
+    if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
         entity::PersonalId personalId;
         // We're creating a new employee, ask if the employee has a Valid ID
         bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
 
         if (idFieldsRequired) {
-            if (fieldHelper.requires("PersonalId.Type")) {
+            if (requires("PersonalId.Type")) {
                 personalId.type = SCREENCOMMON().getInput("ID Type");
             }
-            if (fieldHelper.requires("PersonalId.Number")) {
+            if (requires("PersonalId.Number")) {
                 personalId.id_number = SCREENCOMMON().getInput("ID Number");
             }
             // Add a new one
@@ -218,7 +225,12 @@ void EmployeeMgmtScreen::createEmployee() {
     */
     do {
         std::map<std::string, std::string> validationResult;
-        fillEmployeeInformation(&newEmployee, failedFields);
+        empFieldHelper.getInputsFromField(&newEmployee, failedFields);
+        if (empFieldHelper.isBreak()) {
+            // User requested to cancel
+            break;
+        }
+        fillOtherEmployeeInformation(&newEmployee, failedFields);
         const domain::empmgmt::EMPLMGMTSTATUS status =
             [this, &newEmployee, &validationResult, &failedFields]() {
             const bool isSystemUser = [&newEmployee, &failedFields]() {
@@ -279,16 +291,22 @@ void EmployeeMgmtScreen::updateEmployee() {
         std::map<std::string, std::string> validationResult;
         entity::Employee updateEmployee = mTableHelper.getSelectedData();
         do {
-            fillEmployeeInformation(&updateEmployee, requiredFields);
+            empFieldHelper.getInputsFromField(&updateEmployee, requiredFields);
+            if (empFieldHelper.isBreak()) {
+                // User requested to cancel
+                break;
+            }
+            fillOtherEmployeeInformation(&updateEmployee, requiredFields);
             // Reset validation results
             validationResult.clear();
             if (mCoreController->save({updateEmployee, "", &validationResult}) !=
                 domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
+            } else {
+                mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);
             }
         } while (!validationResult.empty());  // repeat input until data is updated
-        mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);
     }
 }
 

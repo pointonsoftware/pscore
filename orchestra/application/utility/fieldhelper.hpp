@@ -28,25 +28,57 @@
 namespace app {
 namespace utility {
 
+template <typename EntityType>
 class FieldHelper {
  public:
-    explicit FieldHelper(const std::vector<std::string>& requiredFields)
-        : mRequiredFields(requiredFields) {}
-    FieldHelper() = delete;
-    // Find the field from the "requiredFields" vector
-    inline bool requires(const std::string& field) const {
-        if (mRequiredFields.empty()) {
-            // Field is required by default
-            return true;
-        }
-        return std::find(mRequiredFields.begin(), mRequiredFields.end(), field)
-               != mRequiredFields.end();
+    FieldHelper() = default;
+    ~FieldHelper() = default;
+
+    struct Field {
+        std::string fieldName;
+        std::string label;
+        std::function<void(EntityType*, const std::string&)> entiySetter;
+    };
+
+    // Add an input field
+    inline void addField(const Field& field) {
+        mEntityFields.emplace_back(field);
     }
+
+    // Get user inputs from the requested fields
+    // Todo (code) - implement move semantics for reqField and delete the clear() from the caller
+    inline void getInputsFromField(EntityType* entity, const std::vector<std::string>& reqField) {
+        // Find the field from the requested fields vector
+        const auto& requested = [&reqField](const std::string& field) {
+            if (reqField.empty()) {
+                // All fields are requested by default
+                return true;
+            }
+            return std::find(reqField.begin(), reqField.end(), field) != reqField.end();
+        };
+        mIsBreak = false;  // We must reset this flag before starting
+        for (const Field& field : mEntityFields) {
+            if (!requested(field.fieldName)) {
+                continue;
+            }
+            std::string input = SCREENCOMMON().getInput(field.label);
+            if (input == "x" || input == "b") {
+                mIsBreak = true;
+                break;
+            }
+            field.entiySetter(entity, input);
+        }
+    }
+
+    // Returns true if the user requested to abort the input request
+    bool isBreak() const {
+        return mIsBreak;
+    }
+
  private:
-    const std::vector<std::string>& mRequiredFields;
+    std::vector<Field> mEntityFields;
+    bool mIsBreak = false;
 };
-
-
 
 }  // namespace utility
 }  // namespace app
