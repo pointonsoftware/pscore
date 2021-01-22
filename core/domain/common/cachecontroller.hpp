@@ -101,7 +101,7 @@ class CacheController {
             throw std::runtime_error("Entity function key is not usable.");
         }
         return std::find_if(mCachedList.begin(), mCachedList.end(),
-                    [&key, &fn](const EntityType& e) { return fn(e) == key; });
+                    [this, &key](const EntityType& e) { return mEntiyKeyFn(e) == key; });
     }
 
     /**
@@ -109,7 +109,7 @@ class CacheController {
      *  Note: This throws a runtime error; Use setEntityKeyFn() prior to calling this function.
      */
     bool isExists(const std::string& key) {
-         return find(key, fn) != mCachedList.end();
+         return find(key) != mCachedList.end();
     }
 
  private:
