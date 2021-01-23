@@ -46,7 +46,7 @@ class LogHelper {
  private:
     LogHelper();
     bool isLogModeWritable(const std::string& logMode) const;
-    const std::string getMethodName(const std::string& prettyFunction) const;
+    const std::string removeParameters(const std::string& prettyFunction) const;
     const std::string extractClassName(const std::string& signature) const;
     const std::string extractMethodName(const std::string& signature) const;
 

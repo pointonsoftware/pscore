@@ -65,8 +65,8 @@ void ConsoleLogger::write(const std::string& logMode, const std::string& classNa
     // [2020-08-30 02:46:10.824] | SomeClass | SomeFunc |-- Hello World!
     std::cout << getLogModeTerminalColor(logMode)
               << getTimestamp() << std::left << " | "
-              << std::setw(MAX_NAME)  << className  << " | "
-              << std::setw(MAX_NAME)  << methodName << " | -- "
+              << std::setw(MAX_CLASS_NAME_SIZE) << className  << " | "
+              << std::setw(MAX_FUNC_NAME_SIZE)  << methodName << " |-- "
               << logString << "\033[0m"<< std::endl;
 }
 

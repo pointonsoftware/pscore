@@ -67,7 +67,7 @@ void LogHelper::write(const std::string& logMode, const std::string& prettyFunct
         return;
     }
     if (isLogModeWritable(logMode)) {
-        const std::string signature = getMethodName(prettyFunction);
+        const std::string signature = removeParameters(prettyFunction);
         const std::string className = extractClassName(signature);
         const std::string methodName = extractMethodName(signature);
         std::string logString = logFormat;
@@ -99,33 +99,38 @@ bool LogHelper::isLogModeWritable(const std::string& logMode) const {
     return true;
 }
 
-const std::string LogHelper::getMethodName(const std::string& prettyFunction) const {
-    size_t colons = prettyFunction.find("::");
-    if ((colons < MIN_CHAR) || (colons > MAX_NAME)) {
-        colons = MAX_NAME;
-    }
-    const size_t begin = prettyFunction.substr(0, colons).rfind(" ") + 1;
-    const size_t end = prettyFunction.rfind("(") - begin;
-    return prettyFunction.substr(begin, end);
+const std::string LogHelper::removeParameters(const std::string& prettyFunction) const {
+    // Cut the parameters
+    return prettyFunction.substr(0, prettyFunction.rfind("("));
 }
 
 const std::string LogHelper::extractClassName(const std::string& signature) const {
-    const size_t colons = signature.find("::");
-    if (signature.empty() || (colons < MIN_CHAR) || (colons > MAX_NAME)) {
+    const size_t colon = signature.rfind("::");
+    if (signature.empty() || (colon == std::string::npos)) {
         return "unknown";
     }
-    return signature.substr(0, colons);
+    // className = [return type] [(namespace::)classname]
+    std::string className = signature.substr(0, colon);
+    // Check if it has template parameter
+    const size_t lastTemplateArg = className.rfind(">");
+    if (lastTemplateArg != std::string::npos && lastTemplateArg > className.rfind(" ")) {
+        // Remove template parameter
+        className = className.substr(0, className.rfind("<"));
+    }
+    return className.substr(className.rfind(" ") + 1);
 }
 
 const std::string LogHelper::extractMethodName(const std::string& signature) const {
     if (signature.empty()) {
         return "unknown";
     }
-    const size_t colons = signature.find("::");
-    const size_t begin = [&colons] {
-        return (colons < MIN_CHAR) || (colons > MAX_NAME) ? 0 : colons + 2;
-    }();
-    return signature.substr(begin);
+    const size_t colon = signature.find_last_of("::");
+    std::string methodName = signature.substr(colon != std::string::npos ? colon + 1 : 0);
+    if (methodName.rfind(">") != std::string::npos) {
+        // Remove template args
+        methodName = methodName.substr(0, methodName.rfind("<"));
+    }
+    return methodName;
 }
 
 void LogHelper::initializeLoggerType() {
