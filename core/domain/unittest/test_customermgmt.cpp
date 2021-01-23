@@ -133,7 +133,7 @@ TEST_F(TestCustomerMgmt, TestCreateCustomer) {
 TEST_F(TestCustomerMgmt, TestCreateCustomerWithInvalidAddress) {
     std::map<std::string, std::string> dummyValidationContainer;
     entity::Customer dummy("", "John", "", "Doe", "", "M");
-    dummy.setAddress({"DummyL1", "DummyL2", "", ""});
+    dummy.setAddress({"DummyL1", "DummyL2", "", "", ""});
     // Should fail
     ASSERT_EQ(controller.save(dummy, &dummyValidationContainer),
               CUSTOMERMGMTAPISTATUS::FAILED);

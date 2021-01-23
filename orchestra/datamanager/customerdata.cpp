@@ -46,21 +46,21 @@ std::vector<entity::Customer> CustomerDataProvider::getCustomers() {
 void CustomerDataProvider::writeOtherDetails(const entity::Customer& customer) const {
     DATABASE().SELECT_ADDRESS_TABLE().emplace_back(db::StackDB::AddressTableItem {
             customer.ID(),
-            customer.address().line1,
-            customer.address().line2,
-            customer.address().city_town,
-            customer.address().province,
-            customer.address().zip});
+            customer.address().line1(),
+            customer.address().line2(),
+            customer.address().cityTown(),
+            customer.address().province(),
+            customer.address().zip()});
     DATABASE().SELECT_CONTACTS_TABLE().emplace_back(db::StackDB::ContactDetailsTableItem {
             customer.ID(),
-            customer.contactDetails().email,
-            customer.contactDetails().phone_number_1,
-            customer.contactDetails().phone_number_2});
+            customer.contactDetails().email(),
+            customer.contactDetails().phone1(),
+            customer.contactDetails().phone2()});
     for (unsigned int i = 0; i < customer.personalIds().size(); i++) {
         DATABASE().SELECT_PERSONAL_ID_TABLE().emplace_back(db::StackDB::PersonalIdTableItem {
                 customer.ID(),
-                customer.personalIds()[i].type,
-                customer.personalIds()[i].id_number});
+                customer.personalIds()[i].type(),
+                customer.personalIds()[i].number()});
     }
 }
 void CustomerDataProvider::create(const entity::Customer& customer) {
@@ -122,11 +122,11 @@ void CustomerDataProvider::update(const entity::Customer& customer) {
         // Actual update
         *it = db::StackDB::AddressTableItem {
             customer.ID(),
-            customer.address().line1,
-            customer.address().line2,
-            customer.address().city_town,
-            customer.address().province,
-            customer.address().zip};
+            customer.address().line1(),
+            customer.address().line2(),
+            customer.address().cityTown(),
+            customer.address().province(),
+            customer.address().zip()};
     }
     // Updating customer contacts
     {
@@ -144,9 +144,9 @@ void CustomerDataProvider::update(const entity::Customer& customer) {
         // Actual update
         *it = db::StackDB::ContactDetailsTableItem {
             customer.ID(),
-            customer.contactDetails().email,
-            customer.contactDetails().phone_number_1,
-            customer.contactDetails().phone_number_2};
+            customer.contactDetails().email(),
+            customer.contactDetails().phone1(),
+            customer.contactDetails().phone2()};
     }
     // Updating customer personal ID
     {
@@ -165,8 +165,8 @@ void CustomerDataProvider::update(const entity::Customer& customer) {
         // Actual update
         *it = db::StackDB::PersonalIdTableItem {
                 customer.ID(),
-                customer.personalIds()[0].type,
-                customer.personalIds()[0].id_number};
+                customer.personalIds()[0].type(),
+                customer.personalIds()[0].number()};
     }
 }
 

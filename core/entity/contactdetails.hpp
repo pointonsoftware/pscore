@@ -31,10 +31,37 @@ constexpr char FIELD_CONT_PH1[] = "ContactDetails.Phone1";
 constexpr char FIELD_CONT_PH2[] = "ContactDetails.Phone2";
 constexpr char FIELD_CONT_EML[] = "ContactDetails.Email";
 
-struct ContactDetails {
-    std::string email;
-    std::string phone_number_1;
-    std::string phone_number_2;
+class ContactDetails {
+ public:
+    ContactDetails(const std::string& email, const std::string& phone1, const std::string& phone2)
+                   : mEmail(email), mPhone1(phone1), mPhone2(phone2) {}
+    ContactDetails() = default;
+    ~ContactDetails() = default;
+     // Setters
+    void setEmail(const std::string& str) {
+        mEmail = str;
+    }
+    void setPhone1(const std::string& str) {
+        mPhone1 = str;
+    }
+    void setPhone2(const std::string& str) {
+        mPhone2 = str;
+    }
+    // Getters
+    std::string email() const {
+        return mEmail;
+    }
+    std::string phone1() const {
+        return mPhone1;
+    }
+    std::string phone2() const {
+        return mPhone2;
+    }
+
+ private:
+    std::string mEmail;
+    std::string mPhone1;
+    std::string mPhone2;
 };
 
 }  // namespace entity

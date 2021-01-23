@@ -30,8 +30,29 @@ constexpr char FIELD_PNID_IDT[] = "PersonalId.Type";
 constexpr char FIELD_PNID_IDN[] = "PersonalId.Number";
 
 struct PersonalId {
-    std::string type;
-    std::string id_number;
+ public:
+    PersonalId(const std::string& email, const std::string& phone1)
+                   : mType(email), mIdNumber(phone1) {}
+    PersonalId() = default;
+    ~PersonalId() = default;
+     // Setters
+    void setType(const std::string& str) {
+        mType = str;
+    }
+    void setNumber(const std::string& str) {
+        mIdNumber = str;
+    }
+    // Getters
+    std::string type() const {
+        return mType;
+    }
+    std::string number() const {
+        return mIdNumber;
+    }
+
+ private:
+    std::string mType;
+    std::string mIdNumber;
 };
 
 }  // namespace entity

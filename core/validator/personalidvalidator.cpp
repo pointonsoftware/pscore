@@ -32,11 +32,11 @@ PersonalIDValidator::PersonalIDValidator(const PersonalId& personalID) : mPerson
 }
 
 ValidationStatus PersonalIDValidator::validateIDType() {
-    if (mPersonalID.type.empty()) {
+    if (mPersonalID.type().empty()) {
         addError(FIELD_PNID_IDT, "ID Type must not be empty.");
         return ValidationStatus::S_EMPTY;
     }
-    if (utility::hasNumber(mPersonalID.type)) {
+    if (utility::hasNumber(mPersonalID.type())) {
         // Type must be alphabet
         addError(FIELD_PNID_IDT, "ID Type contains invalid character.");
         return ValidationStatus::S_INVALID_STRING;
@@ -45,11 +45,11 @@ ValidationStatus PersonalIDValidator::validateIDType() {
 }
 
 ValidationStatus PersonalIDValidator::validateIDNumber() {
-    if (mPersonalID.id_number.empty()) {
+    if (mPersonalID.number().empty()) {
         addError(FIELD_PNID_IDN, "ID Number must not be empty.");
         return ValidationStatus::S_EMPTY;
     }
-    if (std::regex_search(mPersonalID.id_number, std::regex(INVALID_ID_CHARACTERS))) {
+    if (std::regex_search(mPersonalID.number(), std::regex(INVALID_ID_CHARACTERS))) {
         // ID number contains invalid characters
         addError(FIELD_PNID_IDN, "ID Number contains invalid character");
         return ValidationStatus::S_INVALID_STRING;

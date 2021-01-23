@@ -49,7 +49,7 @@ ValidationStatus ContactDetailsValidator::phoneNumberSanity(const std::string& n
 }
 
 ValidationStatus ContactDetailsValidator::validatePhoneNumber1() {
-    ValidationStatus retVal = phoneNumberSanity(mContactDetails.phone_number_1);
+    ValidationStatus retVal = phoneNumberSanity(mContactDetails.phone1());
     switch (retVal) {
         case ValidationStatus::S_INVALID_STRING:
             addError(FIELD_CONT_PH1, "Phone number 1 contains invalid character.");
@@ -64,7 +64,7 @@ ValidationStatus ContactDetailsValidator::validatePhoneNumber1() {
 }
 
 ValidationStatus ContactDetailsValidator::validatePhoneNumber2() {
-    ValidationStatus retVal = phoneNumberSanity(mContactDetails.phone_number_2);
+    ValidationStatus retVal = phoneNumberSanity(mContactDetails.phone2());
     switch (retVal) {
         case ValidationStatus::S_INVALID_STRING:
             addError(FIELD_CONT_PH2, "Phone number 2 contains invalid character.");
@@ -79,10 +79,11 @@ ValidationStatus ContactDetailsValidator::validatePhoneNumber2() {
 }
 
 ValidationStatus ContactDetailsValidator::validateEmailAddress() {
-    if (mContactDetails.email.empty()) {
+    if (mContactDetails.email().empty()) {
         return ValidationStatus::S_OK;
     }
-    if (std::count(mContactDetails.email.begin(), mContactDetails.email.end(), '@') != 1) {
+    const std::string& email = mContactDetails.email();
+    if (std::count(email.begin(), email.end(), '@') != 1) {
         addError(FIELD_CONT_EML, "Email address is invalid.");
         return ValidationStatus::S_INVALID_STRING;
     }
