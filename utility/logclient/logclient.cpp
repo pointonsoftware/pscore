@@ -34,6 +34,7 @@
 #include <arpa/inet.h>
 #endif
 
+#include <iomanip>
 #include <iostream>
 
 /*!
@@ -46,12 +47,21 @@
 constexpr unsigned int PORT = 2020;
 
 void screenStartUp() {
-    std::cout << "+------------------------------------------+" << std::endl;
-    std::cout << "|          PSCORE Log Client v1.0          |" << std::endl;
-    std::cout << "|           (c) Pointon Software           |" << std::endl;
-    std::cout << "+------------------------------------------+" << std::endl;
-    std::cout << "|   Note: For LAN, enable UDP port 2020    |" << std::endl;
-    std::cout << "+------------------------------------------+" << std::endl;
+    std::cout << "+" << std::string(146, '-') << "+" << std::endl;
+    std::cout << "|" << std::string(62, ' ')
+              << "PSCORE Log Client v2.0"
+              << std::string(62, ' ') << "|"
+              << std::endl;
+    std::cout << "|" << std::string(63, ' ')
+              << "(c) Pointon Software"
+              << std::string(63, ' ') << "|"
+              << std::endl;
+    std::cout << "+" << std::string(146, '-') << "+" << std::endl;
+    std::cout << "|" << std::string(50, ' ')
+              << "Note: Enable UDP port 2020 for LAN connection"
+              << std::string(51, ' ') << "|"
+              << std::endl;
+    std::cout << "+" << std::string(146, '-') << "+" << std::endl;
     std::cout << std::endl;
 }
 
@@ -138,7 +148,14 @@ int main() {
     std::cout << std::endl;
     std::cout << "Setup successful. Client is listening." << std::endl;
     std::cout << std::endl;
-
+    std::cout << std::string(148, '-') << std::endl;
+    std::cout << std::left
+              << std::setw(25) << "| Timestamp"   << " | "
+              << std::setw(50) << "Class Name"    << " | "
+              << std::setw(20) << "Function Name" << " | "
+              << std::setw(42) << "Message"       << " |"
+              << std::endl;
+    std::cout << std::string(148, '-') << std::endl;
     while (1) {
         char buffer[256] = {};
         if (recvfrom(socketfd, buffer, sizeof(buffer)-1, 0,
