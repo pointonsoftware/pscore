@@ -27,7 +27,6 @@
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
-#include <fieldhelper.hpp>
 #include <generalhelper.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -53,7 +52,22 @@ const std::vector<std::string> DOMAIN_FIELDS {
 
 InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock", "Price"},
             { &entity::Product::name, &entity::Product::category, &entity::Product::stock,
-              &entity::Product::sellPrice }), isShowingDetailsScreen(false) {}
+              &entity::Product::sellPrice }), isShowingDetailsScreen(false) {
+    mfieldHelper.addField({entity::FIELD_BCODE, "Barcode", &entity::Product::setBarcode});
+    mfieldHelper.addField({entity::FIELD_SKU, "SKU", &entity::Product::setSKU});
+    mfieldHelper.addField({entity::FIELD_PNAME, "Name", &entity::Product::setName});
+    mfieldHelper.addField({entity::FIELD_PDESC, "Description", &entity::Product::setDescription});
+    mfieldHelper.addField({entity::FIELD_CTGR, "Category", &entity::Product::setCategory});
+    mfieldHelper.addField({entity::FIELD_BRAND, "Brand", &entity::Product::setBrand});
+    mfieldHelper.addField({entity::FIELD_UOM, "UOM", &entity::Product::setUOM});
+    mfieldHelper.addField({entity::FIELD_STOCK, "Stock", &entity::Product::setStock});
+    mfieldHelper.addField({entity::FIELD_PSTATUS, "Status", &entity::Product::setStatus});
+    mfieldHelper.addField({entity::FIELD_OPRICE, "Orig. Price",
+                           &entity::Product::setOriginalPrice});
+    mfieldHelper.addField({entity::FIELD_SPRICE, "Sell Price", &entity::Product::setSellPrice});
+    mfieldHelper.addField({entity::FIELD_SPNAME, "Supplier", &entity::Product::setSupplierName});
+    mfieldHelper.addField({entity::FIELD_SPCODE, "Supp. Code", &entity::Product::setSupplierCode});
+}
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::inventory::createInventoryModule(
@@ -103,37 +117,6 @@ void InventoryScreen::removeProduct() {
     }
 }
 
-void InventoryScreen::fillProductInformation(entity::Product* product,
-                                             const std::vector<std::string>& requiredFields) const {
-    app::utility::FieldHelper fieldHelper(requiredFields);
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setBarcode, product,
-        std::placeholders::_1), "Barcode", fieldHelper.requires(entity::FIELD_BCODE));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSKU, product,
-        std::placeholders::_1), "SKU", fieldHelper.requires(entity::FIELD_SKU));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setName, product,
-        std::placeholders::_1), "Name", fieldHelper.requires(entity::FIELD_PNAME));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setDescription, product,
-        std::placeholders::_1), "Description", fieldHelper.requires(entity::FIELD_PDESC));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setCategory, product,
-        std::placeholders::_1), "Category", fieldHelper.requires(entity::FIELD_CTGR));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setBrand, product,
-        std::placeholders::_1), "Brand", fieldHelper.requires(entity::FIELD_BRAND));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setUOM, product,
-        std::placeholders::_1), "UOM", fieldHelper.requires(entity::FIELD_UOM));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setStock, product,
-        std::placeholders::_1), "Stock", fieldHelper.requires(entity::FIELD_STOCK));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setStatus, product,
-        std::placeholders::_1), "Status", fieldHelper.requires(entity::FIELD_PSTATUS));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setOriginalPrice, product,
-        std::placeholders::_1), "Orig. Price", fieldHelper.requires(entity::FIELD_OPRICE));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSellPrice, product,
-        std::placeholders::_1), "Sell Price", fieldHelper.requires(entity::FIELD_SPRICE));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSupplierName, product,
-        std::placeholders::_1), "Supplier", fieldHelper.requires(entity::FIELD_SPNAME));
-    SCREENCOMMON().inputArea(std::bind(&entity::Product::setSupplierCode, product,
-        std::placeholders::_1), "Supp. Code", fieldHelper.requires(entity::FIELD_SPCODE));
-}
-
 void InventoryScreen::createProduct() {
     SCREENCOMMON().showTopBanner("Create Product");
     std::cout << "Type [space] for an empty entry" << std::endl;
@@ -141,7 +124,11 @@ void InventoryScreen::createProduct() {
     entity::Product newProduct;
     do {
         // Input product details
-        fillProductInformation(&newProduct, requiredFields);
+        mfieldHelper.getInputsFromField(&newProduct, requiredFields);
+        if (mfieldHelper.isBreak()) {
+            // User requested to cancel
+            break;
+        }
         // Reset after filling the fields
         requiredFields.clear();
 
@@ -169,7 +156,11 @@ void InventoryScreen::updateProduct() {
         std::map<std::string, std::string> validationResult;
         entity::Product product = mTableHelper.getSelectedData();
         do {
-            fillProductInformation(&product, requiredFields);
+            mfieldHelper.getInputsFromField(&product, requiredFields);
+            if (mfieldHelper.isBreak()) {
+                // User requested to cancel
+                break;
+            }
             // Reset validation results
             validationResult.clear();
             if (mCoreController->save(product, &validationResult)

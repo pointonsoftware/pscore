@@ -161,10 +161,8 @@ std::string ScreenCommon::getYesNoInput(const std::string& label) const {
 }
 
 void ScreenCommon::inputArea(std::function<void(const std::string&)> func,
-                             const std::string& label, bool fieldIsRequired) const {
-    if (fieldIsRequired) {
-        func(SCREENCOMMON().getInput(label));
-    }
+                             const std::string& label) const {
+    func(SCREENCOMMON().getInput(label));
 }
 
 const std::string ScreenCommon::getUpdateField(const std::vector<std::string>& fields) const {

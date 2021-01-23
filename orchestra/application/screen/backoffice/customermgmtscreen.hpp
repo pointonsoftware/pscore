@@ -28,7 +28,9 @@
 #include <customerdata.hpp>
 // Screens
 #include "backofficescreenbase.hpp"
+#include <fieldhelper.hpp>
 #include <screeniface.hpp>
+#include <tablehelper.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -58,10 +60,11 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
 
-    void fillCustomerInformation(entity::Customer* customer,
-                                 const std::vector<std::string>& requiredFields) const;
+    void fillOtherCustomerInformation(entity::Customer* customer,
+                                      const std::vector<std::string>& requiredFields);
 
     app::utility::TableHelper<entity::Customer> mTableHelper;
+    app::utility::FieldHelper<entity::Customer> mfieldHelper;
     bool isShowingDetailsScreen;
 };
 

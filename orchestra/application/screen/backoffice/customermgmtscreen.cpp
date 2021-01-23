@@ -54,7 +54,15 @@ const std::vector<std::string> DOMAIN_FIELDS {
 
 CustomerMgmtScreen::CustomerMgmtScreen() : mTableHelper({"ID", "First Name", "Last Name"},
             { &entity::Customer::ID, &entity::Customer::firstName, &entity::Customer::lastName }),
-              isShowingDetailsScreen(false) {}
+              isShowingDetailsScreen(false) {
+    // Basic info
+    mfieldHelper.addField({entity::FIELD_FNAME, "First Name", &entity::Employee::setFirstName});
+    mfieldHelper.addField({entity::FIELD_MNAME, "Middle Name", &entity::Employee::setMiddleName});
+    mfieldHelper.addField({entity::FIELD_LNAME, "Last Name", &entity::Employee::setLastName});
+    mfieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
+                            &entity::Employee::setBirthdate});
+    mfieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)", &entity::Employee::setGender});
+}
 
 void CustomerMgmtScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::customermgmt::createCustomerMgmtModule(
@@ -99,36 +107,32 @@ void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
     infoScreen.showOptions();
 }
 
-void CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
-                         const std::vector<std::string>& requiredFields) const {
-    app::utility::FieldHelper fieldHelper(requiredFields);
-    // Basic info
-    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setFirstName, customer,
-        std::placeholders::_1), "First Name", fieldHelper.requires("Person.First.Name"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setMiddleName, customer,
-        std::placeholders::_1), "Middle Name", fieldHelper.requires("Person.Middle.Name"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setLastName, customer,
-        std::placeholders::_1), "Last Name", fieldHelper.requires("Person.Last.Name"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setBirthdate, customer,
-        std::placeholders::_1), "Birthdate (yyyy/mm/dd)", fieldHelper.requires("Person.Birthdate"));
-    SCREENCOMMON().inputArea(std::bind(&entity::Customer::setGender, customer,
-        std::placeholders::_1), "Gender (M/F)", fieldHelper.requires("Person.Gender"));
+void CustomerMgmtScreen::fillOtherCustomerInformation(entity::Customer* customer,
+                         const std::vector<std::string>& requiredFields) {
+    const auto& requires = [&requiredFields](const std::string& field) {
+        if (requiredFields.empty()) {
+            // All fields are requested by default
+            return true;
+        }
+        return std::find(requiredFields.begin(), requiredFields.end(), field)
+                         != requiredFields.end();
+    };
     // Address
     {
         entity::Address address = customer->address();
-        if (fieldHelper.requires("Address.Line1")) {
+        if (requires("Address.Line1")) {
             address.line1 = SCREENCOMMON().getInput("Address 1");
         }
-        if (fieldHelper.requires("Address.Line2")) {
+        if (requires("Address.Line2")) {
             address.line2 = SCREENCOMMON().getInput("Address 2");
         }
-        if (fieldHelper.requires("Address.CityTown")) {
+        if (requires("Address.CityTown")) {
             address.city_town = SCREENCOMMON().getInput("City/Town");
         }
-        if (fieldHelper.requires("Address.Province")) {
+        if (requires("Address.Province")) {
             address.province = SCREENCOMMON().getInput("Province");
         }
-        if (fieldHelper.requires("Address.Zip")) {
+        if (requires("Address.Zip")) {
             address.zip = SCREENCOMMON().getInput("Zip");
         }
         customer->setAddress(address);
@@ -136,29 +140,29 @@ void CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
     // Contact details
     {
         entity::ContactDetails contactDetails = customer->contactDetails();
-        if (fieldHelper.requires("ContactDetails.Phone1")) {
+        if (requires("ContactDetails.Phone1")) {
             contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
         }
-        if (fieldHelper.requires("ContactDetails.Phone2")) {
+        if (requires("ContactDetails.Phone2")) {
             contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
         }
-        if (fieldHelper.requires("ContactDetails.Email")) {
+        if (requires("ContactDetails.Email")) {
             contactDetails.email = SCREENCOMMON().getInput("Email Address");
         }
         customer->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
         customer->setEmail(contactDetails.email);
     }
     // Ask if user wants to input a valid/government ID
-    if (fieldHelper.requires("PersonalId.Type") || fieldHelper.requires("PersonalId.Number")) {
+    if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
         entity::PersonalId personalId;
         // We're creating a new customer, ask if the customer has a Valid ID
         bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
 
         if (idFieldsRequired) {
-            if (fieldHelper.requires("PersonalId.Type")) {
+            if (requires("PersonalId.Type")) {
                 personalId.type = SCREENCOMMON().getInput("ID Type");
             }
-            if (fieldHelper.requires("PersonalId.Number")) {
+            if (requires("PersonalId.Number")) {
                 personalId.id_number = SCREENCOMMON().getInput("ID Number");
             }
             // Add a new one
@@ -174,7 +178,12 @@ void CustomerMgmtScreen::createCustomer() {
     entity::Customer newCustomer;
     do {
         // Input customer details
-        fillCustomerInformation(&newCustomer, requiredFields);
+        mfieldHelper.getInputsFromField(&newCustomer, requiredFields);
+        if (mfieldHelper.isBreak()) {
+            // User requested to cancel
+            break;
+        }
+        fillOtherCustomerInformation(&newCustomer, requiredFields);
         // Reset after filling the fields
         requiredFields.clear();
 
@@ -209,7 +218,12 @@ void CustomerMgmtScreen::updateCustomer() {
         std::map<std::string, std::string> validationResult;
         entity::Customer customerData = mTableHelper.getSelectedData();
         do {
-            fillCustomerInformation(&customerData, requiredFields);
+            mfieldHelper.getInputsFromField(&customerData, requiredFields);
+            if (mfieldHelper.isBreak()) {
+                // User requested to cancel
+                break;
+            }
+            fillOtherCustomerInformation(&customerData, requiredFields);
             // Reset validation results
             validationResult.clear();
             if (mCoreController->save(customerData, &validationResult) !=

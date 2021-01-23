@@ -22,7 +22,6 @@
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_BACKOFFICESCREENBASE_HPP_
 #include <iostream>
 #include <screencommon.hpp>
-#include <tablehelper.hpp>
 
 namespace screen {
 
