@@ -145,11 +145,11 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         // Actual update
         *it = db::StackDB::AddressTableItem {
             employee.ID(),
-            employee.address().line1,
-            employee.address().line2,
-            employee.address().city_town,
-            employee.address().province,
-            employee.address().zip};
+            employee.address().line1(),
+            employee.address().line2(),
+            employee.address().cityTown(),
+            employee.address().province(),
+            employee.address().zip()};
     }
     // Updating employee contacts
     {
@@ -167,9 +167,9 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         // Actual update
         *it = db::StackDB::ContactDetailsTableItem {
             employee.ID(),
-            employee.contactDetails().email,
-            employee.contactDetails().phone_number_1,
-            employee.contactDetails().phone_number_2};
+            employee.contactDetails().email(),
+            employee.contactDetails().phone1(),
+            employee.contactDetails().phone2()};
     }
     // Updating employee personal ID
     {
@@ -188,8 +188,8 @@ void EmployeeDataProvider::update(const entity::Employee& employee) {
         // Actual update
         *it = db::StackDB::PersonalIdTableItem {
                 employee.ID(),
-                employee.personalIds()[0].type,
-                employee.personalIds()[0].id_number};
+                employee.personalIds()[0].type(),
+                employee.personalIds()[0].number()};
     }
 }
 
@@ -212,21 +212,21 @@ void EmployeeDataProvider::update(const entity::User& user) {
 void EmployeeDataProvider::writeEmployeeDetails(const entity::Employee& employee) const {
     DATABASE().SELECT_ADDRESS_TABLE().emplace_back(db::StackDB::AddressTableItem {
             employee.ID(),
-            employee.address().line1,
-            employee.address().line2,
-            employee.address().city_town,
-            employee.address().province,
-            employee.address().zip});
+            employee.address().line1(),
+            employee.address().line2(),
+            employee.address().cityTown(),
+            employee.address().province(),
+            employee.address().zip()});
     DATABASE().SELECT_CONTACTS_TABLE().emplace_back(db::StackDB::ContactDetailsTableItem {
             employee.ID(),
-            employee.contactDetails().email,
-            employee.contactDetails().phone_number_1,
-            employee.contactDetails().phone_number_2});
+            employee.contactDetails().email(),
+            employee.contactDetails().phone1(),
+            employee.contactDetails().phone2()});
     for (unsigned int i = 0; i < employee.personalIds().size(); i++) {
         DATABASE().SELECT_PERSONAL_ID_TABLE().emplace_back(db::StackDB::PersonalIdTableItem {
                 employee.ID(),
-                employee.personalIds()[i].type,
-                employee.personalIds()[i].id_number});
+                employee.personalIds()[i].type(),
+                employee.personalIds()[i].number()});
     }
 }
 

@@ -41,26 +41,26 @@ class InformationScreen {
     void showBasicInformation();
     void showContactDetails() {
         SCREENCOMMON().printColumns({"Contact Details"}, true);
-        printItem("Phone", mInfo->contactDetails().phone_number_1);
-        printItem("Phone 2", mInfo->contactDetails().phone_number_2);
-        printItem("Email", mInfo->contactDetails().email);
+        printItem("Phone", mInfo->contactDetails().phone1());
+        printItem("Phone 2", mInfo->contactDetails().phone2());
+        printItem("Email", mInfo->contactDetails().email());
     }
 
     void showAddress() {
         SCREENCOMMON().printColumns({"Address"}, true);
-        printItem("Address 1", mInfo->address().line1);
-        printItem("Address 2", mInfo->address().line2);
-        printItem("City/Town", mInfo->address().city_town);
-        printItem("Province", mInfo->address().province);
-        printItem("Zip Code", mInfo->address().zip);
+        printItem("Address 1", mInfo->address().line1());
+        printItem("Address 2", mInfo->address().line2());
+        printItem("City/Town", mInfo->address().cityTown());
+        printItem("Province", mInfo->address().province());
+        printItem("Zip Code", mInfo->address().zip());
     }
 
     void showPersonalIds() {
         SCREENCOMMON().printColumns({"Personal Identification"}, true);
         for (size_t count = 1; count <= mInfo->personalIds().size(); ++count) {
-            const std::string details(mInfo->personalIds()[count-1].type
+            const std::string details(mInfo->personalIds()[count-1].type()
                                       + " " + defines::DELIMETER_DASH + " "
-                                      + mInfo->personalIds()[count-1].id_number);
+                                      + mInfo->personalIds()[count-1].number());
             SCREENCOMMON().printItemText("ID " + std::to_string(count), details);
         }
     }

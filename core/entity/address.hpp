@@ -32,12 +32,52 @@ constexpr char FIELD_ADDR_CTY[] = "Address.CityTown";
 constexpr char FIELD_ADDR_PRV[] = "Address.Province";
 constexpr char FIELD_ADDR_ZIP[] = "Address.Zip";
 
-struct Address {
-    std::string line1;
-    std::string line2;
-    std::string city_town;
-    std::string province;
-    std::string zip;
+class Address {
+ public:
+    Address(const std::string& line1, const std::string& line2, const std::string& cityTown,
+            const std::string& province, const std::string& zip) : mLine1(line1), mLine2(line2),
+            mCityTown(cityTown), mProvince(province), mZIP(zip) {}
+    Address() = default;
+    ~Address() = default;
+     // Setters
+    void setLine1(const std::string& str) {
+        mLine1 = str;
+    }
+    void setLine2(const std::string& str) {
+        mLine2 = str;
+    }
+    void setCityTown(const std::string& str) {
+        mCityTown = str;
+    }
+    void setProvince(const std::string& str) {
+        mProvince = str;
+    }
+    void setZip(const std::string& str) {
+        mZIP = str;
+    }
+    // Getters
+    std::string line1() const {
+        return mLine1;
+    }
+    std::string line2() const {
+        return mLine2;
+    }
+    std::string cityTown() const {
+        return mCityTown;
+    }
+    std::string province() const {
+        return mProvince;
+    }
+    std::string zip() const {
+        return mZIP;
+    }
+
+ private:
+    std::string mLine1;
+    std::string mLine2;
+    std::string mCityTown;
+    std::string mProvince;
+    std::string mZIP;
 };
 
 }  // namespace entity

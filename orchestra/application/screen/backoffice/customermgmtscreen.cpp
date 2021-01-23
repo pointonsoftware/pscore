@@ -121,19 +121,19 @@ void CustomerMgmtScreen::fillOtherCustomerInformation(entity::Customer* customer
     {
         entity::Address address = customer->address();
         if (requires("Address.Line1")) {
-            address.line1 = SCREENCOMMON().getInput("Address 1");
+            address.setLine1(SCREENCOMMON().getInput("Address 1"));
         }
         if (requires("Address.Line2")) {
-            address.line2 = SCREENCOMMON().getInput("Address 2");
+            address.setLine2(SCREENCOMMON().getInput("Address 2"));
         }
         if (requires("Address.CityTown")) {
-            address.city_town = SCREENCOMMON().getInput("City/Town");
+            address.setCityTown(SCREENCOMMON().getInput("City/Town"));
         }
         if (requires("Address.Province")) {
-            address.province = SCREENCOMMON().getInput("Province");
+            address.setProvince(SCREENCOMMON().getInput("Province"));
         }
         if (requires("Address.Zip")) {
-            address.zip = SCREENCOMMON().getInput("Zip");
+            address.setZip(SCREENCOMMON().getInput("Zip"));
         }
         customer->setAddress(address);
     }
@@ -141,16 +141,16 @@ void CustomerMgmtScreen::fillOtherCustomerInformation(entity::Customer* customer
     {
         entity::ContactDetails contactDetails = customer->contactDetails();
         if (requires("ContactDetails.Phone1")) {
-            contactDetails.phone_number_1 = SCREENCOMMON().getInput("Phone Number 1");
+            contactDetails.setPhone1(SCREENCOMMON().getInput("Phone Number 1"));
         }
         if (requires("ContactDetails.Phone2")) {
-            contactDetails.phone_number_2 = SCREENCOMMON().getInput("Phone Number 2");
+            contactDetails.setPhone2(SCREENCOMMON().getInput("Phone Number 2"));
         }
         if (requires("ContactDetails.Email")) {
-            contactDetails.email = SCREENCOMMON().getInput("Email Address");
+            contactDetails.setEmail(SCREENCOMMON().getInput("Email Address"));
         }
-        customer->setPhoneNumbers(contactDetails.phone_number_1, contactDetails.phone_number_2);
-        customer->setEmail(contactDetails.email);
+        customer->setPhoneNumbers(contactDetails.phone1(), contactDetails.phone2());
+        customer->setEmail(contactDetails.email());
     }
     // Ask if user wants to input a valid/government ID
     if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
@@ -160,13 +160,13 @@ void CustomerMgmtScreen::fillOtherCustomerInformation(entity::Customer* customer
 
         if (idFieldsRequired) {
             if (requires("PersonalId.Type")) {
-                personalId.type = SCREENCOMMON().getInput("ID Type");
+                personalId.setType(SCREENCOMMON().getInput("ID Type"));
             }
             if (requires("PersonalId.Number")) {
-                personalId.id_number = SCREENCOMMON().getInput("ID Number");
+                personalId.setNumber(SCREENCOMMON().getInput("ID Number"));
             }
             // Add a new one
-            customer->addPersonalId(personalId.type, personalId.id_number);
+            customer->addPersonalId(personalId.type(), personalId.number());
         }
     }
 }

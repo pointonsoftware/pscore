@@ -46,43 +46,43 @@ ValidationStatus AddressValidator::sanity(const std::string& str,
 }
 
 ValidationStatus AddressValidator::validateLine1() {
-    ValidationStatus retVal = sanity(mAddress.line1, INVALID_ADDRLINE_CHARACTERS);
+    ValidationStatus retVal = sanity(mAddress.line1(), INVALID_ADDRLINE_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_LN1, "Address Line 1 contains invalid character.");
     }
     return retVal;
 }
 ValidationStatus AddressValidator::validateLine2() {
-    ValidationStatus retVal = sanity(mAddress.line2, INVALID_ADDRLINE_CHARACTERS);
+    ValidationStatus retVal = sanity(mAddress.line2(), INVALID_ADDRLINE_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_LN2, "Address Line 2 contains invalid character.");
     }
     return retVal;
 }
 ValidationStatus AddressValidator::validateCityTown() {
-    if (mAddress.city_town.empty()) {
+    if (mAddress.cityTown().empty()) {
         addError(FIELD_ADDR_CTY, "City/Town cannot be empty.");
         return ValidationStatus::S_EMPTY;
     }
-    ValidationStatus retVal = sanity(mAddress.city_town, INVALID_CTPZ_CHARACTERS);
+    ValidationStatus retVal = sanity(mAddress.cityTown(), INVALID_CTPZ_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_CTY, "City/Town contains invalid character.");
     }
     return retVal;
 }
 ValidationStatus AddressValidator::validateProvince() {
-    if (mAddress.province.empty()) {
+    if (mAddress.province().empty()) {
         addError(FIELD_ADDR_PRV, "Province cannot be empty.");
         return ValidationStatus::S_EMPTY;
     }
-    ValidationStatus retVal = sanity(mAddress.province, INVALID_CTPZ_CHARACTERS);
+    ValidationStatus retVal = sanity(mAddress.province(), INVALID_CTPZ_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_PRV, "Province contains invalid character.");
     }
     return retVal;
 }
 ValidationStatus AddressValidator::validateZipCode() {
-    ValidationStatus retVal = sanity(mAddress.zip, INVALID_CTPZ_CHARACTERS);
+    ValidationStatus retVal = sanity(mAddress.zip(), INVALID_CTPZ_CHARACTERS);
     if (retVal == ValidationStatus::S_INVALID_STRING) {
         addError(FIELD_ADDR_ZIP, "Zip contains invalid character.");
     }

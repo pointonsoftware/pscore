@@ -113,10 +113,10 @@ void CustomerManagementController::create(const entity::Customer& data) {
         data.firstName(), data.middleName(), data.lastName(), data.birthdate(),
         data.gender());
     newCustomer.setAddress(data.address());
-    newCustomer.setPhoneNumbers(data.contactDetails().phone_number_1,
-                                data.contactDetails().phone_number_2);
+    newCustomer.setPhoneNumbers(data.contactDetails().phone1(),
+                                data.contactDetails().phone2());
     for (const entity::PersonalId& id : data.personalIds()) {
-        newCustomer.addPersonalId(id.type, id.id_number);
+        newCustomer.addPersonalId(id.type(), id.number());
     }
     LOG_DEBUG("Creating customer data %s", newCustomer.ID().c_str());
     // Adding new customer
