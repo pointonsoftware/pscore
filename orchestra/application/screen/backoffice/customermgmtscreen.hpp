@@ -60,11 +60,14 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
 
-    void fillOtherCustomerInformation(entity::Customer* customer,
-                                      const std::vector<std::string>& requiredFields);
+    bool fillCustomerInformation(entity::Customer* customer,
+                                 const std::vector<std::string>& requiredFields);
 
     app::utility::TableHelper<entity::Customer> mTableHelper;
-    app::utility::FieldHelper<entity::Customer> mfieldHelper;
+    app::utility::FieldHelper<entity::Customer> mCustomerfieldHelper;
+    app::utility::FieldHelper<entity::Address> mAddressfieldHelper;
+    app::utility::FieldHelper<entity::ContactDetails> mContactfieldHelper;
+    app::utility::FieldHelper<entity::PersonalId> mIDfieldHelper;
     bool isShowingDetailsScreen;
 };
 
