@@ -115,6 +115,7 @@ void CustomerManagementController::create(const entity::Customer& data) {
     newCustomer.setAddress(data.address());
     newCustomer.setPhoneNumbers(data.contactDetails().phone1(),
                                 data.contactDetails().phone2());
+    newCustomer.setEmail(data.contactDetails().email());
     for (const entity::PersonalId& id : data.personalIds()) {
         newCustomer.addPersonalId(id.type(), id.number());
     }

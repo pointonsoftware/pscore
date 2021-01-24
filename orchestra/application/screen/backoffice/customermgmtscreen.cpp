@@ -83,7 +83,7 @@ CustomerMgmtScreen::CustomerMgmtScreen() : mTableHelper({"ID", "First Name", "La
     mContactfieldHelper.addField({entity::FIELD_CONT_PH2, "Phone Number 2",
                             &entity::ContactDetails::setPhone2});
     mContactfieldHelper.addField({entity::FIELD_CONT_EML, "Email Address",
-                            &entity::ContactDetails::setPhone2});
+                            &entity::ContactDetails::setEmail});
     // Personal ID
     mIDfieldHelper.addField({entity::FIELD_PNID_IDT, "ID Type",
                             &entity::PersonalId::setType});
@@ -133,84 +133,88 @@ void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
     infoScreen.showPersonalIds();
     infoScreen.showOptions();
 }
-
-bool CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
-                         const std::vector<std::string>& requiredFields) {
-    const auto& requires = [&requiredFields](const std::string& field) {
-        if (requiredFields.empty()) {
+bool CustomerMgmtScreen::requestFieldInput(entity::Customer* customer,
+                                           const std::vector<std::string>& fields) {
+    const auto& requires = [&fields](const std::string& field) {
+        if (fields.empty()) {
             // All fields are requested by default
             return true;
         }
-        return std::find(requiredFields.begin(), requiredFields.end(), field)
-                         != requiredFields.end();
+        return std::find(fields.begin(), fields.end(), field)
+                         != fields.end();
     };
-
+    // Basic details
+    mCustomerfieldHelper.getInputsFromField(customer, fields);
+    if (mCustomerfieldHelper.isBreak()) {
+        // User requested to cancel
+        return false;
+    }
+    // Address
+    entity::Address address = customer->address();
+    mAddressfieldHelper.getInputsFromField(&address, fields);
+    if (mAddressfieldHelper.isBreak()) {
+        // User requested to cancel
+        return false;
+    }
+    customer->setAddress(address);
+    // Contact details
+    entity::ContactDetails contactDetails = customer->contactDetails();
+    mContactfieldHelper.getInputsFromField(&contactDetails, fields);
+    if (mContactfieldHelper.isBreak()) {
+        // User requested to cancel
+        return false;
+    }
+    customer->setPhoneNumbers(contactDetails.phone1(), contactDetails.phone2());
+    customer->setEmail(contactDetails.email());
     // Ask if user wants to input a valid/government ID
     if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
         entity::PersonalId personalId;
         // We're creating a new customer, ask if the customer has a Valid ID
         bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
-
         if (idFieldsRequired) {
-            mIDfieldHelper.getInputsFromField(&personalId, requiredFields);
+            mIDfieldHelper.getInputsFromField(&personalId, fields);
             if (mIDfieldHelper.isBreak()) {
                 // User requested to cancel
+                return false;
             }
             // Add a new one
             customer->addPersonalId(personalId.type(), personalId.number());
         }
     }
+    // Successfully asked for inputs
     return true;
+}
+
+bool CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
+                                                 const std::vector<std::string>& fields) {
+    // Used to request re-input of failed fields
+    std::vector<std::string> requiredFields = fields;
+    do {
+        if (!requestFieldInput(customer, requiredFields)) {
+            // User requested to cancel
+            return false;
+        }
+        std::map<std::string, std::string> validationResult;
+        if (mCoreController->save(*customer, &validationResult)
+            == domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
+            // Success!
+            return true;
+        }
+        requiredFields = app::util::extractMapKeys(validationResult);
+        SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
+    } while (1);  // repeat input until Core has accepted the information
 }
 
 void CustomerMgmtScreen::createCustomer() {
     SCREENCOMMON().showTopBanner("Create Customer");
     std::cout << "Type [space] for an empty entry" << std::endl;
-    std::vector<std::string> requiredFields;  // Used to request re-input of failed fields
     entity::Customer newCustomer;
-    do {
-        // Input customer details
-        mCustomerfieldHelper.getInputsFromField(&newCustomer, requiredFields);
-        if (mCustomerfieldHelper.isBreak()) {
-            // User requested to cancel
-            break;
-        }
-
-        entity::Address address = newCustomer.address();
-        mAddressfieldHelper.getInputsFromField(&address, requiredFields);
-        if (mAddressfieldHelper.isBreak()) {
-            // User requested to cancel
-            break;
-        }
-        newCustomer.setAddress(address);
-
-        entity::ContactDetails contactDetails = newCustomer.contactDetails();
-        mContactfieldHelper.getInputsFromField(&contactDetails, requiredFields);
-        if (mContactfieldHelper.isBreak()) {
-            // User requested to cancel
-            break;
-        }
-        newCustomer.setPhoneNumbers(contactDetails.phone1(), contactDetails.phone2());
-        newCustomer.setEmail(contactDetails.email());
-
-        fillCustomerInformation(&newCustomer, requiredFields);
-        // Reset after filling the fields
-        requiredFields.clear();
-
-        std::map<std::string, std::string> validationResult;
-        if (mCoreController->save(newCustomer, &validationResult)
-            != domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
-            requiredFields = app::util::extractMapKeys(validationResult);
-            SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
-        } else {
-            std::cout << "Customer created successfully!" << std::endl;
-        }
-    } while (!requiredFields.empty());  // repeat input until new customer is created
+    fillCustomerInformation(&newCustomer);
 }
 
 void CustomerMgmtScreen::updateCustomer() {
     showCustomerDetails(true);  // true - request to show the index # of each data
-    // Get the field to update
+    // Ask the user for the field to update
     const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
@@ -224,26 +228,10 @@ void CustomerMgmtScreen::updateCustomer() {
         std::cout << "Invalid selection." << std::endl;
         return;
     }
-    {
-        // Update operation
-        std::vector<std::string> requiredFields = { field };
-        std::map<std::string, std::string> validationResult;
-        entity::Customer customerData = mTableHelper.getSelectedData();
-        do {
-            mCustomerfieldHelper.getInputsFromField(&customerData, requiredFields);
-            if (mCustomerfieldHelper.isBreak()) {
-                // User requested to cancel
-                break;
-            }
-            fillCustomerInformation(&customerData, requiredFields);
-            // Reset validation results
-            validationResult.clear();
-            if (mCoreController->save(customerData, &validationResult) !=
-                domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
-                requiredFields = app::util::extractMapKeys(validationResult);
-                SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
-            }
-        } while (!validationResult.empty());  // repeat input until data is updated
+    // Update operation
+    entity::Customer customerData = mTableHelper.getSelectedData();
+    if (fillCustomerInformation(&customerData, {field})) {
+        // Update was successful in Core, let's update our table
         mTableHelper.setData((mTableHelper.getCurrentIndex()), customerData);
     }
 }

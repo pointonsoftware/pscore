@@ -59,10 +59,10 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     void removeCustomer();
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-
     bool fillCustomerInformation(entity::Customer* customer,
-                                 const std::vector<std::string>& requiredFields);
-
+                                 const std::vector<std::string>& fields = {});
+    bool requestFieldInput(entity::Customer* customer,
+                           const std::vector<std::string>& fields);
     app::utility::TableHelper<entity::Customer> mTableHelper;
     app::utility::FieldHelper<entity::Customer> mCustomerfieldHelper;
     app::utility::FieldHelper<entity::Address> mAddressfieldHelper;
