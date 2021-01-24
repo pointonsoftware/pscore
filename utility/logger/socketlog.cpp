@@ -45,8 +45,8 @@ void SocketLogger::write(const std::string& logMode, const std::string& classNam
     std::ostringstream stream;
     stream << getLogModeTerminalColor(logMode)
               << getTimestamp() << std::left << " | "
-              << std::setw(MAX_NAME)  << className  << " | "
-              << std::setw(MAX_NAME)  << methodName << " | -- "
+              << std::setw(MAX_CLASS_NAME_SIZE) << className  << " | "
+              << std::setw(MAX_FUNC_NAME_SIZE)  << methodName << " |-- "
               << logString << "\033[0m"<< std::endl;
 
     broadcast(stream.str());

@@ -29,7 +29,8 @@
 namespace utility {
 
 constexpr unsigned int MIN_CHAR = 1;
-constexpr unsigned int MAX_NAME = 20;
+constexpr unsigned int MAX_CLASS_NAME_SIZE = 50;
+constexpr unsigned int MAX_FUNC_NAME_SIZE  = 20;
 
 class LoggerInterface {
  public:
