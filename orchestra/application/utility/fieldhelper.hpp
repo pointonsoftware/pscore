@@ -41,12 +41,11 @@ class FieldHelper {
     };
 
     // Add an input field
-    inline void addField(const Field& field) {
-        mEntityFields.emplace_back(field);
+    inline void addField(Field&& field) {
+        mEntityFields.emplace_back(std::forward<Field>(field));
     }
 
     // Get user inputs from the requested fields
-    // Todo (code) - implement move semantics for reqField and delete the clear() from the caller
     inline void getInputsFromField(EntityType* entity, const std::vector<std::string>& reqField) {
         // Find the field from the requested fields vector
         const auto& requested = [&reqField](const std::string& field) {
