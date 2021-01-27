@@ -25,7 +25,6 @@
 #include <memory>
 #include <general.hpp>  // pscore utility
 // view
-#include <fieldhelper.hpp>
 #include <generalhelper.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -56,39 +55,16 @@ CustomerMgmtScreen::CustomerMgmtScreen() : mTableHelper({"ID", "First Name", "La
             { &entity::Customer::ID, &entity::Customer::firstName, &entity::Customer::lastName }),
               isShowingDetailsScreen(false) {
     // Basic info
-    mCustomerfieldHelper.addField({entity::FIELD_FNAME, "First Name",
+    mCustomerFieldHelper.addField({entity::FIELD_FNAME, "First Name",
                             &entity::Employee::setFirstName});
-    mCustomerfieldHelper.addField({entity::FIELD_MNAME, "Middle Name",
+    mCustomerFieldHelper.addField({entity::FIELD_MNAME, "Middle Name",
                             &entity::Employee::setMiddleName});
-    mCustomerfieldHelper.addField({entity::FIELD_LNAME, "Last Name",
+    mCustomerFieldHelper.addField({entity::FIELD_LNAME, "Last Name",
                             &entity::Employee::setLastName});
-    mCustomerfieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
+    mCustomerFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
                             &entity::Employee::setBirthdate});
-    mCustomerfieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)",
+    mCustomerFieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)",
                             &entity::Employee::setGender});
-    // Address
-    mAddressfieldHelper.addField({entity::FIELD_ADDR_LN1, "Address 1",
-                            &entity::Address::setLine1});
-    mAddressfieldHelper.addField({entity::FIELD_ADDR_LN2, "Address 2",
-                            &entity::Address::setLine2});
-    mAddressfieldHelper.addField({entity::FIELD_ADDR_CTY, "City/Town",
-                            &entity::Address::setCityTown});
-    mAddressfieldHelper.addField({entity::FIELD_ADDR_PRV, "Province",
-                            &entity::Address::setProvince});
-    mAddressfieldHelper.addField({entity::FIELD_ADDR_ZIP, "Zip",
-                            &entity::Address::setZip});
-    // Contact details
-    mContactfieldHelper.addField({entity::FIELD_CONT_PH1, "Phone Number 1",
-                            &entity::ContactDetails::setPhone1});
-    mContactfieldHelper.addField({entity::FIELD_CONT_PH2, "Phone Number 2",
-                            &entity::ContactDetails::setPhone2});
-    mContactfieldHelper.addField({entity::FIELD_CONT_EML, "Email Address",
-                            &entity::ContactDetails::setEmail});
-    // Personal ID
-    mIDfieldHelper.addField({entity::FIELD_PNID_IDT, "ID Type",
-                            &entity::PersonalId::setType});
-    mIDfieldHelper.addField({entity::FIELD_PNID_IDN, "ID Number",
-                            &entity::PersonalId::setNumber});
 }
 
 void CustomerMgmtScreen::show(std::promise<defines::display>* promise) {
@@ -133,64 +109,20 @@ void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
     infoScreen.showPersonalIds();
     infoScreen.showOptions();
 }
-bool CustomerMgmtScreen::requestFieldInput(entity::Customer* customer,
-                                           const std::vector<std::string>& fields) {
-    const auto& requires = [&fields](const std::string& field) {
-        if (fields.empty()) {
-            // All fields are requested by default
-            return true;
-        }
-        return std::find(fields.begin(), fields.end(), field)
-                         != fields.end();
-    };
-    // Basic details
-    mCustomerfieldHelper.getInputsFromField(customer, fields);
-    if (mCustomerfieldHelper.isBreak()) {
-        // User requested to cancel
-        return false;
-    }
-    // Address
-    entity::Address address = customer->address();
-    mAddressfieldHelper.getInputsFromField(&address, fields);
-    if (mAddressfieldHelper.isBreak()) {
-        // User requested to cancel
-        return false;
-    }
-    customer->setAddress(address);
-    // Contact details
-    entity::ContactDetails contactDetails = customer->contactDetails();
-    mContactfieldHelper.getInputsFromField(&contactDetails, fields);
-    if (mContactfieldHelper.isBreak()) {
-        // User requested to cancel
-        return false;
-    }
-    customer->setPhoneNumbers(contactDetails.phone1(), contactDetails.phone2());
-    customer->setEmail(contactDetails.email());
-    // Ask if user wants to input a valid/government ID
-    if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
-        entity::PersonalId personalId;
-        // We're creating a new customer, ask if the customer has a Valid ID
-        bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
-        if (idFieldsRequired) {
-            mIDfieldHelper.getInputsFromField(&personalId, fields);
-            if (mIDfieldHelper.isBreak()) {
-                // User requested to cancel
-                return false;
-            }
-            // Add a new one
-            customer->addPersonalId(personalId.type(), personalId.number());
-        }
-    }
-    // Successfully asked for inputs
-    return true;
-}
 
 bool CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
                                                  const std::vector<std::string>& fields) {
     // Used to request re-input of failed fields
     std::vector<std::string> requiredFields = fields;
     do {
-        if (!requestFieldInput(customer, requiredFields)) {
+        // Basic details
+        mCustomerFieldHelper.getInputsFromField(customer, requiredFields);
+        if (mCustomerFieldHelper.isBreak()) {
+            // User requested to cancel
+            return false;
+        }
+        mOtherInfoFieldHelper.getInputsFromField(customer, requiredFields);
+        if (mOtherInfoFieldHelper.isBreak()) {
             // User requested to cancel
             return false;
         }

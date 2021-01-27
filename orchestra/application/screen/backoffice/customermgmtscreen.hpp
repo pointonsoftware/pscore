@@ -31,6 +31,7 @@
 #include <fieldhelper.hpp>
 #include <screeniface.hpp>
 #include <tablehelper.hpp>
+#include <informationfieldhelper.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -61,13 +62,9 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
     bool action(Options option, std::promise<defines::display>* nextScreen);
     bool fillCustomerInformation(entity::Customer* customer,
                                  const std::vector<std::string>& fields = {});
-    bool requestFieldInput(entity::Customer* customer,
-                           const std::vector<std::string>& fields);
     app::utility::TableHelper<entity::Customer> mTableHelper;
-    app::utility::FieldHelper<entity::Customer> mCustomerfieldHelper;
-    app::utility::FieldHelper<entity::Address> mAddressfieldHelper;
-    app::utility::FieldHelper<entity::ContactDetails> mContactfieldHelper;
-    app::utility::FieldHelper<entity::PersonalId> mIDfieldHelper;
+    app::utility::FieldHelper<entity::Customer> mCustomerFieldHelper;
+    app::utility::InformationFieldHelper mOtherInfoFieldHelper;
     bool isShowingDetailsScreen;
 };
 

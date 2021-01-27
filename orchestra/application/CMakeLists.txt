@@ -30,6 +30,7 @@ add_executable (
     utility/fieldhelper.hpp
     utility/generalhelper.hpp
     utility/generalhelper.cpp
+    utility/informationfieldhelper.hpp
     utility/screencommon.hpp
     utility/screencommon.cpp
     utility/tablehelper.hpp
