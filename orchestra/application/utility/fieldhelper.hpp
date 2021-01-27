@@ -22,6 +22,7 @@
 #define ORCHESTRA_APPLICATION_UTILITY_FIELDHELPER_HPP_
 #include <algorithm>
 #include <string>
+#include <utility>
 #include <vector>
 #include "screencommon.hpp"
 
