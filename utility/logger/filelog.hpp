@@ -23,13 +23,18 @@
 
 #include <string>
 #include "loggeriface.hpp"
+#include <fileio/fileio.hpp>
 
 namespace utility {
 
 class FileLogger : public LoggerInterface {
+ public:
+    FileLogger();
+    ~FileLogger();
  private:
     void write(const std::string& logMode, const std::string& className,
                const std::string& methodName, const std::string& logString) override;
+    FileIo mFileIo;
 };
 
 }  // namespace utility
