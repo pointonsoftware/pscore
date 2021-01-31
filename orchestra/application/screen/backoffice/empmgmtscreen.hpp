@@ -31,6 +31,7 @@
 #include <fieldhelper.hpp>
 #include <screeniface.hpp>
 #include <tablehelper.hpp>
+#include <informationfieldhelper.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -64,10 +65,9 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void createEmployee();
     void updateEmployee();
     void removeEmployee();
-    void fillOtherEmployeeInformation(entity::Employee* employee,
-                                      const std::vector<std::string>& requiredFields = {}) const;
     app::utility::TableHelper<entity::Employee> mTableHelper;
-    app::utility::FieldHelper<entity::Employee> empFieldHelper;
+    app::utility::FieldHelper<entity::Employee> mEmpFieldHelper;
+    app::utility::InformationFieldHelper mOtherInfoFieldHelper;
     bool isShowingDetailsScreen;
 };
 

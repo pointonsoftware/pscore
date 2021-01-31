@@ -27,7 +27,6 @@
 #include <vector>
 #include <general.hpp>  // pscore utility
 // view
-#include <fieldhelper.hpp>
 #include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -60,13 +59,14 @@ EmployeeMgmtScreen::EmployeeMgmtScreen()
             { &entity::Employee::ID, &entity::Employee::firstName, &entity::Employee::lastName,
               &entity::Employee::position }), isShowingDetailsScreen(false) {
     // Basic info
-    empFieldHelper.addField({entity::FIELD_FNAME, "First Name", &entity::Employee::setFirstName});
-    empFieldHelper.addField({entity::FIELD_MNAME, "Middle Name", &entity::Employee::setMiddleName});
-    empFieldHelper.addField({entity::FIELD_LNAME, "Last Name", &entity::Employee::setLastName});
-    empFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
-                            &entity::Employee::setBirthdate});
-    empFieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)", &entity::Employee::setGender});
-    empFieldHelper.addField({entity::FIELD_EPOS, "Position", &entity::Employee::setPosition});
+    mEmpFieldHelper.addField({entity::FIELD_FNAME, "First Name", &entity::Employee::setFirstName});
+    mEmpFieldHelper.addField({entity::FIELD_MNAME, "Middle Name",
+                             &entity::Employee::setMiddleName});
+    mEmpFieldHelper.addField({entity::FIELD_LNAME, "Last Name", &entity::Employee::setLastName});
+    mEmpFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
+                             &entity::Employee::setBirthdate});
+    mEmpFieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)", &entity::Employee::setGender});
+    mEmpFieldHelper.addField({entity::FIELD_EPOS, "Position", &entity::Employee::setPosition});
 }
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
@@ -141,74 +141,6 @@ void EmployeeMgmtScreen::removeEmployee() {
     }
 }
 
-void EmployeeMgmtScreen::fillOtherEmployeeInformation(entity::Employee* employee,
-                         const std::vector<std::string>& requiredFields) const {
-    const auto& requires = [&requiredFields](const std::string& field) {
-        if (requiredFields.empty()) {
-            // All fields are requested by default
-            return true;
-        }
-        return std::find(requiredFields.begin(), requiredFields.end(), field)
-                         != requiredFields.end();
-    };
-    /**
-     *  Todo (code) - add support to cancel input request
-     *  see: https://github.com/pointonsoftware/pscore/issues/202
-     */
-    // Address
-    {
-        entity::Address address = employee->address();
-        if (requires("Address.Line1")) {
-            address.setLine1(SCREENCOMMON().getInput("Address 1"));
-        }
-        if (requires("Address.Line2")) {
-            address.setLine2(SCREENCOMMON().getInput("Address 2"));
-        }
-        if (requires("Address.CityTown")) {
-            address.setCityTown(SCREENCOMMON().getInput("City/Town"));
-        }
-        if (requires("Address.Province")) {
-            address.setProvince(SCREENCOMMON().getInput("Province"));
-        }
-        if (requires("Address.Zip")) {
-            address.setZip(SCREENCOMMON().getInput("Zip"));
-        }
-        employee->setAddress(address);
-    }
-    // Contact details
-    {
-        entity::ContactDetails contactDetails = employee->contactDetails();
-        if (requires("ContactDetails.Phone1")) {
-            contactDetails.setPhone1(SCREENCOMMON().getInput("Phone Number 1"));
-        }
-        if (requires("ContactDetails.Phone2")) {
-            contactDetails.setPhone2(SCREENCOMMON().getInput("Phone Number 2"));
-        }
-        if (requires("ContactDetails.Email")) {
-            contactDetails.setEmail(SCREENCOMMON().getInput("Email Address"));
-        }
-        employee->setPhoneNumbers(contactDetails.phone1(), contactDetails.phone2());
-        employee->setEmail(contactDetails.email());
-    }
-    // Ask if user wants to input a valid/government ID
-    if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
-        entity::PersonalId personalId;
-        // We're creating a new employee, ask if the employee has a Valid ID
-        bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
-
-        if (idFieldsRequired) {
-            if (requires("PersonalId.Type")) {
-                personalId.setType(SCREENCOMMON().getInput("ID Type"));
-            }
-            if (requires("PersonalId.Number")) {
-                personalId.setNumber(SCREENCOMMON().getInput("ID Number"));
-            }
-            // Add a new one
-            employee->addPersonalId(personalId.type(), personalId.number());
-        }
-    }
-}
-
 void EmployeeMgmtScreen::createEmployee() {
     SCREENCOMMON().showTopBanner("Create Employee");
     std::cout << "Type [space] for an empty entry" << std::endl;
@@ -225,12 +157,16 @@ void EmployeeMgmtScreen::createEmployee() {
     */
     do {
         std::map<std::string, std::string> validationResult;
-        empFieldHelper.getInputsFromField(&newEmployee, failedFields);
-        if (empFieldHelper.isBreak()) {
+        mEmpFieldHelper.getInputsFromField(&newEmployee, failedFields);
+        if (mEmpFieldHelper.isBreak()) {
             // User requested to cancel
             break;
         }
-        fillOtherEmployeeInformation(&newEmployee, failedFields);
+        mOtherInfoFieldHelper.getInputsFromField(&newEmployee, failedFields);
+        if (mOtherInfoFieldHelper.isBreak()) {
+            // User requested to cancel
+            break;
+        }
         const domain::empmgmt::EMPLMGMTSTATUS status =
             [this, &newEmployee, &validationResult, &failedFields]() {
             const bool isSystemUser = [&newEmployee, &failedFields]() {
@@ -291,12 +227,16 @@ void EmployeeMgmtScreen::updateEmployee() {
         std::map<std::string, std::string> validationResult;
         entity::Employee updateEmployee = mTableHelper.getSelectedData();
         do {
-            empFieldHelper.getInputsFromField(&updateEmployee, requiredFields);
-            if (empFieldHelper.isBreak()) {
+            mEmpFieldHelper.getInputsFromField(&updateEmployee, requiredFields);
+            if (mEmpFieldHelper.isBreak()) {
                 // User requested to cancel
                 break;
             }
-            fillOtherEmployeeInformation(&updateEmployee, requiredFields);
+            mOtherInfoFieldHelper.getInputsFromField(&updateEmployee, requiredFields);
+            if (mOtherInfoFieldHelper.isBreak()) {
+                // User requested to cancel
+                break;
+            }
             // Reset validation results
             validationResult.clear();
             if (mCoreController->save({updateEmployee, "", &validationResult}) !=

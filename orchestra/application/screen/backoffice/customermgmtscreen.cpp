@@ -25,7 +25,6 @@
 #include <memory>
 #include <general.hpp>  // pscore utility
 // view
-#include <fieldhelper.hpp>
 #include <generalhelper.hpp>
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
@@ -56,12 +55,16 @@ CustomerMgmtScreen::CustomerMgmtScreen() : mTableHelper({"ID", "First Name", "La
             { &entity::Customer::ID, &entity::Customer::firstName, &entity::Customer::lastName }),
               isShowingDetailsScreen(false) {
     // Basic info
-    mfieldHelper.addField({entity::FIELD_FNAME, "First Name", &entity::Employee::setFirstName});
-    mfieldHelper.addField({entity::FIELD_MNAME, "Middle Name", &entity::Employee::setMiddleName});
-    mfieldHelper.addField({entity::FIELD_LNAME, "Last Name", &entity::Employee::setLastName});
-    mfieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
+    mCustomerFieldHelper.addField({entity::FIELD_FNAME, "First Name",
+                            &entity::Employee::setFirstName});
+    mCustomerFieldHelper.addField({entity::FIELD_MNAME, "Middle Name",
+                            &entity::Employee::setMiddleName});
+    mCustomerFieldHelper.addField({entity::FIELD_LNAME, "Last Name",
+                            &entity::Employee::setLastName});
+    mCustomerFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
                             &entity::Employee::setBirthdate});
-    mfieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)", &entity::Employee::setGender});
+    mCustomerFieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)",
+                            &entity::Employee::setGender});
 }
 
 void CustomerMgmtScreen::show(std::promise<defines::display>* promise) {
@@ -107,131 +110,60 @@ void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
     infoScreen.showOptions();
 }
 
-void CustomerMgmtScreen::fillOtherCustomerInformation(entity::Customer* customer,
-                         const std::vector<std::string>& requiredFields) {
-    const auto& requires = [&requiredFields](const std::string& field) {
-        if (requiredFields.empty()) {
-            // All fields are requested by default
+bool CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
+                                                 const std::vector<std::string>& fields) {
+    // Used to request re-input of failed fields
+    std::vector<std::string> requiredFields = fields;
+    do {
+        // Basic details
+        mCustomerFieldHelper.getInputsFromField(customer, requiredFields);
+        if (mCustomerFieldHelper.isBreak()) {
+            // User requested to cancel
+            return false;
+        }
+        mOtherInfoFieldHelper.getInputsFromField(customer, requiredFields);
+        if (mOtherInfoFieldHelper.isBreak()) {
+            // User requested to cancel
+            return false;
+        }
+        std::map<std::string, std::string> validationResult;
+        if (mCoreController->save(*customer, &validationResult)
+            == domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
+            // Success!
             return true;
         }
-        return std::find(requiredFields.begin(), requiredFields.end(), field)
-                         != requiredFields.end();
-    };
-    // Address
-    {
-        entity::Address address = customer->address();
-        if (requires("Address.Line1")) {
-            address.setLine1(SCREENCOMMON().getInput("Address 1"));
-        }
-        if (requires("Address.Line2")) {
-            address.setLine2(SCREENCOMMON().getInput("Address 2"));
-        }
-        if (requires("Address.CityTown")) {
-            address.setCityTown(SCREENCOMMON().getInput("City/Town"));
-        }
-        if (requires("Address.Province")) {
-            address.setProvince(SCREENCOMMON().getInput("Province"));
-        }
-        if (requires("Address.Zip")) {
-            address.setZip(SCREENCOMMON().getInput("Zip"));
-        }
-        customer->setAddress(address);
-    }
-    // Contact details
-    {
-        entity::ContactDetails contactDetails = customer->contactDetails();
-        if (requires("ContactDetails.Phone1")) {
-            contactDetails.setPhone1(SCREENCOMMON().getInput("Phone Number 1"));
-        }
-        if (requires("ContactDetails.Phone2")) {
-            contactDetails.setPhone2(SCREENCOMMON().getInput("Phone Number 2"));
-        }
-        if (requires("ContactDetails.Email")) {
-            contactDetails.setEmail(SCREENCOMMON().getInput("Email Address"));
-        }
-        customer->setPhoneNumbers(contactDetails.phone1(), contactDetails.phone2());
-        customer->setEmail(contactDetails.email());
-    }
-    // Ask if user wants to input a valid/government ID
-    if (requires("PersonalId.Type") || requires("PersonalId.Number")) {
-        entity::PersonalId personalId;
-        // We're creating a new customer, ask if the customer has a Valid ID
-        bool idFieldsRequired = SCREENCOMMON().getYesNoInput("Has government ID (y/n)") == "y";
-
-        if (idFieldsRequired) {
-            if (requires("PersonalId.Type")) {
-                personalId.setType(SCREENCOMMON().getInput("ID Type"));
-            }
-            if (requires("PersonalId.Number")) {
-                personalId.setNumber(SCREENCOMMON().getInput("ID Number"));
-            }
-            // Add a new one
-            customer->addPersonalId(personalId.type(), personalId.number());
-        }
-    }
+        requiredFields = app::util::extractMapKeys(validationResult);
+        SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
+    } while (1);  // repeat input until Core has accepted the information
 }
 
 void CustomerMgmtScreen::createCustomer() {
     SCREENCOMMON().showTopBanner("Create Customer");
     std::cout << "Type [space] for an empty entry" << std::endl;
-    std::vector<std::string> requiredFields;  // Used to request re-input of failed fields
     entity::Customer newCustomer;
-    do {
-        // Input customer details
-        mfieldHelper.getInputsFromField(&newCustomer, requiredFields);
-        if (mfieldHelper.isBreak()) {
-            // User requested to cancel
-            break;
-        }
-        fillOtherCustomerInformation(&newCustomer, requiredFields);
-        // Reset after filling the fields
-        requiredFields.clear();
-
-        std::map<std::string, std::string> validationResult;
-        if (mCoreController->save(newCustomer, &validationResult)
-            != domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
-            requiredFields = app::util::extractMapKeys(validationResult);
-            SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
-        } else {
-            std::cout << "Customer created successfully!" << std::endl;
-        }
-    } while (!requiredFields.empty());  // repeat input until new customer is created
+    fillCustomerInformation(&newCustomer);
 }
 
 void CustomerMgmtScreen::updateCustomer() {
     showCustomerDetails(true);  // true - request to show the index # of each data
-    // Get the field to update
+    // Ask the user for the field to update
     const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
     }
-    // We currently don't support updating the Personal ID field due to code complexity
-    // Track - https://github.com/pointonsoftware/pscore/issues/106
+    /**
+     *  We currently don't support updating the Personal ID field due to code complexity
+     *  Track - https://github.com/pointonsoftware/pscore/issues/106
+     */
     if ((field == "PersonalId.Type") || (field == "PersonalId.Number")) {
         std::cout << "Invalid selection." << std::endl;
         return;
     }
-    {
-        // Update operation
-        std::vector<std::string> requiredFields = { field };
-        std::map<std::string, std::string> validationResult;
-        entity::Customer customerData = mTableHelper.getSelectedData();
-        do {
-            mfieldHelper.getInputsFromField(&customerData, requiredFields);
-            if (mfieldHelper.isBreak()) {
-                // User requested to cancel
-                break;
-            }
-            fillOtherCustomerInformation(&customerData, requiredFields);
-            // Reset validation results
-            validationResult.clear();
-            if (mCoreController->save(customerData, &validationResult) !=
-                domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
-                requiredFields = app::util::extractMapKeys(validationResult);
-                SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
-            }
-        } while (!validationResult.empty());  // repeat input until data is updated
+    // Update operation
+    entity::Customer customerData = mTableHelper.getSelectedData();
+    if (fillCustomerInformation(&customerData, {field})) {
+        // Update was successful in Core, let's update our table
         mTableHelper.setData((mTableHelper.getCurrentIndex()), customerData);
     }
 }
