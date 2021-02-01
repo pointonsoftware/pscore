@@ -28,6 +28,7 @@
 namespace utility {
 
 constexpr char LOG_FILE_NAME[] = "syscore.log";
+constexpr char CORE_VERSION[] = "version";
 
 FileLogger::FileLogger() : mFileIo(LOG_FILE_NAME) {
     prepareFile();
@@ -62,7 +63,7 @@ void FileLogger::printHeader() {
     std::stringstream ss;
     ss << "+" << std::string(146, '-') << "+" << std::endl;
     {
-        Config config("psinfo.cfg");
+        Config config(CORE_VERSION);
         ss << "|" << std::string(62, ' ')
                 << "CORE "
                 << config.get("version", "x.x.x")
