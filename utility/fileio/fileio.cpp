@@ -125,6 +125,47 @@ FileOperationStatus FileIo::discard() {
         FileOperationStatus::SUCCESS;
 }
 
+FileOperationStatus FileIo::clear_contents() {
+    if (!isFileOpen()) {
+        return FileOperationStatus::FAILED;
+    }
+    // First close the file
+    close();
+    {
+        // Clear contents
+        std::ofstream(mFileName, std::ios::out | std::ios::trunc);
+    }
+    // Reopen
+    open();
+    return FileOperationStatus::SUCCESS;
+}
+
+std::string FileIo::get_last_line() {
+    if (!isFileOpen()) {
+        throw std::runtime_error("No file opened.");
+    }
+    std::string buf;
+    // Set ostream to the end line of the file
+    mFile.seekg(-1, std::ios_base::end);
+    if (mFile.peek() == '\n') {
+        // Read backwards until we find the starting point
+        mFile.seekg(-1, std::ios_base::cur);
+        for (int i = mFile.tellg(); i > 0; i--) {
+            if (mFile.peek() == '\n') {
+                // We found the end of the second-to-the-last line
+                mFile.get();
+                break;
+            }
+            mFile.seekg(i, std::ios_base::beg);
+        }
+    }
+    // Read
+    getline(mFile, buf);
+    // Reset seek
+    mFile.clear();
+    return buf;
+}
+
 bool FileIo::isFileOpen() {
     return mFile.is_open();
 }

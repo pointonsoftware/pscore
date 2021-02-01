@@ -20,7 +20,7 @@
 **************************************************************************************************/
 #ifndef UTILITY_GENERAL_HPP_
 #define UTILITY_GENERAL_HPP_
-
+#include <chrono>
 #include <string>
 
 namespace utility {
@@ -49,9 +49,13 @@ extern std::string toLower(std::string str);
 */
 extern unsigned int randomNumber(unsigned int low, unsigned int high);
 /*!
+ * Returns the current date-time
+*/
+extern std::tm currentDateTime();
+/*!
  * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
 */
-extern std::string currentDateTime();
+extern std::string currentDateTimeStr();
 }  // namespace utility
 
 #endif  // UTILITY_GENERAL_HPP_

@@ -99,7 +99,7 @@ void EmployeeMgmtController::createUser(const entity::Employee& employee,
     entity::User newUser(
         // Todo (code) - need to ensure this ID is unique
         utility::chargenerator::generateUID(employee.firstName(), employee.lastName()),
-        employee.position(), pin, utility::currentDateTime(), employee.ID());
+        employee.position(), pin, utility::currentDateTimeStr(), employee.ID());
     mDataProvider->create(newUser);
     mView->showUserSuccessfullyCreated(employee.firstName(), newUser.userID());
     LOG_INFO("User %s added", newUser.userID().c_str());

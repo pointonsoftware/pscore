@@ -106,6 +106,20 @@ class FileIo {
     */
     FileOperationStatus discard();
 
+    /*!
+     * FileOperationStatus clear_contents()
+     * Will delete all file contents
+     *
+     * [ret] status
+    */
+    FileOperationStatus clear_contents();
+
+    /*!
+     * Returns the last line of text
+     * [ret] text
+    */
+    std::string get_last_line();
+
  private:
     std::fstream mFile;
     const std::string mFileName;

@@ -32,7 +32,7 @@ namespace util {
 
 std::string generateEmployeeID() {
     // Substring the last two digit of the year + unique_number
-    return utility::currentDateTime().substr(2, 2) +
+    return utility::currentDateTimeStr().substr(2, 2) +
            std::to_string(utility::randomNumber(10000, 99999));
 }
 
