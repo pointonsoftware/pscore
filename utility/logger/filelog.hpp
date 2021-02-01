@@ -34,6 +34,9 @@ class FileLogger : public LoggerInterface {
  private:
     void write(const std::string& logMode, const std::string& className,
                const std::string& methodName, const std::string& logString) override;
+    void prepareFile();
+    void printHeader();
+    std::string extractTimeStamp(const std::string& str);
     FileIo mFileIo;
 };
 

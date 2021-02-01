@@ -19,28 +19,60 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "filelog.hpp"
+#include <algorithm>
 #include <iomanip>
 #include <sstream>
+#include <cfg/config.hpp>
+#include <general.hpp>
 
 namespace utility {
 
 constexpr char LOG_FILE_NAME[] = "syscore.log";
 
 FileLogger::FileLogger() : mFileIo(LOG_FILE_NAME) {
+    prepareFile();
+    printHeader();
+}
+
+void FileLogger::prepareFile() {
+    /**
+     * Summary: Check if last line contains "shutdown"
+     * If not, it means the previous system run was aborted.
+     *    Let's save the logs as another file with the last date
+     * Then wipe out the old file.
+     */
+    bool isSavePreviousLog = [this] {
+        const std::string lastLine = mFileIo.get_last_line();
+        return !lastLine.empty() && lastLine.find("shutdown") == std::string::npos;
+    }();
+
+    if (isSavePreviousLog) {
+        std::ifstream currentFile(LOG_FILE_NAME, std::ios::in);
+        std::ofstream newFile(std::string("syscore_")
+                              .append(extractTimeStamp(mFileIo.get_last_line())
+                              .append(".log")),
+                              std::ios::out);
+        newFile << currentFile.rdbuf();
+    }
+
+    mFileIo.clear_contents();
+}
+
+void FileLogger::printHeader() {
     std::stringstream ss;
     ss << "+" << std::string(146, '-') << "+" << std::endl;
-    ss << "|" << std::string(62, ' ')
-              << "PSCORE FileLogger v1.0"
-              << std::string(62, ' ') << "|"
-              << std::endl;
+    {
+        Config config("psinfo.cfg");
+        ss << "|" << std::string(62, ' ')
+                << "CORE "
+                << config.get("version", "x.x.x")
+                << " File Logger"
+                << std::string(62, ' ') << "|"
+                << std::endl;
+    }
     ss << "|" << std::string(63, ' ')
               << "(c) Pointon Software"
               << std::string(63, ' ') << "|"
-              << std::endl;
-    ss << "+" << std::string(146, '-') << "+" << std::endl;
-    ss << "|" << std::string(50, ' ')
-              << "Date/Time captured: [2020-12-11 22:01:22.397]"
-              << std::string(51, ' ') << "|"
               << std::endl;
     ss << "+" << std::string(146, '-') << "+" << std::endl;
     mFileIo.write(ss.str());
@@ -56,9 +88,20 @@ void FileLogger::write(const std::string& logMode, const std::string& className,
     mFileIo.write(ss.str());
 }
 
+std::string FileLogger::extractTimeStamp(const std::string& str) {
+    const size_t start = str.find("[");
+    const size_t end = str.find(".");
+    std::string dateTime = str.substr(start + 1, end - (start + 1));
+    // from [2020-12-11 22:01:22.397] to 20201211_220122
+    dateTime.erase(std::remove(dateTime.begin(), dateTime.end(), '-'), dateTime.end());
+    dateTime.erase(std::remove(dateTime.begin(), dateTime.end(), ':'), dateTime.end());
+    std::replace(dateTime.begin(), dateTime.end(), ' ', '_');
+    return dateTime;
+}
+
 FileLogger::~FileLogger() {
     std::stringstream ss;
-    ss << getTimestamp() << std::left << " | -- System ShutDown";
+    ss << getTimestamp() << std::left << " | -- System shutdown";
     mFileIo.write(ss.str());
 }
 
