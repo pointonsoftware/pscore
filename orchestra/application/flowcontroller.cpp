@@ -55,7 +55,8 @@ namespace screenshared {
 void FlowController::run() {
     // After the welcome screen, we will display the login screen
     defines::display nextScreen = defines::display::LOGIN;
-
+    LOG_INFO("System startup");
+    LOG_INFO("Core library version: %s", SCREENCOMMON().getCoreVersion().c_str());
     do {
         // This promise is used for setting the future screen
         std::promise<defines::display> promise;
@@ -65,25 +66,31 @@ void FlowController::run() {
         // Here, we set the next screen to whatever is returned from the promise
         nextScreen = futureScreen.get();
     } while (nextScreen != defines::display::EXIT);
+    LOG_INFO("Exited the console app");
 }
 
 void FlowController::show(const defines::display& screenToDisplay,
                          std::promise<defines::display>* promise) {
     switch (screenToDisplay) {
         case defines::display::LOGIN:
+            LOG_DEBUG("screen: Login");
             screenshared::currentUserId = "";  // Reset the current userID
             showLoginScreen(promise);
             break;
         case defines::display::DASHBOARD:
+            LOG_DEBUG("screen: Dashboard");
             showDashboard(promise);
             break;
         case defines::display::EMPMGMT:
+            LOG_DEBUG("screen: Employee management");
             showEmployeeMgmt(promise);
             break;
         case defines::display::INVENTORY:
+            LOG_DEBUG("screen: Inventory management");
             showInventoryCtrl(promise);
             break;
         case defines::display::CUSTMGMT:
+            LOG_DEBUG("screen: Customer management");
             showCustomerMgmt(promise);
             break;
         case defines::display::EXIT:  // fall-through

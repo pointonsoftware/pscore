@@ -25,6 +25,7 @@
 #include <screencommon.hpp>
 // data
 #include <logindata.hpp>
+#include <logger/loghelper.hpp>
 
 namespace screen {
 namespace login {
@@ -37,7 +38,7 @@ void LoginScreen::show(std::promise<defines::display>* promise) {
     do {
         std::string id;
         std::string pin;
-
+        LOG_DEBUG("Waiting for user login details");
         if (((id = SCREENCOMMON().getInput("ID")) == "x") ||
             ((pin = SCREENCOMMON().getInput("Pin")) == "x")) {
             // exit was pressed

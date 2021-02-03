@@ -42,6 +42,7 @@ class LogHelper {
     }
     void write(const std::string& logMode, const std::string& prettyFunction,
                const std::string logFormat...) const;
+    ~LogHelper();
 
  private:
     LogHelper();

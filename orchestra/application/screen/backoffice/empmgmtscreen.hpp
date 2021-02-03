@@ -60,7 +60,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void showEmployees() const;
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    void showEmployeeInformation(bool showIndex = false) const;
+    void showEmployeeDetails(bool showIndex = false) const;
     void queryEmployeesList();
     void createEmployee();
     void updateEmployee();

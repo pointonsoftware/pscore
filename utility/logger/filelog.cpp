@@ -100,10 +100,4 @@ std::string FileLogger::extractTimeStamp(const std::string& str) {
     return dateTime;
 }
 
-FileLogger::~FileLogger() {
-    std::stringstream ss;
-    ss << getTimestamp() << std::left << " | -- System shutdown";
-    mFileIo.write(ss.str());
-}
-
 }  // namespace utility

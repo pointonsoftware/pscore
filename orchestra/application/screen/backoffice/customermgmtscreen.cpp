@@ -24,9 +24,9 @@
 #include <map>
 #include <memory>
 #include <general.hpp>  // pscore utility
-// view
-#include <generalhelper.hpp>
+#include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
+#include <logger/loghelper.hpp>
 #include <screencommon.hpp>
 
 namespace screen {
@@ -83,6 +83,7 @@ void CustomerMgmtScreen::show(std::promise<defines::display>* promise) {
 }
 
 void CustomerMgmtScreen::showLandingScreen() const {
+    LOG_DEBUG("Showing customer management screen");
     SCREENCOMMON().showTopBanner("Customer Management");
     showCustomers();
     showOptions();
@@ -93,12 +94,14 @@ void CustomerMgmtScreen::queryCustomersList() {
 }
 
 void CustomerMgmtScreen::showCustomers() const {
+    LOG_DEBUG("Showing customers list");
     std::cout << std::endl;
     mTableHelper.printTable();
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
+    LOG_DEBUG("Showing customer details");
     const entity::Customer& selectedCustomer = mTableHelper.getSelectedData();
     SCREENCOMMON().showTopBanner("Customer Information");
     screen::InformationScreen<entity::Customer> infoScreen(selectedCustomer);
@@ -138,6 +141,7 @@ bool CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,
 }
 
 void CustomerMgmtScreen::createCustomer() {
+    LOG_DEBUG("Showing create customer screen");
     SCREENCOMMON().showTopBanner("Create Customer");
     std::cout << "Type [space] for an empty entry" << std::endl;
     entity::Customer newCustomer;
@@ -146,12 +150,14 @@ void CustomerMgmtScreen::createCustomer() {
 
 void CustomerMgmtScreen::updateCustomer() {
     showCustomerDetails(true);  // true - request to show the index # of each data
+    LOG_DEBUG("Showing customer update options");
     // Ask the user for the field to update
     const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;
         return;
     }
+    LOG_INFO("Updating customer %s field", field.c_str());
     /**
      *  We currently don't support updating the Personal ID field due to code complexity
      *  Track - https://github.com/pointonsoftware/pscore/issues/106
@@ -169,6 +175,7 @@ void CustomerMgmtScreen::updateCustomer() {
 }
 
 void CustomerMgmtScreen::removeCustomer() {
+    LOG_INFO("Deleting customer");
     if (mCoreController->remove(mTableHelper.getSelectedData().ID())
           == domain::customermgmt::CUSTOMERMGMTAPISTATUS::SUCCESS) {
        // Remove the customer form

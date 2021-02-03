@@ -186,4 +186,11 @@ void LogHelper::initializeLogLevel() {
     }();
 }
 
+LogHelper::~LogHelper() {
+    if (mLogger) {
+        // Log the system shutdown
+        mLogger->write("info", "", "", "System shutdown");
+    }
+}
+
 }  // namespace utility
