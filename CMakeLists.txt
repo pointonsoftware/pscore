@@ -1,5 +1,18 @@
 cmake_minimum_required (VERSION 3.9.2)
-project (core C CXX)
+
+set (CORE_VERSION 0.4.6)
+
+if (CMAKE_VERSION VERSION_LESS 3.0)
+  project (core C CXX)
+  set (PROJECT_VERSION ${CORE_VERSION})
+else()
+  cmake_policy (SET CMP0048 NEW)
+  project (core VERSION ${CORE_VERSION} LANGUAGES CXX C)
+endif()
+
+# Version file
+set (version_file "${CMAKE_CURRENT_BINARY_DIR}/bin/version")
+write_file (${version_file} "[CORE]\nversion=${CORE_VERSION}")
 
 
 option (BUILD_ALL "Build app and data" ON)

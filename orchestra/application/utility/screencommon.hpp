@@ -53,6 +53,7 @@ class ScreenCommon {
     void inputArea(std::function<void(const std::string&)> func,
                    const std::string& label) const;
     const std::string getUpdateField(const std::vector<std::string>& fields) const;
+    const std::string getCoreVersion() const;
 
  private:
     struct Indent {
@@ -70,7 +71,6 @@ class ScreenCommon {
     Indent calculateIndents(VerticalAlignment vAlign,
                             unsigned int width,
                             const std::string& text) const;
-    const std::string getCoreVersion() const;
 };
 
 }  // namespace screen

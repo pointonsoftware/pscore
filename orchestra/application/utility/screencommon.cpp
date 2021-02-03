@@ -27,7 +27,7 @@
 #include <general.hpp>  // pscore utility
 #include <screendefines.hpp>
 
-constexpr char CORE_CONFIG[] = "psinfo.cfg";
+constexpr char CORE_VERSION[] = "version";
 constexpr char CORE_VERSION_MASK[] = "x.x.x";
 
 namespace screen {
@@ -211,7 +211,7 @@ ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
 const std::string ScreenCommon::getCoreVersion() const {
     static std::string version = CORE_VERSION_MASK;
     if (version == CORE_VERSION_MASK) {
-        utility::Config config(CORE_CONFIG);
+        utility::Config config(CORE_VERSION);
         version = config.get("version", CORE_VERSION_MASK);
     }
     return version;
