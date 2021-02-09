@@ -26,9 +26,9 @@
 #include <string>
 #include <vector>
 #include <general.hpp>  // pscore utility
-// view
-#include <generalhelper.hpp>
+#include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
+#include <logger/loghelper.hpp>
 #include <screencommon.hpp>
 
 namespace screen {
@@ -85,6 +85,7 @@ void InventoryScreen::show(std::promise<defines::display>* promise) {
 }
 
 void InventoryScreen::showLandingScreen() const {
+    LOG_DEBUG("Showing inventory management screen");
     SCREENCOMMON().showTopBanner("Inventory Control");
     showProducts();
     showOptions();
@@ -95,12 +96,14 @@ void InventoryScreen::queryProductsList() {
 }
 
 void InventoryScreen::showProducts() const {
+    LOG_DEBUG("Showing products list");
     std::cout << std::endl;
     mTableHelper.printTable();
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {
+    LOG_DEBUG("Showing product details");
     const entity::Product& selectedProduct = mTableHelper.getSelectedData();
     SCREENCOMMON().showTopBanner("Product Information");
     screen::InformationScreen<entity::Product> infoScreen(selectedProduct);
@@ -110,6 +113,7 @@ void InventoryScreen::showProductDetails(bool showIndex) const {
 }
 
 void InventoryScreen::removeProduct() {
+    LOG_INFO("Deleting product");
     if (mCoreController->remove(mTableHelper.getSelectedData().barcode())
         == domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
        // Remove the product from our table
@@ -118,6 +122,7 @@ void InventoryScreen::removeProduct() {
 }
 
 void InventoryScreen::createProduct() {
+    LOG_DEBUG("Showing create product screen");
     SCREENCOMMON().showTopBanner("Create Product");
     std::cout << "Type [space] for an empty entry" << std::endl;
     std::vector<std::string> requiredFields;  // Used to request re-input of failed fields
@@ -146,6 +151,7 @@ void InventoryScreen::createProduct() {
 
 void InventoryScreen::updateProduct() {
     showProductDetails(true);  // true - request to show the index # of each data
+    LOG_DEBUG("Showing product update options");
     const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
         std::cout << "Invalid selection." << std::endl;

@@ -34,14 +34,14 @@ InventoryController::InventoryController(const InventoryDataPtr& data,
 }
 
 std::vector<entity::Product> InventoryController::list() {
-    LOG_DEBUG("Getting the list of products");
+    LOG_DEBUG("Retrieving all products data");
     mCachedList.fill(mDataProvider->getProducts());
     if (!mCachedList.hasData()) {
         LOG_WARN("There are no products on record");
         mView->showProductsEmptyPopup();
         return {};
     }
-    LOG_INFO("Successfully retrieved products list. Size: %d", mCachedList.dataCount());
+    LOG_INFO("Successfully retrieved %d products.", mCachedList.dataCount());
     return mCachedList.get();
 }
 

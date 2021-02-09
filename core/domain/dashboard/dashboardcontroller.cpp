@@ -35,7 +35,7 @@ DashboardController::DashboardController(const DashboardDataPtr& data,
 
 void DashboardController::setCurrentUserId(const std::string& userID) {
     if (!userID.empty()) {
-        LOG_INFO("Setting current user ID to: %s", userID.c_str());
+        LOG_INFO("Setting current user ID %s", userID.c_str());
         mCurrentUserID = utility::toUpper(userID);
     }
 }
@@ -60,8 +60,7 @@ entity::User DashboardController::getCurrentUser() {
         mView->showUserNotFound();
         return entity::User();
     }
-
-    LOG_INFO("Current user with ID: %s was found", mCurrentUserID.c_str());
+    LOG_INFO("Successfully retrieved user info", mCurrentUserID.c_str());
     return userInfo;
 }
 
@@ -75,10 +74,10 @@ DASHSTATUS DashboardController::getUserData(entity::User* container) const {
 }
 
 entity::Employee DashboardController::getUserDetails(const entity::User& user) {
-    LOG_DEBUG("Getting employee details");
+    LOG_DEBUG("Requesting more user details");
     // Validate user info
     if (!isUserValid(user)) {
-        LOG_ERROR("UserID %s was not found", mCurrentUserID.c_str());
+        LOG_ERROR("UserID was not set");
         mView->showUserNotFound();
         return entity::Employee();
     }
@@ -98,6 +97,7 @@ entity::Employee DashboardController::getUserDetails(const entity::User& user) {
         mView->showUserNotFound();
         return entity::Employee();
     }
+    LOG_INFO("Successfully retrieved employee data");
     return temp;
 }
 
@@ -112,7 +112,6 @@ DASHSTATUS DashboardController::getEmployeeData(const std::string& employeeID,
 }
 
 bool DashboardController::isUserValid(const entity::User& userInfo) const {
-    LOG_DEBUG("Validating user data");
     // If userID is empty, that means the user data was not initialized
     return !userInfo.userID().empty();
 }

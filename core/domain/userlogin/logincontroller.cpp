@@ -32,6 +32,7 @@ LoginController::LoginController(const LoginDataPtr& dataprovider,
                                  const LoginViewPtr& view) : BaseController(dataprovider, view) {}
 
 bool LoginController::authenticate(const std::string& id, const std::string& pin) {
+    LOG_INFO("Authenticating");
     if (id.empty()) {
         LOG_WARN("ID is empty");
         mView->showUserNotFoundScreen();
@@ -60,7 +61,7 @@ bool LoginController::authenticate(const std::string& id, const std::string& pin
         return false;
     }
 
-    LOG_INFO("User with PIN %s was found", pin.c_str());
+    LOG_INFO("User information found");
     return true;
 }
 
@@ -86,11 +87,11 @@ bool LoginController::isPinValid(const std::string& pin) const {
         entity::validator::UserValidator validator(userInfo);
         // Check if its numeric and valid size
         if (!validator.result().empty()) {
-            LOG_WARN("Invalid PIN: %s", pin.c_str());
+            LOG_WARN("Invalid PIN");
             return false;
         }
     }
-    LOG_DEBUG("PIN is valid");
+    LOG_DEBUG("Received a valid PIN");
     return true;
 }
 

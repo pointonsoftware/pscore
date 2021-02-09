@@ -24,9 +24,10 @@
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
-
 // data
 #include <dashboarddata.hpp>
+// utility
+#include <logger/loghelper.hpp>
 
 namespace screen {
 namespace backoffice {
@@ -60,6 +61,7 @@ void DashboardScreen::menuSelection(std::promise<defines::display>* promise) con
 }
 
 void DashboardScreen::showLandingScreen() const {
+    LOG_DEBUG("Showing dashboard screen");
     SCREENCOMMON().showTopBanner("Dashboard");
     std::cout << "Hi " << mCurrentUser.userID()
               << ", please select an option below." << std::endl;
@@ -76,6 +78,7 @@ void DashboardScreen::showOptions() const {
 }
 
 void DashboardScreen::showUserInformation() const {
+    LOG_DEBUG("Showing user information screen");
     SCREENCOMMON().showTopBanner("User Information");
     if (!mCurrentUser.employeeID().empty()) {
         entity::Employee emp = mCoreController->getUserDetails(mCurrentUser);

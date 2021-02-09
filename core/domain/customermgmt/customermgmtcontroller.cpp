@@ -37,14 +37,14 @@ CustomerManagementController::CustomerManagementController(const CustomerMgmtDat
 }
 
 std::vector<entity::Customer> CustomerManagementController::list() {
-    LOG_DEBUG("Getting the list of customers");
+    LOG_DEBUG("Retrieving all customers data");
     mCachedList.fill(mDataProvider->getCustomers());
     if (!mCachedList.hasData()) {
         LOG_WARN("There are no customers on record");
         mView->showListIsEmptyPopup();
         return {};
     }
-    LOG_INFO("Successfully retrieved customers list. Size: %d", mCachedList.dataCount());
+    LOG_INFO("Successfully retrieved %d customers", mCachedList.dataCount());
     return mCachedList.get();
 }
 

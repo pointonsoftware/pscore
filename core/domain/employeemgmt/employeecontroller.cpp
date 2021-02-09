@@ -42,14 +42,14 @@ EmployeeMgmtController::EmployeeMgmtController(const EmpMgmtDataPtr& data,
 }
 
 std::vector<entity::Employee> EmployeeMgmtController::list() {
-    LOG_DEBUG("Getting the list of employees");
+    LOG_DEBUG("Retrieving all employees data");
     mCachedList.fill(mDataProvider->getEmployees());
     if (!mCachedList.hasData()) {
         LOG_WARN("There are no employees on record");
         mView->showEmployeesEmptyPopup();
         return {};
     }
-    LOG_INFO("Successfully retrieved employees list. Size: %d", mCachedList.dataCount());
+    LOG_INFO("Successfully retrieved %d employees", mCachedList.dataCount());
     return mCachedList.get();
 }
 

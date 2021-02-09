@@ -26,9 +26,9 @@
 #include <string>
 #include <vector>
 #include <general.hpp>  // pscore utility
-// view
 #include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
+#include <logger/loghelper.hpp>
 #include <screencommon.hpp>
 
 namespace screen {
@@ -85,6 +85,7 @@ void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
 }
 
 void EmployeeMgmtScreen::showLandingScreen() const {
+    LOG_DEBUG("Showing employee management screen");
     SCREENCOMMON().showTopBanner("Employee Management");
     showEmployees();
     showOptions();
@@ -95,12 +96,14 @@ void EmployeeMgmtScreen::queryEmployeesList() {
 }
 
 void EmployeeMgmtScreen::showEmployees() const {
+    LOG_DEBUG("Showing employees list");
     std::cout << std::endl;
     mTableHelper.printTable();
     SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
-void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
+void EmployeeMgmtScreen::showEmployeeDetails(bool showIndex) const {
+    LOG_DEBUG("Showing employee details");
     /*!
      * Get the employeeID from employee GUI table
      * Note: mSelectedEmployeeIndex is a 1-based index but vector is zero-based (hence minus 1)
@@ -134,6 +137,7 @@ void EmployeeMgmtScreen::showEmployeeInformation(bool showIndex) const {
 }
 
 void EmployeeMgmtScreen::removeEmployee() {
+    LOG_INFO("Deleting employee");
     if (mCoreController->remove(mTableHelper.getSelectedData().ID())
           == domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
        // Remove the user form
@@ -142,6 +146,7 @@ void EmployeeMgmtScreen::removeEmployee() {
 }
 
 void EmployeeMgmtScreen::createEmployee() {
+    LOG_DEBUG("Showing create employee screen");
     SCREENCOMMON().showTopBanner("Create Employee");
     std::cout << "Type [space] for an empty entry" << std::endl;
     std::vector<std::string> failedFields;  // Used to request re-input of failed fields
@@ -209,7 +214,8 @@ void EmployeeMgmtScreen::createEmployee() {
 }
 
 void EmployeeMgmtScreen::updateEmployee() {
-    showEmployeeInformation(true);  // true - request to show the index # of each data
+    showEmployeeDetails(true);  // true - request to show the index # of each data
+    LOG_DEBUG("Showing employee update options");
     // Get the field to update
     const std::string field = SCREENCOMMON().getUpdateField(DOMAIN_FIELDS);
     if (field.empty()) {
@@ -296,7 +302,7 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             invalidOptionSelected();
             break;
         case Options::OP_READ:
-            showEmployeeInformation();
+            showEmployeeDetails();
             isShowingDetailsScreen = true;  // Must set to true
             break;
         case Options::OP_CREATE:
@@ -307,7 +313,7 @@ bool EmployeeMgmtScreen::action(Options option, std::promise<defines::display>* 
             break;
         case Options::OP_UPDATE:
             updateEmployee();
-            showEmployeeInformation();  // refresh employee details screen
+            showEmployeeDetails();  // refresh employee details screen
             break;
         case Options::OP_DELETE:
             removeEmployee();
@@ -354,6 +360,7 @@ void EmployeeMgmtScreen::showEmployeeExists(const std::string& name) {
 
 void EmployeeMgmtScreen::showUserSuccessfullyCreated(const std::string& name,
                                                      const std::string& userID) {
+    LOG_DEBUG("New user created, showing the generated userID");
     std::cout << std::endl << "Welcome, " << name << "! "
               << "Please take note of your Login ID: " << userID << std::endl;
     // Let the user confirm
