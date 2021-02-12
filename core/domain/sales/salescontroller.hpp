@@ -18,41 +18,27 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#define CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#include <memory>
-#include <string>
-#include <map>
-#include <vector>
-#include "interface/customermgmtiface.hpp"
+#ifndef CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
+#define CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
+#include "interface/salesiface.hpp"
 #include <domain/common/basecontroller.hpp>
 // Entity
-#include <entity/customer.hpp>
+#include <entity/product.hpp>
 
 namespace domain {
-namespace customermgmt {
+namespace sales {
 
-class CustomerManagementController : public CustomerManagementControlInterface,
-                                     public BaseController<CustomerManagementDataInterface,
-                                                           CustomerManagementViewInterface,
-                                                           entity::Customer> {
+class SalesController : public SalesControlInterface,
+                        public BaseController<SalesDataInterface,
+                                              SalesViewInterface,
+                                              entity::Product>  {
  public:
-    explicit CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                          const CustomerMgmtViewPtr& view);
-    ~CustomerManagementController() = default;
-
-    std::vector<entity::Customer> list() override;
-    entity::Customer get(const std::string& id) override;
-    CUSTOMERMGMTAPISTATUS save(const entity::Customer& customer,
-                               std::map<std::string, std::string>* validationResult) override;
-    CUSTOMERMGMTAPISTATUS remove(const std::string& id) override;
-
- private:
-    void create(const entity::Customer& customer);
-    void update(const entity::Customer& customer);
+    explicit SalesController(const SalesDataPtr& data,
+                             const SalesViewPtr& view);
+    ~SalesController() = default;
 };
 
-}  // namespace customermgmt
+}  // namespace sales
 }  // namespace domain
 
-#endif  // CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
+#endif  // CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_

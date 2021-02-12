@@ -18,41 +18,18 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#define CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#include <memory>
-#include <string>
-#include <map>
-#include <vector>
-#include "interface/customermgmtiface.hpp"
-#include <domain/common/basecontroller.hpp>
-// Entity
-#include <entity/customer.hpp>
+#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
+#define CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
 
 namespace domain {
-namespace customermgmt {
+namespace sales {
 
-class CustomerManagementController : public CustomerManagementControlInterface,
-                                     public BaseController<CustomerManagementDataInterface,
-                                                           CustomerManagementViewInterface,
-                                                           entity::Customer> {
+class SalesViewInterface {
  public:
-    explicit CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                          const CustomerMgmtViewPtr& view);
-    ~CustomerManagementController() = default;
-
-    std::vector<entity::Customer> list() override;
-    entity::Customer get(const std::string& id) override;
-    CUSTOMERMGMTAPISTATUS save(const entity::Customer& customer,
-                               std::map<std::string, std::string>* validationResult) override;
-    CUSTOMERMGMTAPISTATUS remove(const std::string& id) override;
-
- private:
-    void create(const entity::Customer& customer);
-    void update(const entity::Customer& customer);
+    SalesViewInterface() = default;
+    virtual ~SalesViewInterface() = default;
 };
 
-}  // namespace customermgmt
+}  // namespace sales
 }  // namespace domain
-
-#endif  // CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
+#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_

@@ -18,41 +18,43 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#define CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#include <memory>
-#include <string>
-#include <map>
-#include <vector>
-#include "interface/customermgmtiface.hpp"
-#include <domain/common/basecontroller.hpp>
-// Entity
-#include <entity/customer.hpp>
+#include <gtest/gtest.h>
+
+// mocks
+#include "mock/sales/salesdatamock.hpp"
+#include "mock/sales/salesviewmock.hpp"
+
+// code under test
+#include <domain/sales/salescontroller.hpp>
+
+
+// Gmock
+using testing::_;
+using testing::Return;
 
 namespace domain {
-namespace customermgmt {
+namespace sales {
+namespace test {
 
-class CustomerManagementController : public CustomerManagementControlInterface,
-                                     public BaseController<CustomerManagementDataInterface,
-                                                           CustomerManagementViewInterface,
-                                                           entity::Customer> {
+class TestSales : public testing::Test {
  public:
-    explicit CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                          const CustomerMgmtViewPtr& view);
-    ~CustomerManagementController() = default;
+    TestSales() : controller(dpMock, viewMock) {
+        // Empty for now
+    }
 
-    std::vector<entity::Customer> list() override;
-    entity::Customer get(const std::string& id) override;
-    CUSTOMERMGMTAPISTATUS save(const entity::Customer& customer,
-                               std::map<std::string, std::string>* validationResult) override;
-    CUSTOMERMGMTAPISTATUS remove(const std::string& id) override;
+    ~TestSales() = default;
+    void SetUp() {}
+    void TearDown() {}
 
- private:
-    void create(const entity::Customer& customer);
-    void update(const entity::Customer& customer);
+    std::shared_ptr<SalesDataMock> dpMock  = std::make_shared<SalesDataMock>();
+    std::shared_ptr<SalesViewMock> viewMock = std::make_shared<SalesViewMock>();
+    SalesController controller;
 };
 
-}  // namespace customermgmt
-}  // namespace domain
+TEST_F(TestSales, ShouldSucceed) {
+    SUCCEED();
+}
 
-#endif  // CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
+}  // namespace test
+}  // namespace sales
+}  // namespace domain

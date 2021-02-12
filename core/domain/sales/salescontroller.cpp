@@ -18,41 +18,23 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#define CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
+#include "salescontroller.hpp"
 #include <memory>
-#include <string>
-#include <map>
-#include <vector>
-#include "interface/customermgmtiface.hpp"
-#include <domain/common/basecontroller.hpp>
-// Entity
-#include <entity/customer.hpp>
+#include <logger/loghelper.hpp>
 
 namespace domain {
-namespace customermgmt {
+namespace sales {
 
-class CustomerManagementController : public CustomerManagementControlInterface,
-                                     public BaseController<CustomerManagementDataInterface,
-                                                           CustomerManagementViewInterface,
-                                                           entity::Customer> {
- public:
-    explicit CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                          const CustomerMgmtViewPtr& view);
-    ~CustomerManagementController() = default;
+SalesController::SalesController(const SalesDataPtr& data,
+                                 const SalesViewPtr& view)
+                                 : BaseController(data, view) {
+    mCachedList.setEntityKeyFn(&entity::Product::barcode);
+}
 
-    std::vector<entity::Customer> list() override;
-    entity::Customer get(const std::string& id) override;
-    CUSTOMERMGMTAPISTATUS save(const entity::Customer& customer,
-                               std::map<std::string, std::string>* validationResult) override;
-    CUSTOMERMGMTAPISTATUS remove(const std::string& id) override;
+SalesControllerPtr createSalesModule(const SalesDataPtr& data,
+                                     const SalesViewPtr& view) {
+    return std::make_unique<SalesController>(data, view);
+}
 
- private:
-    void create(const entity::Customer& customer);
-    void update(const entity::Customer& customer);
-};
-
-}  // namespace customermgmt
+}  // namespace sales
 }  // namespace domain
-
-#endif  // CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_

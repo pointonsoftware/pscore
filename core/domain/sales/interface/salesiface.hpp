@@ -18,41 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
-#define CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
+#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
+#define CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
 #include <memory>
-#include <string>
-#include <map>
-#include <vector>
-#include "interface/customermgmtiface.hpp"
-#include <domain/common/basecontroller.hpp>
-// Entity
-#include <entity/customer.hpp>
+#include "salesdataif.hpp"
+#include "salesviewif.hpp"
+#include <domain/common/librarycommon.hpp>
 
 namespace domain {
-namespace customermgmt {
+namespace sales {
 
-class CustomerManagementController : public CustomerManagementControlInterface,
-                                     public BaseController<CustomerManagementDataInterface,
-                                                           CustomerManagementViewInterface,
-                                                           entity::Customer> {
+class SalesControlInterface {
  public:
-    explicit CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                          const CustomerMgmtViewPtr& view);
-    ~CustomerManagementController() = default;
-
-    std::vector<entity::Customer> list() override;
-    entity::Customer get(const std::string& id) override;
-    CUSTOMERMGMTAPISTATUS save(const entity::Customer& customer,
-                               std::map<std::string, std::string>* validationResult) override;
-    CUSTOMERMGMTAPISTATUS remove(const std::string& id) override;
-
- private:
-    void create(const entity::Customer& customer);
-    void update(const entity::Customer& customer);
+    SalesControlInterface() = default;
+    virtual ~SalesControlInterface() = default;
 };
 
-}  // namespace customermgmt
-}  // namespace domain
+typedef std::shared_ptr<SalesDataInterface> SalesDataPtr;
+typedef std::shared_ptr<SalesViewInterface> SalesViewPtr;
+typedef std::unique_ptr<SalesControlInterface> SalesControllerPtr;
 
-#endif  // CORE_DOMAIN_CUSTOMERMGMT_CUSTOMERMGMTCONTROLLER_HPP_
+// Lib APIs
+extern "C" CORE_API SalesControllerPtr createSalesModule
+                    (const SalesDataPtr& data, const SalesViewPtr& view);
+
+}  // namespace sales
+}  // namespace domain
+#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
