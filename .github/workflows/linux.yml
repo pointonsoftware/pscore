@@ -21,8 +21,8 @@ jobs:
     - name: CppLint
       run: |
        pip install wheel
-       pip install cpplint
        pip install setuptools
+       pip install cpplint
        python -m cpplint --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11 --linelength=100 --recursive core orchestra mock utility
 
     - name: CppCheck
