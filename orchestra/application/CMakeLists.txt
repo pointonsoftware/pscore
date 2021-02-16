@@ -23,6 +23,8 @@ add_executable (
     screen/backoffice/empmgmtscreen.cpp
     screen/backoffice/inventoryscreen.hpp
     screen/backoffice/inventoryscreen.cpp
+    screen/backoffice/salesscreen.hpp
+    screen/backoffice/salesscreen.cpp
     # Login screen
     screen/login/loginscreen.hpp
     screen/login/loginscreen.cpp
@@ -50,6 +52,7 @@ target_link_libraries (
     empmgmt
     inventory
     loginmod
+    sales
     ${MINGW_DEPENDENCY}
     ${CONSOLE_APP_LINKER_EXCEPTION}
 )
