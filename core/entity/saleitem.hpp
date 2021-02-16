@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_ENTITY_SALE_HPP_
-#define CORE_ENTITY_SALE_HPP_
+#ifndef CORE_ENTITY_SALEITEM_HPP_
+#define CORE_ENTITY_SALEITEM_HPP_
 
 #include <string>
 
@@ -68,4 +68,4 @@ class SaleItem {
 };
 
 }  // namespace entity
-#endif  // CORE_ENTITY_SALE_HPP_
+#endif  // CORE_ENTITY_SALEITEM_HPP_
