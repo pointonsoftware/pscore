@@ -7,6 +7,7 @@ add_library (
     # in-memory db
     stackdb.hpp
     stackdb.cpp
+    table.hpp
 )
 
 

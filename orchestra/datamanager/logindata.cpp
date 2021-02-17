@@ -26,7 +26,7 @@ namespace login {
 entity::User LoginDataProvider::findUserByID(const std::string& id) {
     // SELECT * WHERE userID = id
     const entity::User user = [id]() {
-        for (const db::StackDB::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
+        for (const db::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
             if (temp.userID == id) {
                 return entity::User(temp.userID, temp.role, temp.PIN,
                                     temp.createdAt, temp.employeeID);

@@ -23,15 +23,16 @@
 namespace dataprovider {
 namespace db {
 
-std::vector<StackDB::EmployeeTableItem> StackDB::EMPLOYEES_TABLE;
-std::vector<StackDB::UserTableItem> StackDB::USERS_TABLE;
-std::vector<StackDB::AddressTableItem> StackDB::ADDRESS_TABLE;
-std::vector<StackDB::ContactDetailsTableItem> StackDB::CONTACTS_TABLE;
-std::vector<StackDB::PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
-std::vector<StackDB::ProductTableItem> StackDB::PRODUCT_TABLE;
-std::vector<StackDB::CustomerTableItem> StackDB::CUSTOMER_TABLE;
-std::vector<StackDB::UOMTableItem> StackDB::UOM_TABLE;
-
+std::vector<EmployeeTableItem> StackDB::EMPLOYEES_TABLE;
+std::vector<UserTableItem> StackDB::USERS_TABLE;
+std::vector<AddressTableItem> StackDB::ADDRESS_TABLE;
+std::vector<ContactDetailsTableItem> StackDB::CONTACTS_TABLE;
+std::vector<PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
+std::vector<ProductTableItem> StackDB::PRODUCT_TABLE;
+std::vector<CustomerTableItem> StackDB::CUSTOMER_TABLE;
+std::vector<UOMTableItem> StackDB::UOM_TABLE;
+std::vector<SalesTableItem> StackDB::SALES_TABLE;
+std::vector<SalesItemTableItem> StackDB::SALES_ITEM_TABLE;
 
 StackDB::StackDB() {
     // Admin user
@@ -452,6 +453,10 @@ void StackDB::populateUOM() {
             "6",                          // ID <!Make sure this is unique>
             "Cup",                        // Unit Name
             "cp"});                       // Abbreviation
+}
+
+void StackDB::populateSales() {
+    // Empty for now
 }
 
 }  // namespace db

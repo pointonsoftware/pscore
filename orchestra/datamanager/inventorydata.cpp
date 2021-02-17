@@ -30,7 +30,7 @@ namespace inventory {
 std::vector<entity::Product> InventoryDataProvider::getProducts() {
     // SELECT PRODUCTS
     std::vector<entity::Product> products;
-    for (const db::StackDB::ProductTableItem& temp : DATABASE().SELECT_PRODUCT_TABLE()) {
+    for (const db::ProductTableItem& temp : DATABASE().SELECT_PRODUCT_TABLE()) {
         entity::Product product(
             temp.barcode,
             temp.sku,
@@ -52,7 +52,7 @@ std::vector<entity::Product> InventoryDataProvider::getProducts() {
 
 void InventoryDataProvider::create(const entity::Product& product) {
     // INSERT INTO to the database
-    DATABASE().SELECT_PRODUCT_TABLE().emplace_back(db::StackDB::ProductTableItem {
+    DATABASE().SELECT_PRODUCT_TABLE().emplace_back(db::ProductTableItem {
             product.barcode(),
             product.sku(),
             product.name(),
@@ -73,7 +73,7 @@ void InventoryDataProvider::removeWithBarcode(const std::string& barcode) {
     DATABASE().SELECT_PRODUCT_TABLE().erase(
         std::remove_if(DATABASE().SELECT_PRODUCT_TABLE().begin(),
                     DATABASE().SELECT_PRODUCT_TABLE().end(),
-                    [&](const db::StackDB::ProductTableItem& e) {
+                    [&](const db::ProductTableItem& e) {
                         return e.barcode == barcode;
                     }),
         DATABASE().SELECT_PRODUCT_TABLE().end());
@@ -81,10 +81,10 @@ void InventoryDataProvider::removeWithBarcode(const std::string& barcode) {
 
 void InventoryDataProvider::update(const entity::Product& product) {
     // UPDATE data in the database
-    std::vector<db::StackDB::ProductTableItem>::iterator it =
+    std::vector<db::ProductTableItem>::iterator it =
         std::find_if(DATABASE().SELECT_PRODUCT_TABLE().begin(),
                      DATABASE().SELECT_PRODUCT_TABLE().end(),
-                     [&product](const db::StackDB::ProductTableItem& e) {
+                     [&product](const db::ProductTableItem& e) {
                                 // We only match the product barcode for updating
                                 return e.barcode == product.barcode();
                      });
@@ -93,7 +93,7 @@ void InventoryDataProvider::update(const entity::Product& product) {
         return;
     }
     // Actual update
-    *it = db::StackDB::ProductTableItem {
+    *it = db::ProductTableItem {
             product.barcode(),
             product.sku(),
             product.name(),
@@ -112,7 +112,7 @@ void InventoryDataProvider::update(const entity::Product& product) {
 std::vector<entity::UnitOfMeasurement> InventoryDataProvider::getUOMs() {
     // SELECT UOMs
     std::vector<entity::UnitOfMeasurement> uoms;
-    for (const db::StackDB::UOMTableItem& temp : DATABASE().SELECT_UOM_TABLE()) {
+    for (const db::UOMTableItem& temp : DATABASE().SELECT_UOM_TABLE()) {
         uoms.emplace_back(entity::UnitOfMeasurement(temp.ID, temp.unit_name, temp.abbreviation));
     }
     return uoms;
@@ -120,7 +120,7 @@ std::vector<entity::UnitOfMeasurement> InventoryDataProvider::getUOMs() {
 
 void InventoryDataProvider::createUOM(const entity::UnitOfMeasurement& uom) {
     // INSERT INTO to the database
-    DATABASE().SELECT_UOM_TABLE().emplace_back(db::StackDB::UOMTableItem{
+    DATABASE().SELECT_UOM_TABLE().emplace_back(db::UOMTableItem{
                                                uom.ID(), uom.name(), uom.abbreviation()});
 }
 
@@ -129,7 +129,7 @@ void InventoryDataProvider::removeUOM(const std::string& id) {
     DATABASE().SELECT_UOM_TABLE().erase(
         std::remove_if(DATABASE().SELECT_UOM_TABLE().begin(),
                     DATABASE().SELECT_UOM_TABLE().end(),
-                    [&](const db::StackDB::UOMTableItem& e) {
+                    [&](const db::UOMTableItem& e) {
                         return e.ID == id;
                     }),
         DATABASE().SELECT_UOM_TABLE().end());
