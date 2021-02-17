@@ -33,8 +33,9 @@ constexpr char FIELD_SLITPRC[] = "Sale.Item.Total.Price";
 
 class SaleItem {
  public:
-    SaleItem(const std::string& saleID,
-             const std::string& productID,
+    SaleItem(const std::string& dateTime,
+             const std::string& saleID,      // links to transaction
+             const std::string& productID,   // links to product
              const std::string& productName,
              const std::string& unitPrice,
              const std::string& quantity,
@@ -43,6 +44,7 @@ class SaleItem {
     ~SaleItem() = default;
 
     // Getters
+    std::string dateTime() const;
     std::string saleID() const;
     std::string productID() const;
     std::string productName() const;
@@ -51,6 +53,7 @@ class SaleItem {
     std::string totalPrice() const;
 
     // Setters
+    void setDateTime(const std::string& dateTime);
     void setSaleID(const std::string& id);
     void setProductID(const std::string& id);
     void setProductName(const std::string& name);
@@ -59,6 +62,7 @@ class SaleItem {
     void setTotalPrice(const std::string& total);
 
  private:
+    std::string mDateTime;
     std::string mSaleID;
     std::string mProductID;
     std::string mProductName;
