@@ -23,6 +23,7 @@
 
 #include <string>
 #include <vector>
+#include "saleitem.hpp"
 
 namespace entity {
 
@@ -44,7 +45,7 @@ class Sale {
  public:
     Sale(const std::string& saleID,
          const std::string& dateTime,
-         const std::vector<std::string>& items,
+         const std::vector<SaleItem>& items,
          const std::string& subtotal,
          const std::string& tax,
          const std::string& discount,
@@ -60,7 +61,7 @@ class Sale {
     // Getters
     std::string ID() const;
     std::string dateTime() const;
-    std::vector<std::string> items() const;
+    std::vector<SaleItem> items() const;
     std::string subtotal() const;
     std::string tax() const;
     std::string discount() const;
@@ -73,8 +74,8 @@ class Sale {
 
     // Setters
     void setDateTime(const std::string& dateTime);
-    void setItems(const std::vector<std::string>& items);
-    void addItem(const std::string& item);
+    void setItems(const std::vector<SaleItem>& items);
+    void addItem(const SaleItem& item);
     void setSubtotal(const std::string& subtotal);
     void setTax(const std::string& tax);
     void setDiscount(const std::string& discount);
@@ -88,7 +89,7 @@ class Sale {
  private:
     std::string mID;
     std::string mDateTime;
-    std::vector<std::string> mItems;
+    std::vector<SaleItem> mItems;
     std::string mSubtotal;
     std::string mTax;
     std::string mDiscount;

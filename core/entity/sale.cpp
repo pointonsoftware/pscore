@@ -25,7 +25,7 @@ namespace entity {
 
 Sale::Sale(const std::string& saleID,
            const std::string& dateTime,
-           const std::vector<std::string>& items,
+           const std::vector<SaleItem>& items,
            const std::string& subtotal,
            const std::string& tax,
            const std::string& discount,
@@ -49,7 +49,7 @@ std::string Sale::dateTime() const {
     return mDateTime;
 }
 
-std::vector<std::string> Sale::items() const {
+std::vector<SaleItem> Sale::items() const {
     return mItems;
 }
 
@@ -93,11 +93,11 @@ void Sale::setDateTime(const std::string& dateTime) {
     mDateTime = dateTime;
 }
 
-void Sale::setItems(const std::vector<std::string>& items) {
+void Sale::setItems(const std::vector<SaleItem>& items) {
     mItems = items;
 }
 
-void Sale::addItem(const std::string& item) {
+void Sale::addItem(const SaleItem& item) {
     mItems.emplace_back(item);
 }
 
