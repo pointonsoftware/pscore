@@ -40,6 +40,9 @@ FileOperationStatus FileIo::read(std::vector<std::string>* container) {
     // read
     std::string buf;
     while (getline(mFile, buf)) {
+#ifdef _WIN32
+        buf.erase(std::remove(buf.begin(), buf.end(), '\r'), buf.end());
+#endif
         container->emplace_back(buf);
     }
     mFile.clear();
