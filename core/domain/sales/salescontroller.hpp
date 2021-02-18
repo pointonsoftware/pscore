@@ -23,7 +23,7 @@
 #include "interface/salesiface.hpp"
 #include <domain/common/basecontroller.hpp>
 // Entity
-#include <entity/product.hpp>
+#include <entity/sale.hpp>
 
 namespace domain {
 namespace sales {
@@ -31,7 +31,7 @@ namespace sales {
 class SalesController : public SalesControlInterface,
                         public BaseController<SalesDataInterface,
                                               SalesViewInterface,
-                                              entity::Product>  {
+                                              entity::Sale>  {
  public:
     explicit SalesController(const SalesDataPtr& data,
                              const SalesViewPtr& view);

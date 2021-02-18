@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -35,8 +35,7 @@ namespace screen {
 namespace backoffice {
 
 class SalesScreen : public screen::ScreenInterface,
-                    public BackOfficeScreenBase
-                           <domain::sales::SalesControllerPtr>,
+                    public BackOfficeScreenBase<domain::sales::SalesControllerPtr>,
                     public domain::sales::SalesViewInterface {
  public:
     SalesScreen();

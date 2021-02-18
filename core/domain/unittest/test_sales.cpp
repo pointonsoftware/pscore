@@ -27,7 +27,6 @@
 // code under test
 #include <domain/sales/salescontroller.hpp>
 
-
 // Gmock
 using testing::_;
 using testing::Return;
