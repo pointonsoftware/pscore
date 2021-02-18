@@ -28,7 +28,7 @@ namespace sales {
 SalesController::SalesController(const SalesDataPtr& data,
                                  const SalesViewPtr& view)
                                  : BaseController(data, view) {
-    mCachedList.setEntityKeyFn(&entity::Product::barcode);
+    mCachedList.setEntityKeyFn(&entity::Sale::ID);
 }
 
 SalesControllerPtr createSalesModule(const SalesDataPtr& data,
