@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,24 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "logindata.hpp"
-#include <storage/stackdb.hpp>
+#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
+#define CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
+#include <memory>
+#include "salesdataif.hpp"
+#include "salesviewif.hpp"
+#include <domain/common/librarycommon.hpp>
 
-namespace dataprovider {
-namespace login {
-entity::User LoginDataProvider::findUserByID(const std::string& id) {
-    // SELECT * WHERE userID = id
-    const entity::User user = [id]() {
-        for (const db::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
-            if (temp.userID == id) {
-                return entity::User(temp.userID, temp.role, temp.PIN,
-                                    temp.createdAt, temp.employeeID);
-            }
-        }
-        return entity::User();
-    }();
-    return user;
-}
+namespace domain {
+namespace sales {
 
-}  // namespace login
-}  // namespace dataprovider
+class SalesControlInterface {
+ public:
+    SalesControlInterface() = default;
+    virtual ~SalesControlInterface() = default;
+};
+
+typedef std::shared_ptr<SalesDataInterface> SalesDataPtr;
+typedef std::shared_ptr<SalesViewInterface> SalesViewPtr;
+typedef std::unique_ptr<SalesControlInterface> SalesControllerPtr;
+
+// Lib APIs
+extern "C" CORE_API SalesControllerPtr createSalesModule
+                    (const SalesDataPtr& data, const SalesViewPtr& view);
+
+}  // namespace sales
+}  // namespace domain
+#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_

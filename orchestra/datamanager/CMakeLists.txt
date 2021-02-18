@@ -19,6 +19,9 @@ add_library (
     # userlogin
     logindata.hpp
     logindata.cpp
+    # sales
+    salesdata.hpp
+    salesdata.cpp
 )
 
 target_link_libraries (

@@ -16,6 +16,10 @@ add_library (
     personalid.hpp
     product.hpp
     product.cpp
+    sale.hpp
+    sale.cpp
+    saleitem.hpp
+    saleitem.cpp
     uom.hpp
     user.hpp
     user.cpp

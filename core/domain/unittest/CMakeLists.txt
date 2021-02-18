@@ -9,6 +9,7 @@ set (SOURCES_UNDER_TEST
     ${DOMAIN_DIRECTORY}/dashboard/dashboardcontroller.cpp
     ${DOMAIN_DIRECTORY}/employeemgmt/employeecontroller.cpp
     ${DOMAIN_DIRECTORY}/inventory/inventorycontroller.cpp
+    ${DOMAIN_DIRECTORY}/sales/salescontroller.cpp
     ${DOMAIN_DIRECTORY}/userlogin/logincontroller.cpp
 )
 
@@ -26,6 +27,8 @@ add_executable (
     mock/inventory/inventoryviewmock.hpp
     mock/login/logindatamock.hpp
     mock/login/loginviewmock.hpp
+    mock/sales/salesdatamock.hpp
+    mock/sales/salesviewmock.hpp
     # test suites
     test_main.cpp
     test_customermgmt.cpp
@@ -33,6 +36,7 @@ add_executable (
     test_empmgmt.cpp
     test_inventory.cpp
     test_login.cpp
+    test_sales.cpp
 )
 
 set (UNIT_TEST_LINKER_EXCEPTION "")

@@ -28,7 +28,7 @@ namespace dashboard {
 
 entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
     const entity::User user = [userID]() {
-        for (const db::StackDB::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
+        for (const db::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
             if (temp.userID == userID) {
                 return entity::User(temp.userID, temp.role, temp.PIN,
                                     temp.createdAt, temp.employeeID);
@@ -41,7 +41,7 @@ entity::User DashboardDataProvider::getUserByID(const std::string& userID) {
 }
 
 entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string& employeeID) {
-    for (const db::StackDB::EmployeeTableItem &temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
+    for (const db::EmployeeTableItem &temp : DATABASE().SELECT_EMPLOYEES_TABLE()) {
         if (temp.employeeID == employeeID) {
             entity::Employee employee(
                 temp.employeeID,
@@ -55,10 +55,10 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
                 temp.isSystemUser);
             // Get Address
             [&employee]() {
-                const std::vector<db::StackDB::AddressTableItem>::iterator it =
+                const std::vector<db::AddressTableItem>::iterator it =
                     std::find_if(DATABASE().SELECT_ADDRESS_TABLE().begin(),
                                  DATABASE().SELECT_ADDRESS_TABLE().end(),
-                                 [&employee](const db::StackDB::AddressTableItem &e) {
+                                 [&employee](const db::AddressTableItem &e) {
                                      return e.ID == employee.ID();
                                  });
                 if (it != DATABASE().SELECT_ADDRESS_TABLE().end()) {
@@ -73,10 +73,10 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
             }();
             // Get Contact details
             [&employee]() {
-                const std::vector<db::StackDB::ContactDetailsTableItem>::iterator it =
+                const std::vector<db::ContactDetailsTableItem>::iterator it =
                     std::find_if(DATABASE().SELECT_CONTACTS_TABLE().begin(),
                                  DATABASE().SELECT_CONTACTS_TABLE().end(),
-                                 [&employee](const db::StackDB::ContactDetailsTableItem &e) {
+                                 [&employee](const db::ContactDetailsTableItem &e) {
                                      return e.ID == employee.ID();
                                  });
                 if (it != DATABASE().SELECT_CONTACTS_TABLE().end()) {
@@ -86,7 +86,7 @@ entity::Employee DashboardDataProvider::getEmployeeInformation(const std::string
             }();
             // Get personal IDs
             [&employee]() {
-                for (const db::StackDB::PersonalIdTableItem& e :
+                for (const db::PersonalIdTableItem& e :
                      DATABASE().SELECT_PERSONAL_ID_TABLE()) {
                     if (e.ID == employee.ID()) {
                         employee.addPersonalId(e.type, e.id_number);

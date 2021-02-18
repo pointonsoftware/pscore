@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,24 +18,58 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "logindata.hpp"
-#include <storage/stackdb.hpp>
+#ifndef CORE_ENTITY_SALEITEM_HPP_
+#define CORE_ENTITY_SALEITEM_HPP_
 
-namespace dataprovider {
-namespace login {
-entity::User LoginDataProvider::findUserByID(const std::string& id) {
-    // SELECT * WHERE userID = id
-    const entity::User user = [id]() {
-        for (const db::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
-            if (temp.userID == id) {
-                return entity::User(temp.userID, temp.role, temp.PIN,
-                                    temp.createdAt, temp.employeeID);
-            }
-        }
-        return entity::User();
-    }();
-    return user;
-}
+#include <string>
 
-}  // namespace login
-}  // namespace dataprovider
+namespace entity {
+
+// Fields
+constexpr char FIELD_SLINAME[] = "Sale.Item.Name";
+constexpr char FIELD_SLIUPRC[] = "Sale.Item.Unit.Price";
+constexpr char FIELD_SLIQTY[]  = "Sale.Item.Quantity";
+constexpr char FIELD_SLITPRC[] = "Sale.Item.Total.Price";
+
+class SaleItem {
+ public:
+    SaleItem(const std::string& dateTime,
+             const std::string& saleID,      // links to transaction
+             const std::string& productID,   // links to product
+             const std::string& productName,
+             const std::string& unitPrice,
+             const std::string& quantity,
+             const std::string& salePrice);
+    SaleItem() = default;
+    ~SaleItem() = default;
+
+    // Getters
+    std::string dateTime() const;
+    std::string saleID() const;
+    std::string productID() const;
+    std::string productName() const;
+    std::string unitPrice() const;
+    std::string quantity() const;
+    std::string totalPrice() const;
+
+    // Setters
+    void setDateTime(const std::string& dateTime);
+    void setSaleID(const std::string& id);
+    void setProductID(const std::string& id);
+    void setProductName(const std::string& name);
+    void setUnitPrice(const std::string& unitPrice);
+    void setQuantity(const std::string& qty);
+    void setTotalPrice(const std::string& total);
+
+ private:
+    std::string mDateTime;
+    std::string mSaleID;
+    std::string mProductID;
+    std::string mProductName;
+    std::string mUnitPrice;
+    std::string mQuantity;
+    std::string mTotalPrice;
+};
+
+}  // namespace entity
+#endif  // CORE_ENTITY_SALEITEM_HPP_

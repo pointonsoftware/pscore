@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,24 +18,18 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "logindata.hpp"
-#include <storage/stackdb.hpp>
+#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
+#define CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
 
-namespace dataprovider {
-namespace login {
-entity::User LoginDataProvider::findUserByID(const std::string& id) {
-    // SELECT * WHERE userID = id
-    const entity::User user = [id]() {
-        for (const db::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
-            if (temp.userID == id) {
-                return entity::User(temp.userID, temp.role, temp.PIN,
-                                    temp.createdAt, temp.employeeID);
-            }
-        }
-        return entity::User();
-    }();
-    return user;
-}
+namespace domain {
+namespace sales {
 
-}  // namespace login
-}  // namespace dataprovider
+class SalesViewInterface {
+ public:
+    SalesViewInterface() = default;
+    virtual ~SalesViewInterface() = default;
+};
+
+}  // namespace sales
+}  // namespace domain
+#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_

@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,24 +18,20 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "logindata.hpp"
-#include <storage/stackdb.hpp>
+#ifndef ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
+#define ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
+#include <string>
+#include <domain/sales/interface/salesdataif.hpp>
 
 namespace dataprovider {
-namespace login {
-entity::User LoginDataProvider::findUserByID(const std::string& id) {
-    // SELECT * WHERE userID = id
-    const entity::User user = [id]() {
-        for (const db::UserTableItem& temp : DATABASE().SELECT_USERS_TABLE()) {
-            if (temp.userID == id) {
-                return entity::User(temp.userID, temp.role, temp.PIN,
-                                    temp.createdAt, temp.employeeID);
-            }
-        }
-        return entity::User();
-    }();
-    return user;
-}
+namespace sales {
 
-}  // namespace login
+class SalesDataProvider : public domain::sales::SalesDataInterface {
+ public:
+    SalesDataProvider() = default;
+    virtual ~SalesDataProvider() = default;
+};
+
+}  // namespace sales
 }  // namespace dataprovider
+#endif  // ORCHESTRA_DATAMANAGER_SALESDATA_HPP_

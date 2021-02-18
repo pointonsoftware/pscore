@@ -22,10 +22,9 @@
 #define ORCHESTRA_MIGRATION_STORAGE_STACKDB_HPP_
 #include <string>
 #include <vector>
+#include "table.hpp"
 
-// entities
-#include <entity/employee.hpp>
-#include <entity/user.hpp>
+#define VERSION 2.2
 
 #define DATABASE() dataprovider::db::StackDB::getDbInstance()
 
@@ -40,79 +39,6 @@ class StackDB {
         static StackDB instance;
         return instance;
     }
-
-    struct EmployeeTableItem {
-        std::string employeeID;
-        std::string firstname;
-        std::string middlename;
-        std::string lastname;
-        std::string birthdate;
-        std::string gender;
-        std::string position;
-        std::string status;
-        bool isSystemUser;
-    };
-
-    struct UserTableItem {
-        std::string userID;
-        std::string role;
-        std::string PIN;
-        std::string createdAt;
-        std::string employeeID;  // Links to Employee ID
-    };
-
-    struct AddressTableItem {
-        std::string ID;  // Links to person's ID
-        std::string line1;
-        std::string line2;
-        std::string city_town;
-        std::string province;
-        std::string zip;
-    };
-
-    struct ContactDetailsTableItem {
-        std::string ID;  // Links to person's ID
-        std::string email;
-        std::string phone_number_1;
-        std::string phone_number_2;
-    };
-
-    struct PersonalIdTableItem {
-        std::string ID;  // Links to person's ID
-        std::string type;
-        std::string id_number;
-    };
-
-    struct ProductTableItem {
-        std::string barcode;
-        std::string sku;
-        std::string name;
-        std::string description;
-        std::string category;
-        std::string brand;
-        std::string uom;
-        std::string stock;
-        std::string status;
-        std::string original_price;
-        std::string sell_price;
-        std::string supplier_name;
-        std::string supplier_code;
-    };
-
-    struct CustomerTableItem {
-        std::string customerID;
-        std::string firstname;
-        std::string middlename;
-        std::string lastname;
-        std::string birthdate;
-        std::string gender;
-    };
-
-    struct UOMTableItem {
-        std::string ID;
-        std::string unit_name;
-        std::string abbreviation;
-    };
 
     inline std::vector<EmployeeTableItem>& SELECT_EMPLOYEES_TABLE() const {
         return EMPLOYEES_TABLE;
@@ -146,6 +72,14 @@ class StackDB {
         return UOM_TABLE;
     }
 
+    inline std::vector<SalesTableItem>& SELECT_SALES_TABLE() const {
+        return SALES_TABLE;
+    }
+
+    inline std::vector<SalesItemTableItem>& SELECT_SALES_ITEM_TABLE() const {
+        return SALES_ITEM_TABLE;
+    }
+
  private:
     StackDB();
     // employees storage
@@ -164,11 +98,16 @@ class StackDB {
     static std::vector<CustomerTableItem> CUSTOMER_TABLE;
     // unit of measurement storage
     static std::vector<UOMTableItem> UOM_TABLE;
+    // sales storage
+    static std::vector<SalesTableItem> SALES_TABLE;
+    // sales item storage
+    static std::vector<SalesItemTableItem> SALES_ITEM_TABLE;
 
     void populateEmployees();
     void populateProducts();
     void populateCustomers();
     void populateUOM();
+    void populateSales();
 };
 
 }  // namespace db

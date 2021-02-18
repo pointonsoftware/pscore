@@ -32,8 +32,6 @@
 namespace domain {
 namespace customermgmt {
 
-typedef std::map<std::string, std::string> ValidationErrors;
-
 class CustomerManagementController : public CustomerManagementControlInterface,
                                      public BaseController<CustomerManagementDataInterface,
                                                            CustomerManagementViewInterface,
