@@ -46,6 +46,7 @@ StackDB::StackDB() {
     populateProducts();
     populateCustomers();
     populateUOM();
+    populateSales();
 }
 
 void StackDB::populateEmployees() {
