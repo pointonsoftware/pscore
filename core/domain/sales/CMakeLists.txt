@@ -10,6 +10,8 @@ add_library (
     interface/salesdataif.hpp
     # Controller
     interface/salesiface.hpp
+    salecomputer.hpp
+    salecomputer.cpp
     salescontroller.hpp
     salescontroller.cpp
 )

@@ -292,8 +292,8 @@ void StackDB::populateProducts() {
             "pc",                         // Unit of measurement (check the UOM_TABLE)
             "20",                         // Stocks remaining
             "High",                       // Status
-            "5.00",                       // Original Price
-            "6.00",                       // Selling Price
+            "90.00",                      // Original Price
+            "100.00",                     // Selling Price
             "Pengavator",                 // Supplier name
             "PGVTOR"});                   // Supplier code
 }
@@ -420,7 +420,7 @@ void StackDB::populateCustomers() {
             ""});                         // Contact number 2
     PERSONAL_ID_TABLE.emplace_back(PersonalIdTableItem {
             "CMJB73YN64LB",               // Customer ID <!Same as CustomerID above>
-            "SSS",                        // Type
+            "PWD",                        // Type
             "014-135-188-813"});          // ID-number
 }
 
@@ -457,7 +457,94 @@ void StackDB::populateUOM() {
 }
 
 void StackDB::populateSales() {
-    // Empty for now
+    // If you want to add sales to our in-memory DB, put it here
+
+    //------- Copy starting from the line below
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000001",                  // SalesID <!Make sure this is unique>
+            "2020/05/10 10:09:50",        // Date and time of transaction
+            "100.00",                     // Subtotal
+            "12.00",                      // Tax
+            "0.00",                       // Discount
+            "112.00",                     // Total
+            "120.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "8.00",                       // Change
+            "2098472",                    // CashierID <!Make sure this is VALID>
+            "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "2020/05/10 10:09:50",        // Date and time of transaction
+            "100000001",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this  is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
+    //------- End here
+
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000002",                  // SalesID <!Make sure this is unique>
+            "2020/05/10 10:11:20",        // Date and time of transaction
+            "50.00",                      // Subtotal
+            "6.00",                       // Tax
+            "0.00",                       // Discount
+            "56.00",                      // Total
+            "100.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "44.00",                      // Change
+            "2019542",                    // CashierID <!Make sure this is VALID>
+            "CMAA95TZ45FR"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "2020/05/10 10:09:50",        // Date and time of transaction
+            "100000001",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this is valid>
+            "2",                          // Number of items bought (quantity)
+            "20.00"});                    // Total (unit price * quantity)
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "2020/05/10 10:09:50",        // Date and time of transaction
+            "100000001",                  // SalesID <!Make sure this is VALID>
+            "5684833847",                 // Product ID or Barcode <!Make sure this is valid>
+            "Biogesic",                   // Product name <!Make sure this matches with inventory>
+            "6.00",                       // Product unit price <!Make sure this is valid>
+            "5",                          // Number of items bought (quantity)
+            "30.00"});                    // Total (unit price * quantity)
+
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000003",                  // SalesID <!Make sure this is unique>
+            "2020/05/10 11:30:20",        // Date and time of transaction
+            "1000.00",                    // Subtotal
+            "0.00",                       // Tax
+            "200.00",                     // Discount
+            "800.00",                     // Total
+            "800.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "0.00",                       // Change
+            "2019542",                    // CashierID <!Make sure this is VALID>
+            "CMJB73YN64LB"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "2020/05/10 10:09:50",        // Date and time of transaction
+            "100000003",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "2020/05/10 10:09:50",        // Date and time of transaction
+            "100000003",                  // SalesID <!Make sure this is VALID>
+            "4844811887",                 // Product ID or Barcode <!Make sure this is valid>
+            "Coke 1L",                    // Product name <!Make sure this matches with inventory>
+            "100.00",                     // Product unit price <!Make sure this is valid>
+            "9",                          // Number of items bought (quantity)
+            "900.00"});                   // Total (unit price * quantity)
 }
 
 }  // namespace db

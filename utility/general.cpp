@@ -53,6 +53,10 @@ std::string toLower(std::string str) {
     return str;
 }
 
+double toDouble(const std::string& str) {
+    return isDouble(str) ? strtod(str.c_str(), nullptr) : 0;
+}
+
 unsigned randomNumber(unsigned int low, unsigned int high) {
     std::random_device dev;
     std::mt19937 rng(dev());

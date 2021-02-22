@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,48 +18,41 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_GENERAL_HPP_
-#define UTILITY_GENERAL_HPP_
-#include <chrono>
-#include <string>
+#include "salecomputer.hpp"
+#include <general.hpp>
 
-namespace utility {
-/*!
- * Checks if the string argument is a number
-*/
-extern bool isNumber(const std::string& str);
-/*!
- * Checks if the string argument is a valid double
-*/
-extern bool isDouble(const std::string& str);
-/*!
- * Checks if the string argument contains a number
-*/
-extern bool hasNumber(const std::string& str);
-/*!
- * Returns the uppercase string equivalent
-*/
-extern std::string toUpper(std::string str);
-/*!
- * Returns the lowercase string equivalent
-*/
-extern std::string toLower(std::string str);
-/*!
- * Returns converted value if str is valid; returns zero otherwise
-*/
-extern double toDouble(std::string str);
-/*!
- * Generates random integer from inclusive-range [low : high]
-*/
-extern unsigned int randomNumber(unsigned int low, unsigned int high);
-/*!
- * Returns the current date-time
-*/
-extern std::tm currentDateTime();
-/*!
- * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
-*/
-extern std::string currentDateTimeStr();
-}  // namespace utility
+namespace domain {
+namespace sales {
 
-#endif  // UTILITY_GENERAL_HPP_
+constexpr double VAT = 0.12;  // 12%
+constexpr double SCPWD_DISCOUNT = 0.20;  // 20%
+constexpr double COUPON_DISCOUNT = 0.10;  // 10%
+
+Computation SaleComputer::compute(const std::string& subtotal, DISCOUNT_TYPE dsc) {
+    Computation computation;
+    computation.amountOfSale = subtotal;
+    switch (dsc) {
+        case DISCOUNT_TYPE::SCPWD:
+        // Calculate sales here
+        // Due = Subtotal - (Subtotal * SCPWD_DISCOUNT)
+        computation.tax = "0";
+        break;
+        case DISCOUNT_TYPE::COUPON_1:
+        case DISCOUNT_TYPE::COUPON_2:
+        // Calculate sales here
+        // Subtotal -= (Subtotal * COUPON_DISCOUNT)
+        // Due = Subtotal + (Subtotal * VAT)
+        break;
+        case DISCOUNT_TYPE::NONE:
+        // Calculate sales here
+        // Due = Subtotal + (Subtotal * VAT)
+        computation.discount = "0";
+        default:
+
+        break;
+    }
+    return computation;
+}
+
+}  // namespace sales
+}  // namespace domain
