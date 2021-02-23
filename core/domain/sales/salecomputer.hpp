@@ -33,7 +33,7 @@ enum class DISCOUNT_TYPE {
 };
 
 struct Computation {
-    std::string amountOfSale;
+    std::string taxableAmount;
     std::string tax;
     std::string discount;
     std::string amountDue;
@@ -43,7 +43,7 @@ class SaleComputer {
  public:
     SaleComputer() = default;
     ~SaleComputer() = default;
-    Computation compute(const std::string& subtotal, DISCOUNT_TYPE dsc = DISCOUNT_TYPE::NONE);
+    Computation compute(const std::string& totalSale, DISCOUNT_TYPE dsc = DISCOUNT_TYPE::NONE);
 };
 
 }  // namespace sales

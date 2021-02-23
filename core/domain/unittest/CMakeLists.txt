@@ -10,6 +10,7 @@ set (SOURCES_UNDER_TEST
     ${DOMAIN_DIRECTORY}/employeemgmt/employeecontroller.cpp
     ${DOMAIN_DIRECTORY}/inventory/inventorycontroller.cpp
     ${DOMAIN_DIRECTORY}/sales/salescontroller.cpp
+    ${DOMAIN_DIRECTORY}/sales/salecomputer.cpp
     ${DOMAIN_DIRECTORY}/userlogin/logincontroller.cpp
 )
 
@@ -37,6 +38,7 @@ add_executable (
     test_inventory.cpp
     test_login.cpp
     test_sales.cpp
+    test_salecomputer.cpp
 )
 
 set (UNIT_TEST_LINKER_EXCEPTION "")

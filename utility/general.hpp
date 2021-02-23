@@ -21,7 +21,10 @@
 #ifndef UTILITY_GENERAL_HPP_
 #define UTILITY_GENERAL_HPP_
 #include <chrono>
+#include <iomanip>
+#include <sstream>
 #include <string>
+#include <type_traits>
 
 namespace utility {
 /*!
@@ -47,7 +50,20 @@ extern std::string toLower(std::string str);
 /*!
  * Returns converted value if str is valid; returns zero otherwise
 */
-extern double toDouble(std::string str);
+extern double toDouble(const std::string& str);
+/*!
+ * Returns converted value
+*/
+template <typename T>
+std::string toString(const T& value) {
+    std::stringstream stream;
+    if (std::is_same<T, double>::value || std::is_same<T, float>::value) {
+        stream << std::fixed << std::setprecision(2) << value;
+    } else {
+        stream << value;
+    }
+    return stream.str();
+}
 /*!
  * Generates random integer from inclusive-range [low : high]
 */

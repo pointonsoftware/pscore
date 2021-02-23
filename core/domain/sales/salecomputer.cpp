@@ -28,29 +28,57 @@ constexpr double VAT = 0.12;  // 12%
 constexpr double SCPWD_DISCOUNT = 0.20;  // 20%
 constexpr double COUPON_DISCOUNT = 0.10;  // 10%
 
-Computation SaleComputer::compute(const std::string& subtotal, DISCOUNT_TYPE dsc) {
+Computation SaleComputer::compute(const std::string& totalSale, DISCOUNT_TYPE dsc) {
     Computation computation;
-    computation.amountOfSale = subtotal;
+    const double totalSaleValue = utility::toDouble(totalSale);
+    double taxableAmount = 0, tax = 0, discount = 0, amountDue = 0;
+    /*!
+     * Note:
+     * - For the computations, it assumed that TAX has already been applied per item
+     * - Hence, the tax calculation will be taken from the totalSale
+    */
     switch (dsc) {
         case DISCOUNT_TYPE::SCPWD:
-        // Calculate sales here
-        // Due = Subtotal - (Subtotal * SCPWD_DISCOUNT)
-        computation.tax = "0";
-        break;
+            // Extract subtotal (i.e. total sale - 12% tax)
+            taxableAmount = totalSaleValue / (1 + VAT);
+            // SCs and PWDs don't have tax
+            tax = 0;
+            {
+                const double subtotal = taxableAmount;
+                // Get the 20% discount from the subtotal
+                discount = subtotal * SCPWD_DISCOUNT;
+                // Calculate due
+                amountDue = subtotal - discount;
+            }
+            break;
         case DISCOUNT_TYPE::COUPON_1:
         case DISCOUNT_TYPE::COUPON_2:
-        // Calculate sales here
-        // Subtotal -= (Subtotal * COUPON_DISCOUNT)
-        // Due = Subtotal + (Subtotal * VAT)
-        break;
+            // Apply the discount first
+            discount = totalSaleValue * COUPON_DISCOUNT;
+            {
+                const double discountedAmount = totalSaleValue - discount;
+                // Calculate subtotal
+                taxableAmount = discountedAmount / (1 + VAT);
+                // Tax is extracted from amountDue
+                tax = discountedAmount - taxableAmount;
+            }
+            amountDue = taxableAmount + tax;
+            break;
         case DISCOUNT_TYPE::NONE:
-        // Calculate sales here
-        // Due = Subtotal + (Subtotal * VAT)
-        computation.discount = "0";
+            taxableAmount = totalSaleValue / (1 + VAT);
+            // Tax is extracted from the total sale value
+            tax = totalSaleValue - taxableAmount;
+            discount = 0;
+            amountDue = taxableAmount + tax;
+            break;
         default:
-
-        break;
+            // All values are zero by default
+            break;
     }
+    computation.taxableAmount = utility::toString(taxableAmount);
+    computation.tax = utility::toString(tax);
+    computation.discount = utility::toString(discount);
+    computation.amountDue = utility::toString(amountDue);
     return computation;
 }
 

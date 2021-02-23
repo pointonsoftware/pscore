@@ -27,6 +27,11 @@
 
 namespace entity {
 
+// Todo - add taxable_amount and change subtotal usage
+// e.g. - subtotal = 1120.00
+//        taxable_amt = 1000.00
+//        tax = 120.00
+
 // Fields
 constexpr char FIELD_SALEID[] = "Sale.ID";
 constexpr char FIELD_SLTIME[] = "Sale.Timestamp";

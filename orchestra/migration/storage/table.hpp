@@ -98,6 +98,7 @@ struct UOMTableItem {
     std::string abbreviation;
 };
 
+// Todo - add subtotal and taxable_amount
 struct SalesTableItem {
     std::string ID;
     std::string date_time;
