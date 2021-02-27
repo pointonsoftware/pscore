@@ -27,7 +27,8 @@ Sale::Sale(const std::string& saleID,
            const std::string& dateTime,
            const std::vector<SaleItem>& items,
            const std::string& subtotal,
-           const std::string& tax,
+           const std::string& taxableAmount,
+           const std::string& vat,
            const std::string& discount,
            const std::string& total,
            const std::string& amountPaid,
@@ -35,9 +36,10 @@ Sale::Sale(const std::string& saleID,
            const std::string& change,
            const std::string& cashierID,
            const std::string& customerID)
-           : mID(saleID), mDateTime(dateTime), mItems(items), mSubtotal(subtotal), mTax(tax),
-           mDiscount(discount), mTotal(total), mAmountPaid(amountPaid), mPaymentType(paymentType),
-           mChange(change), mCashierID(cashierID), mCustomerID(customerID) {
+           : mID(saleID), mDateTime(dateTime), mItems(items), mSubtotal(subtotal),
+           mTaxableAmount(taxableAmount), mVAT(vat), mDiscount(discount), mTotal(total),
+           mAmountPaid(amountPaid), mPaymentType(paymentType), mChange(change),
+           mCashierID(cashierID), mCustomerID(customerID) {
     // Empty for now
 }
 
@@ -57,8 +59,12 @@ std::string Sale::subtotal() const {
     return mSubtotal;
 }
 
-std::string Sale::tax() const {
-    return mTax;
+std::string Sale::taxableAmount() const {
+    return mTaxableAmount;
+}
+
+std::string Sale::vat() const {
+    return mVAT;
 }
 
 std::string Sale::discount() const {
@@ -105,8 +111,12 @@ void Sale::setSubtotal(const std::string& subtotal) {
     mSubtotal = subtotal;
 }
 
-void Sale::setTax(const std::string& tax) {
-    mTax = tax;
+void Sale::setTaxableAmount(const std::string& amount) {
+    mTaxableAmount = amount;
+}
+
+void Sale::setVAT(const std::string& vat) {
+    mVAT = vat;
 }
 
 void Sale::setDiscount(const std::string& discount) {

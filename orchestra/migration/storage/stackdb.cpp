@@ -464,8 +464,9 @@ void StackDB::populateSales() {
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000001",                  // SalesID <!Make sure this is unique>
             "2020/05/10 10:09:50",        // Date and time of transaction
-            "100.00",                     // Subtotal
-            "12.00",                      // Tax
+            "112.00",                     // Subtotal
+            "100.00",                     // Taxable
+            "12.00",                      // VAT
             "0.00",                       // Discount
             "112.00",                     // Total
             "120.00",                     // Amount paid
@@ -488,8 +489,9 @@ void StackDB::populateSales() {
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000002",                  // SalesID <!Make sure this is unique>
             "2020/05/10 10:11:20",        // Date and time of transaction
-            "50.00",                      // Subtotal
-            "6.00",                       // Tax
+            "56.00",                      // Subtotal
+            "50.00",                      // Taxable
+            "6.00",                       // VAT
             "0.00",                       // Discount
             "56.00",                      // Total
             "100.00",                     // Amount paid
@@ -520,7 +522,8 @@ void StackDB::populateSales() {
             "100000003",                  // SalesID <!Make sure this is unique>
             "2020/05/10 11:30:20",        // Date and time of transaction
             "1000.00",                    // Subtotal
-            "0.00",                       // Tax
+            "0.00",                       // Taxable
+            "0.00",                       // VAT
             "200.00",                     // Discount
             "800.00",                     // Total
             "800.00",                     // Amount paid
@@ -550,8 +553,9 @@ void StackDB::populateSales() {
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000004",                  // SalesID <!Make sure this is unique>
             "2020/05/10 12:45:20",        // Date and time of transaction
-            "300.45",                     // Subtotal
-            "36.05",                      // Tax
+            "336.50",                     // Subtotal
+            "300.45",                     // Taxable
+            "36.05",                      // VAT
             "0.00",                       // Discount
             "336.50",                     // Total
             "350.00",                     // Amount paid
