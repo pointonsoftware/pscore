@@ -19,7 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "loggeriface.hpp"
+#ifndef WIN32
 #include <sys/time.h>
+#endif
 #include <iostream>
 #include <iomanip>
 #include <mutex>

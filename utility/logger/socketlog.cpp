@@ -21,13 +21,14 @@
 #include "socketlog.hpp"
 
 // Socket headers
-#include <unistd.h>
 #include <string.h>
 
-#ifdef __WIN32__
+#ifdef WIN32
+#include <io.h>
 #include <winsock2.h>
 #pragma comment(lib, "Ws2_32.lib")
 #else
+#include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #endif
@@ -55,7 +56,7 @@ void SocketLogger::write(const std::string& logMode, const std::string& classNam
 void SocketLogger::broadcast(const std::string& logStr) {
     struct sockaddr_in send_addr;
     int fd;
-#ifdef __WIN32__
+#ifdef WIN32
     char trueflag = '1';
     WSADATA wsaData;
 
