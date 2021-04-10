@@ -27,10 +27,14 @@
 
 namespace entity {
 
-// Todo - add taxable_amount and change subtotal usage
-// e.g. - subtotal = 1120.00
-//        taxable_amt = 1000.00
-//        tax = 120.00
+/*! Sample Subtotal, TaxableAmount and VAT usage
+ *
+ * Subtotal      => 1120.00
+ * TaxableAmount => 1000.00
+ * VAT           => 120.00
+ *
+ * Note: This is applicable only to stores where TAX is pre-added to the item's diplay price
+ */
 
 // Fields
 constexpr char FIELD_SALEID[] = "Sale.ID";

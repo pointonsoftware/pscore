@@ -114,7 +114,6 @@ struct SalesTableItem {
 };
 
 struct SalesItemTableItem {
-    std::string date_time;
     std::string saleID;
     std::string productID;
     std::string product_name;

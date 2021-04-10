@@ -476,7 +476,6 @@ void StackDB::populateSales() {
             "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
     // Transaction items
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 10:09:50",        // Date and time of transaction
             "100000001",                  // SalesID <!Make sure this is VALID>
             "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
             "Chippy",                     // Product name <!Make sure this matches with inventory>
@@ -501,7 +500,6 @@ void StackDB::populateSales() {
             "CMAA95TZ45FR"});             // CustomerID <!Make sure this is VALID>
     // Transaction items
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 10:11:20",        // Date and time of transaction
             "100000002",                  // SalesID <!Make sure this is VALID>
             "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
             "Chippy",                     // Product name <!Make sure this matches with inventory>
@@ -509,7 +507,6 @@ void StackDB::populateSales() {
             "2",                          // Number of items bought (quantity)
             "20.00"});                    // Total (unit price * quantity)
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 10:11:20",        // Date and time of transaction
             "100000002",                  // SalesID <!Make sure this is VALID>
             "5684833847",                 // Product ID or Barcode <!Make sure this is valid>
             "Biogesic",                   // Product name <!Make sure this matches with inventory>
@@ -520,7 +517,6 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000003",                  // SalesID <!Make sure this is unique>
-            "2020/05/10 11:30:20",        // Date and time of transaction
             "1000.00",                    // Subtotal
             "0.00",                       // Taxable
             "0.00",                       // VAT
@@ -533,7 +529,6 @@ void StackDB::populateSales() {
             "CMJB73YN64LB"});             // CustomerID <!Make sure this is VALID>
     // Transaction items
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 11:30:20",        // Date and time of transaction
             "100000003",                  // SalesID <!Make sure this is VALID>
             "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
             "Chippy",                     // Product name <!Make sure this matches with inventory>
@@ -541,7 +536,6 @@ void StackDB::populateSales() {
             "10",                         // Number of items bought (quantity)
             "100.00"});                   // Total (unit price * quantity)
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 11:30:20",        // Date and time of transaction
             "100000003",                  // SalesID <!Make sure this is VALID>
             "4844811887",                 // Product ID or Barcode <!Make sure this is valid>
             "Coke 1L",                    // Product name <!Make sure this matches with inventory>
@@ -565,7 +559,6 @@ void StackDB::populateSales() {
             "CMTP25XB56ZD"});             // CustomerID <!Make sure this is VALID>
     // Transaction items
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 12:45:20",        // Date and time of transaction
             "100000004",                  // SalesID <!Make sure this is VALID>
             "5554833345",                 // Product ID or Barcode <!Make sure this is valid>
             "Asukal Puti",                // Product name <!Make sure this matches with inventory>
@@ -573,7 +566,6 @@ void StackDB::populateSales() {
             "4",                          // Number of items bought (quantity)
             "24.00"});                    // Total (unit price * quantity)
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 12:45:20",        // Date and time of transaction
             "100000004",                  // SalesID <!Make sure this is VALID>
             "1254854545",                 // Product ID or Barcode <!Make sure this is valid>
             "Mantika",                    // Product name <!Make sure this matches with inventory>
@@ -581,7 +573,6 @@ void StackDB::populateSales() {
             "5",                          // Number of items bought (quantity)
             "52.50"});                    // Total (unit price * quantity)
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 12:45:20",        // Date and time of transaction
             "100000004",                  // SalesID <!Make sure this is VALID>
             "5684833847",                 // Product ID or Barcode <!Make sure this is valid>
             "Biogesic",                   // Product name <!Make sure this matches with inventory>
@@ -589,7 +580,6 @@ void StackDB::populateSales() {
             "10",                         // Number of items bought (quantity)
             "60.00"});                    // Total (unit price * quantity)
     SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
-            "2020/05/10 12:45:20",        // Date and time of transaction
             "100000004",                  // SalesID <!Make sure this is VALID>
             "4844811887",                 // Product ID or Barcode <!Make sure this is valid>
             "Coke 1L",                    // Product name <!Make sure this matches with inventory>

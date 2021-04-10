@@ -34,8 +34,8 @@ Computation SaleComputer::compute(const std::string& subtotal, DISCOUNT_TYPE dsc
     double taxableAmount = 0, tax = 0, discount = 0, amountDue = 0;
     /*!
      * Note:
-     * - For the computations, it is assumed that TAX has already been applied per item
-     * - Hence, the tax calculation will be taken from the subtotal
+     * - It is assumed that TAX has already been applied on the item's display price (subtotal)
+     * - Hence, for the computation, the tax will be derived from the subtotal
     */
     switch (dsc) {
         case DISCOUNT_TYPE::SCPWD:
