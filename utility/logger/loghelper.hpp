@@ -26,11 +26,23 @@
 #include "loggeriface.hpp"
 #include <cfg/configiface.hpp>
 
+#ifdef _MSC_VER
+#define FUNC __FUNCSIG__
+#else
 #define FUNC __PRETTY_FUNCTION__
+#endif
+
+#ifdef _MSC_VER
+#define LOG_DEBUG(log_str, ...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)
+#define LOG_INFO(log_str, ...)  utility::LogHelper::GetInstance().write("info" , FUNC, log_str)
+#define LOG_WARN(log_str, ...)  utility::LogHelper::GetInstance().write("warn" , FUNC, log_str)
+#define LOG_ERROR(log_str, ...) utility::LogHelper::GetInstance().write("error", FUNC, log_str)
+#else
 #define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)
 #define LOG_INFO(log_str...)  utility::LogHelper::GetInstance().write("info" , FUNC, log_str)
 #define LOG_WARN(log_str...)  utility::LogHelper::GetInstance().write("warn" , FUNC, log_str)
 #define LOG_ERROR(log_str...) utility::LogHelper::GetInstance().write("error", FUNC, log_str)
+#endif
 
 namespace utility {
 
