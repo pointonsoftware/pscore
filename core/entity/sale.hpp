@@ -27,12 +27,22 @@
 
 namespace entity {
 
+/*! Sample Subtotal, TaxableAmount and VAT usage
+ *
+ * Subtotal      => 1120.00
+ * TaxableAmount => 1000.00
+ * VAT           => 120.00
+ *
+ * Note: This is applicable only to stores where TAX is pre-added to the item's diplay price
+ */
+
 // Fields
 constexpr char FIELD_SALEID[] = "Sale.ID";
 constexpr char FIELD_SLTIME[] = "Sale.Timestamp";
 constexpr char FIELD_SLITEMS[] = "Sale.Items";
 constexpr char FIELD_SLSBTTL[] = "Sale.Subtotal";
-constexpr char FIELD_SLTAX[] = "Sale.Tax";
+constexpr char FIELD_SLTAXAMT[] = "Sale.TaxableAmount";
+constexpr char FIELD_SLVAT[] = "Sale.VAT";
 constexpr char FIELD_SLDSCT[] = "Sale.Discount";
 constexpr char FIELD_SLTOTAL[] = "Sale.Total";
 constexpr char FIELD_SLAMTPD[] = "Sale.Paid";
@@ -47,7 +57,8 @@ class Sale {
          const std::string& dateTime,
          const std::vector<SaleItem>& items,
          const std::string& subtotal,
-         const std::string& tax,
+         const std::string& taxableAmount,
+         const std::string& vat,
          const std::string& discount,
          const std::string& total,
          const std::string& amountPaid,
@@ -63,7 +74,8 @@ class Sale {
     std::string dateTime() const;
     std::vector<SaleItem> items() const;
     std::string subtotal() const;
-    std::string tax() const;
+    std::string taxableAmount() const;
+    std::string vat() const;
     std::string discount() const;
     std::string total() const;
     std::string amountPaid() const;
@@ -77,7 +89,8 @@ class Sale {
     void setItems(const std::vector<SaleItem>& items);
     void addItem(const SaleItem& item);
     void setSubtotal(const std::string& subtotal);
-    void setTax(const std::string& tax);
+    void setTaxableAmount(const std::string& amount);
+    void setVAT(const std::string& vat);
     void setDiscount(const std::string& discount);
     void setTotal(const std::string& total);
     void setAmountPaid(const std::string& amount);
@@ -91,7 +104,8 @@ class Sale {
     std::string mDateTime;
     std::vector<SaleItem> mItems;
     std::string mSubtotal;
-    std::string mTax;
+    std::string mTaxableAmount;
+    std::string mVAT;
     std::string mDiscount;
     std::string mTotal;
     std::string mAmountPaid;

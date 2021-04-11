@@ -102,7 +102,8 @@ struct SalesTableItem {
     std::string ID;
     std::string date_time;
     std::string subtotal;
-    std::string tax;
+    std::string taxable_amount;
+    std::string vat;
     std::string discount;
     std::string total;
     std::string amount_paid;
@@ -113,7 +114,6 @@ struct SalesTableItem {
 };
 
 struct SalesItemTableItem {
-    std::string date_time;
     std::string saleID;
     std::string productID;
     std::string product_name;

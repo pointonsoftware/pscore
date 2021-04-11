@@ -1,6 +1,6 @@
 /**************************************************************************************************
 *                                            PSCORE                                               *
-*                               Copyright (C) 2020 Pointon Software                               *
+*                               Copyright (C) 2021 Pointon Software                               *
 *                                                                                                 *
 *           This program is free software: you can redistribute it and/or modify                  *
 *           it under the terms of the GNU Affero General Public License as published              *
@@ -18,64 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_GENERAL_HPP_
-#define UTILITY_GENERAL_HPP_
-#include <chrono>
-#include <iomanip>
-#include <sstream>
+#ifndef CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
+#define CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
 #include <string>
-#include <type_traits>
 
-namespace utility {
-/*!
- * Checks if the string argument is a number
-*/
-extern bool isNumber(const std::string& str);
-/*!
- * Checks if the string argument is a valid double
-*/
-extern bool isDouble(const std::string& str);
-/*!
- * Checks if the string argument contains a number
-*/
-extern bool hasNumber(const std::string& str);
-/*!
- * Returns the uppercase string equivalent
-*/
-extern std::string toUpper(std::string str);
-/*!
- * Returns the lowercase string equivalent
-*/
-extern std::string toLower(std::string str);
-/*!
- * Returns converted value if str is valid; returns zero otherwise
-*/
-extern double toDouble(const std::string& str);
-/*!
- * Returns converted value
-*/
-template <typename T>
-std::string toString(const T& value) {
-    std::stringstream stream;
-    if (std::is_same<T, double>::value || std::is_same<T, float>::value) {
-        stream << std::fixed << std::setprecision(2) << value;
-    } else {
-        stream << value;
-    }
-    return stream.str();
-}
-/*!
- * Generates random integer from inclusive-range [low : high]
-*/
-extern unsigned int randomNumber(unsigned int low, unsigned int high);
-/*!
- * Returns the current date-time
-*/
-extern std::tm currentDateTime();
-/*!
- * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
-*/
-extern std::string currentDateTimeStr();
-}  // namespace utility
+namespace domain {
+namespace sales {
 
-#endif  // UTILITY_GENERAL_HPP_
+enum class DISCOUNT_TYPE {
+    NONE,
+    SCPWD,
+    COUPON_1,
+    COUPON_2
+};
+
+struct Computation {
+    std::string taxableAmount;
+    std::string tax;
+    std::string discount;
+    std::string amountDue;
+};
+
+class SaleComputer {
+ public:
+    SaleComputer() = default;
+    ~SaleComputer() = default;
+    Computation compute(const std::string& subtotal, DISCOUNT_TYPE dsc = DISCOUNT_TYPE::NONE);
+};
+
+}  // namespace sales
+}  // namespace domain
+
+#endif  // CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
