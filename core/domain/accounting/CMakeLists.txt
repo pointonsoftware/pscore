@@ -1,23 +1,23 @@
-project (sales)
+project (accounting)
 
 # domain lib
 add_library (
-    sales
+    accounting
     SHARED
     # View
-    interface/salesviewif.hpp
+    interface/accountingviewif.hpp
     # Dataprovider
-    interface/salesdataif.hpp
+    interface/accountingdataif.hpp
     # Controller
-    interface/salesiface.hpp
+    interface/accountingiface.hpp
     salecomputer.hpp
     salecomputer.cpp
-    salescontroller.hpp
-    salescontroller.cpp
+    accountingcontroller.hpp
+    accountingcontroller.cpp
 )
 
 target_link_libraries (
-    sales
+    accounting
     entity
     utility
     validator

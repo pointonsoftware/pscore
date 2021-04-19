@@ -14,6 +14,8 @@ add_executable (
     screen/informationscreen.cpp
     screen/screeniface.hpp
     # Back office screen
+    screen/backoffice/accountingscreen.hpp
+    screen/backoffice/accountingscreen.cpp
     screen/backoffice/backofficescreenbase.hpp
     screen/backoffice/customermgmtscreen.hpp
     screen/backoffice/customermgmtscreen.cpp
@@ -23,8 +25,6 @@ add_executable (
     screen/backoffice/empmgmtscreen.cpp
     screen/backoffice/inventoryscreen.hpp
     screen/backoffice/inventoryscreen.cpp
-    screen/backoffice/salesscreen.hpp
-    screen/backoffice/salesscreen.cpp
     # Login screen
     screen/login/loginscreen.hpp
     screen/login/loginscreen.cpp
@@ -46,13 +46,13 @@ endif ()
 
 target_link_libraries (
     console_app
+    accounting
     customermgmt
     dashboard
     datamanager
     empmgmt
     inventory
     loginmod
-    sales
     ${MINGW_DEPENDENCY}
     ${CONSOLE_APP_LINKER_EXCEPTION}
 )

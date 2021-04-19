@@ -4,6 +4,9 @@ project (datamanager)
 add_library (
     datamanager
     STATIC
+    # accounting
+    accountingdata.hpp
+    accountingdata.cpp
     # customer management
     customerdata.hpp
     customerdata.cpp
@@ -19,9 +22,6 @@ add_library (
     # userlogin
     logindata.hpp
     logindata.cpp
-    # sales
-    salesdata.hpp
-    salesdata.cpp
 )
 
 target_link_libraries (

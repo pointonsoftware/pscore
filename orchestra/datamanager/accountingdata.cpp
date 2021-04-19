@@ -18,23 +18,20 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "salescontroller.hpp"
-#include <memory>
-#include <logger/loghelper.hpp>
+#include "accountingdata.hpp"
+#include <storage/stackdb.hpp>
 
-namespace domain {
-namespace sales {
+namespace dataprovider {
+namespace accounting {
 
-SalesController::SalesController(const SalesDataPtr& data,
-                                 const SalesViewPtr& view)
-                                 : BaseController(data, view) {
-    mCachedList.setEntityKeyFn(&entity::Sale::ID);
+std::vector<entity::Sale> AccountingDataProvider::getSales(const std::string& startDate,
+                                                           const std::string& endDate) {
+    return {};
 }
 
-SalesControllerPtr createSalesModule(const SalesDataPtr& data,
-                                     const SalesViewPtr& view) {
-    return std::make_unique<SalesController>(data, view);
+std::vector<entity::SaleItem>
+AccountingDataProvider::getSaleDetails(const std::string& transactionID) {
+    return {};
 }
-
-}  // namespace sales
-}  // namespace domain
+}  // namespace accounting
+}  // namespace dataprovider

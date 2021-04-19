@@ -18,18 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESDATAIF_HPP_
-#define CORE_DOMAIN_SALES_INTERFACE_SALESDATAIF_HPP_
+#ifndef CORE_DOMAIN_ACCOUNTING_ACCOUNTINGCONTROLLER_HPP_
+#define CORE_DOMAIN_ACCOUNTING_ACCOUNTINGCONTROLLER_HPP_
+#include <string>
+#include <vector>
+#include "interface/accountingiface.hpp"
+#include <domain/common/basecontroller.hpp>
+#include <entity/sale.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-class SalesDataInterface {
+class AccountingController : public AccountingControlInterface,
+                             public BaseController<AccountingDataInterface,
+                                                   AccountingViewInterface,
+                                                   entity::Sale>  {
  public:
-    SalesDataInterface() = default;
-    virtual ~SalesDataInterface() = default;
+    explicit AccountingController(const AccountingDataPtr& data,
+                                  const AccountingViewPtr& view);
+    ~AccountingController() = default;
+
+    std::vector<GraphReport> getCategorySales() override;
+    std::vector<GraphReport> getTodaySalesReport() override;
+    std::vector<entity::Sale> getSales(Period period) override;
+    std::vector<entity::Sale> getCustomPeriodSales(const std::string& startDate,
+                                                   const std::string& endDate) override;
+    std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
 };
 
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain
-#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESDATAIF_HPP_
+
+#endif  // CORE_DOMAIN_ACCOUNTING_ACCOUNTINGCONTROLLER_HPP_

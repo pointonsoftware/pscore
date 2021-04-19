@@ -18,27 +18,42 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
-#define CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
-#include "interface/salesiface.hpp"
-#include <domain/common/basecontroller.hpp>
-// Entity
-#include <entity/sale.hpp>
+#include <gtest/gtest.h>
+
+// mocks
+#include "mock/accounting/accountingdatamock.hpp"
+#include "mock/accounting/accountingviewmock.hpp"
+
+// code under test
+#include <domain/accounting/accountingcontroller.hpp>
+
+// Gmock
+using testing::_;
+using testing::Return;
 
 namespace domain {
-namespace sales {
+namespace accounting {
+namespace test {
 
-class SalesController : public SalesControlInterface,
-                        public BaseController<SalesDataInterface,
-                                              SalesViewInterface,
-                                              entity::Sale>  {
+class TestAccounting : public testing::Test {
  public:
-    explicit SalesController(const SalesDataPtr& data,
-                             const SalesViewPtr& view);
-    ~SalesController() = default;
+    TestAccounting() : controller(dpMock, viewMock) {
+        // Empty for now
+    }
+
+    ~TestAccounting() = default;
+    void SetUp() {}
+    void TearDown() {}
+
+    std::shared_ptr<AccountingDataMock> dpMock  = std::make_shared<AccountingDataMock>();
+    std::shared_ptr<AccountingViewMock> viewMock = std::make_shared<AccountingViewMock>();
+    AccountingController controller;
 };
 
-}  // namespace sales
-}  // namespace domain
+TEST_F(TestAccounting, ShouldSucceed) {
+    SUCCEED();
+}
 
-#endif  // CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
+}  // namespace test
+}  // namespace accounting
+}  // namespace domain

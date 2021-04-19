@@ -63,7 +63,7 @@ struct ProductCategoryReport {
   std::vector<GraphReport> productsCount;  // products remaining  under the category per day
 };
 
-enum class Period {
+enum class Period : char {
     YESTERDAY,
     TODAY,
     THIS_WEEK,

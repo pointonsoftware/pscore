@@ -18,42 +18,50 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include <gtest/gtest.h>
-
-// mocks
-#include "mock/sales/salesdatamock.hpp"
-#include "mock/sales/salesviewmock.hpp"
-
-// code under test
-#include <domain/sales/salescontroller.hpp>
-
-// Gmock
-using testing::_;
-using testing::Return;
+#include "accountingcontroller.hpp"
+#include <memory>
+#include <logger/loghelper.hpp>
 
 namespace domain {
-namespace sales {
-namespace test {
+namespace accounting {
 
-class TestSales : public testing::Test {
- public:
-    TestSales() : controller(dpMock, viewMock) {
-        // Empty for now
-    }
-
-    ~TestSales() = default;
-    void SetUp() {}
-    void TearDown() {}
-
-    std::shared_ptr<SalesDataMock> dpMock  = std::make_shared<SalesDataMock>();
-    std::shared_ptr<SalesViewMock> viewMock = std::make_shared<SalesViewMock>();
-    SalesController controller;
-};
-
-TEST_F(TestSales, ShouldSucceed) {
-    SUCCEED();
+AccountingController::AccountingController(const AccountingDataPtr& data,
+                                           const AccountingViewPtr& view)
+                                           : BaseController(data, view) {
+    mCachedList.setEntityKeyFn(&entity::Sale::ID);
 }
 
-}  // namespace test
-}  // namespace sales
+std::vector<GraphReport> AccountingController::getCategorySales() {
+    LOG_DEBUG("Retrieving category sales");
+    return {};
+}
+
+std::vector<GraphReport> AccountingController::getTodaySalesReport() {
+    LOG_DEBUG("Retrieving today's sales");
+    return {};
+}
+
+std::vector<entity::Sale> AccountingController::getSales(Period period) {
+    LOG_DEBUG("Retrieving %c sales", static_cast<char>(period));
+    return {};
+}
+
+std::vector<entity::Sale> AccountingController::getCustomPeriodSales(const std::string& startDate,
+                                                                     const std::string& endDate) {
+    LOG_DEBUG("Retrieving sales from %s to %s", startDate.c_str(), endDate.c_str());
+    return {};
+}
+
+std::vector<entity::SaleItem>
+AccountingController::getSaleDetails(const std::string& transactionID) {
+    LOG_DEBUG("Retrieving details of transaction ID %s", transactionID.c_str());
+    return {};
+}
+
+AccountingControllerPtr createAccountingModule(const AccountingDataPtr& data,
+                                               const AccountingViewPtr& view) {
+    return std::make_unique<AccountingController>(data, view);
+}
+
+}  // namespace accounting
 }  // namespace domain

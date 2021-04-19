@@ -18,20 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
-#define ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
+#ifndef ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
+#define ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
 #include <string>
-#include <domain/sales/interface/salesdataif.hpp>
+#include <vector>
+#include <domain/accounting/interface/accountingdataif.hpp>
 
 namespace dataprovider {
-namespace sales {
+namespace accounting {
 
-class SalesDataProvider : public domain::sales::SalesDataInterface {
+class AccountingDataProvider : public domain::accounting::AccountingDataInterface {
  public:
-    SalesDataProvider() = default;
-    virtual ~SalesDataProvider() = default;
+    AccountingDataProvider() = default;
+    virtual ~AccountingDataProvider() = default;
+
+    std::vector<entity::Sale> getSales(const std::string& startDate,
+                                       const std::string& endDate) override;
+
+    std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
 };
 
-}  // namespace sales
+}  // namespace accounting
 }  // namespace dataprovider
-#endif  // ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
+#endif  // ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_

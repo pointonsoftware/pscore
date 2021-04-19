@@ -18,11 +18,38 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "salesdata.hpp"
-#include <storage/stackdb.hpp>
+#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_ACCOUNTINGSCREEN_HPP_
+#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_ACCOUNTINGSCREEN_HPP_
+#include <string>
+#include <vector>
+// Core
+#include <domain/accounting/interface/accountingviewif.hpp>
+#include <domain/accounting/interface/accountingiface.hpp>
+// Screens
+#include "backofficescreenbase.hpp"
+#include <fieldhelper.hpp>
+#include <screeniface.hpp>
+#include <tablehelper.hpp>
 
-namespace dataprovider {
-namespace sales {
+namespace screen {
+namespace backoffice {
 
-}  // namespace sales
-}  // namespace dataprovider
+class AccountingScreen : public screen::ScreenInterface,
+                    public BackOfficeScreenBase<domain::accounting::AccountingControllerPtr>,
+                    public domain::accounting::AccountingViewInterface {
+ public:
+    AccountingScreen();
+    ~AccountingScreen() = default;
+
+    // ScreenInterface
+    void show(std::promise<defines::display>* promise) override;
+
+ private:
+    Options getUserSelection();
+    bool action(Options option, std::promise<defines::display>* nextScreen);
+    bool isShowingDetailsScreen;
+};
+
+}  // namespace backoffice
+}  // namespace screen
+#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_ACCOUNTINGSCREEN_HPP_

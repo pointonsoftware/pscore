@@ -18,30 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
-#define CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
-#include <memory>
-#include "salesdataif.hpp"
-#include "salesviewif.hpp"
-#include <domain/common/librarycommon.hpp>
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGVIEWMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGVIEWMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <domain/accounting/interface/accountingviewif.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-class SalesControlInterface {
+class AccountingViewMock : public AccountingViewInterface {
  public:
-    SalesControlInterface() = default;
-    virtual ~SalesControlInterface() = default;
+    AccountingViewMock() = default;
+    ~AccountingViewMock() = default;
 };
 
-typedef std::shared_ptr<SalesDataInterface> SalesDataPtr;
-typedef std::shared_ptr<SalesViewInterface> SalesViewPtr;
-typedef std::unique_ptr<SalesControlInterface> SalesControllerPtr;
-
-// Lib APIs
-extern "C" CORE_API SalesControllerPtr createSalesModule
-                    (const SalesDataPtr& data, const SalesViewPtr& view);
-
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain
-#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGVIEWMOCK_HPP_

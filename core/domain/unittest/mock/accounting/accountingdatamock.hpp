@@ -18,35 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
-#define CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGDATAMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGDATAMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <string>
+#include <vector>
+
+#include <domain/accounting/interface/accountingdataif.hpp>
+#include <entity/sale.hpp>
+#include <entity/saleitem.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-enum class DISCOUNT_TYPE {
-    NONE,
-    SCPWD,
-    COUPON_1,
-    COUPON_2
-};
-
-struct Computation {
-    std::string taxableAmount;
-    std::string tax;
-    std::string discount;
-    std::string amountDue;
-};
-
-class SaleComputer {
+class AccountingDataMock : public AccountingDataInterface {
  public:
-    SaleComputer() = default;
-    ~SaleComputer() = default;
-    Computation compute(const std::string& subtotal, DISCOUNT_TYPE dsc = DISCOUNT_TYPE::NONE);
+    AccountingDataMock() = default;
+    ~AccountingDataMock() = default;
+    MOCK_METHOD(std::vector<entity::Sale>, getSales, (const std::string& startDate,
+                                                      const std::string& endDate));
+    MOCK_METHOD(std::vector<entity::SaleItem>, getSaleDetails, (const std::string& transactionID));
 };
 
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain
 
-#endif  // CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGDATAMOCK_HPP_

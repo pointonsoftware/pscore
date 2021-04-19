@@ -21,10 +21,10 @@
 #include <gtest/gtest.h>
 
 // code under test
-#include <domain/sales/salecomputer.hpp>
+#include <domain/accounting/salecomputer.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 namespace test {
 
 class TestSaleComputer : public testing::Test {
@@ -79,5 +79,5 @@ TEST_F(TestSaleComputer, calculateNormalSale3) {
 }
 
 }  // namespace test
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain

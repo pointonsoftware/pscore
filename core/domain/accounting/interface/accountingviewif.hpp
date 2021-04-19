@@ -18,18 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
-#define CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
+#ifndef CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGVIEWIF_HPP_
+#define CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGVIEWIF_HPP_
+#include <vector>
+#include <entity/sale.hpp>
+#include <entity/saleitem.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-class SalesViewInterface {
+class AccountingViewInterface {
  public:
-    SalesViewInterface() = default;
-    virtual ~SalesViewInterface() = default;
+    AccountingViewInterface() = default;
+    virtual ~AccountingViewInterface() = default;
 };
 
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain
-#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
+#endif  // CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGVIEWIF_HPP_
