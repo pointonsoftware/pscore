@@ -18,22 +18,32 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_UNITTEST_MOCK_SALES_SALESDATAMOCK_HPP_
-#define CORE_DOMAIN_UNITTEST_MOCK_SALES_SALESDATAMOCK_HPP_
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
-#include <domain/sales/interface/salesdataif.hpp>
+#ifndef CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGDATAIF_HPP_
+#define CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGDATAIF_HPP_
+#include <string>
+#include <vector>
+#include <entity/sale.hpp>
+#include <entity/saleitem.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-class SalesDataMock : public SalesDataInterface {
+class AccountingDataInterface {
  public:
-    SalesDataMock() = default;
-    ~SalesDataMock() = default;
+    AccountingDataInterface() = default;
+    virtual ~AccountingDataInterface() = default;
+    /*!
+     * Returns each sales from the specified period
+     * Note: Dates are inclusive
+     */
+    virtual std::vector<entity::Sale> getSales(const std::string& startDate,
+                                               const std::string& endDate) = 0;
+    /*!
+     * Returns the sale items registered with the transaction ID
+     */
+    virtual std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) = 0;
 };
 
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain
-
-#endif  // CORE_DOMAIN_UNITTEST_MOCK_SALES_SALESDATAMOCK_HPP_
+#endif  // CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGDATAIF_HPP_

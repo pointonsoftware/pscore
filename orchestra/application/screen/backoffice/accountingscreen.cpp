@@ -18,7 +18,7 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "salesscreen.hpp"
+#include "accountingscreen.hpp"
 #include <logger/loghelper.hpp>
 
 namespace screen {
@@ -40,15 +40,15 @@ const std::vector<std::string> DOMAIN_FIELDS {
     "Sale.CustomerID"
 };
 
-SalesScreen::SalesScreen() : isShowingDetailsScreen(false) {
+AccountingScreen::AccountingScreen() : isShowingDetailsScreen(false) {
     // Empty for now
 }
 
-void SalesScreen::show(std::promise<defines::display>* promise) {
+void AccountingScreen::show(std::promise<defines::display>* promise) {
     do {} while (action(getUserSelection(), promise));
 }
 
-SalesScreen::Options SalesScreen::getUserSelection() {
+AccountingScreen::Options AccountingScreen::getUserSelection() {
     std::string userInput;
     std::cout << std::endl << "Select [option] > "; std::cin >> userInput;
 
@@ -66,7 +66,7 @@ SalesScreen::Options SalesScreen::getUserSelection() {
     return Options::INVALID;
 }
 
-bool SalesScreen::action(Options option, std::promise<defines::display>* nextScreen) {
+bool AccountingScreen::action(Options option, std::promise<defines::display>* nextScreen) {
     bool switchScreenIsRequired = false;
     switch (option) {
         case Options::DASHBOARD:

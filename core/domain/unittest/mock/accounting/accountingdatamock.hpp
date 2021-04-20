@@ -18,21 +18,30 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_UNITTEST_MOCK_SALES_SALESVIEWMOCK_HPP_
-#define CORE_DOMAIN_UNITTEST_MOCK_SALES_SALESVIEWMOCK_HPP_
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGDATAMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGDATAMOCK_HPP_
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <domain/sales/interface/salesviewif.hpp>
+#include <string>
+#include <vector>
+
+#include <domain/accounting/interface/accountingdataif.hpp>
+#include <entity/sale.hpp>
+#include <entity/saleitem.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-class SalesViewMock : public SalesViewInterface {
+class AccountingDataMock : public AccountingDataInterface {
  public:
-    SalesViewMock() = default;
-    ~SalesViewMock() = default;
+    AccountingDataMock() = default;
+    ~AccountingDataMock() = default;
+    MOCK_METHOD(std::vector<entity::Sale>, getSales, (const std::string& startDate,
+                                                      const std::string& endDate));
+    MOCK_METHOD(std::vector<entity::SaleItem>, getSaleDetails, (const std::string& transactionID));
 };
 
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain
-#endif  // CORE_DOMAIN_UNITTEST_MOCK_SALES_SALESVIEWMOCK_HPP_
+
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGDATAMOCK_HPP_

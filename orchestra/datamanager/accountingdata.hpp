@@ -18,35 +18,26 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
-#define CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
+#ifndef ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
+#define ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
 #include <string>
+#include <vector>
+#include <domain/accounting/interface/accountingdataif.hpp>
 
-namespace domain {
-namespace sales {
+namespace dataprovider {
+namespace accounting {
 
-enum class DISCOUNT_TYPE {
-    NONE,
-    SCPWD,
-    COUPON_1,
-    COUPON_2
-};
-
-struct Computation {
-    std::string taxableAmount;
-    std::string tax;
-    std::string discount;
-    std::string amountDue;
-};
-
-class SaleComputer {
+class AccountingDataProvider : public domain::accounting::AccountingDataInterface {
  public:
-    SaleComputer() = default;
-    ~SaleComputer() = default;
-    Computation compute(const std::string& subtotal, DISCOUNT_TYPE dsc = DISCOUNT_TYPE::NONE);
+    AccountingDataProvider() = default;
+    virtual ~AccountingDataProvider() = default;
+
+    std::vector<entity::Sale> getSales(const std::string& startDate,
+                                       const std::string& endDate) override;
+
+    std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
 };
 
-}  // namespace sales
-}  // namespace domain
-
-#endif  // CORE_DOMAIN_SALES_SALECOMPUTER_HPP_
+}  // namespace accounting
+}  // namespace dataprovider
+#endif  // ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_

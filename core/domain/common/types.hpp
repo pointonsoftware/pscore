@@ -18,18 +18,59 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
-#define CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
+#ifndef CORE_DOMAIN_COMMON_TYPES_HPP_
+#define CORE_DOMAIN_COMMON_TYPES_HPP_
+#include <string>
+#include <vector>
 
 namespace domain {
-namespace sales {
 
-class SalesViewInterface {
- public:
-    SalesViewInterface() = default;
-    virtual ~SalesViewInterface() = default;
+enum class API_STATUS {
+    SUCCESS       = 0x00,
+    FAILED        = 0x01,
+    UNINITIALIZED = 0x02,
+    NOT_FOUND     = 0x03
 };
 
-}  // namespace sales
+// Types for accounting domain
+namespace accounting {
+
+struct TodaySalesSummary {
+    uint8_t targetDiffPercentage;  // (currentSale/targetSale) * 100
+    unsigned int totalSales;
+    unsigned int transactionCount;
+};
+
+struct GraphReport {
+    std::string key;
+    std::string value;
+};
+
+struct DailyRevenueComparison {
+    std::vector<GraphReport> yesterday;
+    std::vector<GraphReport> today;
+};
+
+struct MonthStatusReport {
+    std::vector<GraphReport> revenue;
+    std::vector<GraphReport> cost;
+    std::vector<GraphReport> profit;
+    std::vector<GraphReport> expense;
+};
+
+struct ProductCategoryReport {
+  std::string category;
+  std::vector<GraphReport> productsCount;  // products remaining  under the category per day
+};
+
+enum class Period : char {
+    YESTERDAY,
+    TODAY,
+    THIS_WEEK,
+    THIS_MONTH,
+    THIS_YEAR
+};
+
+}  // namespace accounting
 }  // namespace domain
-#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESVIEWIF_HPP_
+#endif  // CORE_DOMAIN_COMMON_TYPES_HPP_

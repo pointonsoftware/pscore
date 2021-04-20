@@ -18,27 +18,21 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
-#define CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
-#include "interface/salesiface.hpp"
-#include <domain/common/basecontroller.hpp>
-// Entity
-#include <entity/sale.hpp>
+#ifndef CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGVIEWMOCK_HPP_
+#define CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGVIEWMOCK_HPP_
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <domain/accounting/interface/accountingviewif.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-class SalesController : public SalesControlInterface,
-                        public BaseController<SalesDataInterface,
-                                              SalesViewInterface,
-                                              entity::Sale>  {
+class AccountingViewMock : public AccountingViewInterface {
  public:
-    explicit SalesController(const SalesDataPtr& data,
-                             const SalesViewPtr& view);
-    ~SalesController() = default;
+    AccountingViewMock() = default;
+    ~AccountingViewMock() = default;
 };
 
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain
-
-#endif  // CORE_DOMAIN_SALES_SALESCONTROLLER_HPP_
+#endif  // CORE_DOMAIN_UNITTEST_MOCK_ACCOUNTING_ACCOUNTINGVIEWMOCK_HPP_

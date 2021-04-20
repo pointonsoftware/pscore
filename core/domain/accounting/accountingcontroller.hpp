@@ -18,20 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
-#define ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
+#ifndef CORE_DOMAIN_ACCOUNTING_ACCOUNTINGCONTROLLER_HPP_
+#define CORE_DOMAIN_ACCOUNTING_ACCOUNTINGCONTROLLER_HPP_
 #include <string>
-#include <domain/sales/interface/salesdataif.hpp>
+#include <vector>
+#include "interface/accountingiface.hpp"
+#include <domain/common/basecontroller.hpp>
+#include <entity/sale.hpp>
 
-namespace dataprovider {
-namespace sales {
+namespace domain {
+namespace accounting {
 
-class SalesDataProvider : public domain::sales::SalesDataInterface {
+class AccountingController : public AccountingControlInterface,
+                             public BaseController<AccountingDataInterface,
+                                                   AccountingViewInterface,
+                                                   entity::Sale>  {
  public:
-    SalesDataProvider() = default;
-    virtual ~SalesDataProvider() = default;
+    explicit AccountingController(const AccountingDataPtr& data,
+                                  const AccountingViewPtr& view);
+    ~AccountingController() = default;
+
+    std::vector<GraphReport> getCategorySales() override;
+    std::vector<GraphReport> getTodaySalesReport() override;
+    std::vector<entity::Sale> getSales(Period period) override;
+    std::vector<entity::Sale> getCustomPeriodSales(const std::string& startDate,
+                                                   const std::string& endDate) override;
+    std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
 };
 
-}  // namespace sales
-}  // namespace dataprovider
-#endif  // ORCHESTRA_DATAMANAGER_SALESDATA_HPP_
+}  // namespace accounting
+}  // namespace domain
+
+#endif  // CORE_DOMAIN_ACCOUNTING_ACCOUNTINGCONTROLLER_HPP_

@@ -21,39 +21,39 @@
 #include <gtest/gtest.h>
 
 // mocks
-#include "mock/sales/salesdatamock.hpp"
-#include "mock/sales/salesviewmock.hpp"
+#include "mock/accounting/accountingdatamock.hpp"
+#include "mock/accounting/accountingviewmock.hpp"
 
 // code under test
-#include <domain/sales/salescontroller.hpp>
+#include <domain/accounting/accountingcontroller.hpp>
 
 // Gmock
 using testing::_;
 using testing::Return;
 
 namespace domain {
-namespace sales {
+namespace accounting {
 namespace test {
 
-class TestSales : public testing::Test {
+class TestAccounting : public testing::Test {
  public:
-    TestSales() : controller(dpMock, viewMock) {
+    TestAccounting() : controller(dpMock, viewMock) {
         // Empty for now
     }
 
-    ~TestSales() = default;
+    ~TestAccounting() = default;
     void SetUp() {}
     void TearDown() {}
 
-    std::shared_ptr<SalesDataMock> dpMock  = std::make_shared<SalesDataMock>();
-    std::shared_ptr<SalesViewMock> viewMock = std::make_shared<SalesViewMock>();
-    SalesController controller;
+    std::shared_ptr<AccountingDataMock> dpMock  = std::make_shared<AccountingDataMock>();
+    std::shared_ptr<AccountingViewMock> viewMock = std::make_shared<AccountingViewMock>();
+    AccountingController controller;
 };
 
-TEST_F(TestSales, ShouldSucceed) {
+TEST_F(TestAccounting, ShouldSucceed) {
     SUCCEED();
 }
 
 }  // namespace test
-}  // namespace sales
+}  // namespace accounting
 }  // namespace domain

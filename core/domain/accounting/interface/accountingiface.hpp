@@ -18,23 +18,58 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "salescontroller.hpp"
+#ifndef CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGIFACE_HPP_
+#define CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGIFACE_HPP_
 #include <memory>
-#include <logger/loghelper.hpp>
+#include <string>
+#include <vector>
+#include "accountingdataif.hpp"
+#include "accountingviewif.hpp"
+#include <domain/common/librarycommon.hpp>
+#include <domain/common/types.hpp>
+#include <entity/sale.hpp>
 
 namespace domain {
-namespace sales {
+namespace accounting {
 
-SalesController::SalesController(const SalesDataPtr& data,
-                                 const SalesViewPtr& view)
-                                 : BaseController(data, view) {
-    mCachedList.setEntityKeyFn(&entity::Sale::ID);
-}
+class AccountingControlInterface {
+ public:
+    AccountingControlInterface() = default;
+    virtual ~AccountingControlInterface() = default;
 
-SalesControllerPtr createSalesModule(const SalesDataPtr& data,
-                                     const SalesViewPtr& view) {
-    return std::make_unique<SalesController>(data, view);
-}
+    /*!
+     * Returns sales that can be used for graph reports
+     * x = category name, y = category sales this month
+     */
+    virtual std::vector<GraphReport> getCategorySales() = 0;
+    /*!
+     * Hourly interval
+     */
+    virtual std::vector<GraphReport> getTodaySalesReport() = 0;
+    /*!
+     * Returns each sales
+     */
+    virtual std::vector<entity::Sale> getSales(Period period) = 0;
+    /*!
+     * Returns each sales from the specified period
+     * Note: Dates are inclusive
+     */
+    virtual std::vector<entity::Sale> getCustomPeriodSales(const std::string& startDate,
+                                                           const std::string& endDate) = 0;
+    /*!
+     * Returns the sale items registered with the transaction ID
+     */
+    virtual std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) = 0;
+};
 
-}  // namespace sales
+typedef std::shared_ptr<AccountingDataInterface> AccountingDataPtr;
+typedef std::shared_ptr<AccountingViewInterface> AccountingViewPtr;
+typedef std::unique_ptr<AccountingControlInterface> AccountingControllerPtr;
+
+// Lib APIs
+extern "C" CORE_API AccountingControllerPtr createAccountingModule
+                    (const AccountingDataPtr& data, const AccountingViewPtr& view);
+
+}  // namespace accounting
 }  // namespace domain
+#endif  // CORE_DOMAIN_ACCOUNTING_INTERFACE_ACCOUNTINGIFACE_HPP_

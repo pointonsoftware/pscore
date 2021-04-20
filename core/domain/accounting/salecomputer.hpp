@@ -18,38 +18,35 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_SALESSCREEN_HPP_
-#define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_SALESSCREEN_HPP_
+#ifndef CORE_DOMAIN_ACCOUNTING_SALECOMPUTER_HPP_
+#define CORE_DOMAIN_ACCOUNTING_SALECOMPUTER_HPP_
 #include <string>
-#include <vector>
-// Core
-#include <domain/sales/interface/salesviewif.hpp>
-#include <domain/sales/interface/salesiface.hpp>
-// Screens
-#include "backofficescreenbase.hpp"
-#include <fieldhelper.hpp>
-#include <screeniface.hpp>
-#include <tablehelper.hpp>
 
-namespace screen {
-namespace backoffice {
+namespace domain {
+namespace accounting {
 
-class SalesScreen : public screen::ScreenInterface,
-                    public BackOfficeScreenBase<domain::sales::SalesControllerPtr>,
-                    public domain::sales::SalesViewInterface {
- public:
-    SalesScreen();
-    ~SalesScreen() = default;
-
-    // ScreenInterface
-    void show(std::promise<defines::display>* promise) override;
-
- private:
-    Options getUserSelection();
-    bool action(Options option, std::promise<defines::display>* nextScreen);
-    bool isShowingDetailsScreen;
+enum class DISCOUNT_TYPE {
+    NONE,
+    SCPWD,
+    COUPON_1,
+    COUPON_2
 };
 
-}  // namespace backoffice
-}  // namespace screen
-#endif  // ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_SALESSCREEN_HPP_
+struct Computation {
+    std::string taxableAmount;
+    std::string tax;
+    std::string discount;
+    std::string amountDue;
+};
+
+class SaleComputer {
+ public:
+    SaleComputer() = default;
+    ~SaleComputer() = default;
+    Computation compute(const std::string& subtotal, DISCOUNT_TYPE dsc = DISCOUNT_TYPE::NONE);
+};
+
+}  // namespace accounting
+}  // namespace domain
+
+#endif  // CORE_DOMAIN_ACCOUNTING_SALECOMPUTER_HPP_

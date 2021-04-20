@@ -18,30 +18,20 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
-#define CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
-#include <memory>
-#include "salesdataif.hpp"
-#include "salesviewif.hpp"
-#include <domain/common/librarycommon.hpp>
+#include "accountingdata.hpp"
+#include <storage/stackdb.hpp>
 
-namespace domain {
-namespace sales {
+namespace dataprovider {
+namespace accounting {
 
-class SalesControlInterface {
- public:
-    SalesControlInterface() = default;
-    virtual ~SalesControlInterface() = default;
-};
+std::vector<entity::Sale> AccountingDataProvider::getSales(const std::string& startDate,
+                                                           const std::string& endDate) {
+    return {};
+}
 
-typedef std::shared_ptr<SalesDataInterface> SalesDataPtr;
-typedef std::shared_ptr<SalesViewInterface> SalesViewPtr;
-typedef std::unique_ptr<SalesControlInterface> SalesControllerPtr;
-
-// Lib APIs
-extern "C" CORE_API SalesControllerPtr createSalesModule
-                    (const SalesDataPtr& data, const SalesViewPtr& view);
-
-}  // namespace sales
-}  // namespace domain
-#endif  // CORE_DOMAIN_SALES_INTERFACE_SALESIFACE_HPP_
+std::vector<entity::SaleItem>
+AccountingDataProvider::getSaleDetails(const std::string& transactionID) {
+    return {};
+}
+}  // namespace accounting
+}  // namespace dataprovider
