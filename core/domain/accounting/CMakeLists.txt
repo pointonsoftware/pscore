@@ -10,8 +10,6 @@ add_library (
     interface/accountingdataif.hpp
     # Controller
     interface/accountingiface.hpp
-    salecomputer.hpp
-    salecomputer.cpp
     accountingcontroller.hpp
     accountingcontroller.cpp
 )

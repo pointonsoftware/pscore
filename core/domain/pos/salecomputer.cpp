@@ -22,7 +22,7 @@
 #include <general.hpp>
 
 namespace domain {
-namespace accounting {
+namespace pos {
 
 constexpr double VAT = 0.12;  // 12%
 constexpr double SCPWD_DISCOUNT = 0.20;  // 20%
@@ -39,7 +39,8 @@ Computation SaleComputer::compute(const std::string& subtotal, DISCOUNT_TYPE dsc
     */
     switch (dsc) {
         case DISCOUNT_TYPE::SCPWD:
-            // Extract subtotal (i.e. total sale - 12% tax)
+            // Extract subtotal (aka taxable amount)
+            // i.e. taxableAmount = total sale - 12% tax
             taxableAmount = subtotalValue / (1 + VAT);
             // SCs and PWDs don't have tax
             tax = 0;
@@ -81,5 +82,5 @@ Computation SaleComputer::compute(const std::string& subtotal, DISCOUNT_TYPE dsc
     return computation;
 }
 
-}  // namespace accounting
+}  // namespace pos
 }  // namespace domain

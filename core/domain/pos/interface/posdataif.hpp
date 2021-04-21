@@ -18,35 +18,18 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef CORE_DOMAIN_ACCOUNTING_SALECOMPUTER_HPP_
-#define CORE_DOMAIN_ACCOUNTING_SALECOMPUTER_HPP_
-#include <string>
+#ifndef CORE_DOMAIN_POS_INTERFACE_POSDATAIF_HPP_
+#define CORE_DOMAIN_POS_INTERFACE_POSDATAIF_HPP_
 
 namespace domain {
-namespace accounting {
+namespace pos {
 
-enum class DISCOUNT_TYPE {
-    NONE,
-    SCPWD,
-    COUPON_1,
-    COUPON_2
-};
-
-struct Computation {
-    std::string taxableAmount;
-    std::string tax;
-    std::string discount;
-    std::string amountDue;
-};
-
-class SaleComputer {
+class POSDataInterface {
  public:
-    SaleComputer() = default;
-    ~SaleComputer() = default;
-    Computation compute(const std::string& subtotal, DISCOUNT_TYPE dsc = DISCOUNT_TYPE::NONE);
+    POSDataInterface() = default;
+    virtual ~POSDataInterface() = default;
 };
 
-}  // namespace accounting
+}  // namespace pos
 }  // namespace domain
-
-#endif  // CORE_DOMAIN_ACCOUNTING_SALECOMPUTER_HPP_
+#endif  // CORE_DOMAIN_POS_INTERFACE_POSDATAIF_HPP_
