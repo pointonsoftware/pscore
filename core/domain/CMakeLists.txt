@@ -1,12 +1,13 @@
 project (domain)
 
 # Domains
+add_subdirectory (accounting)
 add_subdirectory (common)
 add_subdirectory (customermgmt)
 add_subdirectory (dashboard)
 add_subdirectory (employeemgmt)
 add_subdirectory (inventory)
-add_subdirectory (accounting)
+add_subdirectory (pos)
 add_subdirectory (userlogin)
 
 # Note: the unit test executable is affected by this flag
