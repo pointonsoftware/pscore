@@ -26,12 +26,48 @@ namespace accounting {
 
 std::vector<entity::Sale> AccountingDataProvider::getSales(const std::string& startDate,
                                                            const std::string& endDate) {
-    return {};
+    // SELECT Sales
+    std::vector<entity::Sale> sales;
+    for (const db::SalesTableItem& temp : DATABASE().SELECT_SALES_TABLE()) {
+        /*!
+         * If temp.date_time < startDate || temp.date_time > endDate ; continue;
+        */
+        const std::vector<entity::SaleItem>& items = getSaleDetails(temp.ID);
+        sales.emplace_back(entity::Sale(
+            temp.ID,
+            temp.date_time,
+            items,
+            temp.subtotal,
+            temp.taxable_amount,
+            temp.vat,
+            temp.discount,
+            temp.total,
+            temp.amount_paid,
+            temp.payment_type,
+            temp.change,
+            temp.cashierID,
+            temp.customerID));
+    }
+    return sales;
 }
 
 std::vector<entity::SaleItem>
 AccountingDataProvider::getSaleDetails(const std::string& transactionID) {
-    return {};
+    // SELECT SaleItems
+    std::vector<entity::SaleItem> items;
+    for (const db::SalesItemTableItem& temp : DATABASE().SELECT_SALES_ITEM_TABLE()) {
+        if (temp.saleID != transactionID) {
+            continue;
+        }
+        items.emplace_back(entity::SaleItem(
+            temp.saleID,
+            temp.productID,
+            temp.product_name,
+            temp.unit_price,
+            temp.quantity,
+            temp.total_price));
+    }
+    return items;
 }
 }  // namespace accounting
 }  // namespace dataprovider
