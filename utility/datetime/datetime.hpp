@@ -18,29 +18,38 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
-#define ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
+#ifndef UTILITY_DATETIME_DATETIME_HPP_
+#define UTILITY_DATETIME_DATETIME_HPP_
+
 #include <string>
-#include <vector>
-#include <datetime/datetime.hpp>
-#include <domain/accounting/interface/accountingdataif.hpp>
 
-namespace dataprovider {
-namespace accounting {
+namespace utility {
 
-class AccountingDataProvider : public domain::accounting::AccountingDataInterface {
+extern bool isValidDate(const std::string& date);
+extern bool isValidDateTime(const std::string& dateTime);
+
+class DateTimeComparator {
  public:
-    AccountingDataProvider() = default;
-    virtual ~AccountingDataProvider() = default;
+    DateTimeComparator() = default;
+    ~DateTimeComparator() = default;
 
-    std::vector<entity::Sale> getSales(const std::string& startDate,
-                                       const std::string& endDate) override;
+    enum class Result : int8_t {
+        INVALID_DATE = -2,
+        LESSER_THAN = -1,
+        EQUALS = 0,
+        GREATER_THAN = 1
+    };
 
-    std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
+    inline DateTimeComparator& operator()(const std::string& date) {
+        mDate = date;
+        return *this;
+    }
+
+    Result compare(const std::string& date) const;
+
  private:
-    utility::DateTimeComparator mDateTimeComparator;
+    std::string mDate;
 };
 
-}  // namespace accounting
-}  // namespace dataprovider
-#endif  // ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
+}  // namespace utility
+#endif  // UTILITY_DATETIME_DATETIME_HPP_

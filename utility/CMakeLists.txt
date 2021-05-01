@@ -18,6 +18,9 @@ add_library (
     logger/filelog.cpp
     logger/socketlog.hpp
     logger/socketlog.cpp
+    # datetime
+    datetime/datetime.hpp
+    datetime/datetime.cpp
     # fileio
     fileio/fileio.hpp
     fileio/fileio.cpp

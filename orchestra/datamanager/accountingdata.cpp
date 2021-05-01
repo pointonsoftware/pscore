@@ -24,6 +24,8 @@
 namespace dataprovider {
 namespace accounting {
 
+using utility::DateTimeComparator;
+
 std::vector<entity::Sale> AccountingDataProvider::getSales(const std::string& startDate,
                                                            const std::string& endDate) {
     // SELECT Sales
@@ -32,6 +34,12 @@ std::vector<entity::Sale> AccountingDataProvider::getSales(const std::string& st
         /*!
          * If temp.date_time < startDate || temp.date_time > endDate ; continue;
         */
+        if ((mDateTimeComparator(temp.date_time).compare(startDate)
+            == DateTimeComparator::Result::LESSER_THAN) ||
+            (mDateTimeComparator(temp.date_time).compare(endDate)
+            == DateTimeComparator::Result::GREATER_THAN)) {
+            continue;
+        }
         const std::vector<entity::SaleItem>& items = getSaleDetails(temp.ID);
         sales.emplace_back(entity::Sale(
             temp.ID,
