@@ -22,6 +22,7 @@
 #define ORCHESTRA_DATAMANAGER_ACCOUNTINGDATA_HPP_
 #include <string>
 #include <vector>
+#include <datetime/datetime.hpp>
 #include <domain/accounting/interface/accountingdataif.hpp>
 
 namespace dataprovider {
@@ -36,6 +37,8 @@ class AccountingDataProvider : public domain::accounting::AccountingDataInterfac
                                        const std::string& endDate) override;
 
     std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
+ private:
+    utility::DateTimeComparator mDateTimeComparator;
 };
 
 }  // namespace accounting
