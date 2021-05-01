@@ -19,9 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "datetime.hpp"
+#include <date/date.h>
 #include <iomanip>
 #include <sstream>
-#include <date/date.h>
 
 namespace utility {
 
@@ -32,42 +32,43 @@ bool isValidDate(const std::string& date) {
     return !date_ss.fail();
 }
 
-/**
- * Code based-from StackOverflow by alain
- * Author profile: https://stackoverflow.com/users/3435400/alain
- *
- * Original question: https://stackoverflow.com/q/39447921/3975468
- * Answer: https://stackoverflow.com/a/39452595/3975468
-*/
 bool isValidDateTime(const std::string& dateTime) {
-    std::istringstream date_s(dateTime);
-    struct tm date_c, date_c_cmp;
-    date_s >> std::get_time(&date_c, "%Y/%m/%d %H:%M:%S");
-    date_c_cmp = date_c;  // store original  to compare later
-    std::time_t when = std::mktime(&date_c);  // normalize
-    {
+    std::istringstream date_ss(dateTime);
+    date::sys_time<std::chrono::milliseconds> tp;
+    date_ss >> date::parse("%Y/%m/%d %H:%M:%S", tp);
+    return !date_ss.fail();
+}
+
+/**
+ * Code based-from StackOverflow by Galik
+ * Author profile: https://stackoverflow.com/users/3807729/galik
+ *
+ * Original question: https://stackoverflow.com/q/38034033/3975468
+ * Answer: https://stackoverflow.com/a/38034148/3975468
+*/
+std::tm currentDateTime() {
+    typedef std::chrono::system_clock Clock;
+    auto now = Clock::now();
+    std::time_t now_c = Clock::to_time_t(now);
+    std::tm bt {};
 #ifdef __unix__
-        std::tm bt {};
-        localtime_r(&when, &bt);
+    localtime_r(&now_c, &bt);
 #elif __WIN32__
-        std::tm bt {};
-        localtime_s(&bt, &when);
+    localtime_s(&bt, &now_c);
 #else
-        static std::mutex mtx;
-        std::lock_guard<std::mutex> lock(mtx);
-        std::localtime(&when);
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock(mtx);
+    bt = *std::localtime(&now_c);
 #endif
-    }
-    // Compare with original
-    if (date_c.tm_year != date_c_cmp.tm_year
-        || date_c.tm_mon != date_c_cmp.tm_mon
-        || date_c.tm_mday != date_c_cmp.tm_mday
-        || date_c.tm_hour != date_c_cmp.tm_hour
-        || date_c.tm_min != date_c_cmp.tm_min
-        || date_c.tm_sec != date_c_cmp.tm_sec) {
-        return false;
-    }
-    return true;
+    return bt;
+}
+
+std::string currentDateTimeStr() {
+    const std::tm& bt = currentDateTime();
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%04u/%02u/%02u %02u:%02u:%02u", bt.tm_year + 1900,
+                bt.tm_mon + 1, bt.tm_mday, bt.tm_hour, bt.tm_min, bt.tm_sec);
+    return std::string(buff);
 }
 
 DateTimeComparator::Result DateTimeComparator::compare(const std::string& date) const {

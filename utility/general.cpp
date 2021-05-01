@@ -65,36 +65,4 @@ unsigned randomNumber(unsigned int low, unsigned int high) {
     return dist6(rng);
 }
 
-/**
- * Code based-from StackOverflow by Galik
- * Author profile: https://stackoverflow.com/users/3807729/galik
- *
- * Original question: https://stackoverflow.com/q/38034033/3975468
- * Answer: https://stackoverflow.com/a/38034148/3975468
-*/
-std::tm currentDateTime() {
-    typedef std::chrono::system_clock Clock;
-    auto now = Clock::now();
-    std::time_t now_c = Clock::to_time_t(now);
-    std::tm bt {};
-#ifdef __unix__
-    localtime_r(&now_c, &bt);
-#elif __WIN32__
-    localtime_s(&bt, &now_c);
-#else
-    static std::mutex mtx;
-    std::lock_guard<std::mutex> lock(mtx);
-    bt = *std::localtime(&now_c);
-#endif
-    return bt;
-}
-
-std::string currentDateTimeStr() {
-    const std::tm& bt = currentDateTime();
-    char buff[100];
-    snprintf(buff, sizeof(buff), "%04u-%02u-%02u %02u:%02u:%02u", bt.tm_year + 1900,
-                bt.tm_mon + 1, bt.tm_mday, bt.tm_hour, bt.tm_min, bt.tm_sec);
-    return std::string(buff);
-}
-
 }  // namespace utility

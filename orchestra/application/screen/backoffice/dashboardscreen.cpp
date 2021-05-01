@@ -74,7 +74,7 @@ void DashboardScreen::showOptions() const {
     std::cout << "[2] Employee Management" << std::endl;
     std::cout << "[3] Inventory Control" << std::endl;
     std::cout << "[4] Customer Management" << std::endl;
-    std::cout << "[4] Accounting Information" << std::endl;
+    std::cout << "[5] Accounting Information" << std::endl;
     std::cout << "[0] Logout" << std::endl;
 }
 

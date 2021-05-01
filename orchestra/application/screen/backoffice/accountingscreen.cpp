@@ -69,9 +69,9 @@ void AccountingScreen::showLandingScreen() const {
 }
 
 void AccountingScreen::queryTransactionsList() {
-    // @todo - just using test dates
-    const std::string startDate = "2020/01/12 11:09:51";
-    const std::string endDate = "2020/01/12 11:09:52";
+    // @todo - just using test dates to show all sales
+    const std::string startDate = "2020/01/01 12:00:00";
+    const std::string endDate = "2022/01/01 12:00:00";
     mTableHelper.setData(mCoreController->getCustomPeriodSales(startDate, endDate));
 }
 
@@ -103,6 +103,9 @@ bool AccountingScreen::action(Options option, std::promise<defines::display>* ne
         case Options::LOGOUT:
             switchScreenIsRequired = true;
             nextScreen->set_value(defines::display::LOGIN);
+            break;
+        case Options::INVALID:
+            invalidOptionSelected();
             break;
         case Options::APP_EXIT:  // Fall-through
         default:

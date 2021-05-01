@@ -20,12 +20,26 @@
 **************************************************************************************************/
 #ifndef UTILITY_DATETIME_DATETIME_HPP_
 #define UTILITY_DATETIME_DATETIME_HPP_
-
+#include <chrono>
 #include <string>
 
 namespace utility {
 
+/*!
+ * Returns the current date-time
+*/
+extern std::tm currentDateTime();
+/*!
+ * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
+*/
+extern std::string currentDateTimeStr();
+/*!
+ * Validate if date is in "YYYY/MM/DD" form
+*/
 extern bool isValidDate(const std::string& date);
+/*!
+ * Validate if date-time is in "YYYY/MM/DD HH:MM:SS" form
+*/
 extern bool isValidDateTime(const std::string& dateTime);
 
 class DateTimeComparator {
