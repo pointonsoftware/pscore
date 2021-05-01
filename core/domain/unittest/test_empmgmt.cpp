@@ -48,7 +48,8 @@ class TestEmployeeManagement : public testing::Test {
     void TearDown() override {}
     // Helper function
     entity::Employee makeValidEmployee(const std::string& id, bool isUser) const {
-        entity::Employee employee(id, "John", "", "Doe", "", "M", "Admin", "ACTIVE", isUser);
+        entity::Employee employee(id, "John", "", "Doe", "1994/05/20", "M",
+                                  "Admin", "ACTIVE", isUser);
         employee.setAddress({"DummyL1", "DummyL2", "DummyTown", "DummyProv", ""});
         employee.addPersonalId("Driver's License", "PC13-72021-20");
         return employee;
@@ -256,7 +257,7 @@ TEST_F(TestEmployeeManagement, TestUpdateUser) {
     EXPECT_CALL(*dpMock, getEmployees())
         .WillOnce(Return(
             std::vector<entity::Employee>{
-                entity::Employee(requestedID, "", "", "", "", "", "", "", true)
+                entity::Employee(requestedID, "", "", "", "1994/05/20", "", "", "", true)
                 }));
     empmgmtController.list();
 

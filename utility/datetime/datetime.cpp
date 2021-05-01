@@ -21,8 +21,17 @@
 #include "datetime.hpp"
 #include <iomanip>
 #include <sstream>
+#include <date/date.h>
 
 namespace utility {
+
+bool isValidDate(const std::string& date) {
+    std::istringstream date_ss(date);
+    date::year_month_day ymd;
+    date_ss >> date::parse("%Y/%m/%d", ymd);
+    return !date_ss.fail();
+}
+
 /**
  * Code based-from StackOverflow by alain
  * Author profile: https://stackoverflow.com/users/3435400/alain
@@ -30,34 +39,6 @@ namespace utility {
  * Original question: https://stackoverflow.com/q/39447921/3975468
  * Answer: https://stackoverflow.com/a/39452595/3975468
 */
-bool isValidDate(const std::string& date) {
-    std::istringstream date_s(date);
-    struct tm date_c, date_c_cmp;
-    date_s >> std::get_time(&date_c, "%Y/%m/%d");
-    date_c_cmp = date_c;  // store original  to compare later
-    std::time_t when = std::mktime(&date_c);  // normalize
-    {
-#ifdef __unix__
-        std::tm bt {};
-        localtime_r(&when, &bt);
-#elif __WIN32__
-        std::tm bt {};
-        localtime_s(&bt, &when);
-#else
-        static std::mutex mtx;
-        std::lock_guard<std::mutex> lock(mtx);
-        std::localtime(&when);
-#endif
-    }
-    // Compare with original
-    if (date_c.tm_year != date_c_cmp.tm_year
-        || date_c.tm_mon != date_c_cmp.tm_mon
-        || date_c.tm_mday != date_c_cmp.tm_mday) {
-        return false;
-    }
-    return true;
-}
-
 bool isValidDateTime(const std::string& dateTime) {
     std::istringstream date_s(dateTime);
     struct tm date_c, date_c_cmp;
