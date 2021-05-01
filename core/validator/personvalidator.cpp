@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "personvalidator.hpp"
+#include <datetime/datetime.hpp>
 
 namespace entity {
 namespace validator {
@@ -61,7 +62,14 @@ ValidationStatus PersonValidator::validateGender() {
     return ValidationStatus::S_OK;
 }
 ValidationStatus PersonValidator::validateBirthdate() {
-    // Todo (code) - validate birthdate
+    if (mPerson.birthdate().empty()) {
+        addError(FIELD_BDATE, "Birthdate cannot be empty.");
+        return ValidationStatus::S_EMPTY;
+    }
+    if (!utility::isValidDate(mPerson.birthdate())) {
+        addError(FIELD_BDATE, "Birthdate is an invalid date-time string.");
+        return ValidationStatus::S_INVALID_STRING;
+    }
     return ValidationStatus::S_OK;
 }
 }  // namespace validator
