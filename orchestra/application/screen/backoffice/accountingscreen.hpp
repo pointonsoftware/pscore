@@ -45,8 +45,11 @@ class AccountingScreen : public screen::ScreenInterface,
     void show(std::promise<defines::display>* promise) override;
 
  private:
+    void showLandingScreen() const;
+    void queryTransactionsList();
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
+    app::utility::TableHelper<entity::Sale> mTableHelper;
     bool isShowingDetailsScreen;
 };
 

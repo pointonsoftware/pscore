@@ -35,6 +35,7 @@
 #include <screencommon.hpp>
 // screens
 #include <login/loginscreen.hpp>
+#include <backoffice/accountingscreen.hpp>
 #include <backoffice/customermgmtscreen.hpp>
 #include <backoffice/dashboardscreen.hpp>
 #include <backoffice/empmgmtscreen.hpp>
@@ -71,27 +72,32 @@ void FlowController::run() {
 
 void FlowController::show(const defines::display& screenToDisplay,
                          std::promise<defines::display>* promise) {
+    std::shared_ptr<screen::ScreenInterface> screen;
     switch (screenToDisplay) {
         case defines::display::LOGIN:
             LOG_DEBUG("screen: Login");
             screenshared::currentUserId = "";  // Reset the current userID
-            showLoginScreen(promise);
+            screen = std::make_shared<login::LoginScreen>();
             break;
         case defines::display::DASHBOARD:
             LOG_DEBUG("screen: Dashboard");
-            showDashboard(promise);
+            screen = std::make_shared<backoffice::DashboardScreen>(screenshared::currentUserId);
             break;
         case defines::display::EMPMGMT:
             LOG_DEBUG("screen: Employee management");
-            showEmployeeMgmt(promise);
+            screen = std::make_shared<backoffice::EmployeeMgmtScreen>();
             break;
         case defines::display::INVENTORY:
             LOG_DEBUG("screen: Inventory management");
-            showInventoryCtrl(promise);
+            screen = std::make_shared<backoffice::InventoryScreen>();
             break;
         case defines::display::CUSTMGMT:
             LOG_DEBUG("screen: Customer management");
-            showCustomerMgmt(promise);
+            screen = std::make_shared<backoffice::CustomerMgmtScreen>();
+            break;
+        case defines::display::ACCNTING:
+            LOG_DEBUG("screen: Accounting");
+            screen = std::make_shared<backoffice::AccountingScreen>();
             break;
         case defines::display::EXIT:  // fall-through
         default:
@@ -99,36 +105,22 @@ void FlowController::show(const defines::display& screenToDisplay,
             promise->set_value(defines::display::EXIT);
             break;
     }
+
+    // Actual screen showing
+    spawnScreen(screen, promise);
+
+    // Post Processing
+    if (screenToDisplay == defines::display::LOGIN) {
+        // Get the current user ID if login is successful
+        screenshared::currentUserId =
+        std::dynamic_pointer_cast<login::LoginScreen>(screen)->getUserID();
+    }
 }
 
-void FlowController::showLoginScreen(std::promise<defines::display>* promise) {
-    login::LoginScreen theScreen;
-    std::thread spawnScreenProcess(&login::LoginScreen::show, &theScreen, promise);
-    spawnScreenProcess.join();
-    screenshared::currentUserId = theScreen.getUserID();
-}
-
-void FlowController::showDashboard(std::promise<defines::display>* promise) {
-    backoffice::DashboardScreen theScreen(screenshared::currentUserId);
-    std::thread spawnScreenProcess(&backoffice::DashboardScreen::show, &theScreen, promise);
-    spawnScreenProcess.join();
-}
-
-void FlowController::showEmployeeMgmt(std::promise<defines::display>* promise) {
-    backoffice::EmployeeMgmtScreen theScreen;
-    std::thread spawnScreenProcess(&backoffice::EmployeeMgmtScreen::show, &theScreen, promise);
-    spawnScreenProcess.join();
-}
-
-void FlowController::showInventoryCtrl(std::promise<defines::display>* promise) {
-    backoffice::InventoryScreen theScreen;
-    std::thread spawnScreenProcess(&backoffice::InventoryScreen::show, &theScreen, promise);
-    spawnScreenProcess.join();
-}
-
-void FlowController::showCustomerMgmt(std::promise<defines::display>* promise) {
-    backoffice::CustomerMgmtScreen theScreen;
-    std::thread spawnScreenProcess(&backoffice::CustomerMgmtScreen::show, &theScreen, promise);
+void FlowController::spawnScreen(std::weak_ptr<screen::ScreenInterface> screen,
+                                std::promise<defines::display>* promise) {
+    auto screenPtr = screen.lock();
+    std::thread spawnScreenProcess(&screen::ScreenInterface::show, screenPtr.get(), promise);
     spawnScreenProcess.join();
 }
 

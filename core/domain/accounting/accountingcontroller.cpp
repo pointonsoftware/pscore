@@ -49,7 +49,7 @@ std::vector<entity::Sale> AccountingController::getSales(Period period) {
 std::vector<entity::Sale> AccountingController::getCustomPeriodSales(const std::string& startDate,
                                                                      const std::string& endDate) {
     LOG_DEBUG("Retrieving sales from %s to %s", startDate.c_str(), endDate.c_str());
-    return {};
+    return mDataProvider->getSales(startDate, endDate);
 }
 
 std::vector<entity::SaleItem>
