@@ -55,6 +55,7 @@ include_directories (core)
 include_directories (orchestra/datamanager)
 include_directories (orchestra/migration)
 include_directories (utility)
+include_directories (external/datetime/include)
 
 if (BUILD_UNITTEST)
 include_directories (external/gtest/googletest/include)

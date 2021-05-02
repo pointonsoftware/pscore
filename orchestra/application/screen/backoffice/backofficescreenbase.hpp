@@ -48,6 +48,7 @@ class BackOfficeScreenBase {
         EMPLOYEE_MGMT,
         INVENTORY_CTRL,
         CUSTOMER_MGMT,
+        ACCOUNTING,
         OP_CREATE,
         OP_READ,
         OP_UPDATE,

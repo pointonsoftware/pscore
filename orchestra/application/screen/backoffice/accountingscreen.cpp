@@ -19,6 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "accountingscreen.hpp"
+#include <memory>
+#include <accountingdata.hpp>
 #include <logger/loghelper.hpp>
 
 namespace screen {
@@ -40,12 +42,37 @@ const std::vector<std::string> DOMAIN_FIELDS {
     "Sale.CustomerID"
 };
 
-AccountingScreen::AccountingScreen() : isShowingDetailsScreen(false) {
+AccountingScreen::AccountingScreen() : mTableHelper({"ID", "Sale Date", "Grand Total"},
+            { &entity::Sale::ID, &entity::Sale::dateTime, &entity::Sale::total }),
+            isShowingDetailsScreen(false) {
     // Empty for now
 }
 
 void AccountingScreen::show(std::promise<defines::display>* promise) {
+    mCoreController = domain::accounting::createAccountingModule(
+                    std::make_shared<dataprovider::accounting::AccountingDataProvider>(),
+                    std::make_shared<AccountingScreen>());
+    // Get the customers from Core then cache the list
+    queryTransactionsList();
+    // Landing
+    showLandingScreen();
     do {} while (action(getUserSelection(), promise));
+}
+
+void AccountingScreen::showLandingScreen() const {
+    LOG_DEBUG("Showing accounting information screen");
+    SCREENCOMMON().showTopBanner("Accounting Information");
+    // @todo - show data according to Product Requirement / Screen Design
+    std::cout << std::endl;
+    mTableHelper.printTable();
+    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
+}
+
+void AccountingScreen::queryTransactionsList() {
+    // @todo - just using test dates to show all sales
+    const std::string startDate = "2020/01/01 12:00:00";
+    const std::string endDate = "2022/01/01 12:00:00";
+    mTableHelper.setData(mCoreController->getCustomPeriodSales(startDate, endDate));
 }
 
 AccountingScreen::Options AccountingScreen::getUserSelection() {
@@ -76,6 +103,9 @@ bool AccountingScreen::action(Options option, std::promise<defines::display>* ne
         case Options::LOGOUT:
             switchScreenIsRequired = true;
             nextScreen->set_value(defines::display::LOGIN);
+            break;
+        case Options::INVALID:
+            invalidOptionSelected();
             break;
         case Options::APP_EXIT:  // Fall-through
         default:

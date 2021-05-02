@@ -21,7 +21,9 @@
 #ifndef ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_
 #define ORCHESTRA_APPLICATION_FLOWCONTROLLER_HPP_
 #include <future>
+#include <memory>
 #include <screendefines.hpp>
+#include <screeniface.hpp>
 
 class ScreenInterface;
 
@@ -49,11 +51,8 @@ class FlowController {
     void show(const defines::display& screenToDisplay,
               std::promise<defines::display>* promise);
     // spawn screen
-    void showLoginScreen(std::promise<defines::display>* promise);
-    void showDashboard(std::promise<defines::display>* promise);
-    void showEmployeeMgmt(std::promise<defines::display>* promise);
-    void showInventoryCtrl(std::promise<defines::display>* promise);
-    void showCustomerMgmt(std::promise<defines::display>* promise);
+    void spawnScreen(std::weak_ptr<screen::ScreenInterface> screen,
+                    std::promise<defines::display>* promise);
 };
 
 }  // namespace screen

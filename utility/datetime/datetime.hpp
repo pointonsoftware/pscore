@@ -18,50 +18,52 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "accountingcontroller.hpp"
-#include <memory>
-#include <logger/loghelper.hpp>
+#ifndef UTILITY_DATETIME_DATETIME_HPP_
+#define UTILITY_DATETIME_DATETIME_HPP_
+#include <chrono>
+#include <string>
 
-namespace domain {
-namespace accounting {
+namespace utility {
 
-AccountingController::AccountingController(const AccountingDataPtr& data,
-                                           const AccountingViewPtr& view)
-                                           : BaseController(data, view) {
-    mCachedList.setEntityKeyFn(&entity::Sale::ID);
-}
+/*!
+ * Returns the current date-time
+*/
+extern std::tm currentDateTime();
+/*!
+ * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
+*/
+extern std::string currentDateTimeStr();
+/*!
+ * Validate if date is in "YYYY/MM/DD" form
+*/
+extern bool isValidDate(const std::string& date);
+/*!
+ * Validate if date-time is in "YYYY/MM/DD HH:MM:SS" form
+*/
+extern bool isValidDateTime(const std::string& dateTime);
 
-std::vector<GraphReport> AccountingController::getCategorySales() {
-    LOG_DEBUG("Retrieving category sales");
-    return {};
-}
+class DateTimeComparator {
+ public:
+    DateTimeComparator() = default;
+    ~DateTimeComparator() = default;
 
-std::vector<GraphReport> AccountingController::getTodaySalesReport() {
-    LOG_DEBUG("Retrieving today's sales");
-    return {};
-}
+    enum class Result : int8_t {
+        INVALID_DATE = -2,
+        LESSER_THAN = -1,
+        EQUALS = 0,
+        GREATER_THAN = 1
+    };
 
-std::vector<entity::Sale> AccountingController::getSales(Period period) {
-    LOG_DEBUG("Retrieving %c sales", static_cast<char>(period));
-    return {};
-}
+    inline DateTimeComparator& operator()(const std::string& date) {
+        mDate = date;
+        return *this;
+    }
 
-std::vector<entity::Sale> AccountingController::getCustomPeriodSales(const std::string& startDate,
-                                                                     const std::string& endDate) {
-    LOG_DEBUG("Retrieving sales from %s to %s", startDate.c_str(), endDate.c_str());
-    return mDataProvider->getSales(startDate, endDate);
-}
+    Result compare(const std::string& date) const;
 
-std::vector<entity::SaleItem>
-AccountingController::getSaleDetails(const std::string& transactionID) {
-    LOG_DEBUG("Retrieving details of transaction ID %s", transactionID.c_str());
-    return {};
-}
+ private:
+    std::string mDate;
+};
 
-AccountingControllerPtr createAccountingModule(const AccountingDataPtr& data,
-                                               const AccountingViewPtr& view) {
-    return std::make_unique<AccountingController>(data, view);
-}
-
-}  // namespace accounting
-}  // namespace domain
+}  // namespace utility
+#endif  // UTILITY_DATETIME_DATETIME_HPP_

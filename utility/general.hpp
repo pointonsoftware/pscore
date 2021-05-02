@@ -68,14 +68,6 @@ std::string toString(const T& value) {
  * Generates random integer from inclusive-range [low : high]
 */
 extern unsigned int randomNumber(unsigned int low, unsigned int high);
-/*!
- * Returns the current date-time
-*/
-extern std::tm currentDateTime();
-/*!
- * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
-*/
-extern std::string currentDateTimeStr();
 }  // namespace utility
 
 #endif  // UTILITY_GENERAL_HPP_
