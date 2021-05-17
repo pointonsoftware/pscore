@@ -20,7 +20,7 @@
 **************************************************************************************************/
 #include "personalidvalidator.hpp"
 #include <regex>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 
 namespace entity {
 namespace validator {

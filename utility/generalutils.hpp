@@ -18,60 +18,60 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "general.hpp"
-#include <algorithm>
+#ifndef UTILITY_GENERALUTILS_HPP_
+#define UTILITY_GENERALUTILS_HPP_
 #include <chrono>
 #include <iomanip>
-#include <mutex>
 #include <sstream>
-#include <random>
+#include <string>
+#include <type_traits>
 
 namespace utility {
-
-bool isNumber(const std::string &str) {
-  return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
-}
-
-bool isDouble(const std::string& str) {
-    char* end = nullptr;
-    double val = strtod(str.c_str(), &end);
-    return end != str.c_str() && *end == '\0' && val != 999999;
-}
-
-bool hasNumber(const std::string &str) {
-  return std::find_if(str.begin(), str.end(),
-        [](unsigned char c) { return std::isdigit(c); }) != str.end();
-}
-
-std::string toUpper(std::string str) {
-    std::transform(str.begin(), str.end(), str.begin(),
-                   [](unsigned char c){ return std::toupper(c); });
-    return str;
-}
-
-std::string toLower(std::string str) {
-    std::transform(str.begin(), str.end(), str.begin(),
-                   [](unsigned char c){ return std::tolower(c); });
-    return str;
-}
-
-double toDouble(const std::string& str) {
-    return isDouble(str) ? strtod(str.c_str(), nullptr) : 0;
-}
-
-// Precision = 2
-std::string doubleToString(double value) {
+/*!
+ * Checks if the string argument is a number
+*/
+extern bool isNumber(const std::string& str);
+/*!
+ * Checks if the string argument is a valid double
+*/
+extern bool isDouble(const std::string& str);
+/*!
+ * Checks if the string argument contains a number
+*/
+extern bool hasNumber(const std::string& str);
+/*!
+ * Returns the uppercase string equivalent
+*/
+extern std::string toUpper(std::string str);
+/*!
+ * Returns the lowercase string equivalent
+*/
+extern std::string toLower(std::string str);
+/*!
+ * Returns converted value if str is valid; returns zero otherwise
+*/
+extern double toDouble(const std::string& str);
+/*!
+ * Returns converted value to string with precision to 2 digits
+*/
+extern std::string doubleToString(double value);
+/*!
+ * Returns converted value
+*/
+template <typename T>
+std::string toString(const T& value) {
     std::stringstream stream;
-    stream << std::fixed << std::setprecision(2) << value;
+    if (std::is_same<T, double>::value || std::is_same<T, float>::value) {
+        stream << std::fixed << std::setprecision(2) << value;
+    } else {
+        stream << value;
+    }
     return stream.str();
 }
-
-unsigned randomNumber(unsigned int low, unsigned int high) {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    // low = 0 ; high = 9  -  generates number for 0 to 9
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(low, high);
-    return dist6(rng);
-}
-
+/*!
+ * Generates random integer from inclusive-range [low : high]
+*/
+extern unsigned int randomNumber(unsigned int low, unsigned int high);
 }  // namespace utility
+
+#endif  // UTILITY_GENERALUTILS_HPP_

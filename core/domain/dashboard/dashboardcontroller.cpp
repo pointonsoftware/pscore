@@ -23,7 +23,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
 
 namespace domain {

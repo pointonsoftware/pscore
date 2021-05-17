@@ -24,7 +24,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cfg/config.hpp>  // pscore utility
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <screendefines.hpp>
 
 constexpr char CORE_VERSION[] = "version";

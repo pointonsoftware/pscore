@@ -22,7 +22,7 @@
 #include <iomanip>
 #include <mutex>
 #include <sstream>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <datetime/datetime.hpp>
 
 namespace entity {

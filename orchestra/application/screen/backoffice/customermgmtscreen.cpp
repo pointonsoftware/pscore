@@ -23,7 +23,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
 #include <logger/loghelper.hpp>

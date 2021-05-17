@@ -21,7 +21,7 @@
 #include "chargenerator.hpp"
 #include <random>
 #include <string>
-#include <general.hpp>
+#include <generalutils.hpp>
 
 namespace utility {
 namespace chargenerator {
