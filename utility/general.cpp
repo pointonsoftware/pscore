@@ -21,7 +21,9 @@
 #include "general.hpp"
 #include <algorithm>
 #include <chrono>
+#include <iomanip>
 #include <mutex>
+#include <sstream>
 #include <random>
 
 namespace utility {
@@ -55,6 +57,13 @@ std::string toLower(std::string str) {
 
 double toDouble(const std::string& str) {
     return isDouble(str) ? strtod(str.c_str(), nullptr) : 0;
+}
+
+// Precision = 2
+std::string doubleToString(double value) {
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(2) << value;
+    return stream.str();
 }
 
 unsigned randomNumber(unsigned int low, unsigned int high) {

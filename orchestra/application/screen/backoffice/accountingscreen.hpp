@@ -25,6 +25,7 @@
 // Core
 #include <domain/accounting/interface/accountingviewif.hpp>
 #include <domain/accounting/interface/accountingiface.hpp>
+#include <domain/common/types.hpp>
 // Screens
 #include "backofficescreenbase.hpp"
 #include <fieldhelper.hpp>
@@ -33,6 +34,8 @@
 
 namespace screen {
 namespace backoffice {
+
+class DomainGraphMemberWrapper;  // see definition at the end of this file
 
 class AccountingScreen : public screen::ScreenInterface,
                     public BackOfficeScreenBase<domain::accounting::AccountingControllerPtr>,
@@ -49,8 +52,27 @@ class AccountingScreen : public screen::ScreenInterface,
     void queryTransactionsList();
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    app::utility::TableHelper<entity::Sale> mTableHelper;
+    app::utility::TableHelper<entity::Sale> mSalesTable;
+    app::utility::TableHelper<DomainGraphMemberWrapper> mTodaysSalesReport;
     bool isShowingDetailsScreen;
+
+    // Domain interface implementation
+    void showInvalidDateTimeRange();
+};
+
+// Used for Today's Sales Report table
+class DomainGraphMemberWrapper {
+ public:
+    explicit DomainGraphMemberWrapper(const domain::accounting::GraphMember& gm)
+      : mGraphMember(gm) {}
+    inline std::string getKey() const {
+        return mGraphMember.key;
+    }
+    inline std::string getValue() const {
+        return mGraphMember.value;
+    }
+ private:
+    domain::accounting::GraphMember mGraphMember;
 };
 
 }  // namespace backoffice

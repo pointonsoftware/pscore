@@ -99,7 +99,6 @@ void EmployeeMgmtScreen::showEmployees() const {
     LOG_DEBUG("Showing employees list");
     std::cout << std::endl;
     mTableHelper.printTable();
-    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void EmployeeMgmtScreen::showEmployeeDetails(bool showIndex) const {

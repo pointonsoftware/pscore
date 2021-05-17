@@ -25,6 +25,9 @@
 
 namespace utility {
 
+// Developer note: How To's for date.h
+// https://github.com/HowardHinnant/date/wiki/Examples-and-Recipes
+
 bool isValidDate(const std::string& date) {
     std::istringstream date_ss(date);
     date::year_month_day ymd;
@@ -67,23 +70,45 @@ std::string currentDateTimeStr() {
     const std::tm& bt = currentDateTime();
     char buff[100];
     snprintf(buff, sizeof(buff), "%04u/%02u/%02u %02u:%02u:%02u", bt.tm_year + 1900,
-                bt.tm_mon + 1, bt.tm_mday, bt.tm_hour, bt.tm_min, bt.tm_sec);
+             bt.tm_mon + 1, bt.tm_mday, bt.tm_hour, bt.tm_min, bt.tm_sec);
+    return std::string(buff);
+}
+
+std::string currentDateStr() {
+    const std::tm& bt = currentDateTime();
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%04u/%02u/%02u", bt.tm_year + 1900, bt.tm_mon + 1, bt.tm_mday);
     return std::string(buff);
 }
 
 DateTimeComparator::Result DateTimeComparator::compare(const std::string& date) const {
-    if (!isValidDate(mDate) || !isValidDate(date)) {
+    const std::string format = [this, date]() {
+        // This check sequence should not be changed
+        // i.e. check for dateTime first before check date because a dateTime is also a valid date
+        //      hence, we will never reach isValidDateTime if we check for valid date first
+        if (isValidDateTime(mDate) && isValidDateTime(date)) {
+            return "%Y/%m/%d %H:%M:%S";
+        }
+        if (isValidDate(mDate) && isValidDate(date)) {
+            return "%Y/%m/%d";
+        }
+        return "";  // Empty format means one or both of the strings are invalid date/s
+    }();
+
+    if (format.empty()) {
         return Result::INVALID_DATE;
     }
-    std::istringstream date_s(mDate);
-    struct tm date_c;
-    date_s >> std::get_time(&date_c, "%Y/%m/%d %H:%M:%S");
-    std::time_t seconds1 = std::mktime(& date_c);
 
-    std::istringstream date_s2(date);
-    struct tm date_c2;
-    date_s2 >> std::get_time(&date_c2, "%Y/%m/%d %H:%M:%S");
-    std::time_t seconds2 = std::mktime(& date_c2);
+    // Convert the dates to seconds so they can be compared
+    std::istringstream date1(mDate);
+    struct tm date1TM;
+    date1 >> std::get_time(&date1TM, static_cast<const char*>(format.c_str()));
+    std::time_t seconds1 = std::mktime(&date1TM);
+
+    std::istringstream date2(date);
+    struct tm date2TM;
+    date2 >> std::get_time(&date2TM, static_cast<const char*>(format.c_str()));
+    std::time_t seconds2 = std::mktime(&date2TM);
 
     if (seconds1 > seconds2) {
         return Result::GREATER_THAN;

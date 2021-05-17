@@ -40,7 +40,7 @@ class ScreenCommon {
 
     // Outputs
     void showTopBanner(const std::string& currentScreen) const;
-    void printTitleText(const std::string& text) const;
+    void printTitleText(const std::string& text, bool showBorders = true) const;
     void printItemText(const std::string& label, const std::string& item) const;
     void printColumns(const std::vector<std::string>& columns,
                       bool isHeader = false, bool showColumnBorders = true) const;

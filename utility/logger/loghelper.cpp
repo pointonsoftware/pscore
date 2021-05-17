@@ -86,14 +86,14 @@ bool LogHelper::isLogModeWritable(const std::string& logMode) const {
      * ALERT    => warn, error
      * CRITICAL => error
     */
-    if (logMode.compare("debug") == 0) {
+    if (logMode == "debug") {
         return mLogLevel == LogLevel::VERBOSE;
     }
-    if (logMode.compare("info") == 0) {
+    if (logMode == "info") {
         return (mLogLevel == LogLevel::VERBOSE) ||
                (mLogLevel == LogLevel::NORMAL);
     }
-    if (logMode.compare("warn") == 0) {
+    if (logMode == "warn") {
         return mLogLevel != LogLevel::CRITICAL;
     }
     return true;

@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "accountingscreen.hpp"
+#include <algorithm>
 #include <memory>
 #include <accountingdata.hpp>
 #include <logger/loghelper.hpp>
@@ -42,8 +43,11 @@ const std::vector<std::string> DOMAIN_FIELDS {
     "Sale.CustomerID"
 };
 
-AccountingScreen::AccountingScreen() : mTableHelper({"ID", "Sale Date", "Grand Total"},
+AccountingScreen::AccountingScreen()
+            : mSalesTable({"ID", "Sale Date", "Grand Total"},
             { &entity::Sale::ID, &entity::Sale::dateTime, &entity::Sale::total }),
+            mTodaysSalesReport({"Hour", "Total Sale"},
+            { &DomainGraphMemberWrapper::getKey, &DomainGraphMemberWrapper::getValue }),
             isShowingDetailsScreen(false) {
     // Empty for now
 }
@@ -64,15 +68,26 @@ void AccountingScreen::showLandingScreen() const {
     SCREENCOMMON().showTopBanner("Accounting Information");
     // @todo - show data according to Product Requirement / Screen Design
     std::cout << std::endl;
-    mTableHelper.printTable();
-    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
+    std::cout << "Total transactions count: " << mSalesTable.getDataCount() << std::endl;
+    mSalesTable.printTable();
+    std::cout << std::endl;
+    SCREENCOMMON().printTitleText("Hourly Sales Table", false);
+    mTodaysSalesReport.printTable();
 }
 
 void AccountingScreen::queryTransactionsList() {
+    LOG_DEBUG("Sending transaction list request to accounting domain");
     // @todo - just using test dates to show all sales
-    const std::string startDate = "2020/01/01 12:00:00";
-    const std::string endDate = "2022/01/01 12:00:00";
-    mTableHelper.setData(mCoreController->getCustomPeriodSales(startDate, endDate));
+    const std::string startDate = "2020/05/10 09:00:00";
+    const std::string endDate = "2022/05/10 12:00:00";
+    mSalesTable.setData(mCoreController->getCustomPeriodSales(startDate, endDate));
+    // Convert core data into table-readable type
+    const domain::accounting::GraphReport& coreReport =  mCoreController->getTodaySalesReport();
+    std::vector<DomainGraphMemberWrapper> report;
+    for (domain::accounting::GraphMember member : coreReport) {
+        report.emplace_back(member);
+    }
+    mTodaysSalesReport.setData(report);
 }
 
 AccountingScreen::Options AccountingScreen::getUserSelection() {
@@ -115,6 +130,14 @@ bool AccountingScreen::action(Options option, std::promise<defines::display>* ne
     }
     // Return "false" if switch screen is required so we proceed to the next screen
     return !switchScreenIsRequired;
+}
+
+void AccountingScreen::showInvalidDateTimeRange() {
+    LOG_DEBUG("Showing invalid date-time screen");
+    std::cout << "Invalid date-time range!" << std::endl;
+    // Let the user confirm
+    std::cin.ignore();
+    std::cin.get();
 }
 
 }  // namespace backoffice

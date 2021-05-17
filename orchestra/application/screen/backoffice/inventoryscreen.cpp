@@ -99,7 +99,6 @@ void InventoryScreen::showProducts() const {
     LOG_DEBUG("Showing products list");
     std::cout << std::endl;
     mTableHelper.printTable();
-    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {

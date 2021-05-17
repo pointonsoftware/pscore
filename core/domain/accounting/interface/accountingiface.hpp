@@ -41,11 +41,11 @@ class AccountingControlInterface {
      * Returns sales that can be used for graph reports
      * x = category name, y = category sales this month
      */
-    virtual std::vector<GraphReport> getCategorySales() = 0;
+    virtual GraphReport getCategorySales() = 0;
     /*!
      * Hourly interval
      */
-    virtual std::vector<GraphReport> getTodaySalesReport() = 0;
+    virtual GraphReport getTodaySalesReport() = 0;
     /*!
      * Returns each sales
      */

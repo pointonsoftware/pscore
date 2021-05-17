@@ -52,6 +52,10 @@ extern std::string toLower(std::string str);
 */
 extern double toDouble(const std::string& str);
 /*!
+ * Returns converted value to string with precision to 2 digits
+*/
+extern std::string doubleToString(double value);
+/*!
  * Returns converted value
 */
 template <typename T>

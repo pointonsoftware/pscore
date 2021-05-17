@@ -97,7 +97,6 @@ void CustomerMgmtScreen::showCustomers() const {
     LOG_DEBUG("Showing customers list");
     std::cout << std::endl;
     mTableHelper.printTable();
-    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {

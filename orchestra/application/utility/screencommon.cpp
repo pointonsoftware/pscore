@@ -54,12 +54,12 @@ void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     printHorizontalBorder(defines::BORDER_CHARACTER_1);
 }
 
-void ScreenCommon::printTitleText(const std::string& text) const {
+void ScreenCommon::printTitleText(const std::string& text, bool showBorders) const {
     const Indent indents = calculateIndents(VerticalAlignment::CENTER,
                                             defines::SCREEN_WIDTH, text);
-    std::cout << defines::BORDER_CHARACTER_1
+    std::cout << (showBorders ? defines::BORDER_CHARACTER_1 : ' ')
               << indents.start << text << indents.end
-              << defines::BORDER_CHARACTER_1 << std::endl;
+              << (showBorders ? defines::BORDER_CHARACTER_1 : ' ') << std::endl;
 }
 
 void ScreenCommon::printItemText(const std::string& label, const std::string& item) const {

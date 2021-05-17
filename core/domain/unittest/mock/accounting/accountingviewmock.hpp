@@ -31,6 +31,8 @@ class AccountingViewMock : public AccountingViewInterface {
  public:
     AccountingViewMock() = default;
     ~AccountingViewMock() = default;
+
+    MOCK_METHOD(void, showInvalidDateTimeRange, ());
 };
 
 }  // namespace accounting

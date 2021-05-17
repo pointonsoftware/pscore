@@ -49,7 +49,7 @@ constexpr unsigned int PORT = 2020;
 void screenStartUp() {
     std::cout << "+" << std::string(146, '-') << "+" << std::endl;
     std::cout << "|" << std::string(62, ' ')
-              << "PSCORE Log Client v2.0"
+              << "PSCORE Log Client v2.1"
               << std::string(62, ' ') << "|"
               << std::endl;
     std::cout << "|" << std::string(63, ' ')
@@ -151,8 +151,8 @@ int main() {
     std::cout << std::string(148, '-') << std::endl;
     std::cout << std::left
               << std::setw(25) << "| Timestamp"   << " | "
-              << std::setw(50) << "Class Name"    << " | "
-              << std::setw(20) << "Function Name" << " | "
+              << std::setw(45) << "Class Name"    << " | "
+              << std::setw(25) << "Function Name" << " | "
               << std::setw(42) << "Message"       << " |"
               << std::endl;
     std::cout << std::string(148, '-') << std::endl;
