@@ -57,7 +57,7 @@ class TestCustomerMgmt : public testing::Test {
                     = std::make_shared<CustomerManagementDataMock>();
     std::shared_ptr<CustomerManagementViewMock> viewMock
                     = std::make_shared<CustomerManagementViewMock>();
-    CustomerManagementController controller;
+    CustomerMgmtController controller;
 };
 
 TEST_F(TestCustomerMgmt, TestGetCustomersList) {

@@ -73,6 +73,7 @@ void AccountingScreen::showLandingScreen() const {
     std::cout << std::endl;
     SCREENCOMMON().printTitleText("Hourly Sales Table", false);
     mTodaysSalesReport.printTable();
+    showOptions();
 }
 
 void AccountingScreen::queryTransactionsList() {
