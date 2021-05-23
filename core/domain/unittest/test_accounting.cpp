@@ -50,7 +50,14 @@ class TestAccounting : public testing::Test {
     AccountingController controller;
 };
 
-// @todo - enable when getCategorySales is implemented
+// @todo - update when getCategorySales is implemented
+TEST_F(TestAccounting, GetCategorySalesShouldFail) {
+    GraphReport expectedReturn = controller.getCategorySales();
+    // Should be empty
+    ASSERT_TRUE(expectedReturn.empty());
+}
+
+// @todo - update when getCategorySales is implemented
 TEST_F(TestAccounting, DISABLED_GetCategorySalesShouldSucceed) {
     GraphReport expectedReturn = controller.getCategorySales();
     // Should not be empty, verify the contents
