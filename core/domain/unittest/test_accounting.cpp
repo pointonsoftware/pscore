@@ -50,8 +50,68 @@ class TestAccounting : public testing::Test {
     AccountingController controller;
 };
 
-TEST_F(TestAccounting, ShouldSucceed) {
-    SUCCEED();
+// @todo - enable when getCategorySales is implemented
+TEST_F(TestAccounting, DISABLED_GetCategorySalesShouldSucceed) {
+    GraphReport expectedReturn = controller.getCategorySales();
+    // Should not be empty, verify the contents
+    ASSERT_FALSE(expectedReturn.empty());
+}
+
+TEST_F(TestAccounting, GetCustomPeriodSalesWithInvalidDateRange) {
+    const std::string startDate = "2020/01/01 01:01:01";
+    // end date is lesser than startdate
+    const std::string endDate   = "1990/01/01 01:01:01";
+    // Should call a view interface
+    EXPECT_CALL(*viewMock, showInvalidDateTimeRange());
+
+    const std::vector<entity::Sale> expectedReturn =
+        controller.getCustomPeriodSales(startDate, endDate);
+    // Should be empty
+    ASSERT_TRUE(expectedReturn.empty());
+}
+
+TEST_F(TestAccounting, GetCustomPeriodSalesShouldSucceed) {
+    const std::string startDate = "2020/01/01 01:01:01";
+    // end date is greater than startdate
+    const std::string endDate   = "2021/01/01 01:01:01";
+    const std::vector<entity::Sale> fakeData =
+        { entity::Sale{"100000001", "2021/05/16 10:12:20", {}, "",
+                       "", "", "", "", "", "", "", "", ""} };
+    // Should query the database
+    EXPECT_CALL(*dpMock, getSales(startDate, endDate))
+            .WillOnce(Return(fakeData));
+    const std::vector<entity::Sale> sales = controller.getCustomPeriodSales(startDate, endDate);
+    // Should not be empty
+    ASSERT_FALSE(sales.empty());
+}
+
+TEST_F(TestAccounting, GetTodaySalesReportShouldSucceed) {
+    const std::vector<entity::Sale> fakeData =
+        { entity::Sale{"100000001", "2021/05/16 10:12:20", {}, "",
+                       "", "", "", "100.00", "", "", "", "", ""} };
+    // Should query the database
+    EXPECT_CALL(*dpMock, getSales(_, _))
+            .WillOnce(Return(fakeData));
+
+    const GraphReport salesReport = controller.getTodaySalesReport();
+    // Should not be empty, verify the contents
+    EXPECT_FALSE(salesReport.empty());
+    // Verify if the function returns the correct total sales per hour
+    const GraphMember member = salesReport.at(1);  // index 1 is the 10:00 hour slot
+    ASSERT_STREQ(member.value.c_str(), "100.00");
+}
+
+TEST_F(TestAccounting, GetTodaySalesShouldSucceed) {
+    const std::vector<entity::Sale> fakeData =
+        { entity::Sale{"100000001", "2021/05/16 10:12:20", {}, "",
+                       "", "", "", "", "", "", "", "", ""} };
+    // Should query the database
+    EXPECT_CALL(*dpMock, getSales(_, _))
+            .WillOnce(Return(fakeData));
+
+    const std::vector<entity::Sale> sales = controller.getSales(Period::TODAY);
+    // Should not be empty, verify the contents
+    ASSERT_FALSE(sales.empty());
 }
 
 }  // namespace test

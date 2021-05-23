@@ -65,9 +65,7 @@ GraphReport AccountingController::getCategorySales() {
 
 GraphReport AccountingController::getTodaySalesReport() {
     LOG_DEBUG("Creating today's sales");
-    const std::vector<entity::Sale> sales
-        = getCustomPeriodSales(utility::currentDateStr() + " " + ZERO_HOUR,
-                               utility::currentDateStr() + " " + LAST_HOUR);
+    const std::vector<entity::Sale> sales = getSales(Period::TODAY);
     // Get the sales every hour
     GraphReport report;
     // @todo - this algorithm can be improved and iterate the sales vector only once.
@@ -83,13 +81,14 @@ GraphReport AccountingController::getTodaySalesReport() {
 }
 
 std::vector<entity::Sale> AccountingController::getSales(Period period) {
-    LOG_DEBUG("Retrieving %c sales", static_cast<char>(period));
+    LOG_DEBUG("Retrieving sales from %d enum", static_cast<char>(period));
     std::string startDate, endDate;
     switch (period) {
         case Period::YESTERDAY:
             break;
         case Period::TODAY:
-            startDate = endDate = utility::currentDateStr();
+            startDate = utility::currentDateStr() + " " + ZERO_HOUR;
+            endDate   = utility::currentDateStr() + " " + LAST_HOUR;
             break;
         case Period::THIS_WEEK:
             break;

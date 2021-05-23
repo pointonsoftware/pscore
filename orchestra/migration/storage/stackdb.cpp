@@ -547,7 +547,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000004",                  // SalesID <!Make sure this is unique>
-            "2021/05/16 12:45:20",        // Date and time of transaction
+            "2021/05/22 12:45:20",        // Date and time of transaction
             "336.50",                     // Subtotal
             "300.45",                     // Taxable
             "36.05",                      // VAT
