@@ -44,6 +44,8 @@ class AccountingController : public AccountingControlInterface,
     std::vector<entity::Sale> getCustomPeriodSales(const std::string& startDate,
                                                    const std::string& endDate) override;
     std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
+    bool invalidateSale(const std::string& transactionID) override;
+    std::vector<entity::Sale> getVoidSales() override;
 
  private:
     bool isDateTimeRangeValid(const std::string& startDate, const std::string& endDate);

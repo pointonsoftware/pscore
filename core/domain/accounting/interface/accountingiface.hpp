@@ -60,6 +60,15 @@ class AccountingControlInterface {
      * Returns the sale items registered with the transaction ID
      */
     virtual std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) = 0;
+    /*!
+     * Used to void a sale/transaction
+     * Returns true if successful; false otherwise
+     */
+    virtual bool invalidateSale(const std::string& transactionID) = 0;
+    /*!
+     * Returns all void sales
+     */
+    virtual std::vector<entity::Sale> getVoidSales() = 0;
 };
 
 typedef std::shared_ptr<AccountingDataInterface> AccountingDataPtr;

@@ -155,6 +155,19 @@ std::string AccountingController::getTotalSaleByTime(const std::string& time,
     return utility::doubleToString(totalSale);
 }
 
+bool AccountingController::invalidateSale(const std::string& transactionID) {
+    // Stub
+    // @todo - add bool isVoid property to sale item in the database
+    // @todo - add implementation in the datamanager to toggle that property
+    return false;
+}
+
+std::vector<entity::Sale> AccountingController::getVoidSales() {
+    // Stub
+    // @todo - add implementation in the datamanager to return all the sales with isVoid == true
+    return {};
+}
+
 AccountingControllerPtr createAccountingModule(const AccountingDataPtr& data,
                                                const AccountingViewPtr& view) {
     return std::make_unique<AccountingController>(data, view);
