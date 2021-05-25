@@ -23,7 +23,7 @@
 #include <memory>
 #include <map>
 #include <datetime/datetime.hpp>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <generator/chargenerator.hpp>
 #include <logger/loghelper.hpp>
 #include <validator/addressvalidator.hpp>

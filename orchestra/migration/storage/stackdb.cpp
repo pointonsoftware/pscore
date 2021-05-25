@@ -487,7 +487,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000002",                  // SalesID <!Make sure this is unique>
-            "2020/05/10 10:11:20",        // Date and time of transaction
+            "2021/05/16 10:11:20",        // Date and time of transaction
             "56.00",                      // Subtotal
             "50.00",                      // Taxable
             "6.00",                       // VAT
@@ -517,7 +517,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000003",                  // SalesID <!Make sure this is unique>
-            "2020/05/10 10:12:20",        // Date and time of transaction
+            "2021/05/16 10:12:20",        // Date and time of transaction
             "1000.00",                    // Subtotal
             "0.00",                       // Taxable
             "0.00",                       // VAT
@@ -547,7 +547,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000004",                  // SalesID <!Make sure this is unique>
-            "2020/05/10 12:45:20",        // Date and time of transaction
+            "2021/05/22 12:45:20",        // Date and time of transaction
             "336.50",                     // Subtotal
             "300.45",                     // Taxable
             "36.05",                      // VAT

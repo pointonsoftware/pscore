@@ -31,6 +31,11 @@ class AccountingViewInterface {
  public:
     AccountingViewInterface() = default;
     virtual ~AccountingViewInterface() = default;
+
+    /*!
+     * Invoked if the date-time range used in the query is invalid
+    */
+    virtual void showInvalidDateTimeRange() = 0;
 };
 
 }  // namespace accounting

@@ -26,7 +26,7 @@
 #include <random>
 #include <string>
 #include <datetime/datetime.hpp>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 
 namespace app {
 namespace util {

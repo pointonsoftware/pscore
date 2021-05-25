@@ -30,13 +30,13 @@
 namespace domain {
 namespace customermgmt {
 
-CustomerManagementController::CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                                           const CustomerMgmtViewPtr& view)
-                                                           : BaseController(data, view) {
+CustomerMgmtController::CustomerMgmtController(const CustomerMgmtDataPtr& data,
+                                               const CustomerMgmtViewPtr& view)
+                                               : BaseController(data, view) {
     mCachedList.setEntityKeyFn(&entity::Customer::ID);
 }
 
-std::vector<entity::Customer> CustomerManagementController::list() {
+std::vector<entity::Customer> CustomerMgmtController::list() {
     LOG_DEBUG("Retrieving all customers data");
     mCachedList.fill(mDataProvider->getCustomers());
     if (!mCachedList.hasData()) {
@@ -48,7 +48,7 @@ std::vector<entity::Customer> CustomerManagementController::list() {
     return mCachedList.get();
 }
 
-entity::Customer CustomerManagementController::get(const std::string& id) {
+entity::Customer CustomerMgmtController::get(const std::string& id) {
     LOG_DEBUG("Getting customer %s data", id.c_str());
     const std::vector<entity::Customer>::iterator& iter = mCachedList.find(id);
     if (iter == mCachedList.endOfData()) {
@@ -59,7 +59,7 @@ entity::Customer CustomerManagementController::get(const std::string& id) {
     return *iter;
 }
 
-CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer& customer,
+CUSTOMERMGMTAPISTATUS CustomerMgmtController::save(const entity::Customer& customer,
                                                          ValidationErrors* validationResult) {
     LOG_DEBUG("Saving customer information");
     if (!validationResult) {
@@ -105,7 +105,7 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::save(const entity::Customer&
     return CUSTOMERMGMTAPISTATUS::SUCCESS;
 }
 
-void CustomerManagementController::create(const entity::Customer& data) {
+void CustomerMgmtController::create(const entity::Customer& data) {
     // Gnerate ID and create a new customer
     entity::Customer newCustomer(
         // Todo (code) - need to ensure this ID is unique
@@ -131,7 +131,7 @@ void CustomerManagementController::create(const entity::Customer& data) {
                                      newCustomer.lastName().c_str());
 }
 
-void CustomerManagementController::update(const entity::Customer& customer) {
+void CustomerMgmtController::update(const entity::Customer& customer) {
     LOG_DEBUG("Updating customer data", customer.ID().c_str());
     // Update actual data
     mDataProvider->update(customer);
@@ -141,7 +141,7 @@ void CustomerManagementController::update(const entity::Customer& customer) {
     LOG_INFO("Customer %s information updated", customer.ID().c_str());
 }
 
-CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id) {
+CUSTOMERMGMTAPISTATUS CustomerMgmtController::remove(const std::string& id) {
     LOG_DEBUG("Removing customer %s", id.c_str());
     const std::vector<entity::Customer>::iterator it = mCachedList.find(id);
     if (it == mCachedList.endOfData()) {
@@ -163,7 +163,7 @@ CUSTOMERMGMTAPISTATUS CustomerManagementController::remove(const std::string& id
 CustomerMgmtCtrlPtr createCustomerMgmtModule(
                     const CustomerMgmtDataPtr& data,
                     const CustomerMgmtViewPtr& view) {
-    return std::make_unique<CustomerManagementController>(data, view);
+    return std::make_unique<CustomerMgmtController>(data, view);
 }
 
 }  // namespace customermgmt

@@ -34,6 +34,10 @@ extern std::tm currentDateTime();
 */
 extern std::string currentDateTimeStr();
 /*!
+ * Returns the current date in "YYYY/MM/DD" form
+*/
+extern std::string currentDateStr();
+/*!
  * Validate if date is in "YYYY/MM/DD" form
 */
 extern bool isValidDate(const std::string& date);
@@ -58,7 +62,10 @@ class DateTimeComparator {
         mDate = date;
         return *this;
     }
-
+    /*!
+    * Compares member date to argument date.
+    * e.g if mDate < date ? return Result::LESSER_THAN;
+    */
     Result compare(const std::string& date) const;
 
  private:

@@ -41,11 +41,11 @@ class AccountingControlInterface {
      * Returns sales that can be used for graph reports
      * x = category name, y = category sales this month
      */
-    virtual std::vector<GraphReport> getCategorySales() = 0;
+    virtual GraphReport getCategorySales() = 0;
     /*!
      * Hourly interval
      */
-    virtual std::vector<GraphReport> getTodaySalesReport() = 0;
+    virtual GraphReport getTodaySalesReport() = 0;
     /*!
      * Returns each sales
      */
@@ -60,6 +60,15 @@ class AccountingControlInterface {
      * Returns the sale items registered with the transaction ID
      */
     virtual std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) = 0;
+    /*!
+     * Used to void a sale/transaction
+     * Returns true if successful; false otherwise
+     */
+    virtual bool invalidateSale(const std::string& transactionID) = 0;
+    /*!
+     * Returns all void sales
+     */
+    virtual std::vector<entity::Sale> getVoidSales() = 0;
 };
 
 typedef std::shared_ptr<AccountingDataInterface> AccountingDataPtr;

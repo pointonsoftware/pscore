@@ -18,8 +18,8 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#ifndef UTILITY_GENERAL_HPP_
-#define UTILITY_GENERAL_HPP_
+#ifndef UTILITY_GENERALUTILS_HPP_
+#define UTILITY_GENERALUTILS_HPP_
 #include <chrono>
 #include <iomanip>
 #include <sstream>
@@ -52,6 +52,10 @@ extern std::string toLower(std::string str);
 */
 extern double toDouble(const std::string& str);
 /*!
+ * Returns converted value to string with precision to 2 digits
+*/
+extern std::string doubleToString(double value);
+/*!
  * Returns converted value
 */
 template <typename T>
@@ -70,4 +74,4 @@ std::string toString(const T& value) {
 extern unsigned int randomNumber(unsigned int low, unsigned int high);
 }  // namespace utility
 
-#endif  // UTILITY_GENERAL_HPP_
+#endif  // UTILITY_GENERALUTILS_HPP_

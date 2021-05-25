@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include "screencommon.hpp"
+#include "screendefines.hpp"
 
 namespace app {
 namespace utility {
@@ -69,7 +70,7 @@ class TableHelper {
         return mCurrentIndex;
     }
 
-    inline uint8_t getDataCount() const {
+    inline size_t getDataCount() const {
         return mTableList.size();
     }
 
@@ -90,6 +91,7 @@ class TableHelper {
         } else {
             SCREENCOMMON().printTitleText("No data.");
         }
+        SCREENCOMMON().printHorizontalBorder(screen::defines::BORDER_CHARACTER_2);
     }
 
  private:

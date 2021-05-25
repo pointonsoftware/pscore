@@ -41,26 +41,28 @@ struct TodaySalesSummary {
     unsigned int transactionCount;
 };
 
-struct GraphReport {
+struct GraphMember {
     std::string key;
     std::string value;
 };
 
+typedef std::vector<GraphMember> GraphReport;
+
 struct DailyRevenueComparison {
-    std::vector<GraphReport> yesterday;
-    std::vector<GraphReport> today;
+    GraphReport yesterday;
+    GraphReport today;
 };
 
 struct MonthStatusReport {
-    std::vector<GraphReport> revenue;
-    std::vector<GraphReport> cost;
-    std::vector<GraphReport> profit;
-    std::vector<GraphReport> expense;
+    GraphReport revenue;
+    GraphReport cost;
+    GraphReport profit;
+    GraphReport expense;
 };
 
 struct ProductCategoryReport {
   std::string category;
-  std::vector<GraphReport> productsCount;  // products remaining  under the category per day
+  GraphReport productsCount;  // products remaining  under the category per day
 };
 
 enum class Period : char {

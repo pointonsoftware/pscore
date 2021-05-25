@@ -19,7 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "salecomputer.hpp"
-#include <general.hpp>
+#include <generalutils.hpp>
 
 namespace domain {
 namespace pos {

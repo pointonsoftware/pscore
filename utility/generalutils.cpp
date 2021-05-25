@@ -18,10 +18,12 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
-#include "general.hpp"
+#include "generalutils.hpp"
 #include <algorithm>
 #include <chrono>
+#include <iomanip>
 #include <mutex>
+#include <sstream>
 #include <random>
 
 namespace utility {
@@ -32,8 +34,8 @@ bool isNumber(const std::string &str) {
 
 bool isDouble(const std::string& str) {
     char* end = nullptr;
-    double val = strtod(str.c_str(), &end);
-    return end != str.c_str() && *end == '\0' && val != 999999;
+    strtod(str.c_str(), &end);
+    return end != str.c_str() && *end == '\0';
 }
 
 bool hasNumber(const std::string &str) {
@@ -55,6 +57,13 @@ std::string toLower(std::string str) {
 
 double toDouble(const std::string& str) {
     return isDouble(str) ? strtod(str.c_str(), nullptr) : 0;
+}
+
+// Precision = 2
+std::string doubleToString(double value) {
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(2) << value;
+    return stream.str();
 }
 
 unsigned randomNumber(unsigned int low, unsigned int high) {

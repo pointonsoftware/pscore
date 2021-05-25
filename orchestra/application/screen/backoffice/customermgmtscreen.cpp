@@ -23,7 +23,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
 #include <logger/loghelper.hpp>
@@ -97,7 +97,6 @@ void CustomerMgmtScreen::showCustomers() const {
     LOG_DEBUG("Showing customers list");
     std::cout << std::endl;
     mTableHelper.printTable();
-    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {

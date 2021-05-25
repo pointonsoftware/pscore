@@ -25,7 +25,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
 #include <logger/loghelper.hpp>
@@ -99,7 +99,6 @@ void InventoryScreen::showProducts() const {
     LOG_DEBUG("Showing products list");
     std::cout << std::endl;
     mTableHelper.printTable();
-    SCREENCOMMON().printHorizontalBorder(defines::BORDER_CHARACTER_2);
 }
 
 void InventoryScreen::showProductDetails(bool showIndex) const {

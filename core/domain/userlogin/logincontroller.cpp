@@ -21,7 +21,7 @@
 #include "logincontroller.hpp"
 #include <assert.h>
 #include <memory>
-#include <general.hpp>  // pscore utility
+#include <generalutils.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
 #include <validator/uservalidator.hpp>
 

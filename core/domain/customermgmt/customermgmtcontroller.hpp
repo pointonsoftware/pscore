@@ -32,14 +32,14 @@
 namespace domain {
 namespace customermgmt {
 
-class CustomerManagementController : public CustomerManagementControlInterface,
-                                     public BaseController<CustomerManagementDataInterface,
-                                                           CustomerManagementViewInterface,
-                                                           entity::Customer> {
+class CustomerMgmtController : public CustomerManagementControlInterface,
+                               public BaseController<CustomerManagementDataInterface,
+                                                     CustomerManagementViewInterface,
+                                                     entity::Customer> {
  public:
-    explicit CustomerManagementController(const CustomerMgmtDataPtr& data,
-                                          const CustomerMgmtViewPtr& view);
-    ~CustomerManagementController() = default;
+    explicit CustomerMgmtController(const CustomerMgmtDataPtr& data,
+                                    const CustomerMgmtViewPtr& view);
+    ~CustomerMgmtController() = default;
 
     std::vector<entity::Customer> list() override;
     entity::Customer get(const std::string& id) override;
