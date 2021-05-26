@@ -79,6 +79,20 @@ class InventoryControlInterface {
      *  Note: Must be paired with getMeasurementList()
      */
     virtual INVENTORYAPISTATUS removeUOM(const std::string& id) = 0;
+    /**
+     *  Returns the list of categories
+     */
+    virtual std::vector<std::string> getCategoryList() = 0;
+    /**
+     *  Used to add a category
+     *  @param category name
+     */
+    virtual INVENTORYAPISTATUS addCategory(const std::string& category) = 0;
+    /**
+     *  Used to remove a category
+     *  @param category name
+     */
+    virtual INVENTORYAPISTATUS removeCategory(const std::string& category) = 0;
 };
 
 typedef std::shared_ptr<InventoryDataInterface> InventoryDataPtr;

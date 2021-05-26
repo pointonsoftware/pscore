@@ -188,6 +188,18 @@ INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
     return INVENTORYAPISTATUS::SUCCESS;
 }
 
+std::vector<std::string> InventoryController::getCategoryList() {
+    return {};
+}
+
+INVENTORYAPISTATUS InventoryController::addCategory(const std::string& category) {
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
+INVENTORYAPISTATUS InventoryController::removeCategory(const std::string& category) {
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
 InventoryControllerPtr createInventoryModule(const InventoryDataPtr& data,
                                              const InventoryViewPtr& view) {
     return std::make_unique<InventoryController>(data, view);

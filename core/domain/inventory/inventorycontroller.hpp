@@ -51,6 +51,9 @@ class InventoryController : public InventoryControlInterface,
     std::vector<entity::UnitOfMeasurement> getMeasurementList() override;
     INVENTORYAPISTATUS save(const entity::UnitOfMeasurement& uom) override;
     INVENTORYAPISTATUS removeUOM(const std::string& id) override;
+    std::vector<std::string> getCategoryList() override;
+    INVENTORYAPISTATUS addCategory(const std::string& category) override;
+    INVENTORYAPISTATUS removeCategory(const std::string& category) override;
 
  private:
     void create(const entity::Product& product);

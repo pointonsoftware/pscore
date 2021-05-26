@@ -61,6 +61,18 @@ class InventoryDataInterface {
      *  Remove a unit of measurement
      */
     virtual void removeUOM(const std::string& id) = 0;
+    /**
+     *  Returns the categories
+     */
+    virtual std::vector<std::string> getCategories() = 0;
+    /**
+     *  Add a category
+     */
+    virtual void createCategory(const std::string& category) = 0;
+    /**
+     *  Remove a category
+     */
+    virtual void removeCategory(const std::string& category) = 0;
 };
 
 }  // namespace inventory

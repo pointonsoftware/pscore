@@ -135,6 +135,18 @@ void InventoryDataProvider::removeUOM(const std::string& id) {
         DATABASE().SELECT_UOM_TABLE().end());
 }
 
+std::vector<std::string> InventoryDataProvider::getCategories() {
+    return {};
+}
+
+void InventoryDataProvider::createCategory(const std::string& category) {
+    // stub
+}
+
+void InventoryDataProvider::removeCategory(const std::string& category) {
+    // stub
+}
+
 }  // namespace inventory
 }  // namespace dataprovider
 
