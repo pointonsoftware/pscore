@@ -114,6 +114,7 @@ class StackDB {
     void populateCustomers();
     void populateUOM();
     void populateSales();
+    void populateCategory();
 };
 
 }  // namespace db

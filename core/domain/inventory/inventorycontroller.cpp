@@ -189,14 +189,26 @@ INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
 }
 
 std::vector<std::string> InventoryController::getCategoryList() {
-    return {};
+    return mDataProvider->getCategories();
 }
 
 INVENTORYAPISTATUS InventoryController::addCategory(const std::string& category) {
+    const std::vector<std::string>& categories = mDataProvider->getCategories();
+    if (std::find(categories.begin(), categories.end(), category) != categories.end()) {
+        LOG_ERROR("Category %s already exists", category.c_str());
+        return INVENTORYAPISTATUS::FAILED;
+    }
+    mDataProvider->createCategory(category);
     return INVENTORYAPISTATUS::SUCCESS;
 }
 
 INVENTORYAPISTATUS InventoryController::removeCategory(const std::string& category) {
+    const std::vector<std::string>& categories = mDataProvider->getCategories();
+    if (std::find(categories.begin(), categories.end(), category) == categories.end()) {
+        LOG_ERROR("Category %s does not exist", category.c_str());
+        return INVENTORYAPISTATUS::NOT_FOUND;
+    }
+    mDataProvider->removeCategory(category);
     return INVENTORYAPISTATUS::SUCCESS;
 }
 

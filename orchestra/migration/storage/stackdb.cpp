@@ -31,6 +31,7 @@ std::vector<PersonalIdTableItem> StackDB::PERSONAL_ID_TABLE;
 std::vector<ProductTableItem> StackDB::PRODUCT_TABLE;
 std::vector<CustomerTableItem> StackDB::CUSTOMER_TABLE;
 std::vector<UOMTableItem> StackDB::UOM_TABLE;
+std::vector<CategoryTableItem> StackDB::CATEGORY_TABLE;
 std::vector<SalesTableItem> StackDB::SALES_TABLE;
 std::vector<SalesItemTableItem> StackDB::SALES_ITEM_TABLE;
 
@@ -47,6 +48,7 @@ StackDB::StackDB() {
     populateCustomers();
     populateUOM();
     populateSales();
+    populateCategory();
 }
 
 void StackDB::populateEmployees() {
@@ -587,6 +589,24 @@ void StackDB::populateSales() {
             "100.00",                     // Product unit price <!Make sure this is valid>
             "2",                          // Number of items bought (quantity)
             "200.00"});                   // Total (unit price * quantity)
+}
+
+void StackDB::populateCategory() {
+    // If you want to add a category to our in-memory DB, put it here
+
+    //------- Copy starting from the line below
+    CATEGORY_TABLE.emplace_back(CategoryTableItem {
+            "1",                          // ID <!Make sure this is unique>
+            "Grocery"});                  // Category name
+    //------- End here
+
+    CATEGORY_TABLE.emplace_back(CategoryTableItem {
+            "2",                          // ID <!Make sure this is unique>
+            "Medicine"});                 // Category name
+
+    CATEGORY_TABLE.emplace_back(CategoryTableItem {
+            "3",                          // ID <!Make sure this is unique>
+            "Beverage"});                 // Category name
 }
 
 }  // namespace db

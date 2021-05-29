@@ -120,8 +120,8 @@ std::vector<entity::UnitOfMeasurement> InventoryDataProvider::getUOMs() {
 
 void InventoryDataProvider::createUOM(const entity::UnitOfMeasurement& uom) {
     // INSERT INTO to the database
-    DATABASE().SELECT_UOM_TABLE().emplace_back(db::UOMTableItem{
-                                               uom.ID(), uom.name(), uom.abbreviation()});
+    DATABASE().SELECT_UOM_TABLE().emplace_back(
+        db::UOMTableItem{uom.ID(), uom.name(), uom.abbreviation()});
 }
 
 void InventoryDataProvider::removeUOM(const std::string& id) {
@@ -136,15 +136,27 @@ void InventoryDataProvider::removeUOM(const std::string& id) {
 }
 
 std::vector<std::string> InventoryDataProvider::getCategories() {
-    return {};
+    std::vector<std::string> categories;
+    for (const db::CategoryTableItem& temp : DATABASE().SELECT_CATEGORY_TABLE()) {
+        categories.emplace_back(temp.category_name);
+    }
+    return categories;
 }
 
 void InventoryDataProvider::createCategory(const std::string& category) {
-    // stub
+    // new id = category_table_size + 1
+    const std::string newID = std::to_string(DATABASE().SELECT_CATEGORY_TABLE().size() + 1);
+    DATABASE().SELECT_CATEGORY_TABLE().emplace_back(db::CategoryTableItem{newID, category});
 }
 
 void InventoryDataProvider::removeCategory(const std::string& category) {
-    // stub
+    DATABASE().SELECT_CATEGORY_TABLE().erase(
+        std::remove_if(DATABASE().SELECT_CATEGORY_TABLE().begin(),
+                    DATABASE().SELECT_CATEGORY_TABLE().end(),
+                    [&](const db::CategoryTableItem& e) {
+                        return e.category_name == category;
+                    }),
+    DATABASE().SELECT_CATEGORY_TABLE().end());
 }
 
 }  // namespace inventory
