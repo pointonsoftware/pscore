@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #ifndef ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
 #define ORCHESTRA_APPLICATION_SCREEN_BACKOFFICE_INVENTORYSCREEN_HPP_
+#include <map>
 #include <string>
 #include <vector>
 // Core
@@ -61,7 +62,9 @@ class InventoryScreen : public screen::ScreenInterface,
     void removeProduct();
     void createProduct();
     void updateProduct();
-    void checkAndPrintUOMError(const std::vector<std::string>& requiredFields) const;
+    void handleValidationResults(const std::map<std::string, std::string>& results) const;
+    void printValidUOMs() const;
+    void printValidCategories() const;
 
     app::utility::TableHelper<entity::Product> mTableHelper;
     app::utility::FieldHelper<entity::Product> mfieldHelper;

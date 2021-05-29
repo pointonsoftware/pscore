@@ -40,12 +40,14 @@ namespace validator {
 
 class ProductValidator : public Validator {
  public:
-    explicit ProductValidator(const Product& product, const std::vector<std::string>& uoms);
+    explicit ProductValidator(const Product& product, const std::vector<std::string>& uoms,
+                              const std::vector<std::string>& categories);
     ~ProductValidator() = default;
 
  private:
     const Product mProduct;
     const std::vector<std::string> mUOMs;
+    const std::vector<std::string> mCategories;
     // Validation functions
     ValidationStatus validateBarcode();
     ValidationStatus validateSKU();
