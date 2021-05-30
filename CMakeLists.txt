@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.9.2)
 
-set (CORE_VERSION 0.4.9)
+set (CORE_VERSION 0.4.10)
 
 if (CMAKE_VERSION VERSION_LESS 3.0)
   project (core C CXX)

@@ -35,8 +35,9 @@ class AccountingDataProvider : public domain::accounting::AccountingDataInterfac
 
     std::vector<entity::Sale> getSales(const std::string& startDate,
                                        const std::string& endDate) override;
-
     std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) override;
+    std::vector<std::string> getCategories() override;
+
  private:
     utility::DateTimeComparator mDateTimeComparator;
 };

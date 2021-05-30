@@ -36,6 +36,7 @@ class SaleItem {
     SaleItem(const std::string& saleID,      // links to transaction
              const std::string& productID,   // links to product
              const std::string& productName,
+             const std::string& productCategory,
              const std::string& unitPrice,
              const std::string& quantity,
              const std::string& salePrice);
@@ -46,6 +47,7 @@ class SaleItem {
     std::string saleID() const;
     std::string productID() const;
     std::string productName() const;
+    std::string productCategory() const;
     std::string unitPrice() const;
     std::string quantity() const;
     std::string totalPrice() const;
@@ -54,6 +56,7 @@ class SaleItem {
     void setSaleID(const std::string& id);
     void setProductID(const std::string& id);
     void setProductName(const std::string& name);
+    void setProductCategory(const std::string& category);
     void setUnitPrice(const std::string& unitPrice);
     void setQuantity(const std::string& qty);
     void setTotalPrice(const std::string& total);
@@ -63,6 +66,7 @@ class SaleItem {
     std::string mSaleID;
     std::string mProductID;
     std::string mProductName;
+    std::string mProductCategory;
     std::string mUnitPrice;
     std::string mQuantity;
     std::string mTotalPrice;

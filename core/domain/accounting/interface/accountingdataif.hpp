@@ -42,6 +42,11 @@ class AccountingDataInterface {
      * Returns the sale items registered with the transaction ID
      */
     virtual std::vector<entity::SaleItem> getSaleDetails(const std::string& transactionID) = 0;
+    /**
+     *  Returns the list of stored categories from the DB
+     *  - Should be the same list used by the inventory
+     */
+    virtual std::vector<std::string> getCategories() = 0;
 };
 
 }  // namespace accounting

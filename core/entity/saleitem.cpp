@@ -26,11 +26,13 @@ namespace entity {
 SaleItem::SaleItem(const std::string& saleID,
                    const std::string& productID,
                    const std::string& productName,
+                   const std::string& productCategory,
                    const std::string& unitPrice,
                    const std::string& quantity,
                    const std::string& salePrice)
                    : mSaleID(saleID), mProductID(productID),
-                   mProductName(productName), mUnitPrice(unitPrice), mQuantity(quantity),
+                   mProductName(productName), mProductCategory(productCategory),
+                   mUnitPrice(unitPrice), mQuantity(quantity),
                    mTotalPrice(salePrice) {
     // Empty for now
 }
@@ -45,6 +47,10 @@ std::string SaleItem::productID() const {
 
 std::string SaleItem::productName() const {
     return mProductName;
+}
+
+std::string SaleItem::productCategory() const {
+    return mProductCategory;
 }
 
 std::string SaleItem::unitPrice() const {
@@ -69,6 +75,10 @@ void SaleItem::setProductID(const std::string& id) {
 
 void SaleItem::setProductName(const std::string& name) {
     mProductName = name;
+}
+
+void SaleItem::setProductCategory(const std::string& category) {
+    mProductCategory = category;
 }
 
 void SaleItem::setUnitPrice(const std::string& unitPrice) {

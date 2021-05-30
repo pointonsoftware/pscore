@@ -122,6 +122,7 @@ struct SalesItemTableItem {
     std::string saleID;
     std::string productID;
     std::string product_name;
+    std::string product_category;
     std::string unit_price;
     std::string quantity;
     std::string total_price;

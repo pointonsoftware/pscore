@@ -32,7 +32,7 @@ namespace accounting {
 class AccountingController : public AccountingControlInterface,
                              public BaseController<AccountingDataInterface,
                                                    AccountingViewInterface,
-                                                   entity::Sale>  {
+                                                   entity::Sale> {
  public:
     explicit AccountingController(const AccountingDataPtr& data,
                                   const AccountingViewPtr& view);
@@ -51,6 +51,8 @@ class AccountingController : public AccountingControlInterface,
     bool isDateTimeRangeValid(const std::string& startDate, const std::string& endDate);
     std::string getTotalSaleByTime(const std::string& time,
                                    const std::vector<entity::Sale>& sales);
+    std::string getTotalSaleByCategory(const std::string& category,
+                                       const std::vector<entity::Sale>& sales);
 };
 
 }  // namespace accounting

@@ -25,6 +25,8 @@
 
 namespace utility {
 
+constexpr unsigned int MAX_CHAR_LENGTH = 100;
+
 // Developer note: How To's for date.h
 // https://github.com/HowardHinnant/date/wiki/Examples-and-Recipes
 
@@ -68,16 +70,38 @@ std::tm currentDateTime() {
 
 std::string currentDateTimeStr() {
     const std::tm& bt = currentDateTime();
-    char buff[100];
+    char buff[MAX_CHAR_LENGTH];
     snprintf(buff, sizeof(buff), "%04u-%02u-%02u %02u:%02u:%02u", bt.tm_year + 1900,
              bt.tm_mon + 1, bt.tm_mday, bt.tm_hour, bt.tm_min, bt.tm_sec);
-    return std::string(buff);
+    return buff;
 }
 
 std::string currentDateStr() {
     const std::tm& bt = currentDateTime();
-    char buff[100];
+    char buff[MAX_CHAR_LENGTH];
     snprintf(buff, sizeof(buff), "%04u-%02u-%02u", bt.tm_year + 1900, bt.tm_mon + 1, bt.tm_mday);
+    return buff;
+}
+
+std::string currentMonthStr() {
+    date::year_month_day ymd = date::floor<date::days>(std::chrono::system_clock::now());
+    char buff[MAX_CHAR_LENGTH];
+    snprintf(buff, sizeof(buff), "%02u", static_cast<unsigned>(ymd.month()));
+    return buff;
+}
+
+std::string daysOfCurrentMonthStr() {
+    date::year_month_day ymd = date::floor<date::days>(std::chrono::system_clock::now());
+    date::days days = (ymd.year()/ymd.month()/date::last).day() - date::day{0};
+    char buff[MAX_CHAR_LENGTH];
+    snprintf(buff, sizeof(buff), "%02u", static_cast<unsigned>(days.count()));
+    return std::string(buff);
+}
+
+std::string currentYearStr() {
+    date::year_month_day ymd = date::floor<date::days>(std::chrono::system_clock::now());
+    char buff[MAX_CHAR_LENGTH];
+    snprintf(buff, sizeof(buff), "%d", static_cast<int>(ymd.year()));
     return std::string(buff);
 }
 

@@ -71,11 +71,21 @@ AccountingDataProvider::getSaleDetails(const std::string& transactionID) {
             temp.saleID,
             temp.productID,
             temp.product_name,
+            temp.product_category,
             temp.unit_price,
             temp.quantity,
             temp.total_price));
     }
     return items;
 }
+
+std::vector<std::string> AccountingDataProvider::getCategories() {
+    std::vector<std::string> categories;
+    for (const db::CategoryTableItem& temp : DATABASE().SELECT_CATEGORY_TABLE()) {
+        categories.emplace_back(temp.category_name);
+    }
+    return categories;
+}
+
 }  // namespace accounting
 }  // namespace dataprovider
