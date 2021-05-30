@@ -140,8 +140,7 @@ void InventoryScreen::createProduct() {
         if (mCoreController->save(newProduct, &validationResult)
             != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
             requiredFields = app::util::extractMapKeys(validationResult);
-            SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
-            checkAndPrintUOMError(requiredFields);
+            handleValidationResults(validationResult);
         } else {
             std::cout << "Product created successfully!" << std::endl;
         }
@@ -171,8 +170,7 @@ void InventoryScreen::updateProduct() {
             if (mCoreController->save(product, &validationResult)
                 != domain::inventory::INVENTORYAPISTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
-                SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
-                checkAndPrintUOMError(requiredFields);
+                handleValidationResults(validationResult);
             }
         } while (!validationResult.empty());  // repeat input until new employee is created
         mTableHelper.setData((mTableHelper.getCurrentIndex()), product);
@@ -260,15 +258,31 @@ bool InventoryScreen::action(Options option, std::promise<defines::display>* nex
     return !switchScreenIsRequired;
 }
 
-void InventoryScreen::checkAndPrintUOMError(const std::vector<std::string>& requiredFields) const {
-    if (std::find(requiredFields.begin(), requiredFields.end(), entity::FIELD_UOM)
-        != requiredFields.end()) {
-        std::cout << "List of valid units:" << std::endl;
-        for (const entity::UnitOfMeasurement& uom : mCoreController->getMeasurementList()) {
-             std::cout << "- " << uom.abbreviation() << std::endl;
-        }
-        std::cout << std::endl;
+void InventoryScreen::handleValidationResults(
+    const std::map<std::string, std::string>& results) const {
+    SCREENCOMMON().printErrorList(app::util::extractMapValues(results));
+    if (results.find(entity::FIELD_UOM) != results.end()) {
+        printValidUOMs();
     }
+    if (results.find(entity::FIELD_CTGR) != results.end()) {
+        printValidCategories();
+    }
+}
+
+void InventoryScreen::printValidUOMs() const {
+    std::cout << "Valid units:" << std::endl;
+    for (const entity::UnitOfMeasurement& uom : mCoreController->getMeasurementList()) {
+         std::cout << "- " << uom.abbreviation() << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+void InventoryScreen::printValidCategories() const {
+    std::cout << "Valid categories:" << std::endl;
+    for (const std::string& category : mCoreController->getCategoryList()) {
+         std::cout << "- " << category << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 void InventoryScreen::showProductsEmptyPopup() {

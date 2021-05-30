@@ -389,6 +389,43 @@ TEST_F(TestInventory, TestRemoveUOMWithIDNotFound) {
     ASSERT_EQ(inventoryController.removeUOM("2"), INVENTORYAPISTATUS::NOT_FOUND);
 }
 
+TEST_F(TestInventory, TestGetCategoryList) {
+    EXPECT_CALL(*dpMock, getCategories());
+    inventoryController.getCategoryList();
+}
+
+TEST_F(TestInventory, TestAddExistingCategory) {
+    // Fake "Grocery" is already in the db
+    EXPECT_CALL(*dpMock, getCategories())
+        .WillOnce(Return(std::vector<std::string> {"Grocery"}));
+    ASSERT_EQ(inventoryController.addCategory("Grocery"),
+              INVENTORYAPISTATUS::FAILED);
+}
+
+TEST_F(TestInventory, TestAddNewCategory) {
+    // Fake the db is empty
+    EXPECT_CALL(*dpMock, getCategories())
+        .WillOnce(Return(std::vector<std::string>{}));
+    ASSERT_EQ(inventoryController.addCategory("Beverage"),
+              INVENTORYAPISTATUS::SUCCESS);
+}
+
+TEST_F(TestInventory, TestRemoveNonExistingCategory) {
+    // Fake "Grocery" exists in the db
+    EXPECT_CALL(*dpMock, getCategories())
+        .WillOnce(Return(std::vector<std::string> {"Grocery"}));
+    // Remove a non-existent category
+    ASSERT_EQ(inventoryController.removeCategory("Beverage"),
+              INVENTORYAPISTATUS::NOT_FOUND);
+}
+
+TEST_F(TestInventory, TestRemoveCategory) {
+    // Fake "Grocery" exists in the db
+    EXPECT_CALL(*dpMock, getCategories())
+        .WillOnce(Return(std::vector<std::string> {"Grocery"}));
+    ASSERT_EQ(inventoryController.removeCategory("Grocery"),
+              INVENTORYAPISTATUS::SUCCESS);
+}
 }  // namespace test
 }  // namespace inventory
 }  // namespace domain

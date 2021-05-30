@@ -72,6 +72,10 @@ class StackDB {
         return UOM_TABLE;
     }
 
+    inline std::vector<CategoryTableItem>& SELECT_CATEGORY_TABLE() const {
+        return CATEGORY_TABLE;
+    }
+
     inline std::vector<SalesTableItem>& SELECT_SALES_TABLE() const {
         return SALES_TABLE;
     }
@@ -98,6 +102,8 @@ class StackDB {
     static std::vector<CustomerTableItem> CUSTOMER_TABLE;
     // unit of measurement storage
     static std::vector<UOMTableItem> UOM_TABLE;
+    // inventory category storage
+    static std::vector<CategoryTableItem> CATEGORY_TABLE;
     // sales storage
     static std::vector<SalesTableItem> SALES_TABLE;
     // sales item storage
@@ -108,6 +114,7 @@ class StackDB {
     void populateCustomers();
     void populateUOM();
     void populateSales();
+    void populateCategory();
 };
 
 }  // namespace db

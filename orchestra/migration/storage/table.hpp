@@ -98,6 +98,11 @@ struct UOMTableItem {
     std::string abbreviation;
 };
 
+struct CategoryTableItem {
+    std::string ID;
+    std::string category_name;
+};
+
 struct SalesTableItem {
     std::string ID;
     std::string date_time;

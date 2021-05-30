@@ -77,9 +77,11 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
                     uomAbbr.emplace_back(uom.abbreviation());
                 }
                 return uomAbbr;
-            }());
+            }(),
+            getCategoryList());
         validationResult->merge(validator.result());
     }
+
     if (!validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
         dumpValidationResult(*(validationResult));
@@ -185,6 +187,30 @@ INVENTORYAPISTATUS InventoryController::removeUOM(const std::string& id) {
     // Remove from cache
     mCachedUOMs.erase(it);
     LOG_INFO("Successfully removed uom %s", id.c_str());
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
+std::vector<std::string> InventoryController::getCategoryList() {
+    return mDataProvider->getCategories();
+}
+
+INVENTORYAPISTATUS InventoryController::addCategory(const std::string& category) {
+    const std::vector<std::string>& categories = mDataProvider->getCategories();
+    if (std::find(categories.begin(), categories.end(), category) != categories.end()) {
+        LOG_ERROR("Category %s already exists", category.c_str());
+        return INVENTORYAPISTATUS::FAILED;
+    }
+    mDataProvider->createCategory(category);
+    return INVENTORYAPISTATUS::SUCCESS;
+}
+
+INVENTORYAPISTATUS InventoryController::removeCategory(const std::string& category) {
+    const std::vector<std::string>& categories = mDataProvider->getCategories();
+    if (std::find(categories.begin(), categories.end(), category) == categories.end()) {
+        LOG_ERROR("Category %s does not exist", category.c_str());
+        return INVENTORYAPISTATUS::NOT_FOUND;
+    }
+    mDataProvider->removeCategory(category);
     return INVENTORYAPISTATUS::SUCCESS;
 }
 

@@ -52,6 +52,7 @@ AccountingController::AccountingController(const AccountingDataPtr& data,
     mCachedList.setEntityKeyFn(&entity::Sale::ID);
 }
 
+// @todo - might need to expand this and support category sales query per period
 GraphReport AccountingController::getCategorySales() {
     LOG_DEBUG("Retrieving category sales");
     // @todo: get the list of categories
