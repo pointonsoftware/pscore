@@ -65,9 +65,9 @@ TEST_F(TestAccounting, DISABLED_GetCategorySalesShouldSucceed) {
 }
 
 TEST_F(TestAccounting, GetCustomPeriodSalesWithInvalidDateRange) {
-    const std::string startDate = "2020/01/01 01:01:01";
+    const std::string startDate = "2020-01-01 01:01:01";
     // end date is lesser than startdate
-    const std::string endDate   = "1990/01/01 01:01:01";
+    const std::string endDate   = "1990-01-01 01:01:01";
     // Should call a view interface
     EXPECT_CALL(*viewMock, showInvalidDateTimeRange());
 
@@ -78,11 +78,11 @@ TEST_F(TestAccounting, GetCustomPeriodSalesWithInvalidDateRange) {
 }
 
 TEST_F(TestAccounting, GetCustomPeriodSalesShouldSucceed) {
-    const std::string startDate = "2020/01/01 01:01:01";
+    const std::string startDate = "2020-01-01 01:01:01";
     // end date is greater than startdate
-    const std::string endDate   = "2021/01/01 01:01:01";
+    const std::string endDate   = "2021-01-01 01:01:01";
     const std::vector<entity::Sale> fakeData =
-        { entity::Sale{"100000001", "2021/05/16 10:12:20", {}, "",
+        { entity::Sale{"100000001", "2021-05-16 10:12:20", {}, "",
                        "", "", "", "", "", "", "", "", ""} };
     // Should query the database
     EXPECT_CALL(*dpMock, getSales(startDate, endDate))
@@ -94,7 +94,7 @@ TEST_F(TestAccounting, GetCustomPeriodSalesShouldSucceed) {
 
 TEST_F(TestAccounting, GetTodaySalesReportShouldSucceed) {
     const std::vector<entity::Sale> fakeData =
-        { entity::Sale{"100000001", "2021/05/16 10:12:20", {}, "",
+        { entity::Sale{"100000001", "2021-05-16 10:12:20", {}, "",
                        "", "", "", "100.00", "", "", "", "", ""} };
     // Should query the database
     EXPECT_CALL(*dpMock, getSales(_, _))
@@ -110,7 +110,7 @@ TEST_F(TestAccounting, GetTodaySalesReportShouldSucceed) {
 
 TEST_F(TestAccounting, GetTodaySalesShouldSucceed) {
     const std::vector<entity::Sale> fakeData =
-        { entity::Sale{"100000001", "2021/05/16 10:12:20", {}, "",
+        { entity::Sale{"100000001", "2021-05-16 10:12:20", {}, "",
                        "", "", "", "", "", "", "", "", ""} };
     // Should query the database
     EXPECT_CALL(*dpMock, getSales(_, _))

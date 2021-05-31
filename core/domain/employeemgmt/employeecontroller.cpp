@@ -144,7 +144,7 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
         // Validate PIN only
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN,
-                             "2020/10/10 10:10:10", "Proxy"));
+                             "2020-10-10 10:10:10", "Proxy"));
         employeeData.validationResult->merge(validator.result());
     }
     if (!employeeData.validationResult->empty()) {

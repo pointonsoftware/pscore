@@ -38,7 +38,7 @@ bool isValidDate(const std::string& date) {
 bool isValidDateTime(const std::string& dateTime) {
     std::istringstream date_ss(dateTime);
     date::sys_time<std::chrono::milliseconds> tp;
-    date_ss >> date::parse("%Y/%m/%d %H:%M:%S", tp);
+    date_ss >> date::parse("%Y-%m-%d %H:%M:%S", tp);
     return !date_ss.fail();
 }
 
@@ -69,7 +69,7 @@ std::tm currentDateTime() {
 std::string currentDateTimeStr() {
     const std::tm& bt = currentDateTime();
     char buff[100];
-    snprintf(buff, sizeof(buff), "%04u/%02u/%02u %02u:%02u:%02u", bt.tm_year + 1900,
+    snprintf(buff, sizeof(buff), "%04u-%02u-%02u %02u:%02u:%02u", bt.tm_year + 1900,
              bt.tm_mon + 1, bt.tm_mday, bt.tm_hour, bt.tm_min, bt.tm_sec);
     return std::string(buff);
 }
@@ -77,7 +77,7 @@ std::string currentDateTimeStr() {
 std::string currentDateStr() {
     const std::tm& bt = currentDateTime();
     char buff[100];
-    snprintf(buff, sizeof(buff), "%04u/%02u/%02u", bt.tm_year + 1900, bt.tm_mon + 1, bt.tm_mday);
+    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", bt.tm_year + 1900, bt.tm_mon + 1, bt.tm_mday);
     return std::string(buff);
 }
 
@@ -87,7 +87,7 @@ DateTimeComparator::Result DateTimeComparator::compare(const std::string& date) 
         // i.e. check for dateTime first before check date because a dateTime is also a valid date
         //      hence, we will never reach isValidDateTime if we check for valid date first
         if (isValidDateTime(mDate) && isValidDateTime(date)) {
-            return "%Y/%m/%d %H:%M:%S";
+            return "%Y-%m-%d %H:%M:%S";
         }
         if (isValidDate(mDate) && isValidDate(date)) {
             return "%Y/%m/%d";

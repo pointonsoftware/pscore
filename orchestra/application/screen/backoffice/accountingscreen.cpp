@@ -79,8 +79,8 @@ void AccountingScreen::showLandingScreen() const {
 void AccountingScreen::queryTransactionsList() {
     LOG_DEBUG("Sending transaction list request to accounting domain");
     // @todo - just using test dates to show all sales
-    const std::string startDate = "2020/05/10 09:00:00";
-    const std::string endDate = "2022/05/10 12:00:00";
+    const std::string startDate = "2020-05-10 09:00:00";
+    const std::string endDate = "2022-05-10 12:00:00";
     mSalesTable.setData(mCoreController->getCustomPeriodSales(startDate, endDate));
     // Convert core data into table-readable type
     const domain::accounting::GraphReport& coreReport =  mCoreController->getTodaySalesReport();

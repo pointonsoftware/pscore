@@ -30,7 +30,7 @@ namespace utility {
 */
 extern std::tm currentDateTime();
 /*!
- * Returns the current date-time in "YYYY/MM/DD HH:MM:SS" form
+ * Returns the current date-time in "YYYY-MM-DD HH:MM:SS" form
 */
 extern std::string currentDateTimeStr();
 /*!
@@ -42,7 +42,7 @@ extern std::string currentDateStr();
 */
 extern bool isValidDate(const std::string& date);
 /*!
- * Validate if date-time is in "YYYY/MM/DD HH:MM:SS" form
+ * Validate if date-time is in "YYYY-MM-DD HH:MM:SS" form
 */
 extern bool isValidDateTime(const std::string& dateTime);
 

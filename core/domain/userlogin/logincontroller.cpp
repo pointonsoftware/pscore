@@ -83,7 +83,7 @@ bool LoginController::isPinValid(const std::string& pin) const {
     }
     {
         // Data for PIN validation only
-        entity::User userInfo("Proxy", "Proxy", pin, "2020/10/10 10:10:10", "Proxy");
+        entity::User userInfo("Proxy", "Proxy", pin, "2020-10-10 10:10:10", "Proxy");
         entity::validator::UserValidator validator(userInfo);
         // Check if its numeric and valid size
         if (!validator.result().empty()) {
