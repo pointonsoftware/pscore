@@ -50,18 +50,31 @@ class TestAccounting : public testing::Test {
     AccountingController controller;
 };
 
-// @todo - update when getCategorySales is implemented
-TEST_F(TestAccounting, GetCategorySalesShouldFail) {
+TEST_F(TestAccounting, TestGetCategorySales) {
+    const std::vector<std::string> fakeCategory = {"Grocery"};
+    const std::string fakeSaleID = "100000001";
+    const std::vector<entity::Sale> fakeSaleData =
+        { entity::Sale{fakeSaleID, "2021/05/16 10:12:20", {}, "",
+                       "", "", "", "", "", "", "", "", ""} };
+    const std::vector<entity::SaleItem> fakeSaleItem =
+        { entity::SaleItem{fakeSaleID, "111", "Chippy", "Grocery",
+            "10.00", "10", "100.00"},
+          entity::SaleItem{fakeSaleID, "222", "Timbits", "Grocery",
+            "5.00", "10", "50.00"} };
+    // Fake category data from db
+    EXPECT_CALL(*dpMock, getCategories())
+            .WillOnce(Return(fakeCategory));
+    EXPECT_CALL(*dpMock, getSales(_, _))
+            .WillOnce(Return(fakeSaleData));
+    // Fake transaction data from db
+    EXPECT_CALL(*dpMock, getSaleDetails(fakeSaleID))
+            .WillOnce(Return(fakeSaleItem));
     GraphReport expectedReturn = controller.getCategorySales();
-    // Should be empty
-    ASSERT_TRUE(expectedReturn.empty());
-}
-
-// @todo - update when getCategorySales is implemented
-TEST_F(TestAccounting, DISABLED_GetCategorySalesShouldSucceed) {
-    GraphReport expectedReturn = controller.getCategorySales();
-    // Should not be empty, verify the contents
-    ASSERT_FALSE(expectedReturn.empty());
+    // GraphReport size must be the same as the number of categories in the database
+    ASSERT_EQ(expectedReturn.size(), fakeCategory.size());
+    // Let's verify the values in the graph report - check index 0 since we only have one category
+    ASSERT_EQ(expectedReturn[0].key, "Grocery");
+    ASSERT_EQ(expectedReturn[0].value, "150.00");  // must be the total of all items in category
 }
 
 TEST_F(TestAccounting, GetCustomPeriodSalesWithInvalidDateRange) {

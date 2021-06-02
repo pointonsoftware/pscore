@@ -168,7 +168,7 @@ std::string AccountingController::getTotalSaleByCategory(const std::string& cate
                                    const std::vector<entity::Sale>& sales) {
     LOG_DEBUG("Retrieving sales for category: %s", category.c_str());
     double totalSale = 0;
-    // @todo - this is a double for loop and could take a toll if running on a large list
+    // @todo - this is a double for-loop and could take a toll if running on a large list
     //       - find a way to optimize this algorithm
     for (entity::Sale sale : sales) {
         // Get the sale items and check each of them to see if they belong to "category"
