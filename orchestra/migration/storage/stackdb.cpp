@@ -41,7 +41,7 @@ StackDB::StackDB() {
             "2020202",                    // Unique User ID
             "Admin",                      // Role
             "1251",                       // PIN <!Unique> <!Empty if non-user>
-            "2020/01/12 11:09:50",        // Created At
+            "2020-01-12 11:09:50",        // Created At
             ""});                         // No employee ID
     populateEmployees();
     populateProducts();
@@ -69,7 +69,7 @@ void StackDB::populateEmployees() {
             "BGAR123",                    // User ID <!Make sure this is unique>
             "Manager",                    // Role
             "2020",                       // PIN
-            "2020/01/10 07:47:48",        // Created At
+            "2020-01-10 07:47:48",        // Created At
             "2014566"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2014566",                    // Employee ID <!Same as employeeID>
@@ -108,7 +108,7 @@ void StackDB::populateEmployees() {
             "BGAR567",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
             "2021",                       // PIN
-            "2020/10/02 08:47:48",        // Created At
+            "2020-10-02 08:47:48",        // Created At
             "2019542"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2019542",                    // Employee ID <!Same as employeeID>
@@ -142,7 +142,7 @@ void StackDB::populateEmployees() {
             "JDEL554",                    // User ID <!Make sure this is unique>
             "Cashier",                    // Role
             "2022",                       // PIN
-            "2020/05/10 10:09:50",        // Created At
+            "2020-05-10 10:09:50",        // Created At
             "2098472"});                  // Link to employee ID
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "2098472",                    // Employee ID <!Same as employeeID>
@@ -465,7 +465,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000001",                  // SalesID <!Make sure this is unique>
-            "2020/05/10 10:09:50",        // Date and time of transaction
+            "2020-05-10 10:09:50",        // Date and time of transaction
             "112.00",                     // Subtotal
             "100.00",                     // Taxable
             "12.00",                      // VAT
@@ -489,7 +489,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000002",                  // SalesID <!Make sure this is unique>
-            "2021/05/16 10:11:20",        // Date and time of transaction
+            "2021-05-16 10:11:20",        // Date and time of transaction
             "56.00",                      // Subtotal
             "50.00",                      // Taxable
             "6.00",                       // VAT
@@ -519,7 +519,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000003",                  // SalesID <!Make sure this is unique>
-            "2021/05/16 10:12:20",        // Date and time of transaction
+            "2021-05-16 10:12:20",        // Date and time of transaction
             "1000.00",                    // Subtotal
             "0.00",                       // Taxable
             "0.00",                       // VAT
@@ -549,7 +549,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000004",                  // SalesID <!Make sure this is unique>
-            "2021/05/22 12:45:20",        // Date and time of transaction
+            "2021-05-22 12:45:20",        // Date and time of transaction
             "336.50",                     // Subtotal
             "300.45",                     // Taxable
             "36.05",                      // VAT
