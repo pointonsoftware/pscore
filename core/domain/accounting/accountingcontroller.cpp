@@ -45,8 +45,8 @@ const std::vector<std::string> OPERATING_HOURS = {
 // used as default for date queries
 constexpr char T_START_OF_DAY[]  = "00:00:00";
 constexpr char T_END_OF_DAY[]  = "23:59:59";
-constexpr char DT_START_OF_YEAR[] = "01/01 00:00:00";
-constexpr char DT_END_OF_YEAR[]  = "12/31 23:59:59";
+constexpr char DT_START_OF_YEAR[] = "01-01 00:00:00";
+constexpr char DT_END_OF_YEAR[]  = "12-31 23:59:59";
 
 AccountingController::AccountingController(const AccountingDataPtr& data,
                                            const AccountingViewPtr& view)
@@ -102,8 +102,8 @@ std::vector<entity::Sale> AccountingController::getSales(Period period) {
         case Period::THIS_MONTH:
             break;
         case Period::THIS_YEAR:
-            startDate = utility::currentYearStr() + "/" + DT_START_OF_YEAR;
-            endDate   = utility::currentYearStr() + "/" + DT_END_OF_YEAR;
+            startDate = utility::currentYearStr() + "-" + DT_START_OF_YEAR;
+            endDate   = utility::currentYearStr() + "-" + DT_END_OF_YEAR;
             break;
     }
     return getCustomPeriodSales(startDate, endDate);

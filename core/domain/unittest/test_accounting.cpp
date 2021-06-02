@@ -54,7 +54,7 @@ TEST_F(TestAccounting, TestGetCategorySales) {
     const std::vector<std::string> fakeCategory = {"Grocery"};
     const std::string fakeSaleID = "100000001";
     const std::vector<entity::Sale> fakeSaleData =
-        { entity::Sale{fakeSaleID, "2021/05/16 10:12:20", {}, "",
+        { entity::Sale{fakeSaleID, "2021-05-16 10:12:20", {}, "",
                        "", "", "", "", "", "", "", "", ""} };
     const std::vector<entity::SaleItem> fakeSaleItem =
         { entity::SaleItem{fakeSaleID, "111", "Chippy", "Grocery",
