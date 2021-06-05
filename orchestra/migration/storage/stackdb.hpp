@@ -24,7 +24,7 @@
 #include <vector>
 #include "table.hpp"
 
-#define VERSION 2.3
+#define VERSION 2.4
 
 #define DATABASE() dataprovider::db::StackDB::getDbInstance()
 

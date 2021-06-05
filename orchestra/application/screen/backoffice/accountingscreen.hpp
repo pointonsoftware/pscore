@@ -54,13 +54,14 @@ class AccountingScreen : public screen::ScreenInterface,
     bool action(Options option, std::promise<defines::display>* nextScreen);
     app::utility::TableHelper<entity::Sale> mSalesTable;
     app::utility::TableHelper<DomainGraphMemberWrapper> mTodaysSalesReport;
+    app::utility::TableHelper<DomainGraphMemberWrapper> mCategorySalesReport;
     bool isShowingDetailsScreen;
 
     // Domain interface implementation
     void showInvalidDateTimeRange();
 };
 
-// Used for Today's Sales Report table
+// Used for Sales Report tables
 class DomainGraphMemberWrapper {
  public:
     explicit DomainGraphMemberWrapper(const domain::accounting::GraphMember& gm)

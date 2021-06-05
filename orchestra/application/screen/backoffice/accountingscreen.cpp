@@ -48,6 +48,8 @@ AccountingScreen::AccountingScreen()
             { &entity::Sale::ID, &entity::Sale::dateTime, &entity::Sale::total }),
             mTodaysSalesReport({"Hour", "Total Sale"},
             { &DomainGraphMemberWrapper::getKey, &DomainGraphMemberWrapper::getValue }),
+            mCategorySalesReport({"Category", "Total Sale"},
+            { &DomainGraphMemberWrapper::getKey, &DomainGraphMemberWrapper::getValue }),
             isShowingDetailsScreen(false) {
     // Empty for now
 }
@@ -73,6 +75,9 @@ void AccountingScreen::showLandingScreen() const {
     std::cout << std::endl;
     SCREENCOMMON().printTitleText("Hourly Sales Table", false);
     mTodaysSalesReport.printTable();
+    std::cout << std::endl;
+    SCREENCOMMON().printTitleText("Category Sales Table", false);
+    mCategorySalesReport.printTable();
     showOptions();
 }
 
@@ -83,12 +88,24 @@ void AccountingScreen::queryTransactionsList() {
     const std::string endDate = "2022-05-10 12:00:00";
     mSalesTable.setData(mCoreController->getCustomPeriodSales(startDate, endDate));
     // Convert core data into table-readable type
-    const domain::accounting::GraphReport& coreReport =  mCoreController->getTodaySalesReport();
-    std::vector<DomainGraphMemberWrapper> report;
-    for (domain::accounting::GraphMember member : coreReport) {
-        report.emplace_back(member);
+    {
+        // Today's sales
+        const domain::accounting::GraphReport& coreReport = mCoreController->getTodaySalesReport();
+        std::vector<DomainGraphMemberWrapper> report;
+        for (domain::accounting::GraphMember member : coreReport) {
+            report.emplace_back(member);
+        }
+        mTodaysSalesReport.setData(report);
     }
-    mTodaysSalesReport.setData(report);
+    {
+        // Category sales
+        const domain::accounting::GraphReport& coreReport = mCoreController->getCategorySales();
+        std::vector<DomainGraphMemberWrapper> report;
+        for (domain::accounting::GraphMember member : coreReport) {
+            report.emplace_back(member);
+        }
+        mCategorySalesReport.setData(report);
+    }
 }
 
 AccountingScreen::Options AccountingScreen::getUserSelection() {

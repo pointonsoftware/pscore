@@ -481,6 +481,7 @@ void StackDB::populateSales() {
             "100000001",                  // SalesID <!Make sure this is VALID>
             "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
             "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
             "10.00",                      // Product unit price <!Make sure this  is valid>
             "10",                         // Number of items bought (quantity)
             "100.00"});                   // Total (unit price * quantity)
@@ -505,6 +506,7 @@ void StackDB::populateSales() {
             "100000002",                  // SalesID <!Make sure this is VALID>
             "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
             "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
             "10.00",                      // Product unit price <!Make sure this is valid>
             "2",                          // Number of items bought (quantity)
             "20.00"});                    // Total (unit price * quantity)
@@ -512,6 +514,7 @@ void StackDB::populateSales() {
             "100000002",                  // SalesID <!Make sure this is VALID>
             "5684833847",                 // Product ID or Barcode <!Make sure this is valid>
             "Biogesic",                   // Product name <!Make sure this matches with inventory>
+            "Medicine",                   // Category <!Make sure this matches with inventory>
             "6.00",                       // Product unit price <!Make sure this is valid>
             "5",                          // Number of items bought (quantity)
             "30.00"});                    // Total (unit price * quantity)
@@ -535,6 +538,7 @@ void StackDB::populateSales() {
             "100000003",                  // SalesID <!Make sure this is VALID>
             "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
             "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
             "10.00",                      // Product unit price <!Make sure this is valid>
             "10",                         // Number of items bought (quantity)
             "100.00"});                   // Total (unit price * quantity)
@@ -542,6 +546,7 @@ void StackDB::populateSales() {
             "100000003",                  // SalesID <!Make sure this is VALID>
             "4844811887",                 // Product ID or Barcode <!Make sure this is valid>
             "Coke 1L",                    // Product name <!Make sure this matches with inventory>
+            "Beverage",                   // Category <!Make sure this matches with inventory>
             "100.00",                     // Product unit price <!Make sure this is valid>
             "9",                          // Number of items bought (quantity)
             "900.00"});                   // Total (unit price * quantity)
@@ -565,6 +570,7 @@ void StackDB::populateSales() {
             "100000004",                  // SalesID <!Make sure this is VALID>
             "5554833345",                 // Product ID or Barcode <!Make sure this is valid>
             "Asukal Puti",                // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
             "6.00",                       // Product unit price <!Make sure this is valid>
             "4",                          // Number of items bought (quantity)
             "24.00"});                    // Total (unit price * quantity)
@@ -572,6 +578,7 @@ void StackDB::populateSales() {
             "100000004",                  // SalesID <!Make sure this is VALID>
             "1254854545",                 // Product ID or Barcode <!Make sure this is valid>
             "Mantika",                    // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
             "10.50",                      // Product unit price <!Make sure this is valid>
             "5",                          // Number of items bought (quantity)
             "52.50"});                    // Total (unit price * quantity)
@@ -579,6 +586,7 @@ void StackDB::populateSales() {
             "100000004",                  // SalesID <!Make sure this is VALID>
             "5684833847",                 // Product ID or Barcode <!Make sure this is valid>
             "Biogesic",                   // Product name <!Make sure this matches with inventory>
+            "Medicine",                   // Category <!Make sure this matches with inventory>
             "6.00",                       // Product unit price <!Make sure this is valid>
             "10",                         // Number of items bought (quantity)
             "60.00"});                    // Total (unit price * quantity)
@@ -586,6 +594,7 @@ void StackDB::populateSales() {
             "100000004",                  // SalesID <!Make sure this is VALID>
             "4844811887",                 // Product ID or Barcode <!Make sure this is valid>
             "Coke 1L",                    // Product name <!Make sure this matches with inventory>
+            "Beverage",                   // Category <!Make sure this matches with inventory>
             "100.00",                     // Product unit price <!Make sure this is valid>
             "2",                          // Number of items bought (quantity)
             "200.00"});                   // Total (unit price * quantity)

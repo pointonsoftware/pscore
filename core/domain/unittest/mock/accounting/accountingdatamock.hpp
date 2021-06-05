@@ -39,6 +39,7 @@ class AccountingDataMock : public AccountingDataInterface {
     MOCK_METHOD(std::vector<entity::Sale>, getSales, (const std::string& startDate,
                                                       const std::string& endDate));
     MOCK_METHOD(std::vector<entity::SaleItem>, getSaleDetails, (const std::string& transactionID));
+    MOCK_METHOD(std::vector<std::string>, getCategories, ());
 };
 
 }  // namespace accounting

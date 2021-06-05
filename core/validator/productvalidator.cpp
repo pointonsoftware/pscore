@@ -63,7 +63,7 @@ ValidationStatus ProductValidator::validateDescription() {
 
 ValidationStatus ProductValidator::validateCategory() {
     if (checkEmptyString(mProduct.category(), FIELD_CTGR, "Category") != ValidationStatus::S_OK) {
-            return ValidationStatus::S_EMPTY;
+        return ValidationStatus::S_EMPTY;
     }
     if (mCategories.empty()) {
         // We don't have anything to compare, return OK

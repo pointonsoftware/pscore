@@ -31,7 +31,7 @@ namespace validator {
  * Validation Rules:
  * - User ID must not be empty
  * - Role must not be empty
- * - CreatedAt must be in the form dd/mm/yyyy HH:MM:SS
+ * - CreatedAt must be in the form YYYY-MM-DD HH:MM:SS
  * - Employee ID can be empty
  * - PIN must only be a four digit numeric value
 */

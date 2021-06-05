@@ -42,9 +42,11 @@ const std::vector<std::string> OPERATING_HOURS = {
     "19:00",
     "20:00",
 };
-// used as default hour for date queries
-constexpr char ZERO_HOUR[] = "00:00:00";
-constexpr char LAST_HOUR[] = "23:59:59";  // end-of-day
+// used as default for date queries
+constexpr char T_START_OF_DAY[]  = "00:00:00";
+constexpr char T_END_OF_DAY[]  = "23:59:59";
+constexpr char DT_START_OF_YEAR[] = "01-01 00:00:00";
+constexpr char DT_END_OF_YEAR[]  = "12-31 23:59:59";
 
 AccountingController::AccountingController(const AccountingDataPtr& data,
                                            const AccountingViewPtr& view)
@@ -55,18 +57,22 @@ AccountingController::AccountingController(const AccountingDataPtr& data,
 // @todo - might need to expand this and support category sales query per period
 GraphReport AccountingController::getCategorySales() {
     LOG_DEBUG("Retrieving category sales");
-    // @todo: get the list of categories
-    // perform getSales(category) for each of the categories
-    // e.g. foreach (category : categories)
-    //       report.key   = category;
-    //       report.value = getTotalSales(category);
-    //       vector.emplace(report);
-    return {};
+    const std::vector<std::string>& categories = mDataProvider->getCategories();
+    const std::vector<entity::Sale>& sales = getSales(Period::THIS_YEAR);
+    // Get the sales for each category
+    GraphReport report;
+    for (const std::string& category : categories) {
+        GraphMember member;
+        member.key = category;
+        member.value = getTotalSaleByCategory(category, sales);
+        report.emplace_back(member);
+    }
+    return report;
 }
 
 GraphReport AccountingController::getTodaySalesReport() {
     LOG_DEBUG("Creating today's sales");
-    const std::vector<entity::Sale> sales = getSales(Period::TODAY);
+    const std::vector<entity::Sale>& sales = getSales(Period::TODAY);
     // Get the sales every hour
     GraphReport report;
     // @todo - this algorithm can be improved and iterate the sales vector only once.
@@ -88,14 +94,16 @@ std::vector<entity::Sale> AccountingController::getSales(Period period) {
         case Period::YESTERDAY:
             break;
         case Period::TODAY:
-            startDate = utility::currentDateStr() + " " + ZERO_HOUR;
-            endDate   = utility::currentDateStr() + " " + LAST_HOUR;
+            startDate = utility::currentDateStr() + " " + T_START_OF_DAY;
+            endDate   = utility::currentDateStr() + " " + T_END_OF_DAY;
             break;
         case Period::THIS_WEEK:
             break;
         case Period::THIS_MONTH:
             break;
         case Period::THIS_YEAR:
+            startDate = utility::currentYearStr() + "-" + DT_START_OF_YEAR;
+            endDate   = utility::currentYearStr() + "-" + DT_END_OF_YEAR;
             break;
     }
     return getCustomPeriodSales(startDate, endDate);
@@ -152,6 +160,27 @@ std::string AccountingController::getTotalSaleByTime(const std::string& time,
             continue;
         }
         totalSale += utility::toDouble(sale.total());
+    }
+    return utility::doubleToString(totalSale);
+}
+
+std::string AccountingController::getTotalSaleByCategory(const std::string& category,
+                                   const std::vector<entity::Sale>& sales) {
+    LOG_DEBUG("Retrieving sales for category: %s", category.c_str());
+    double totalSale = 0;
+    // @todo - this is a double for-loop and could take a toll if running on a large list
+    //       - find a way to optimize this algorithm
+    for (entity::Sale sale : sales) {
+        // Get the sale items and check each of them to see if they belong to "category"
+        LOG_DEBUG("Retrieving items with saleID: %s", sale.ID().c_str());
+        const std::vector<entity::SaleItem>& items = mDataProvider->getSaleDetails(sale.ID());
+        for (entity::SaleItem item : items) {
+            if (item.productCategory() != category) {
+                continue;
+            }
+            // add item total price if it belongs to "category"
+            totalSale += utility::toDouble(item.totalPrice());
+        }
     }
     return utility::doubleToString(totalSale);
 }

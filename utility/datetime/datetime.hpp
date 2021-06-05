@@ -38,6 +38,18 @@ extern std::string currentDateTimeStr();
 */
 extern std::string currentDateStr();
 /*!
+ * Returns the number of days in the current month
+*/
+extern std::string daysOfCurrentMonthStr();
+/*!
+ * Returns the current month in "MM" form
+*/
+extern std::string currentMonthStr();
+/*!
+ * Returns the current year in "YYYY" form
+*/
+extern std::string currentYearStr();
+/*!
  * Validate if date is in "YYYY/MM/DD" form
 */
 extern bool isValidDate(const std::string& date);
