@@ -92,6 +92,8 @@ std::vector<entity::Sale> AccountingController::getSales(Period period) {
     std::string startDate, endDate;
     switch (period) {
         case Period::YESTERDAY:
+            startDate = utility::yesterdayDateStr() + " " + T_START_OF_DAY;
+            endDate   = utility::yesterdayDateStr() + " " + T_END_OF_DAY;
             break;
         case Period::TODAY:
             startDate = utility::currentDateStr() + " " + T_START_OF_DAY;

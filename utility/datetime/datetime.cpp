@@ -33,7 +33,7 @@ constexpr unsigned int MAX_CHAR_LENGTH = 100;
 bool isValidDate(const std::string& date) {
     std::istringstream date_ss(date);
     date::year_month_day ymd;
-    date_ss >> date::parse("%Y/%m/%d", ymd);
+    date_ss >> date::parse("%Y-%m-%d", ymd);
     return !date_ss.fail();
 }
 
@@ -90,12 +90,24 @@ std::string currentMonthStr() {
     return buff;
 }
 
-std::string daysOfCurrentMonthStr() {
+unsigned int currentDayOfTheMonth() {
+    date::year_month_day ymd = date::floor<date::days>(std::chrono::system_clock::now());
+    return static_cast<unsigned>(ymd.day());
+}
+
+int daysOfCurrentMonth() {
     date::year_month_day ymd = date::floor<date::days>(std::chrono::system_clock::now());
     date::days days = (ymd.year()/ymd.month()/date::last).day() - date::day{0};
+    return days.count();
+}
+
+std::string yesterdayDateStr() {
+    std::tm bt = currentDateTime();
+    bt.tm_mday -= 1;  // substract one day
+    std::mktime(&bt);  // normalize
     char buff[MAX_CHAR_LENGTH];
-    snprintf(buff, sizeof(buff), "%02u", static_cast<unsigned>(days.count()));
-    return std::string(buff);
+    snprintf(buff, sizeof(buff), "%04u-%02u-%02u", bt.tm_year + 1900, bt.tm_mon + 1, bt.tm_mday);
+    return buff;
 }
 
 std::string currentYearStr() {
@@ -114,7 +126,7 @@ DateTimeComparator::Result DateTimeComparator::compare(const std::string& date) 
             return "%Y-%m-%d %H:%M:%S";
         }
         if (isValidDate(mDate) && isValidDate(date)) {
-            return "%Y/%m/%d";
+            return "%Y-%m-%d";
         }
         return "";  // Empty format means one or both of the strings are invalid date/s
     }();

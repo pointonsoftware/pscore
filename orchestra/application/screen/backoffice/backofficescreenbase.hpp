@@ -53,6 +53,7 @@ class BackOfficeScreenBase {
         OP_READ,
         OP_UPDATE,
         OP_DELETE,
+        SALES_YESTERDAY,
         // add more enums here
         LOGOUT,
         APP_EXIT,
