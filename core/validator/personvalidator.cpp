@@ -67,7 +67,7 @@ ValidationStatus PersonValidator::validateBirthdate() {
         return ValidationStatus::S_EMPTY;
     }
     if (!utility::isValidDate(mPerson.birthdate())) {
-        addError(FIELD_BDATE, "Birthdate is an invalid date-time string.");
+        addError(FIELD_BDATE, "Birthdate is an invalid date string.");
         return ValidationStatus::S_INVALID_STRING;
     }
     return ValidationStatus::S_OK;
