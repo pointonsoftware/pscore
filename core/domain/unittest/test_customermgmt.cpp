@@ -47,7 +47,7 @@ class TestCustomerMgmt : public testing::Test {
     void TearDown() {}
     // Helper function
     entity::Customer makeValidCustomer(const std::string& id = "") const {
-        entity::Customer temp(id, "John", "", "Doe", "1994/05/20", "M");
+        entity::Customer temp(id, "John", "", "Doe", "1994-05-20", "M");
         temp.setAddress({"DummyL1", "DummyL2", "DummyTown", "DummyProv", ""});
         temp.addPersonalId("Driver's License", "PC13-72021-20");
         return temp;

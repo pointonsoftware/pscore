@@ -61,7 +61,7 @@ CustomerMgmtScreen::CustomerMgmtScreen() : mTableHelper({"ID", "First Name", "La
                             &entity::Employee::setMiddleName});
     mCustomerFieldHelper.addField({entity::FIELD_LNAME, "Last Name",
                             &entity::Employee::setLastName});
-    mCustomerFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
+    mCustomerFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy-mm-dd)",
                             &entity::Employee::setBirthdate});
     mCustomerFieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)",
                             &entity::Employee::setGender});
