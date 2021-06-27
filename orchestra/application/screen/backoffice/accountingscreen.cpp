@@ -133,6 +133,8 @@ AccountingScreen::Options AccountingScreen::getUserSelection() {
         return Options::LOGOUT;
     } else if (userInput == "y") {
         return Options::SALES_YESTERDAY;
+    } else if (userInput == "m") {
+        return Options::SALES_THIS_MONTH;
     }  // add more options here
 
     // Default invalid option
@@ -161,6 +163,10 @@ bool AccountingScreen::action(Options option, std::promise<defines::display>* ne
             showYesterdaySales();
             isShowingDetailsScreen = true;
             break;
+        case Options::SALES_THIS_MONTH:
+            showThisMonthSales();
+            isShowingDetailsScreen = true;
+            break;
         case Options::INVALID:
             invalidOptionSelected();
             break;
@@ -178,6 +184,17 @@ void AccountingScreen::showYesterdaySales() {
     // Get sales from core
     mSalesTable.setData(mCoreController->getSales(domain::accounting::Period::YESTERDAY));
     LOG_DEBUG("Showing yesterday's sales");
+    SCREENCOMMON().showTopBanner("Accounting Information");
+    std::cout << std::endl;
+    std::cout << "Total transactions count: " << mSalesTable.getDataCount() << std::endl;
+    mSalesTable.printTable();
+    showOptions();
+}
+
+void AccountingScreen::showThisMonthSales() {
+    // Get sales from core
+    mSalesTable.setData(mCoreController->getSales(domain::accounting::Period::THIS_MONTH));
+    LOG_DEBUG("Showing this month's sales");
     SCREENCOMMON().showTopBanner("Accounting Information");
     std::cout << std::endl;
     std::cout << "Total transactions count: " << mSalesTable.getDataCount() << std::endl;

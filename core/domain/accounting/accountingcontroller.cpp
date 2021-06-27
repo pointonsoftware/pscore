@@ -47,6 +47,9 @@ constexpr char T_START_OF_DAY[]  = "00:00:00";
 constexpr char T_END_OF_DAY[]  = "23:59:59";
 constexpr char DT_START_OF_YEAR[] = "01-01 00:00:00";
 constexpr char DT_END_OF_YEAR[]  = "12-31 23:59:59";
+constexpr char DT_START_OF_MONTH[]  = "01";
+constexpr char DATE_TIME_SEPARATOR = ' ';
+constexpr char DATE_SEPARATOR = '-';
 
 AccountingController::AccountingController(const AccountingDataPtr& data,
                                            const AccountingViewPtr& view)
@@ -92,20 +95,25 @@ std::vector<entity::Sale> AccountingController::getSales(Period period) {
     std::string startDate, endDate;
     switch (period) {
         case Period::YESTERDAY:
-            startDate = utility::yesterdayDateStr() + " " + T_START_OF_DAY;
-            endDate   = utility::yesterdayDateStr() + " " + T_END_OF_DAY;
+            startDate = utility::yesterdayDateStr() + DATE_TIME_SEPARATOR + T_START_OF_DAY;
+            endDate   = utility::yesterdayDateStr() + DATE_TIME_SEPARATOR + T_END_OF_DAY;
             break;
         case Period::TODAY:
-            startDate = utility::currentDateStr() + " " + T_START_OF_DAY;
-            endDate   = utility::currentDateStr() + " " + T_END_OF_DAY;
+            startDate = utility::currentDateStr() + DATE_TIME_SEPARATOR + T_START_OF_DAY;
+            endDate   = utility::currentDateStr() + DATE_TIME_SEPARATOR + T_END_OF_DAY;
             break;
         case Period::THIS_WEEK:
             break;
         case Period::THIS_MONTH:
+            startDate = utility::currentYearStr() + DATE_SEPARATOR + utility::currentMonthStr() +
+                        DATE_SEPARATOR + DT_START_OF_MONTH + DATE_TIME_SEPARATOR + T_START_OF_DAY;
+            endDate   = utility::currentYearStr() + DATE_SEPARATOR + utility::currentMonthStr() +
+                        DATE_SEPARATOR + std::to_string(utility::daysOfCurrentMonth()) +
+                        DATE_TIME_SEPARATOR + T_END_OF_DAY;
             break;
         case Period::THIS_YEAR:
-            startDate = utility::currentYearStr() + "-" + DT_START_OF_YEAR;
-            endDate   = utility::currentYearStr() + "-" + DT_END_OF_YEAR;
+            startDate = utility::currentYearStr() + DATE_SEPARATOR + DT_START_OF_YEAR;
+            endDate   = utility::currentYearStr() + DATE_SEPARATOR + DT_END_OF_YEAR;
             break;
     }
     return getCustomPeriodSales(startDate, endDate);
