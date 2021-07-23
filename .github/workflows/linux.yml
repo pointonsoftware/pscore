@@ -32,7 +32,6 @@ jobs:
 
     - name: Build
       run  : |
-       sudo apt-get install cmake
        sudo apt-get install -qq g++-7
        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
        ./ci/ci_build.sh
