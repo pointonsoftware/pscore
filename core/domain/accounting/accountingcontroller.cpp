@@ -103,6 +103,11 @@ std::vector<entity::Sale> AccountingController::getSales(Period period) {
             endDate   = utility::currentDateStr() + DATE_TIME_SEPARATOR + T_END_OF_DAY;
             break;
         case Period::THIS_WEEK:
+            {
+                const utility::WeekEndDates& dates = utility::currentWeekEndDates();
+                startDate = dates.start + DATE_TIME_SEPARATOR + T_START_OF_DAY;
+                endDate = dates.end + DATE_TIME_SEPARATOR + T_END_OF_DAY;
+            }
             break;
         case Period::THIS_MONTH:
             startDate = utility::currentYearStr() + DATE_SEPARATOR + utility::currentMonthStr() +

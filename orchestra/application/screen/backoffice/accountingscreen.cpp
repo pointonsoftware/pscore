@@ -80,9 +80,11 @@ void AccountingScreen::showLandingScreen() const {
     mCategorySalesReport.printTable();
     std::cout << std::endl;
     std::cout << "View sales from: " << std::endl;
-    std::cout << "[y] Yesterday " << std::endl;
-    std::cout << "[w] This week " << std::endl;
-    std::cout << "[m] This month " << std::endl;
+    std::cout << "[t] Today" << std::endl;
+    std::cout << "[y] Yesterday" << std::endl;
+    std::cout << "[w] This week" << std::endl;
+    std::cout << "[m] This month" << std::endl;
+    std::cout << "[r] This year" << std::endl;
     showOptions();
 }
 
@@ -131,10 +133,16 @@ AccountingScreen::Options AccountingScreen::getUserSelection() {
         return isShowingDetailsScreen ? Options::LANDING : Options::DASHBOARD;
     } else if (userInput == "0") {
         return Options::LOGOUT;
+    } else if (userInput == "t") {
+        return Options::SALES_TODAY;
     } else if (userInput == "y") {
         return Options::SALES_YESTERDAY;
+    } else if (userInput == "w") {
+        return Options::SALES_THIS_WEEK;
     } else if (userInput == "m") {
         return Options::SALES_THIS_MONTH;
+    } else if (userInput == "r") {
+        return Options::SALES_THIS_YEAR;
     }  // add more options here
 
     // Default invalid option
@@ -159,12 +167,29 @@ bool AccountingScreen::action(Options option, std::promise<defines::display>* ne
             switchScreenIsRequired = true;
             nextScreen->set_value(defines::display::LOGIN);
             break;
+        case Options::SALES_TODAY:
+            LOG_DEBUG("Showing today's sales");
+            showSales(domain::accounting::Period::TODAY);
+            isShowingDetailsScreen = true;
+            break;
         case Options::SALES_YESTERDAY:
-            showYesterdaySales();
+            LOG_DEBUG("Showing yesterday's sales");
+            showSales(domain::accounting::Period::YESTERDAY);
+            isShowingDetailsScreen = true;
+            break;
+        case Options::SALES_THIS_WEEK:
+            LOG_DEBUG("Showing this weeks's sales");
+            showSales(domain::accounting::Period::THIS_WEEK);
             isShowingDetailsScreen = true;
             break;
         case Options::SALES_THIS_MONTH:
-            showThisMonthSales();
+            LOG_DEBUG("Showing this month's sales");
+            showSales(domain::accounting::Period::THIS_MONTH);
+            isShowingDetailsScreen = true;
+            break;
+        case Options::SALES_THIS_YEAR:
+            LOG_DEBUG("Showing this year's sales");
+            showSales(domain::accounting::Period::THIS_YEAR);
             isShowingDetailsScreen = true;
             break;
         case Options::INVALID:
@@ -180,21 +205,9 @@ bool AccountingScreen::action(Options option, std::promise<defines::display>* ne
     return !switchScreenIsRequired;
 }
 
-void AccountingScreen::showYesterdaySales() {
+void AccountingScreen::showSales(domain::accounting::Period period) {
     // Get sales from core
-    mSalesTable.setData(mCoreController->getSales(domain::accounting::Period::YESTERDAY));
-    LOG_DEBUG("Showing yesterday's sales");
-    SCREENCOMMON().showTopBanner("Accounting Information");
-    std::cout << std::endl;
-    std::cout << "Total transactions count: " << mSalesTable.getDataCount() << std::endl;
-    mSalesTable.printTable();
-    showOptions();
-}
-
-void AccountingScreen::showThisMonthSales() {
-    // Get sales from core
-    mSalesTable.setData(mCoreController->getSales(domain::accounting::Period::THIS_MONTH));
-    LOG_DEBUG("Showing this month's sales");
+    mSalesTable.setData(mCoreController->getSales(period));
     SCREENCOMMON().showTopBanner("Accounting Information");
     std::cout << std::endl;
     std::cout << "Total transactions count: " << mSalesTable.getDataCount() << std::endl;

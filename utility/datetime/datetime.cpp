@@ -26,6 +26,7 @@
 namespace utility {
 
 constexpr unsigned int MAX_CHAR_LENGTH = 100;
+constexpr uint8_t END_OF_WEEK_DAY_INDEX = 6;
 
 // Developer note: How To's for date.h
 // https://github.com/HowardHinnant/date/wiki/Examples-and-Recipes
@@ -115,6 +116,31 @@ std::string currentYearStr() {
     char buff[MAX_CHAR_LENGTH];
     snprintf(buff, sizeof(buff), "%d", static_cast<int>(ymd.year()));
     return std::string(buff);
+}
+
+WeekEndDates currentWeekEndDates() {
+    const std::tm& bt = currentDateTime();
+    std::tm startDate = bt;
+    std::tm endDate = bt;
+    // day of the week - [0, 6] representing [Sunday, Saturday]
+    const int dayOfTheWeek = bt.tm_wday;
+    // Calculate the start and end dates
+    // e.g. weekday = 4
+    // start date  = currentdate() - weekday
+    // end date = currentdate() + 6 - weekday
+    startDate.tm_mday = startDate.tm_mday - dayOfTheWeek;
+    endDate.tm_mday = endDate.tm_mday + END_OF_WEEK_DAY_INDEX - dayOfTheWeek;
+    // normalize
+    std::mktime(&startDate);
+    std::mktime(&endDate);
+    // format
+    char sDate[MAX_CHAR_LENGTH];
+    snprintf(sDate, sizeof(sDate), "%04u-%02u-%02u", startDate.tm_year + 1900,
+         startDate.tm_mon + 1, startDate.tm_mday);
+    char eDate[MAX_CHAR_LENGTH];
+    snprintf(eDate, sizeof(eDate), "%04u-%02u-%02u", endDate.tm_year + 1900,
+         endDate.tm_mon + 1, endDate.tm_mday);
+    return {sDate, eDate};
 }
 
 DateTimeComparator::Result DateTimeComparator::compare(const std::string& date) const {

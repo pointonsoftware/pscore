@@ -53,8 +53,7 @@ class AccountingScreen : public screen::ScreenInterface,
     void queryTransactionsList();
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);
-    void showYesterdaySales();
-    void showThisMonthSales();
+    void showSales(domain::accounting::Period period);
 
     app::utility::TableHelper<entity::Sale> mSalesTable;
     app::utility::TableHelper<DomainGraphMemberWrapper> mTodaysSalesReport;

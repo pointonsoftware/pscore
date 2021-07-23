@@ -25,6 +25,12 @@
 
 namespace utility {
 
+// Represents the start and end dates of a week
+struct WeekEndDates {
+    const std::string start;
+    const std::string end;
+};
+
 /*!
  * Returns the current date-time
 */
@@ -66,6 +72,10 @@ extern bool isValidDate(const std::string& date);
  * Validate if date-time is in "YYYY-MM-DD HH:MM:SS" form
 */
 extern bool isValidDateTime(const std::string& dateTime);
+/*!
+ * Returns the current week's start and end dates in "YYYY-MM-DD" form
+*/
+extern WeekEndDates currentWeekEndDates();
 
 class DateTimeComparator {
  public:
