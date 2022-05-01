@@ -38,7 +38,7 @@ set (CMAKE_CXX_FLAGS "-Wall -pedantic -Werror ${COMPILER_EXCEPTION} -O2")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 if (NOT MINGW)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -pg")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -pg")
 endif ()
 
 
