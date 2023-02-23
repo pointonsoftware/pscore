@@ -598,6 +598,75 @@ void StackDB::populateSales() {
             "100.00",                     // Product unit price <!Make sure this is valid>
             "2",                          // Number of items bought (quantity)
             "200.00"});                   // Total (unit price * quantity)
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000005",                  // SalesID <!Make sure this is unique>
+            "2023-02-22 10:09:50",        // Date and time of transaction
+            "112.00",                     // Subtotal
+            "100.00",                     // Taxable
+            "12.00",                      // VAT
+            "0.00",                       // Discount
+            "112.00",                     // Total
+            "120.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "8.00",                       // Change
+            "2098472",                    // CashierID <!Make sure this is VALID>
+            "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "100000005",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this  is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000006",                  // SalesID <!Make sure this is unique>
+            "2023-02-22 10:09:50",        // Date and time of transaction
+            "112.00",                     // Subtotal
+            "100.00",                     // Taxable
+            "12.00",                      // VAT
+            "0.00",                       // Discount
+            "112.00",                     // Total
+            "120.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "8.00",                       // Change
+            "2098472",                    // CashierID <!Make sure this is VALID>
+            "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "100000006",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this  is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000007",                  // SalesID <!Make sure this is unique>
+            "2023-02-23 10:09:50",        // Date and time of transaction
+            "112.00",                     // Subtotal
+            "100.00",                     // Taxable
+            "12.00",                      // VAT
+            "0.00",                       // Discount
+            "112.00",                     // Total
+            "120.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "8.00",                       // Change
+            "2098472",                    // CashierID <!Make sure this is VALID>
+            "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "100000007",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this  is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
 }
 
 void StackDB::populateCategory() {
