@@ -31,7 +31,7 @@ namespace validator {
 /*!
  * Validation Rules:
  * - Person fields can be empty, except for First Name, Last Name, Position and Gender
- * - Birthdate format must be YYYY/DD/MM
+ * - Birthdate format must be YYYY-DD-MM
  * - Gender must only be M/F
 */
 

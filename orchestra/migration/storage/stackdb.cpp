@@ -60,7 +60,7 @@ void StackDB::populateEmployees() {
             "BenZiv",                     // First name
             "Hero",                       // Middle name
             "Garcia",                     // Last name
-            "2020/10/15",                 // B-date
+            "2020-10-15",                 // B-date
             "M",                          // Gender
             "Manager",                    // Position
             "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
@@ -99,7 +99,7 @@ void StackDB::populateEmployees() {
             "Zandro",                     // First name
             "Slardar",                    // Middle name
             "Mage",                       // Last name
-            "2020/10/10",                 // B-date
+            "2020-10-10",                 // B-date
             "M",                          // Gender
             "Cashier",                    // Position
             "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
@@ -133,7 +133,7 @@ void StackDB::populateEmployees() {
             "Juana",                      // First name
             "Santos",                     // Middle name
             "Dela Cruz",                  // Last name
-            "2020/10/18",                 // B-date
+            "2020-10-18",                 // B-date
             "F",                          // Gender
             "Cashier",                    // Position
             "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
@@ -167,7 +167,7 @@ void StackDB::populateEmployees() {
             "Rodrigo",                    // First name
             "Roa",                        // Middle name
             "Duterte",                    // Last name
-            "1977/10/17",                 // B-date
+            "1977-10-17",                 // B-date
             "M",                          // Gender
             "Security Guard",             // Position
             "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
@@ -195,7 +195,7 @@ void StackDB::populateEmployees() {
             "Manny",                      // First name
             "Pacman",                     // Middle name
             "Pacquiao",                   // Last name
-            "1988/10/25",                 // B-date
+            "1988-10-25",                 // B-date
             "M",                          // Gender
             "Delivery Personnel",         // Position
             "ACTIVE",                     // Status - ACTIVE, ON-LEAVE or INACTIVE
@@ -309,7 +309,7 @@ void StackDB::populateCustomers() {
             "John",                       // First name
             "Trump",                      // Middle name
             "Doe",                        // Last name
-            "1998/01/04",                 // B-date
+            "1998-01-04",                 // B-date
             "M"});                        // Gender
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "CMJD12AB56CD",               // Customer ID <!Same as CustomerID above>
@@ -334,7 +334,7 @@ void StackDB::populateCustomers() {
             "Thinking",                   // First name
             "TP",                         // Middle name
             "Pinoy",                      // Last name
-            "1995/04/09",                 // B-date
+            "1995-04-09",                 // B-date
             "M"});                        // Gender
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "CMTP25XB56ZD",               // Customer ID <!Same as CustomerID above>
@@ -358,7 +358,7 @@ void StackDB::populateCustomers() {
             "April",                      // First name
             "Boy",                        // Middle name
             "Regino",                     // Last name
-            "1987/08/05",                 // B-date
+            "1987-08-05",                 // B-date
             "M"});                        // Gender
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "CMAR88TR15TC",               // Customer ID <!Same as CustomerID above>
@@ -382,7 +382,7 @@ void StackDB::populateCustomers() {
             "Alexa",                      // First name
             "Speech",                     // Middle name
             "Amazon",                     // Last name
-            "2001/10/03",                 // B-date
+            "2001-10-03",                 // B-date
             "F"});                        // Gender
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "CMAA95TZ45FR",               // Customer ID <!Same as CustomerID above>
@@ -406,7 +406,7 @@ void StackDB::populateCustomers() {
             "Jeff",                       // First name
             "Amazon",                     // Middle name
             "Bezos",                      // Last name
-            "1975/01/12",                 // B-date
+            "1975-01-12",                 // B-date
             "M"});                        // Gender
     ADDRESS_TABLE.emplace_back(AddressTableItem {
             "CMJB73YN64LB",               // Customer ID <!Same as CustomerID above>
@@ -465,7 +465,7 @@ void StackDB::populateSales() {
     // Transaction
     SALES_TABLE.emplace_back(SalesTableItem {
             "100000001",                  // SalesID <!Make sure this is unique>
-            "2020-05-10 10:09:50",        // Date and time of transaction
+            "2021-06-05 10:09:50",        // Date and time of transaction
             "112.00",                     // Subtotal
             "100.00",                     // Taxable
             "12.00",                      // VAT
@@ -598,6 +598,75 @@ void StackDB::populateSales() {
             "100.00",                     // Product unit price <!Make sure this is valid>
             "2",                          // Number of items bought (quantity)
             "200.00"});                   // Total (unit price * quantity)
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000005",                  // SalesID <!Make sure this is unique>
+            "2023-02-22 10:09:50",        // Date and time of transaction
+            "112.00",                     // Subtotal
+            "100.00",                     // Taxable
+            "12.00",                      // VAT
+            "0.00",                       // Discount
+            "112.00",                     // Total
+            "120.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "8.00",                       // Change
+            "2098472",                    // CashierID <!Make sure this is VALID>
+            "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "100000005",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this  is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000006",                  // SalesID <!Make sure this is unique>
+            "2023-02-22 10:09:50",        // Date and time of transaction
+            "112.00",                     // Subtotal
+            "100.00",                     // Taxable
+            "12.00",                      // VAT
+            "0.00",                       // Discount
+            "112.00",                     // Total
+            "120.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "8.00",                       // Change
+            "2098472",                    // CashierID <!Make sure this is VALID>
+            "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "100000006",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this  is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
+    // Transaction
+    SALES_TABLE.emplace_back(SalesTableItem {
+            "100000007",                  // SalesID <!Make sure this is unique>
+            "2023-02-23 10:09:50",        // Date and time of transaction
+            "112.00",                     // Subtotal
+            "100.00",                     // Taxable
+            "12.00",                      // VAT
+            "0.00",                       // Discount
+            "112.00",                     // Total
+            "120.00",                     // Amount paid
+            "Cash",                       // Payment type
+            "8.00",                       // Change
+            "2098472",                    // CashierID <!Make sure this is VALID>
+            "CMJD12AB56CD"});             // CustomerID <!Make sure this is VALID>
+    // Transaction items
+    SALES_ITEM_TABLE.emplace_back(SalesItemTableItem {
+            "100000007",                  // SalesID <!Make sure this is VALID>
+            "1125478744",                 // Product ID or Barcode <!Make sure this is valid>
+            "Chippy",                     // Product name <!Make sure this matches with inventory>
+            "Grocery",                    // Category <!Make sure this matches with inventory>
+            "10.00",                      // Product unit price <!Make sure this  is valid>
+            "10",                         // Number of items bought (quantity)
+            "100.00"});                   // Total (unit price * quantity)
 }
 
 void StackDB::populateCategory() {

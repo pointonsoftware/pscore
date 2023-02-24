@@ -63,7 +63,7 @@ EmployeeMgmtScreen::EmployeeMgmtScreen()
     mEmpFieldHelper.addField({entity::FIELD_MNAME, "Middle Name",
                              &entity::Employee::setMiddleName});
     mEmpFieldHelper.addField({entity::FIELD_LNAME, "Last Name", &entity::Employee::setLastName});
-    mEmpFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy/mm/dd)",
+    mEmpFieldHelper.addField({entity::FIELD_BDATE, "Birthdate (yyyy-mm-dd)",
                              &entity::Employee::setBirthdate});
     mEmpFieldHelper.addField({entity::FIELD_GENDER, "Gender (M/F)", &entity::Employee::setGender});
     mEmpFieldHelper.addField({entity::FIELD_EPOS, "Position", &entity::Employee::setPosition});

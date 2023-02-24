@@ -50,6 +50,17 @@ class TestAccounting : public testing::Test {
     AccountingController controller;
 };
 
+class TestAccountingGetSales : public TestAccounting,
+    public ::testing::WithParamInterface<Period> {};
+
+INSTANTIATE_TEST_SUITE_P(
+    TestInstantiation, TestAccountingGetSales, testing::Values(
+    Period::YESTERDAY,
+    Period::TODAY,
+    Period::THIS_WEEK,
+    Period::THIS_MONTH,
+    Period::THIS_YEAR));
+
 TEST_F(TestAccounting, TestGetCategorySales) {
     const std::vector<std::string> fakeCategory = {"Grocery"};
     const std::string fakeSaleID = "100000001";
@@ -121,7 +132,7 @@ TEST_F(TestAccounting, GetTodaySalesReportShouldSucceed) {
     ASSERT_STREQ(member.value.c_str(), "100.00");
 }
 
-TEST_F(TestAccounting, GetTodaySalesShouldSucceed) {
+TEST_P(TestAccountingGetSales, GetTodaySalesShouldSucceed) {
     const std::vector<entity::Sale> fakeData =
         { entity::Sale{"100000001", "2021-05-16 10:12:20", {}, "",
                        "", "", "", "", "", "", "", "", ""} };
@@ -129,7 +140,7 @@ TEST_F(TestAccounting, GetTodaySalesShouldSucceed) {
     EXPECT_CALL(*dpMock, getSales(_, _))
             .WillOnce(Return(fakeData));
 
-    const std::vector<entity::Sale> sales = controller.getSales(Period::TODAY);
+    const std::vector<entity::Sale> sales = controller.getSales(GetParam());
     // Should not be empty, verify the contents
     ASSERT_FALSE(sales.empty());
 }

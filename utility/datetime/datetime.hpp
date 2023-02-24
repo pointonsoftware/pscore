@@ -25,6 +25,12 @@
 
 namespace utility {
 
+// Represents the start and end dates of a week
+struct WeekEndDates {
+    const std::string start;
+    const std::string end;
+};
+
 /*!
  * Returns the current date-time
 */
@@ -34,13 +40,22 @@ extern std::tm currentDateTime();
 */
 extern std::string currentDateTimeStr();
 /*!
- * Returns the current date in "YYYY/MM/DD" form
+ * Returns the current date in "YYYY-MM-DD" form
 */
 extern std::string currentDateStr();
 /*!
+ * Returns the current day's number of month
+ * e.g. 2020-10-12 returns 12
+*/
+extern unsigned int currentDayOfTheMonth();
+/*!
  * Returns the number of days in the current month
 */
-extern std::string daysOfCurrentMonthStr();
+extern int daysOfCurrentMonth();
+/*!
+ * Returns the yesterday date in "YYYY-MM-DD" form
+*/
+extern std::string yesterdayDateStr();
 /*!
  * Returns the current month in "MM" form
 */
@@ -50,13 +65,17 @@ extern std::string currentMonthStr();
 */
 extern std::string currentYearStr();
 /*!
- * Validate if date is in "YYYY/MM/DD" form
+ * Validate if date is in "YYYY-MM-DD" form
 */
 extern bool isValidDate(const std::string& date);
 /*!
  * Validate if date-time is in "YYYY-MM-DD HH:MM:SS" form
 */
 extern bool isValidDateTime(const std::string& dateTime);
+/*!
+ * Returns the current week's start and end dates in "YYYY-MM-DD" form
+*/
+extern WeekEndDates currentWeekEndDates();
 
 class DateTimeComparator {
  public:
