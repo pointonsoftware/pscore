@@ -59,8 +59,7 @@ INSTANTIATE_TEST_SUITE_P(
     Period::TODAY,
     Period::THIS_WEEK,
     Period::THIS_MONTH,
-    Period::THIS_YEAR)
-    );
+    Period::THIS_YEAR));
 
 TEST_F(TestAccounting, TestGetCategorySales) {
     const std::vector<std::string> fakeCategory = {"Grocery"};
