@@ -185,7 +185,7 @@ FileOperationStatus FileIo::overWriteFile(const std::vector<std::string>& fileCo
         return open();
     }
     // let's write!
-    for (const std::string temp : fileContents) {
+    for (const std::string& temp : fileContents) {
         newFile << temp << std::endl;
     }
     // make sure to reopen our member file
