@@ -19,10 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 // Socket headers
-#include <unistd.h>
 #include <string.h>
 
-#ifdef __WIN32__
+#ifdef WIN32
 #include <winsock2.h>
 #pragma comment(lib, "Ws2_32.lib")
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
@@ -30,8 +29,9 @@
 #endif
 #define DEFINE_CONSOLEV2_PROPERTIES
 #else
-#include <sys/socket.h>
 #include <arpa/inet.h>
+#include <sys/socket.h>
+#include <unistd.h>
 #endif
 
 #include <iomanip>
@@ -66,7 +66,7 @@ void screenStartUp() {
 }
 
 void closeSocket(const int& fd) {
-#ifdef __WIN32__
+#ifdef WIN32
     closesocket(fd);
     WSACleanup();
 #else
@@ -103,7 +103,7 @@ bool EnableVTMode() {
 int main() {
     struct sockaddr_in recv_addr;
     int socketfd;
-#ifdef __WIN32__
+#ifdef WIN32
     char trueflag = '1';
     int slen = sizeof(recv_addr);
 #else
@@ -115,7 +115,7 @@ int main() {
     std::cout << "Client starting up..." << std::endl;
     std::cout << std::endl;
 
-#ifdef __WIN32__
+#ifdef WIN32
     WSADATA wsaData;
     int res = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (res != NO_ERROR) {

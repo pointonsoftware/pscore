@@ -102,6 +102,7 @@ The repository consists of three main components:
 These are the base requirements to build and use CORE.
 -   Cmake
 -   C++11-standard-compliant compiler
+    - use `mingw` for windows
 
 ---
 
@@ -110,6 +111,10 @@ These are the base requirements to build and use CORE.
 Clone the repository to a local destination using git:
 
 `git clone git@github.com:pointonsoftware/pscore.git`
+
+Update the submodules in the external folder:
+`git submodule init`
+`git submodule update`
 
 ---
 

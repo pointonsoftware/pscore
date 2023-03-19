@@ -46,7 +46,7 @@ endif ()
 set (MINGW_DEPENDENCY "")
 if (MINGW)
 # Warning! This bloats our binary, but we have no other option for mingw
-set(MINGW_DEPENDENCY "-static")
+set (MINGW_DEPENDENCY "-static")
 endif ()
 
 

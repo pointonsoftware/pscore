@@ -33,7 +33,7 @@ constexpr char CORE_VERSION_MASK[] = "x.x.x";
 namespace screen {
 
 void ScreenCommon::clearScreen() const {
-#ifdef __WIN32__
+#ifdef WIN32
     std::system("cls");
 #else
     std::system("clear");

@@ -33,8 +33,9 @@
 #include <arpa/inet.h>
 #endif
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <sstream>
 
 namespace utility {
 
