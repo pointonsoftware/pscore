@@ -102,7 +102,7 @@ The repository consists of three main components:
 These are the base requirements to build and use CORE.
 -   Cmake
 -   C++11-standard-compliant compiler
-    - use `mingw` for windows
+    -   use `mingw` for windows
 
 ---
 
