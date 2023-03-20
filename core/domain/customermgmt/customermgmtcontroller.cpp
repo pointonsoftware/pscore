@@ -161,9 +161,12 @@ CUSTOMERMGMTAPISTATUS CustomerMgmtController::remove(const std::string& id) {
 }
 
 CustomerMgmtCtrlPtr createCustomerMgmtModule(
-                    const CustomerMgmtDataPtr& data,
-                    const CustomerMgmtViewPtr& view) {
-    return std::make_unique<CustomerMgmtController>(data, view);
+                    const CustomerMgmtDataPtr data,
+                    const CustomerMgmtViewPtr view) {
+    if ((!data) || (!view)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    return new CustomerMgmtController(data, view);
 }
 
 }  // namespace customermgmt

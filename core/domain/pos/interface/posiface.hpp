@@ -34,13 +34,13 @@ class POSControlInterface {
     virtual ~POSControlInterface() = default;
 };
 
-typedef std::shared_ptr<POSDataInterface> POSDataPtr;
-typedef std::shared_ptr<POSViewInterface> POSViewPtr;
-typedef std::unique_ptr<POSControlInterface> POSControllerPtr;
+typedef POSDataInterface* POSDataPtr;
+typedef POSViewInterface* POSViewPtr;
+typedef POSControlInterface* POSControllerPtr;
 
 // Lib APIs
 extern "C" CORE_API POSControllerPtr createPOSModule
-                    (const POSDataPtr& data, const POSViewPtr& view);
+                    (const POSDataPtr data, const POSViewPtr view);
 
 }  // namespace pos
 }  // namespace domain

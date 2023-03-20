@@ -86,13 +86,13 @@ class EmployeeMgmtControlInterface {
                                                      const std::string& lname) = 0;
 };
 
-typedef std::shared_ptr<EmployeeMgmtDataInterface> EmpMgmtDataPtr;
-typedef std::shared_ptr<EmployeeMgmtViewInterface> EmpMgmtViewPtr;
-typedef std::unique_ptr<EmployeeMgmtControlInterface> EmpMgmtControllerPtr;
+typedef EmployeeMgmtDataInterface* EmpMgmtDataPtr;
+typedef EmployeeMgmtViewInterface* EmpMgmtViewPtr;
+typedef EmployeeMgmtControlInterface* EmpMgmtControllerPtr;
 
 // Lib APIs
 extern "C" CORE_API EmpMgmtControllerPtr createEmployeeMgmtModule
-                    (const EmpMgmtDataPtr& data, const EmpMgmtViewPtr& view);
+                    (const EmpMgmtDataPtr data, const EmpMgmtViewPtr view);
 
 }  // namespace empmgmt
 }  // namespace domain

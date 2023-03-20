@@ -71,8 +71,8 @@ InventoryScreen::InventoryScreen() : mTableHelper({"Product", "Category", "Stock
 
 void InventoryScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::inventory::createInventoryModule(
-                    std::make_shared<dataprovider::inventory::InventoryDataProvider>(),
-                    std::make_shared<InventoryScreen>());
+                    new dataprovider::inventory::InventoryDataProvider(),
+                    this);
     // Get the products from Core then cache the list
     queryProductsList();
     // Landing

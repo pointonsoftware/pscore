@@ -34,11 +34,7 @@ namespace domain {
 template <typename DpType, typename ViewType, typename EntityType>
 class BaseController {
  public:
-    explicit BaseController(const std::shared_ptr<DpType> data,
-                            const std::shared_ptr<ViewType> view) {
-        if ((data == nullptr) || (view == nullptr)) {
-           throw std::invalid_argument("Received a nulltpr argument");
-        }
+    explicit BaseController(std::unique_ptr<DpType> data, std::unique_ptr<ViewType> view) {
         mDataProvider = data;
         mView = view;
     }
@@ -57,8 +53,8 @@ class BaseController {
     }
 
     typedef std::pair<std::string, std::function<std::string(const EntityType&)>> Keys;
-    std::shared_ptr<DpType> mDataProvider;
-    std::shared_ptr<ViewType> mView;
+    std::unique_ptr<DpType> mDataProvider;
+    std::unique_ptr<ViewType> mView;
     CacheController<EntityType> mCachedList;
 };
 

@@ -38,8 +38,8 @@ DashboardScreen::DashboardScreen(const std::string& userID) : mUserID(userID) {
 
 void DashboardScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::dashboard::createDashboardModule(
-                std::make_shared<dataprovider::dashboard::DashboardDataProvider>(),
-                std::make_shared<DashboardScreen>(mUserID));
+                new dataprovider::dashboard::DashboardDataProvider(),
+                this);
     mCoreController->setCurrentUserId(mUserID);
     mCurrentUser = mCoreController->getCurrentUser();
 

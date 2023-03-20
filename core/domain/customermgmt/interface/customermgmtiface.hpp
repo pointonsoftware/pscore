@@ -68,13 +68,13 @@ class CustomerManagementControlInterface {
     virtual CUSTOMERMGMTAPISTATUS remove(const std::string& id) = 0;
 };
 
-typedef std::shared_ptr<CustomerManagementDataInterface> CustomerMgmtDataPtr;
-typedef std::shared_ptr<CustomerManagementViewInterface> CustomerMgmtViewPtr;
-typedef std::unique_ptr<CustomerManagementControlInterface> CustomerMgmtCtrlPtr;
+typedef CustomerManagementDataInterface* CustomerMgmtDataPtr;
+typedef CustomerManagementViewInterface* CustomerMgmtViewPtr;
+typedef CustomerManagementControlInterface* CustomerMgmtCtrlPtr;
 
 // Lib APIs
 extern "C" CORE_API CustomerMgmtCtrlPtr createCustomerMgmtModule
-                    (const CustomerMgmtDataPtr& data, const CustomerMgmtViewPtr& view);
+                    (const CustomerMgmtDataPtr data, const CustomerMgmtViewPtr view);
 
 }  // namespace customermgmt
 }  // namespace domain
