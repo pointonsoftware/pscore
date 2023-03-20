@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.9.2)
 
-set (CORE_VERSION 0.4.10)
+set (CORE_VERSION 0.4.11)
 
 if (CMAKE_VERSION VERSION_LESS 3.0)
   project (core C CXX)
@@ -46,7 +46,7 @@ endif ()
 set (MINGW_DEPENDENCY "")
 if (MINGW)
 # Warning! This bloats our binary, but we have no other option for mingw
-set(MINGW_DEPENDENCY "-static")
+set (MINGW_DEPENDENCY "-static")
 endif ()
 
 

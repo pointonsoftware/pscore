@@ -21,10 +21,10 @@
 #ifndef CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_
 #define CORE_DOMAIN_COMMON_LIBRARYCOMMON_HPP_
 
-#if defined(__GNUC__)
+#ifdef __GNUC__
     // Linux
     #define CORE_API __attribute__ ((__visibility__("default")))
-#elif defined(WIN32)
+#else
     // Windows
     #ifdef BUILD_CORE_DLL
         #define CORE_API __declspec(dllexport)

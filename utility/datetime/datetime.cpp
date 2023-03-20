@@ -59,7 +59,7 @@ std::tm currentDateTime() {
     std::tm bt {};
 #ifdef __unix__
     localtime_r(&now_c, &bt);
-#elif __WIN32__
+#elif WIN32
     localtime_s(&bt, &now_c);
 #else
     static std::mutex mtx;
