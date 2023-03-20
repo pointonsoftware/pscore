@@ -69,8 +69,8 @@ CustomerMgmtScreen::CustomerMgmtScreen() : mTableHelper({"ID", "First Name", "La
 
 void CustomerMgmtScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::customermgmt::createCustomerMgmtModule(
-                    std::make_shared<dataprovider::customermgmt::CustomerDataProvider>(),
-                    std::make_shared<CustomerMgmtScreen>());
+                    new dataprovider::customermgmt::CustomerDataProvider(),
+                    this);
     // Get the customers from Core then cache the list
     queryCustomersList();
     // Landing

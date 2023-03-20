@@ -116,9 +116,12 @@ bool DashboardController::isUserValid(const entity::User& userInfo) const {
     return !userInfo.userID().empty();
 }
 
-DashboardControllerPtr createDashboardModule(const DashboardDataPtr& data,
-                                             const DashboardViewPtr& view) {
-    return std::make_unique<DashboardController>(data, view);
+DashboardControllerPtr createDashboardModule(const DashboardDataPtr data,
+                                             const DashboardViewPtr view) {
+    if ((!data) || (!view)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    return new DashboardController(data, view);
 }
 
 }  // namespace dashboard

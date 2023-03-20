@@ -214,9 +214,12 @@ INVENTORYAPISTATUS InventoryController::removeCategory(const std::string& catego
     return INVENTORYAPISTATUS::SUCCESS;
 }
 
-InventoryControllerPtr createInventoryModule(const InventoryDataPtr& data,
-                                             const InventoryViewPtr& view) {
-    return std::make_unique<InventoryController>(data, view);
+InventoryControllerPtr createInventoryModule(const InventoryDataPtr data,
+                                             const InventoryViewPtr view) {
+    if ((!data) || (!view)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    return new InventoryController(data, view);
 }
 
 }  // namespace inventory

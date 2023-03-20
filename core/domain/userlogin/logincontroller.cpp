@@ -101,9 +101,12 @@ bool LoginController::isUserValid(const entity::User& userInfo) const {
     return !userInfo.userID().empty();
 }
 
-LoginControllerPtr createLoginModule(const LoginDataPtr& dataprovider,
-                                     const LoginViewPtr& view) {
-    return std::make_unique<LoginController>(dataprovider, view);
+LoginControllerPtr createLoginModule(const LoginDataPtr data,
+                                     const LoginViewPtr view) {
+    if ((!data) || (!view)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    return new LoginController(data, view);
 }
 
 }  // namespace login

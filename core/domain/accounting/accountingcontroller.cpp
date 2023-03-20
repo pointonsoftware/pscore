@@ -213,9 +213,12 @@ std::vector<entity::Sale> AccountingController::getVoidSales() {
     return {};
 }
 
-AccountingControllerPtr createAccountingModule(const AccountingDataPtr& data,
-                                               const AccountingViewPtr& view) {
-    return std::make_unique<AccountingController>(data, view);
+AccountingControllerPtr createAccountingModule(const AccountingDataPtr data,
+                                               const AccountingViewPtr view) {
+    if ((!data) || (!view)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    return new AccountingController(data, view);
 }
 
 }  // namespace accounting

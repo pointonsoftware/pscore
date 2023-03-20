@@ -71,8 +71,8 @@ EmployeeMgmtScreen::EmployeeMgmtScreen()
 
 void EmployeeMgmtScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::empmgmt::createEmployeeMgmtModule(
-                    std::make_shared<dataprovider::empmgmt::EmployeeDataProvider>(),
-                    std::make_shared<EmployeeMgmtScreen>());
+                    new dataprovider::empmgmt::EmployeeDataProvider(),
+                    this);
     // Get the employees from Core then cache the list
     queryEmployeesList();
     // Landing

@@ -95,13 +95,13 @@ class InventoryControlInterface {
     virtual INVENTORYAPISTATUS removeCategory(const std::string& category) = 0;
 };
 
-typedef std::shared_ptr<InventoryDataInterface> InventoryDataPtr;
-typedef std::shared_ptr<InventoryViewInterface> InventoryViewPtr;
-typedef std::unique_ptr<InventoryControlInterface> InventoryControllerPtr;
+typedef InventoryDataInterface* InventoryDataPtr;
+typedef InventoryViewInterface* InventoryViewPtr;
+typedef InventoryControlInterface* InventoryControllerPtr;
 
 // Lib APIs
 extern "C" CORE_API InventoryControllerPtr createInventoryModule
-                    (const InventoryDataPtr& data, const InventoryViewPtr& view);
+                    (const InventoryDataPtr data, const InventoryViewPtr view);
 
 }  // namespace inventory
 }  // namespace domain

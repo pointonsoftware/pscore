@@ -71,13 +71,13 @@ class AccountingControlInterface {
     virtual std::vector<entity::Sale> getVoidSales() = 0;
 };
 
-typedef std::shared_ptr<AccountingDataInterface> AccountingDataPtr;
-typedef std::shared_ptr<AccountingViewInterface> AccountingViewPtr;
-typedef std::unique_ptr<AccountingControlInterface> AccountingControllerPtr;
+typedef AccountingDataInterface* AccountingDataPtr;
+typedef AccountingViewInterface* AccountingViewPtr;
+typedef AccountingControlInterface* AccountingControllerPtr;
 
 // Lib APIs
 extern "C" CORE_API AccountingControllerPtr createAccountingModule
-                    (const AccountingDataPtr& data, const AccountingViewPtr& view);
+                    (const AccountingDataPtr data, const AccountingViewPtr view);
 
 }  // namespace accounting
 }  // namespace domain

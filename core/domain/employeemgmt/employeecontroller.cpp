@@ -223,9 +223,12 @@ ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee&
     return validationErrors;
 }
 
-EmpMgmtControllerPtr createEmployeeMgmtModule(const EmpMgmtDataPtr& data,
-                                              const EmpMgmtViewPtr& view) {
-    return std::make_unique<EmployeeMgmtController>(data, view);
+EmpMgmtControllerPtr createEmployeeMgmtModule(const EmpMgmtDataPtr data,
+                                              const EmpMgmtViewPtr view) {
+    if ((!data) || (!view)) {
+        throw std::invalid_argument("Received a nulltpr argument");
+    }
+    return new EmployeeMgmtController(data, view);
 }
 
 }  // namespace empmgmt

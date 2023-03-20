@@ -54,13 +54,13 @@ class DashboardControlInterface {
     virtual entity::Employee getUserDetails(const entity::User& user) = 0;
 };
 
-typedef std::shared_ptr<DashboardDataInterface> DashboardDataPtr;
-typedef std::shared_ptr<DashboardViewInterface> DashboardViewPtr;
-typedef std::unique_ptr<DashboardControlInterface> DashboardControllerPtr;
+typedef DashboardDataInterface* DashboardDataPtr;
+typedef DashboardViewInterface* DashboardViewPtr;
+typedef DashboardControlInterface* DashboardControllerPtr;
 
 // Lib APIs
 extern "C" CORE_API DashboardControllerPtr createDashboardModule
-                    (const DashboardDataPtr& data, const DashboardViewPtr& view);
+                    (const DashboardDataPtr data, const DashboardViewPtr view);
 
 }  // namespace dashboard
 }  // namespace domain

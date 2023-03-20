@@ -56,8 +56,8 @@ AccountingScreen::AccountingScreen()
 
 void AccountingScreen::show(std::promise<defines::display>* promise) {
     mCoreController = domain::accounting::createAccountingModule(
-                    std::make_shared<dataprovider::accounting::AccountingDataProvider>(),
-                    std::make_shared<AccountingScreen>());
+                    new dataprovider::accounting::AccountingDataProvider(),
+                    this);
     // Get the customers from Core then cache the list
     queryTransactionsList();
     // Landing
