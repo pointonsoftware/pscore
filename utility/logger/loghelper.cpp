@@ -28,23 +28,20 @@
 #include <cfg/config.hpp>
 
 /**
-* This code is sourced from StackOverflow
-* Author profile: https://stackoverflow.com/users/3990012/serup
-*
-* Original question: https://stackoverflow.com/q/15106102
-* Answer: https://stackoverflow.com/a/52184144
+* This code is sourced from ChatGPT
+* Query: - write a printf like function in c++
+*        - make it msvc specific
 */
 #define EXTRACT_VAR(logFormat, logString) \
     do { \
         va_list args; \
-        va_start(args, logFormat); \
-        const size_t len = std::vsnprintf(NULL, 0, logFormat.c_str(), args); \
+        const char* format = logFormat.c_str(); \
+        va_start(args, format); \
+        constexpr int BUFFER_SIZE = 1024; \
+        char buffer[BUFFER_SIZE]; \
+        vsprintf_s(buffer, BUFFER_SIZE, format, args); \
         va_end(args); \
-        std::vector<char> vec(len + 1); \
-        va_start(args, logFormat); \
-        std::vsnprintf(&vec[0], len + 1, logFormat.c_str(), args); \
-        va_end(args); \
-        logString = &vec[0]; \
+        logString = buffer; \
     } while (0)
 
 namespace utility {

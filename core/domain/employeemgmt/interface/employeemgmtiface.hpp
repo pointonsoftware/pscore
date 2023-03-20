@@ -91,7 +91,7 @@ typedef std::shared_ptr<EmployeeMgmtViewInterface> EmpMgmtViewPtr;
 typedef std::unique_ptr<EmployeeMgmtControlInterface> EmpMgmtControllerPtr;
 
 // Lib APIs
-extern "C" CORE_API EmpMgmtControllerPtr createEmployeeMgmtModule
+CORE_API EmpMgmtControllerPtr createEmployeeMgmtModule
                     (const EmpMgmtDataPtr& data, const EmpMgmtViewPtr& view);
 
 }  // namespace empmgmt

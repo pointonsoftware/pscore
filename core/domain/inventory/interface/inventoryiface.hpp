@@ -100,7 +100,7 @@ typedef std::shared_ptr<InventoryViewInterface> InventoryViewPtr;
 typedef std::unique_ptr<InventoryControlInterface> InventoryControllerPtr;
 
 // Lib APIs
-extern "C" CORE_API InventoryControllerPtr createInventoryModule
+CORE_API InventoryControllerPtr createInventoryModule
                     (const InventoryDataPtr& data, const InventoryViewPtr& view);
 
 }  // namespace inventory

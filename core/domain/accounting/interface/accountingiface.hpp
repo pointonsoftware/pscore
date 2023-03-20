@@ -76,7 +76,7 @@ typedef std::shared_ptr<AccountingViewInterface> AccountingViewPtr;
 typedef std::unique_ptr<AccountingControlInterface> AccountingControllerPtr;
 
 // Lib APIs
-extern "C" CORE_API AccountingControllerPtr createAccountingModule
+CORE_API AccountingControllerPtr createAccountingModule
                     (const AccountingDataPtr& data, const AccountingViewPtr& view);
 
 }  // namespace accounting

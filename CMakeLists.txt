@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.9.2)
 
-set (CORE_VERSION 0.4.11)
+set (CORE_VERSION 0.4.12)
 
 if (CMAKE_VERSION VERSION_LESS 3.0)
   project (core C CXX)
@@ -15,7 +15,7 @@ set (version_file "${CMAKE_CURRENT_BINARY_DIR}/bin/version")
 write_file (${version_file} "[CORE]\nversion=${CORE_VERSION}")
 
 
-option (BUILD_ALL "Build app and data" ON)
+option (BUILD_ALL_COMPONENTS "Build app and data" ON)
 option (BUILD_UNITTEST "Build unit tests" ON)
 option (BUILD_LOG_CLIENT "Build socketlogger client" OFF)
 
@@ -69,7 +69,7 @@ add_subdirectory (utility)
 
 
 # optional builds
-if (BUILD_ALL)
+if (BUILD_ALL_COMPONENTS)
 message(STATUS "All components enabled")
 add_subdirectory (orchestra/application)
 add_subdirectory (orchestra/datamanager)

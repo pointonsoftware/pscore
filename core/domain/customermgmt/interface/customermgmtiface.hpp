@@ -73,7 +73,7 @@ typedef std::shared_ptr<CustomerManagementViewInterface> CustomerMgmtViewPtr;
 typedef std::unique_ptr<CustomerManagementControlInterface> CustomerMgmtCtrlPtr;
 
 // Lib APIs
-extern "C" CORE_API CustomerMgmtCtrlPtr createCustomerMgmtModule
+CORE_API CustomerMgmtCtrlPtr createCustomerMgmtModule
                     (const CustomerMgmtDataPtr& data, const CustomerMgmtViewPtr& view);
 
 }  // namespace customermgmt

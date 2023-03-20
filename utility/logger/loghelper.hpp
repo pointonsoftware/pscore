@@ -70,9 +70,10 @@ class LogHelper {
     std::unique_ptr<ConfigIface> mConfig = nullptr;
 
     enum class LoggerType {
-        CONSOLE = 0x00,
-        FILE    = 0x01,
-        SOCKET  = 0x02
+        OFF     = 0x00,
+        CONSOLE = 0x01,
+        FILE    = 0x02,
+        SOCKET  = 0x03
     };
 
     enum class LogLevel {
