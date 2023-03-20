@@ -27,12 +27,33 @@
 #include "socketlog.hpp"
 #include <cfg/config.hpp>
 
+
+/**
+* This code is sourced from StackOverflow
+* Author profile: https://stackoverflow.com/users/3990012/serup
+*
+* Original question: https://stackoverflow.com/q/15106102
+* Answer: https://stackoverflow.com/a/52184144
+*/
+#define EXTRACT_VAR(logFormat, logString) \
+    do { \
+        va_list args; \
+        va_start(args, logFormat); \
+        const size_t len = std::vsnprintf(NULL, 0, logFormat.c_str(), args); \
+        va_end(args); \
+        std::vector<char> vec(len + 1); \
+        va_start(args, logFormat); \
+        std::vsnprintf(&vec[0], len + 1, logFormat.c_str(), args); \
+        va_end(args); \
+        logString = &vec[0]; \
+    } while (0)
+
 /**
 * This code is sourced from ChatGPT
 * Query: - write a printf like function in c++
 *        - make it msvc specific
 */
-#define EXTRACT_VAR(logFormat, logString) \
+#define EXTRACT_VAR_MSVC(logFormat, logString) \
     do { \
         va_list args; \
         const char* format = logFormat.c_str(); \
@@ -70,7 +91,11 @@ void LogHelper::write(const std::string& logMode, const std::string& prettyFunct
         std::string logString = logFormat;
         //! logFormat might have arguments
         if (logFormat.find("%") != std::string::npos) {
+#ifdef _MSC_VER
+            EXTRACT_VAR_MSVC(logFormat, logString);
+#else
             EXTRACT_VAR(logFormat, logString);
+#endif
         }
         mLogger->write(logMode, className, methodName, logString);
     }
