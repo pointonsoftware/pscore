@@ -6,7 +6,7 @@ do
 done
 
 cd "$(dirname "$0")" || exit 1
-CORE_CMAKE_FLAGS="-DBUILD_UNITTEST=ON -DBUILD_ALL=ON $CORE_CMAKE_FLAGS"
+CORE_CMAKE_FLAGS="-DBUILD_UNITTEST=ON -DBUILD_ALL_COMPONENTS=ON $CORE_CMAKE_FLAGS"
 
 rm -rf build
 mkdir build || exit 1

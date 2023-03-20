@@ -45,7 +45,7 @@ typedef std::shared_ptr<LoginViewIface> LoginViewPtr;
 typedef std::unique_ptr<LoginControlInterface> LoginControllerPtr;
 
 // Lib APIs
-extern "C" CORE_API LoginControllerPtr createLoginModule
+CORE_API LoginControllerPtr createLoginModule
                     (const LoginDataPtr& dataprovider, const LoginViewPtr& view);
 
 }  // namespace login

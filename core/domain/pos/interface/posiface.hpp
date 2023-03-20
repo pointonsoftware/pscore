@@ -39,7 +39,7 @@ typedef std::shared_ptr<POSViewInterface> POSViewPtr;
 typedef std::unique_ptr<POSControlInterface> POSControllerPtr;
 
 // Lib APIs
-extern "C" CORE_API POSControllerPtr createPOSModule
+CORE_API POSControllerPtr createPOSModule
                     (const POSDataPtr& data, const POSViewPtr& view);
 
 }  // namespace pos

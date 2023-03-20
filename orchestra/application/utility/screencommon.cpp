@@ -21,6 +21,7 @@
 #include "screencommon.hpp"
 #include <algorithm>
 #include <cstdlib>
+#include <cwctype>
 #include <iostream>
 #include <iomanip>
 #include <cfg/config.hpp>  // pscore utility

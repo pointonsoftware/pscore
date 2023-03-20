@@ -28,16 +28,12 @@
 
 #ifdef _MSC_VER
 #define FUNC __FUNCSIG__
-#else
-#define FUNC __PRETTY_FUNCTION__
-#endif
-
-#ifdef _MSC_VER
 #define LOG_DEBUG(log_str, ...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)
 #define LOG_INFO(log_str, ...)  utility::LogHelper::GetInstance().write("info" , FUNC, log_str)
 #define LOG_WARN(log_str, ...)  utility::LogHelper::GetInstance().write("warn" , FUNC, log_str)
 #define LOG_ERROR(log_str, ...) utility::LogHelper::GetInstance().write("error", FUNC, log_str)
 #else
+#define FUNC __PRETTY_FUNCTION__
 #define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)
 #define LOG_INFO(log_str...)  utility::LogHelper::GetInstance().write("info" , FUNC, log_str)
 #define LOG_WARN(log_str...)  utility::LogHelper::GetInstance().write("warn" , FUNC, log_str)
@@ -70,9 +66,10 @@ class LogHelper {
     std::unique_ptr<ConfigIface> mConfig = nullptr;
 
     enum class LoggerType {
-        CONSOLE = 0x00,
-        FILE    = 0x01,
-        SOCKET  = 0x02
+        OFF     = 0x00,
+        CONSOLE = 0x01,
+        FILE    = 0x02,
+        SOCKET  = 0x03
     };
 
     enum class LogLevel {

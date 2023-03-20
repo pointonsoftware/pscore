@@ -27,6 +27,7 @@
 #include "socketlog.hpp"
 #include <cfg/config.hpp>
 
+
 /**
 * This code is sourced from StackOverflow
 * Author profile: https://stackoverflow.com/users/3990012/serup
@@ -45,6 +46,23 @@
         std::vsnprintf(&vec[0], len + 1, logFormat.c_str(), args); \
         va_end(args); \
         logString = &vec[0]; \
+    } while (0)
+
+/**
+* This code is sourced from ChatGPT
+* Query: - write a printf like function in c++
+*        - make it msvc specific
+*/
+#define EXTRACT_VAR_MSVC(logFormat, logString) \
+    do { \
+        va_list args; \
+        const char* format = logFormat.c_str(); \
+        va_start(args, format); \
+        constexpr int BUFFER_SIZE = 1024; \
+        char buffer[BUFFER_SIZE]; \
+        vsprintf_s(buffer, BUFFER_SIZE, format, args); \
+        va_end(args); \
+        logString = buffer; \
     } while (0)
 
 namespace utility {
@@ -73,7 +91,11 @@ void LogHelper::write(const std::string& logMode, const std::string& prettyFunct
         std::string logString = logFormat;
         //! logFormat might have arguments
         if (logFormat.find("%") != std::string::npos) {
+#ifdef _MSC_VER
+            EXTRACT_VAR_MSVC(logFormat, logString);
+#else
             EXTRACT_VAR(logFormat, logString);
+#endif
         }
         mLogger->write(logMode, className, methodName, logString);
     }
