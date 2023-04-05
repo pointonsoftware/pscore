@@ -82,7 +82,7 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
         validationResult->merge(validator.result());
     }
 
-    if (!(validationResult->empty())) {
+    if (!(validationResult->empty())) {  // cppcheck-suppress knownConditionTrueFalse
         LOG_WARN("Entity contains invalid data. Returning validation results.");
         dumpValidationResult(*(validationResult));
         return INVENTORYAPISTATUS::FAILED;
