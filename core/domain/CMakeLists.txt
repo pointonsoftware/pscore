@@ -14,8 +14,10 @@ add_subdirectory (inventory)
 add_subdirectory (pos)
 add_subdirectory (userlogin)
 
-# Note: the unit test executable is affected by this flag
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+if (NOT MSVC)
+    # Note: the unit test executable is affected by this flag
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+endif()
 
 if (BUILD_UNITTEST)
     set (DOMAIN_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")

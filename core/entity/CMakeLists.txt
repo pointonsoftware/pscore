@@ -25,4 +25,6 @@ add_library (
     user.cpp
 )
 
-target_compile_options(entity PUBLIC "-fPIC")
+if (NOT MSVC)
+    target_compile_options(entity PUBLIC "-fPIC")
+endif()
