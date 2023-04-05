@@ -113,13 +113,9 @@ std::vector<std::string> FileIo::replaceVectorElement(VectorIterator key,
 
 VectorIterator FileIo::findVectorContent(const std::string& keyword,
                                          std::vector<std::string>* container) {
-    VectorIterator it = container->end();
-    for (it = container->begin(); it != container->end(); ++it) {
-        if (it->find(keyword) != std::string::npos) {
-            break;
-        }
-    }
-    return it;
+    return std::find_if(container->begin(), container->end(), [&keyword](const std::string& str) {
+            return str.find(keyword) != std::string::npos;
+     });
 }
 
 FileOperationStatus FileIo::discard() {
