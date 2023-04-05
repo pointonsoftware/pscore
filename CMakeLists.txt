@@ -21,6 +21,7 @@ option (BUILD_LOG_CLIENT "Build socketlogger client" OFF)
 
 
 # set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib CACHE INTERNAL "")
@@ -37,17 +38,17 @@ message(STATUS "GCC detected, adding compile flags")
 set (CMAKE_CXX_FLAGS "-Wall -pedantic -Werror ${COMPILER_EXCEPTION} -O2")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
-if (NOT MINGW)
+if (NOT (MINGW OR MSVC))
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -pg")
 endif ()
 
 
 # linker options
 set (MINGW_DEPENDENCY "")
-if (MINGW)
+if (MINGW OR MSVC)
 # Warning! This bloats our binary, but we have no other option for mingw
 set (MINGW_DEPENDENCY "-static")
-endif ()
+endif()
 
 
 # directories

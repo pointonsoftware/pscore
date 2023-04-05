@@ -29,4 +29,6 @@ target_link_libraries (
     ${MINGW_DEPENDENCY}
 )
 
-target_compile_options(validator PUBLIC "-fPIC")
+if (NOT MSVC)
+    target_compile_options(validator PUBLIC "-fPIC")
+endif()
