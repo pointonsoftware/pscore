@@ -32,8 +32,8 @@ jobs:
 
     - name: Build
       run  : |
-       sudo apt-get install -qq g++-7
-       sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+       sudo apt-get install -qq g++-10
+       sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 90
        ./ci/ci_build.sh
 
     - name: Unit test
