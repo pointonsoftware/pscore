@@ -28,7 +28,7 @@ jobs:
     - name: CppCheck
       run: |
        sudo apt-get install cppcheck
-       cppcheck --std=c++11 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem --error-exitcode=1 --inline-suppr core orchestra mock utility -icore/domain/unittest
+       cppcheck --std=c++17 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem,useStlAlgorithm --error-exitcode=1 --inline-suppr core orchestra mock utility -icore/domain/unittest
 
     - name: Build
       run  : |
