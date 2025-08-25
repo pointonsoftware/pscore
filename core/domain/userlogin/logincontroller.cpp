@@ -46,6 +46,7 @@ bool LoginController::authenticate(const std::string& id, const std::string& pin
     }
     // Get user info
     entity::User userInfo;
+    // cppcheck-suppress knownConditionTrueFalse ; TODO: implement data provider error handling
     if (getUser(utility::toUpper(id), &userInfo) != AUTHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return false;

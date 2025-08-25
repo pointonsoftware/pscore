@@ -50,6 +50,7 @@ entity::User DashboardController::getCurrentUser() {
     }
     // Retrieve the userinfo from db using userID
     entity::User userInfo;
+    // cppcheck-suppress knownConditionTrueFalse ; TODO: implement data provider error handling
     if (getUserData(&userInfo) != DASHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return entity::User();
@@ -88,6 +89,7 @@ entity::Employee DashboardController::getUserDetails(const entity::User& user) {
     }
     // Retrieve employee data
     entity::Employee temp;
+    // cppcheck-suppress knownConditionTrueFalse ; TODO: implement data provider error handling
     if (getEmployeeData(user.employeeID(), &temp) != DASHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return entity::Employee();
