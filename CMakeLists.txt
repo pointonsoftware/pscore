@@ -82,6 +82,11 @@ add_subdirectory (orchestra/datamanager)
 add_subdirectory (orchestra/migration/storage)
 endif()
 
+# Force Google Test to use dynamic runtime library to match main project on MSVC
+if (BUILD_UNITTEST AND MSVC)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+endif()
+
 if (BUILD_UNITTEST)
 message(STATUS "Unittest enabled")
 add_subdirectory (external/gtest)

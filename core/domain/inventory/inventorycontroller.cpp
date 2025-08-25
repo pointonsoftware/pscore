@@ -81,7 +81,8 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
                 return uomAbbr;
             }(),
             getCategoryList());
-        validationResult->merge(validator.result());
+        const auto& errors = validator.result();
+        validationResult->insert(errors.begin(), errors.end());
     }
 
     if (!(validationResult->empty())) {
