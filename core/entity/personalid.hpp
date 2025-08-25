@@ -43,10 +43,10 @@ struct PersonalId {
         mIdNumber = str;
     }
     // Getters
-    std::string type() const {
+    const std::string& type() const {
         return mType;
     }
-    std::string number() const {
+    const std::string& number() const {
         return mIdNumber;
     }
 
