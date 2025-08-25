@@ -230,26 +230,26 @@ void EmployeeMgmtScreen::updateEmployee() {
     {   // Update operation
         std::vector<std::string> requiredFields = { field };
         std::map<std::string, std::string> validationResult;
-        entity::Employee updateEmployee = mTableHelper.getSelectedData();
+        entity::Employee selectedEmployee = mTableHelper.getSelectedData();
         do {
-            mEmpFieldHelper.getInputsFromField(&updateEmployee, requiredFields);
+            mEmpFieldHelper.getInputsFromField(&selectedEmployee, requiredFields);
             if (mEmpFieldHelper.isBreak()) {
                 // User requested to cancel
                 break;
             }
-            mOtherInfoFieldHelper.getInputsFromField(&updateEmployee, requiredFields);
+            mOtherInfoFieldHelper.getInputsFromField(&selectedEmployee, requiredFields);
             if (mOtherInfoFieldHelper.isBreak()) {
                 // User requested to cancel
                 break;
             }
             // Reset validation results
             validationResult.clear();
-            if (mCoreController->save({updateEmployee, "", &validationResult}) !=
+            if (mCoreController->save({selectedEmployee, "", &validationResult}) !=
                 domain::empmgmt::EMPLMGMTSTATUS::SUCCESS) {
                 requiredFields = app::util::extractMapKeys(validationResult);
                 SCREENCOMMON().printErrorList(app::util::extractMapValues(validationResult));
             } else {
-                mTableHelper.setData((mTableHelper.getCurrentIndex()), updateEmployee);
+                mTableHelper.setData((mTableHelper.getCurrentIndex()), selectedEmployee);
             }
         } while (!validationResult.empty());  // repeat input until data is updated
     }
