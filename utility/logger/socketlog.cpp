@@ -84,7 +84,7 @@ void SocketLogger::broadcast(const std::string& logStr) {
     send_addr.sin_addr.s_addr = htonl(INADDR_BROADCAST);
 
     if (sendto(fd, logStr.c_str(), logStr.size(), 0,
-            (struct sockaddr*) &send_addr, sizeof(send_addr)) < 0) {
+            reinterpret_cast<struct sockaddr*>(&send_addr), sizeof(send_addr)) < 0) {
             close(fd);
             return;
     }
