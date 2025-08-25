@@ -37,31 +37,31 @@ SaleItem::SaleItem(const std::string& saleID,
     // Empty for now
 }
 
-std::string SaleItem::saleID() const {
+const std::string& SaleItem::saleID() const {
     return mSaleID;
 }
 
-std::string SaleItem::productID() const {
+const std::string& SaleItem::productID() const {
     return mProductID;
 }
 
-std::string SaleItem::productName() const {
+const std::string& SaleItem::productName() const {
     return mProductName;
 }
 
-std::string SaleItem::productCategory() const {
+const std::string& SaleItem::productCategory() const {
     return mProductCategory;
 }
 
-std::string SaleItem::unitPrice() const {
+const std::string& SaleItem::unitPrice() const {
     return mUnitPrice;
 }
 
-std::string SaleItem::quantity() const {
+const std::string& SaleItem::quantity() const {
     return mQuantity;
 }
 
-std::string SaleItem::totalPrice() const {
+const std::string& SaleItem::totalPrice() const {
     return mTotalPrice;
 }
 

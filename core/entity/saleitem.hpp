@@ -44,13 +44,13 @@ class SaleItem {
     ~SaleItem() = default;
 
     // Getters
-    std::string saleID() const;
-    std::string productID() const;
-    std::string productName() const;
-    std::string productCategory() const;
-    std::string unitPrice() const;
-    std::string quantity() const;
-    std::string totalPrice() const;
+    const std::string& saleID() const;
+    const std::string& productID() const;
+    const std::string& productName() const;
+    const std::string& productCategory() const;
+    const std::string& unitPrice() const;
+    const std::string& quantity() const;
+    const std::string& totalPrice() const;
 
     // Setters
     void setSaleID(const std::string& id);

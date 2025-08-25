@@ -44,55 +44,55 @@ Sale::Sale(const std::string& saleID,
     // Empty for now
 }
 
-std::string Sale::ID() const {
+const std::string& Sale::ID() const {
     return mID;
 }
 
-std::string Sale::dateTime() const {
+const std::string& Sale::dateTime() const {
     return mDateTime;
 }
 
-std::vector<SaleItem> Sale::items() const {
+const std::vector<SaleItem>& Sale::items() const {
     return mItems;
 }
 
-std::string Sale::subtotal() const {
+const std::string& Sale::subtotal() const {
     return mSubtotal;
 }
 
-std::string Sale::taxableAmount() const {
+const std::string& Sale::taxableAmount() const {
     return mTaxableAmount;
 }
 
-std::string Sale::vat() const {
+const std::string& Sale::vat() const {
     return mVAT;
 }
 
-std::string Sale::discount() const {
+const std::string& Sale::discount() const {
     return mDiscount;
 }
 
-std::string Sale::total() const {
+const std::string& Sale::total() const {
     return mTotal;
 }
 
-std::string Sale::amountPaid() const {
+const std::string& Sale::amountPaid() const {
     return mAmountPaid;
 }
 
-std::string Sale::paymentType() const {
+const std::string& Sale::paymentType() const {
     return mPaymentType;
 }
 
-std::string Sale::change() const {
+const std::string& Sale::change() const {
     return mChange;
 }
 
-std::string Sale::cashierID() const {
+const std::string& Sale::cashierID() const {
     return mCashierID;
 }
 
-std::string Sale::customerID() const {
+const std::string& Sale::customerID() const {
     return mCustomerID;
 }
 
