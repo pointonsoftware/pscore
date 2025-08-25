@@ -40,7 +40,7 @@ class Customer : public Person {
     Customer() = default;
     ~Customer() override = default;
 
-    inline std::string ID() const {
+    inline const std::string& ID() const {
         return mID;
     }
 

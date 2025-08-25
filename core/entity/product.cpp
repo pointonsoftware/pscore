@@ -95,55 +95,55 @@ void Product::setSupplierCode(const std::string& supplierCode) {
     mSupplierCode = supplierCode;
 }
 
-std::string Product::barcode() const {
+const std::string& Product::barcode() const {
     return mBarcode;
 }
 
-std::string Product::sku() const {
+const std::string& Product::sku() const {
     return mSKU;
 }
 
-std::string Product::name() const {
+const std::string& Product::name() const {
     return mName;
 }
 
-std::string Product::description() const {
+const std::string& Product::description() const {
     return mDescription;
 }
 
-std::string Product::category() const {
+const std::string& Product::category() const {
     return mCategory;
 }
 
-std::string Product::brand() const {
+const std::string& Product::brand() const {
     return mBrand;
 }
 
-std::string Product::uom() const {
+const std::string& Product::uom() const {
     return mUOM;
 }
 
-std::string Product::stock() const {
+const std::string& Product::stock() const {
     return mStock;
 }
 
-std::string Product::status() const {
+const std::string& Product::status() const {
     return mStatus;
 }
 
-std::string Product::originalPrice() const {
+const std::string& Product::originalPrice() const {
     return mOriginalPrice;
 }
 
-std::string Product::sellPrice() const {
+const std::string& Product::sellPrice() const {
     return mSellPrice;
 }
 
-std::string Product::supplierName() const {
+const std::string& Product::supplierName() const {
     return mSupplierName;
 }
 
-std::string Product::supplierCode() const {
+const std::string& Product::supplierCode() const {
     return mSupplierCode;
 }
 

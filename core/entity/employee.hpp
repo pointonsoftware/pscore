@@ -46,7 +46,7 @@ class Employee : public Person {
     Employee() = default;
     ~Employee() override = default;
 
-    inline std::string ID() const {
+    inline const std::string& ID() const {
         return mID;
     }
 
@@ -54,7 +54,7 @@ class Employee : public Person {
         mPosition = position;
     }
 
-    inline std::string position() const {
+    inline const std::string& position() const {
         return mPosition;
     }
 
@@ -70,7 +70,7 @@ class Employee : public Person {
         mStatus = status;
     }
 
-    inline std::string status() const {
+    inline const std::string& status() const {
         return mStatus;
     }
 

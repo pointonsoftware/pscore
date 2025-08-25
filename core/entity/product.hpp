@@ -63,27 +63,27 @@ class Product {
      * Barcode is used for transaction to make sure the right item is sold
      * to the customer and removed from inventory
     */
-    std::string barcode() const;
+    const std::string& barcode() const;
     /*!
      * SKU is used for inventory and sales purposes
      * Used to know the number of products remaining and products sold
     */
-    std::string sku() const;
-    std::string name() const;
-    std::string description() const;
-    std::string category() const;
-    std::string brand() const;
-    std::string uom() const;
-    std::string stock() const;
+    const std::string& sku() const;
+    const std::string& name() const;
+    const std::string& description() const;
+    const std::string& category() const;
+    const std::string& brand() const;
+    const std::string& uom() const;
+    const std::string& stock() const;
     /*!
      * Status is used for knowing the sales and inventory state of the product
      * { High, Active, Reorder, Low Stock }
     */
-    std::string status() const;
-    std::string originalPrice() const;
-    std::string sellPrice() const;
-    std::string supplierName() const;
-    std::string supplierCode() const;
+    const std::string& status() const;
+    const std::string& originalPrice() const;
+    const std::string& sellPrice() const;
+    const std::string& supplierName() const;
+    const std::string& supplierCode() const;
 
     // Setters
     void setBarcode(const std::string& barcode);
