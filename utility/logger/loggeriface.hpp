@@ -21,6 +21,7 @@
 #ifndef UTILITY_LOGGER_LOGGERIFACE_HPP_
 #define UTILITY_LOGGER_LOGGERIFACE_HPP_
 
+#include <cstdio>
 #include <ctime>
 #include <chrono>
 #include <iostream>

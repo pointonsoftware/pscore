@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "stackdb.hpp"
+#include <vector>
 
 namespace dataprovider {
 namespace db {

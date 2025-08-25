@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #include "person.hpp"
 #include <algorithm>
+#include <string>
+#include <vector>
 
 namespace entity {
 

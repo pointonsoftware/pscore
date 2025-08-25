@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "contactdetailsvalidator.hpp"
+#include <string>
 #include <generalutils.hpp>  // pscore utility
 
 namespace entity {

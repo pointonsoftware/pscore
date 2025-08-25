@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "loggeriface.hpp"
+#include <string>
 #ifndef WIN32
 #include <sys/time.h>
 #endif

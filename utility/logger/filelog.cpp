@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "filelog.hpp"
+#include <string>
 #include <algorithm>
 #include <iomanip>
 #include <sstream>

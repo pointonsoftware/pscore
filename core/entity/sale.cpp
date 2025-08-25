@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include "sale.hpp"
 #include <string>
+#include <vector>
 
 namespace entity {
 

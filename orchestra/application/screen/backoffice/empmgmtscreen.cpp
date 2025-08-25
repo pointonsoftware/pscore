@@ -55,9 +55,9 @@ const std::vector<std::string> DOMAIN_FIELDS {
 };
 
 EmployeeMgmtScreen::EmployeeMgmtScreen()
-    : mTableHelper({"Employee ID", "First Name", "Last Name", "Position"},
-            { &entity::Employee::ID, &entity::Employee::firstName, &entity::Employee::lastName,
-              &entity::Employee::position }), isShowingDetailsScreen(false) {
+: mTableHelper({"Employee ID", "First Name", "Last Name", "Position"},
+{ &entity::Employee::ID, &entity::Employee::firstName, &entity::Employee::lastName,
+&entity::Employee::position }), isShowingDetailsScreen(false) {
     // Basic info
     mEmpFieldHelper.addField({entity::FIELD_FNAME, "First Name", &entity::Employee::setFirstName});
     mEmpFieldHelper.addField({entity::FIELD_MNAME, "Middle Name",

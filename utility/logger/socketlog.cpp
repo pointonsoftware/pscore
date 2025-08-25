@@ -19,9 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "socketlog.hpp"
-
 // Socket headers
 #include <string.h>
+#include <string>
 
 #ifdef WIN32
 #include <io.h>

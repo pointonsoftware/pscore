@@ -46,7 +46,7 @@ typedef std::unique_ptr<LoginControlInterface> LoginControllerPtr;
 
 // Lib APIs
 CORE_API LoginControllerPtr createLoginModule
-                    (const LoginDataPtr& dataprovider, const LoginViewPtr& view);
+(const LoginDataPtr& dataprovider, const LoginViewPtr& view);
 
 }  // namespace login
 }  // namespace domain

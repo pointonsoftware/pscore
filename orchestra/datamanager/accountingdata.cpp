@@ -19,6 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "accountingdata.hpp"
+#include <string>
+#include <vector>
 #include <storage/stackdb.hpp>
 
 namespace dataprovider {

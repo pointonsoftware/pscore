@@ -21,6 +21,8 @@
 #include "inventorycontroller.hpp"
 #include <algorithm>
 #include <memory>
+#include <string>
+#include <vector>
 #include <logger/loghelper.hpp>
 #include <validator/productvalidator.hpp>
 

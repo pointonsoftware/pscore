@@ -19,6 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "generalhelper.hpp"
+#include <map>
+#include <vector>
 #include <algorithm>
 #include <chrono>
 #include <ctime>

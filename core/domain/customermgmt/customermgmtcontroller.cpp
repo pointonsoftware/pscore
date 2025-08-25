@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #include "customermgmtcontroller.hpp"
 #include <memory>
+#include <string>
+#include <vector>
 #include <generator/chargenerator.hpp>
 #include <logger/loghelper.hpp>
 #include <validator/addressvalidator.hpp>

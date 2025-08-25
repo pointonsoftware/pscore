@@ -19,6 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "screencommon.hpp"
+#include <string>
+#include <vector>
 #include <algorithm>
 #include <cstdlib>
 #include <cwctype>

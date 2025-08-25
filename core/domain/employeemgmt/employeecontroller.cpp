@@ -22,6 +22,8 @@
 #include <algorithm>
 #include <memory>
 #include <map>
+#include <string>
+#include <vector>
 #include <datetime/datetime.hpp>
 #include <generalutils.hpp>  // pscore utility
 #include <generator/chargenerator.hpp>

@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "loginscreen.hpp"
+#include <string>
 #include <iostream>
 #include <memory>
 // view

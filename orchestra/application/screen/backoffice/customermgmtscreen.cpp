@@ -23,6 +23,8 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <string>
+#include <vector>
 #include <generalutils.hpp>  // pscore utility
 #include <generalhelper.hpp>  // view utility
 #include <informationscreen.hpp>
@@ -34,26 +36,26 @@ namespace backoffice {
 
 // Customer fields
 const std::vector<std::string> DOMAIN_FIELDS {
-        "Person.First.Name",
-        "Person.Middle.Name",
-        "Person.Last.Name",
-        "Person.Birthdate",
-        "Person.Gender",
-        "Address.Line1",
-        "Address.Line2",
-        "Address.CityTown",
-        "Address.Province",
-        "Address.Zip",
-        "ContactDetails.Phone1",
-        "ContactDetails.Phone2",
-        "ContactDetails.Email",
-        "PersonalId.Type",
-        "PersonalId.Number"
+"Person.First.Name",
+"Person.Middle.Name",
+"Person.Last.Name",
+"Person.Birthdate",
+"Person.Gender",
+"Address.Line1",
+"Address.Line2",
+"Address.CityTown",
+"Address.Province",
+"Address.Zip",
+"ContactDetails.Phone1",
+"ContactDetails.Phone2",
+"ContactDetails.Email",
+"PersonalId.Type",
+"PersonalId.Number"
 };
 
 CustomerMgmtScreen::CustomerMgmtScreen() : mTableHelper({"ID", "First Name", "Last Name"},
-            { &entity::Customer::ID, &entity::Customer::firstName, &entity::Customer::lastName }),
-              isShowingDetailsScreen(false) {
+{ &entity::Customer::ID, &entity::Customer::firstName, &entity::Customer::lastName }),
+isShowingDetailsScreen(false) {
     // Basic info
     mCustomerFieldHelper.addField({entity::FIELD_FNAME, "First Name",
                             &entity::Employee::setFirstName});

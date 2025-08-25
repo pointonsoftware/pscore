@@ -60,7 +60,7 @@ typedef std::unique_ptr<DashboardControlInterface> DashboardControllerPtr;
 
 // Lib APIs
 CORE_API DashboardControllerPtr createDashboardModule
-                    (const DashboardDataPtr& data, const DashboardViewPtr& view);
+(const DashboardDataPtr& data, const DashboardViewPtr& view);
 
 }  // namespace dashboard
 }  // namespace domain

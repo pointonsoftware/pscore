@@ -19,6 +19,8 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <gtest/gtest.h>
+#include <memory>
+#include <string>
 #include <entity/user.hpp>
 
 // mocks

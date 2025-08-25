@@ -20,8 +20,10 @@
 **************************************************************************************************/
 #include "datetime.hpp"
 #include <date/date.h>
+#include <cstdio>
 #include <iomanip>
 #include <sstream>
+#include <string>
 
 namespace utility {
 

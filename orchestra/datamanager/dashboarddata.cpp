@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "dashboarddata.hpp"
+#include <string>
 #include <algorithm>
 #include <vector>
 #include <storage/stackdb.hpp>

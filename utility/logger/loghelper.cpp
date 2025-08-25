@@ -18,10 +18,12 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#include "loghelper.hpp"
 #include <cstdarg>
+#include <cstdio>
+#include <memory>
 #include <string>
 #include <vector>
-#include "loghelper.hpp"
 #include "consolelog.hpp"
 #include "filelog.hpp"
 #include "socketlog.hpp"

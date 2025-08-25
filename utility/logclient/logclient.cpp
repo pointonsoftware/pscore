@@ -36,6 +36,7 @@
 
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 /*!
  * Compiling with mingw

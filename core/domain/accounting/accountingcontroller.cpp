@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #include "accountingcontroller.hpp"
 #include <memory>
+#include <string>
+#include <vector>
 #include <generalutils.hpp>  // general utility
 #include <datetime/datetime.hpp>
 #include <logger/loghelper.hpp>
