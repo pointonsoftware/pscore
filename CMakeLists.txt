@@ -1,4 +1,9 @@
-cmake_minimum_required (VERSION 3.9.2)
+cmake_minimum_required (VERSION 3.10)
+
+# Suppress deprecation warnings from submodules
+if(POLICY CMP0148)
+  cmake_policy(SET CMP0148 OLD)  # Allow FindPythonInterp for compatibility
+endif()
 
 set (CORE_VERSION 0.4.12)
 
