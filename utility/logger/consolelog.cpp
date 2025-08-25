@@ -19,9 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "consolelog.hpp"
-#include <string>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <string>
 
 namespace utility {
 

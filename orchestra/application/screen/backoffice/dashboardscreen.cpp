@@ -19,9 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "dashboardscreen.hpp"
-#include <string>
 #include <iostream>
 #include <memory>
+#include <string>
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>

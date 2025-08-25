@@ -19,13 +19,13 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "screencommon.hpp"
-#include <string>
-#include <vector>
 #include <algorithm>
 #include <cstdlib>
 #include <cwctype>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
 #include <cfg/config.hpp>  // pscore utility
 #include <generalutils.hpp>  // pscore utility
 #include <screendefines.hpp>

@@ -19,9 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "loginscreen.hpp"
-#include <string>
 #include <iostream>
 #include <memory>
+#include <string>
 // view
 #include <screencommon.hpp>
 // data
