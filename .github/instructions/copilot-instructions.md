@@ -93,6 +93,19 @@ LOG_DEBUG("Creating product with code %s", product.barcode().c_str());
 
 ## Coding Standards
 
+### Design Principles
+**Always consider YAGNI + SOLID + KISS + DRY principles when designing or adding new code**
+- **YAGNI** (You Aren't Gonna Need It) - Don't implement features until they're actually needed
+- **SOLID** - Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion
+- **KISS** (Keep It Simple, Stupid) - Favor simple solutions over complex ones
+- **DRY** (Don't Repeat Yourself) - Eliminate code duplication through abstraction
+
+**Must follow Clean Architecture principles:**
+- Business logic (`core/`) never depends on infrastructure or UI
+- Dependencies flow inward toward business rules
+- Use interfaces to decouple layers and enable testing
+- Keep domain entities independent of external frameworks
+
 ### Functions & Design
 - Keep functions **short and single-purpose** - each should perform one operation
 - Use meaningful, related function names
