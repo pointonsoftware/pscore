@@ -19,7 +19,7 @@ jobs:
         install: cmake mingw-w64-x86_64-gcc
 
     - name: Code checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
@@ -28,13 +28,13 @@ jobs:
       run  : ./clean_build.sh
 
     - name: Upload Binaries
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: binary-artifact
         path: build/bin/
 
     - name: Upload Libraries
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: library-artifact
         path: |
