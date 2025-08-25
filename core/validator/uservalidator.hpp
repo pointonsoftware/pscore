@@ -40,7 +40,7 @@ constexpr unsigned int PIN_SIZE = 4;
 class UserValidator : public Validator {
  public:
     explicit UserValidator(const User& user);
-    ~UserValidator() = default;
+    ~UserValidator() override = default;
 
  private:
     const User mUser;

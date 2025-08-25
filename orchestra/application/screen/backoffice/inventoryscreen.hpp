@@ -42,7 +42,7 @@ class InventoryScreen : public screen::ScreenInterface,
                         public domain::inventory::InventoryViewInterface {
  public:
     InventoryScreen();
-    ~InventoryScreen() = default;
+    ~InventoryScreen() override = default;
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;

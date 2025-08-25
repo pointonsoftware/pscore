@@ -35,7 +35,7 @@ namespace validator {
 class EmployeeValidator : public Validator {
  public:
     explicit EmployeeValidator(const Employee& employee);
-    ~EmployeeValidator() = default;
+    ~EmployeeValidator() override = default;
 
  private:
     const Employee mEmployee;

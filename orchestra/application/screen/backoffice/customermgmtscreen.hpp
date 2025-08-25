@@ -41,7 +41,7 @@ class CustomerMgmtScreen : public screen::ScreenInterface,
                            public domain::customermgmt::CustomerManagementViewInterface {
  public:
     CustomerMgmtScreen();
-    ~CustomerMgmtScreen() = default;
+    ~CustomerMgmtScreen() override = default;
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;

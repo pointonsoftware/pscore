@@ -30,7 +30,7 @@ namespace utility {
 class FileLogger : public LoggerInterface {
  public:
     FileLogger();
-    ~FileLogger() = default;
+    ~FileLogger() override = default;
  private:
     void write(const std::string& logMode, const std::string& className,
                const std::string& methodName, const std::string& logString) override;

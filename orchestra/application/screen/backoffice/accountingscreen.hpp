@@ -42,7 +42,7 @@ class AccountingScreen : public screen::ScreenInterface,
                     public domain::accounting::AccountingViewInterface {
  public:
     AccountingScreen();
-    ~AccountingScreen() = default;
+    ~AccountingScreen() override = default;
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;
