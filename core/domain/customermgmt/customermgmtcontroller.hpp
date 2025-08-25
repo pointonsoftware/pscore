@@ -39,7 +39,7 @@ class CustomerMgmtController : public CustomerManagementControlInterface,
  public:
     explicit CustomerMgmtController(const CustomerMgmtDataPtr& data,
                                     const CustomerMgmtViewPtr& view);
-    ~CustomerMgmtController() = default;
+    ~CustomerMgmtController() override = default;
 
     std::vector<entity::Customer> list() override;
     entity::Customer get(const std::string& id) override;

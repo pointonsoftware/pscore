@@ -41,7 +41,7 @@ class InventoryController : public InventoryControlInterface,
  public:
     explicit InventoryController(const InventoryDataPtr& data,
                                  const InventoryViewPtr& view);
-    ~InventoryController() = default;
+    ~InventoryController() override = default;
 
     std::vector<entity::Product> list() override;
     entity::Product getProduct(const std::string& barcode) override;

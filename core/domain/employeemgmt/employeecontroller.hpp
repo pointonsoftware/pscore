@@ -42,7 +42,7 @@ class EmployeeMgmtController : public EmployeeMgmtControlInterface,
  public:
     explicit EmployeeMgmtController(const EmpMgmtDataPtr& data,
                                     const EmpMgmtViewPtr& view);
-    ~EmployeeMgmtController() = default;
+    ~EmployeeMgmtController() override = default;
 
     std::vector<entity::Employee> list() override;
     entity::Employee getEmployee(const std::string& employeeID) override;

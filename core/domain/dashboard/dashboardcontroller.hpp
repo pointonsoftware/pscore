@@ -42,7 +42,7 @@ class DashboardController : public DashboardControlInterface,
  public:
     explicit DashboardController(const DashboardDataPtr& data,
                                  const DashboardViewPtr& view);
-    virtual ~DashboardController() = default;
+    ~DashboardController() override = default;
 
     void setCurrentUserId(const std::string& userID) override;
     entity::User getCurrentUser() override;

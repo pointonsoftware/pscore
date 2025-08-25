@@ -44,7 +44,7 @@ class Employee : public Person {
              const bool isSystemUser);
     explicit Employee(const std::string& id);
     Employee() = default;
-    ~Employee() = default;
+    ~Employee() override = default;
 
     inline std::string ID() const {
         return mID;
