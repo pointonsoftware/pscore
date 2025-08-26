@@ -34,6 +34,7 @@ jobs:
       run  : |
        sudo apt-get install -qq g++-10
        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 90
+       sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-10 90
        ./ci/ci_build.sh
 
     - name: Unit test
@@ -42,7 +43,7 @@ jobs:
     - name: Code Coverage CodeCov
       run  : |
        cd build
-       find ./core -name "*.gcda" -exec gcov {} \;
+       find ./core -name "*.gcda" -exec gcov-10 {} \;
        bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 
     - name: Profile
