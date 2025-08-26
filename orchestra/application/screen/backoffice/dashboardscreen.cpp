@@ -98,7 +98,8 @@ void DashboardScreen::showUserInformation() const {
         std::cout << "No data." << std::endl;
     }
     std::cout << std::endl << std::endl;
-    std::cout << "Enter [b] to go back." << std::endl;
+    SCREENCOMMON().printColumns({"[b] - Back", "[0] - Logout"}, true, false);
+    std::cout << std::endl;
 }
 
 DashboardScreen::Options DashboardScreen::getUserSelection() const {
