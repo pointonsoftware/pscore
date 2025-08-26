@@ -67,8 +67,8 @@ class InformationScreen {
 
     void showOptions() const {
         std::cout << std::endl << std::endl;
-        SCREENCOMMON().printColumns({"[u] - Update", "[d] - Delete", "[b] - Back"},
-                                    true, false);
+        SCREENCOMMON().printColumns({"[u] - Update", "[d] - Delete", "[b] - Back", "[0] - Logout"},
+                        true, false);
     }
 
     void showItemIndex(bool show) {
