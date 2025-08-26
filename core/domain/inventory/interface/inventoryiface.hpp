@@ -101,7 +101,7 @@ typedef std::unique_ptr<InventoryControlInterface> InventoryControllerPtr;
 
 // Lib APIs
 CORE_API InventoryControllerPtr createInventoryModule
-                    (const InventoryDataPtr& data, const InventoryViewPtr& view);
+(const InventoryDataPtr& data, const InventoryViewPtr& view);
 
 }  // namespace inventory
 }  // namespace domain

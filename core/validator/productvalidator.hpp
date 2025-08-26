@@ -42,7 +42,7 @@ class ProductValidator : public Validator {
  public:
     explicit ProductValidator(const Product& product, const std::vector<std::string>& uoms,
                               const std::vector<std::string>& categories);
-    ~ProductValidator() = default;
+    ~ProductValidator() override = default;
 
  private:
     const Product mProduct;

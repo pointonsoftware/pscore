@@ -48,13 +48,13 @@ class ContactDetails {
         mPhone2 = str;
     }
     // Getters
-    std::string email() const {
+    const std::string& email() const {
         return mEmail;
     }
-    std::string phone1() const {
+    const std::string& phone1() const {
         return mPhone1;
     }
-    std::string phone2() const {
+    const std::string& phone2() const {
         return mPhone2;
     }
 

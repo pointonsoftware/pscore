@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #include "person.hpp"
 #include <algorithm>
+#include <string>
+#include <vector>
 
 namespace entity {
 
@@ -38,35 +40,35 @@ std::string Person::getFullName() const {
     return m_firstname + " " + m_middlename + " " + m_lastname;
 }
 
-std::string Person::firstName() const {
+const std::string& Person::firstName() const {
     return m_firstname;
 }
 
-std::string Person::middleName() const {
+const std::string& Person::middleName() const {
     return m_middlename;
 }
 
-std::string Person::lastName() const {
+const std::string& Person::lastName() const {
     return m_lastname;
 }
 
-std::string Person::birthdate() const {
+const std::string& Person::birthdate() const {
     return m_birthdate;
 }
 
-std::string Person::gender() const {
+const std::string& Person::gender() const {
     return m_gender;
 }
 
-Address Person::address() const {
+const Address& Person::address() const {
     return m_address;
 }
 
-ContactDetails Person::contactDetails() const {
+const ContactDetails& Person::contactDetails() const {
     return m_contact_details;
 }
 
-std::vector<PersonalId> Person::personalIds() const {
+const std::vector<PersonalId>& Person::personalIds() const {
     return m_personal_ids;
 }
 

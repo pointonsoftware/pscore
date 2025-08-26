@@ -38,7 +38,7 @@ namespace validator {
 class PersonValidator : public Validator {
  public:
     explicit PersonValidator(const Person& person);
-    ~PersonValidator() = default;
+    ~PersonValidator() override = default;
 
  private:
     const Person mPerson;

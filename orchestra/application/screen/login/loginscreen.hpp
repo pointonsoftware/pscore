@@ -40,7 +40,7 @@ class LoginScreen : public screen::ScreenInterface, public domain::login::LoginV
     /*!
      * Returns the userID of the logged user
     */
-    std::string getUserID() const;
+    const std::string& getUserID() const;
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;

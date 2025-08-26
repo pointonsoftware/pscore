@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #include "accountingcontroller.hpp"
 #include <memory>
+#include <string>
+#include <vector>
 #include <generalutils.hpp>  // general utility
 #include <datetime/datetime.hpp>
 #include <logger/loghelper.hpp>
@@ -80,7 +82,7 @@ GraphReport AccountingController::getTodaySalesReport() {
     GraphReport report;
     // @todo - this algorithm can be improved and iterate the sales vector only once.
     //       - e.g. iterate the sales vector and populate a multi_map<hours, saleItems> container
-    for (auto hour : OPERATING_HOURS) {
+    for (const auto& hour : OPERATING_HOURS) {
         GraphMember member;
         member.key = hour;
         member.value = getTotalSaleByTime(hour, sales);

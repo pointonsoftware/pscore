@@ -18,10 +18,12 @@
 *           Ben Ziv <pointonsoftware@gmail.com>                                                   *
 *                                                                                                 *
 **************************************************************************************************/
+#include "loghelper.hpp"
 #include <cstdarg>
+#include <cstdio>
+#include <memory>
 #include <string>
 #include <vector>
-#include "loghelper.hpp"
 #include "consolelog.hpp"
 #include "filelog.hpp"
 #include "socketlog.hpp"
@@ -137,7 +139,7 @@ const std::string LogHelper::extractClassName(const std::string& signature) cons
     const size_t lastTemplateArg = className.rfind(">");
     if (lastTemplateArg != std::string::npos && lastTemplateArg > className.rfind(" ")) {
         // Remove template parameter
-        className = className.substr(0, className.rfind("<"));
+        className.resize(className.rfind("<"));
     }
     return className.substr(className.rfind(" ") + 1);
 }
@@ -150,7 +152,7 @@ const std::string LogHelper::extractMethodName(const std::string& signature) con
     std::string methodName = signature.substr(colon != std::string::npos ? colon + 1 : 0);
     if (methodName.rfind(">") != std::string::npos) {
         // Remove template args
-        methodName = methodName.substr(0, methodName.rfind("<"));
+        methodName.resize(methodName.rfind("<"));
     }
     return methodName;
 }

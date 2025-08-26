@@ -19,6 +19,9 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <gtest/gtest.h>
+#include <memory>
+#include <string>
+#include <vector>
 
 // mocks
 #include "mock/accounting/accountingdatamock.hpp"
@@ -51,7 +54,7 @@ class TestAccounting : public testing::Test {
 };
 
 class TestAccountingGetSales : public TestAccounting,
-    public ::testing::WithParamInterface<Period> {};
+public ::testing::WithParamInterface<Period> {};
 
 INSTANTIATE_TEST_SUITE_P(
     TestInstantiation, TestAccountingGetSales, testing::Values(

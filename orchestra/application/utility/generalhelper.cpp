@@ -22,9 +22,11 @@
 #include <algorithm>
 #include <chrono>
 #include <ctime>
+#include <map>
 #include <mutex>
 #include <random>
 #include <string>
+#include <vector>
 #include <datetime/datetime.hpp>
 #include <generalutils.hpp>  // pscore utility
 

@@ -20,6 +20,7 @@
 **************************************************************************************************/
 #include "productvalidator.hpp"
 #include <string>
+#include <vector>
 #include <generalutils.hpp>  // pscore utility
 
 namespace entity {

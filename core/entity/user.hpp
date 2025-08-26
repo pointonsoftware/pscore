@@ -54,19 +54,19 @@ class User {
     }
 
     // Getters
-    inline std::string userID() const {
+    inline const std::string& userID() const {
         return mUserID;
     }
-    inline std::string role() const {
+    inline const std::string& role() const {
         return mRole;
     }
-    inline std::string pin() const {
+    inline const std::string& pin() const {
         return mPIN;
     }
-    inline std::string createdAt() const {
+    inline const std::string& createdAt() const {
         return mCreatedAt;
     }
-    inline std::string employeeID() const {
+    inline const std::string& employeeID() const {
         return mEmployeeID;
     }
 

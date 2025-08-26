@@ -40,7 +40,7 @@ typedef std::unique_ptr<POSControlInterface> POSControllerPtr;
 
 // Lib APIs
 CORE_API POSControllerPtr createPOSModule
-                    (const POSDataPtr& data, const POSViewPtr& view);
+(const POSDataPtr& data, const POSViewPtr& view);
 
 }  // namespace pos
 }  // namespace domain

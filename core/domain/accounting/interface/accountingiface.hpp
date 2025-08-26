@@ -77,7 +77,7 @@ typedef std::unique_ptr<AccountingControlInterface> AccountingControllerPtr;
 
 // Lib APIs
 CORE_API AccountingControllerPtr createAccountingModule
-                    (const AccountingDataPtr& data, const AccountingViewPtr& view);
+(const AccountingDataPtr& data, const AccountingViewPtr& view);
 
 }  // namespace accounting
 }  // namespace domain

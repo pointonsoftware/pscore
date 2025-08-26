@@ -9,8 +9,8 @@ on: [pull_request]
 
 jobs:
   build:
-    name:  Ubuntu 18.04
-    runs-on: ubuntu-18.04
+    name:  Ubuntu Build
+    runs-on: ubuntu-latest
 
     steps:
     - name: Code checkout
@@ -28,12 +28,13 @@ jobs:
     - name: CppCheck
       run: |
        sudo apt-get install cppcheck
-       cppcheck --std=c++11 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem --error-exitcode=1 --inline-suppr core orchestra mock utility -icore/domain/unittest
+       cppcheck --std=c++17 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem --suppress=useStlAlgorithm --error-exitcode=1 --inline-suppr core orchestra mock utility -icore/domain/unittest
 
     - name: Build
       run  : |
-       sudo apt-get install -qq g++-7
-       sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+       sudo apt-get install -qq g++-10
+       sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 90
+       sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-10 90
        ./ci/ci_build.sh
 
     - name: Unit test
@@ -41,8 +42,14 @@ jobs:
 
     - name: Code Coverage CodeCov
       run  : |
-       gcov core/*.cpp -o core/
-       bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+       cd build
+       find ./core -name "*.gcda" -exec gcov-10 {} \;
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Profile
       run  : ./ci/ci_profiling.sh

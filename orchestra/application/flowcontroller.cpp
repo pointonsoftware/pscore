@@ -25,6 +25,7 @@
 #include "flowcontroller.hpp"
 // std
 #include <iostream>
+#include <memory>
 #include <string>
 #include <thread>
 // data
@@ -46,11 +47,14 @@
 namespace screen {
 
 namespace screenshared {
-    /*!
-     * Add variables that are shared by different screens
-     * Can be used to pass parameter from one screen to next
-    */
-    std::string currentUserId;
+/*!
+ * Add variables that are shared by different screens
+ * Can be used to pass parameter from one screen to next
+*/
+std::string& getCurrentUserId() {
+    static std::string currentUserId;
+    return currentUserId;
+}
 }
 
 void FlowController::run() {
@@ -76,12 +80,13 @@ void FlowController::show(const defines::display& screenToDisplay,
     switch (screenToDisplay) {
         case defines::display::LOGIN:
             LOG_DEBUG("screen: Login");
-            screenshared::currentUserId = "";  // Reset the current userID
+            screenshared::getCurrentUserId() = "";  // Reset the current userID
             screen = std::make_shared<login::LoginScreen>();
             break;
         case defines::display::DASHBOARD:
             LOG_DEBUG("screen: Dashboard");
-            screen = std::make_shared<backoffice::DashboardScreen>(screenshared::currentUserId);
+            screen = std::make_shared<backoffice::DashboardScreen>(
+                screenshared::getCurrentUserId());
             break;
         case defines::display::EMPMGMT:
             LOG_DEBUG("screen: Employee management");
@@ -112,7 +117,7 @@ void FlowController::show(const defines::display& screenToDisplay,
     // Post Processing
     if (screenToDisplay == defines::display::LOGIN) {
         // Get the current user ID if login is successful
-        screenshared::currentUserId =
+        screenshared::getCurrentUserId() =
         std::dynamic_pointer_cast<login::LoginScreen>(screen)->getUserID();
     }
 }

@@ -45,7 +45,7 @@ class Validator {
     Validator() = default;
     virtual ~Validator() = default;
 
-    inline Errors result() {
+    inline const Errors& result() {
         return errors;
     }
 

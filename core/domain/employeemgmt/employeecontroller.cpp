@@ -20,8 +20,10 @@
 **************************************************************************************************/
 #include "employeecontroller.hpp"
 #include <algorithm>
-#include <memory>
 #include <map>
+#include <memory>
+#include <string>
+#include <vector>
 #include <datetime/datetime.hpp>
 #include <generalutils.hpp>  // pscore utility
 #include <generator/chargenerator.hpp>
@@ -145,7 +147,8 @@ EMPLMGMTSTATUS EmployeeMgmtController::save(const SaveEmployeeData& employeeData
         entity::validator::UserValidator validator(
                 entity::User("Proxy", "Proxy", employeeData.PIN,
                              "2020-10-10 10:10:10", "Proxy"));
-        employeeData.validationResult->merge(validator.result());
+        const auto& errors = validator.result();
+        employeeData.validationResult->insert(errors.begin(), errors.end());
     }
     if (!employeeData.validationResult->empty()) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
@@ -196,28 +199,33 @@ ValidationErrors EmployeeMgmtController::validateDetails(const entity::Employee&
      // validate key employee data
     {
         entity::validator::EmployeeValidator validator(employee);
-        validationErrors.merge(validator.result());
+        const auto& errors = validator.result();
+        validationErrors.insert(errors.begin(), errors.end());
     }
     // validate basic information
     {
         entity::validator::PersonValidator validator(employee);
-        validationErrors.merge(validator.result());
+        const auto& errors = validator.result();
+        validationErrors.insert(errors.begin(), errors.end());
     }
     // validate address
     {
         entity::validator::AddressValidator validator(employee.address());
-        validationErrors.merge(validator.result());
+        const auto& errors = validator.result();
+        validationErrors.insert(errors.begin(), errors.end());
     }
     // validate contact information
     {
         entity::validator::ContactDetailsValidator validator(employee.contactDetails());
-        validationErrors.merge(validator.result());
+        const auto& errors = validator.result();
+        validationErrors.insert(errors.begin(), errors.end());
     }
     // validate ID
     {
         for (const entity::PersonalId& personalId : employee.personalIds()) {
             entity::validator::PersonalIDValidator validator(personalId);
-            validationErrors.merge(validator.result());
+            const auto& errors = validator.result();
+            validationErrors.insert(errors.begin(), errors.end());
         }
     }
     return validationErrors;

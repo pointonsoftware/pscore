@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "salecomputer.hpp"
+#include <string>
 #include <generalutils.hpp>
 
 namespace domain {

@@ -46,7 +46,7 @@ constexpr unsigned int PHONE_NUMBER_LENGTH = 11;
 class ContactDetailsValidator : public Validator {
  public:
     explicit ContactDetailsValidator(const ContactDetails& contactDetails);
-    ~ContactDetailsValidator() = default;
+    ~ContactDetailsValidator() override = default;
 
  private:
     const ContactDetails mContactDetails;

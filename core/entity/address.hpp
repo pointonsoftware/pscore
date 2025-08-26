@@ -56,19 +56,19 @@ class Address {
         mZIP = str;
     }
     // Getters
-    std::string line1() const {
+    const std::string& line1() const {
         return mLine1;
     }
-    std::string line2() const {
+    const std::string& line2() const {
         return mLine2;
     }
-    std::string cityTown() const {
+    const std::string& cityTown() const {
         return mCityTown;
     }
-    std::string province() const {
+    const std::string& province() const {
         return mProvince;
     }
-    std::string zip() const {
+    const std::string& zip() const {
         return mZIP;
     }
 

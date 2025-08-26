@@ -74,7 +74,7 @@ typedef std::unique_ptr<CustomerManagementControlInterface> CustomerMgmtCtrlPtr;
 
 // Lib APIs
 CORE_API CustomerMgmtCtrlPtr createCustomerMgmtModule
-                    (const CustomerMgmtDataPtr& data, const CustomerMgmtViewPtr& view);
+(const CustomerMgmtDataPtr& data, const CustomerMgmtViewPtr& view);
 
 }  // namespace customermgmt
 }  // namespace domain

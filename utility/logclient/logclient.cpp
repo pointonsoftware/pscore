@@ -36,6 +36,7 @@
 
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 /*!
  * Compiling with mingw
@@ -140,7 +141,7 @@ int main() {
     recv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     std::cout << "[status] Binding..." << std::endl;
-    if (bind(socketfd, (struct sockaddr*) &recv_addr, sizeof(recv_addr)) < 0) {
+    if (bind(socketfd, reinterpret_cast<struct sockaddr*>(&recv_addr), sizeof(recv_addr)) < 0) {
         closeSocket(socketfd);
         return -1;
     }
@@ -159,7 +160,7 @@ int main() {
     while (1) {
         char buffer[256] = {};
         if (recvfrom(socketfd, buffer, sizeof(buffer)-1, 0,
-            (struct sockaddr*) &recv_addr, &slen) < 0) {
+            reinterpret_cast<struct sockaddr*>(&recv_addr), &slen) < 0) {
             closeSocket(socketfd);
             return -1;
         }

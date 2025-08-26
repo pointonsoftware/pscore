@@ -70,19 +70,19 @@ class Sale {
     ~Sale() = default;
 
     // Getters
-    std::string ID() const;
-    std::string dateTime() const;
-    std::vector<SaleItem> items() const;
-    std::string subtotal() const;
-    std::string taxableAmount() const;
-    std::string vat() const;
-    std::string discount() const;
-    std::string total() const;
-    std::string amountPaid() const;
-    std::string paymentType() const;
-    std::string change() const;
-    std::string cashierID() const;
-    std::string customerID() const;
+    const std::string& ID() const;
+    const std::string& dateTime() const;
+    const std::vector<SaleItem>& items() const;
+    const std::string& subtotal() const;
+    const std::string& taxableAmount() const;
+    const std::string& vat() const;
+    const std::string& discount() const;
+    const std::string& total() const;
+    const std::string& amountPaid() const;
+    const std::string& paymentType() const;
+    const std::string& change() const;
+    const std::string& cashierID() const;
+    const std::string& customerID() const;
 
     // Setters
     void setDateTime(const std::string& dateTime);

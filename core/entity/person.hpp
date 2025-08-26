@@ -48,14 +48,14 @@ class Person {
 
     // Getters
     std::string getFullName() const;
-    std::string firstName() const;
-    std::string middleName() const;
-    std::string lastName() const;
-    std::string birthdate() const;
-    std::string gender() const;
-    Address address() const;
-    ContactDetails contactDetails() const;
-    std::vector<PersonalId> personalIds() const;
+    const std::string& firstName() const;
+    const std::string& middleName() const;
+    const std::string& lastName() const;
+    const std::string& birthdate() const;
+    const std::string& gender() const;
+    const Address& address() const;
+    const ContactDetails& contactDetails() const;
+    const std::vector<PersonalId>& personalIds() const;
 
     // Setters
     void setFirstName(const std::string& fname);

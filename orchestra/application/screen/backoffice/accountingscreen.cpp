@@ -20,7 +20,10 @@
 **************************************************************************************************/
 #include "accountingscreen.hpp"
 #include <algorithm>
+#include <iostream>
 #include <memory>
+#include <string>
+#include <vector>
 #include <accountingdata.hpp>
 #include <logger/loghelper.hpp>
 
@@ -29,29 +32,29 @@ namespace backoffice {
 
 // Product fields
 const std::vector<std::string> DOMAIN_FIELDS {
-    "Sale.ID",
-    "Sale.Timestamp",
-    "Sale.Items",
-    "Sale.Subtotal",
-    "Sale.Tax",
-    "Sale.Discount",
-    "Sale.Total",
-    "Sale.Paid",
-    "Sale.Payment.Type",
-    "Sale.Change",
-    "Sale.CashierID",
-    "Sale.CustomerID"
+"Sale.ID",
+"Sale.Timestamp",
+"Sale.Items",
+"Sale.Subtotal",
+"Sale.Tax",
+"Sale.Discount",
+"Sale.Total",
+"Sale.Paid",
+"Sale.Payment.Type",
+"Sale.Change",
+"Sale.CashierID",
+"Sale.CustomerID"
 };
 
 AccountingScreen::AccountingScreen()
-            : mSalesTable({"ID", "Sale Date", "Grand Total"},
-            { &entity::Sale::ID, &entity::Sale::dateTime, &entity::Sale::total }),
-            mTodaysSalesReport({"Hour", "Total Sale"},
-            { &DomainGraphMemberWrapper::getKey, &DomainGraphMemberWrapper::getValue }),
-            mCategorySalesReport({"Category", "Total Sale"},
-            { &DomainGraphMemberWrapper::getKey, &DomainGraphMemberWrapper::getValue }),
-            isShowingDetailsScreen(false) {
-    // Empty for now
+: mSalesTable({"ID", "Sale Date", "Grand Total"},
+{ &entity::Sale::ID, &entity::Sale::dateTime, &entity::Sale::total }),
+mTodaysSalesReport({"Hour", "Total Sale"},
+{ &DomainGraphMemberWrapper::getKey, &DomainGraphMemberWrapper::getValue }),
+mCategorySalesReport({"Category", "Total Sale"},
+{ &DomainGraphMemberWrapper::getKey, &DomainGraphMemberWrapper::getValue }),
+isShowingDetailsScreen(false) {
+// Empty for now
 }
 
 void AccountingScreen::show(std::promise<defines::display>* promise) {

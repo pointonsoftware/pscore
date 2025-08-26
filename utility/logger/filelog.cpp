@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
+#include <string>
 #include <cfg/config.hpp>
 #include <generalutils.hpp>
 

@@ -21,6 +21,7 @@
 #ifndef UTILITY_LOGGER_LOGHELPER_HPP_
 #define UTILITY_LOGGER_LOGHELPER_HPP_
 
+#include <cstdio>
 #include <memory>
 #include <string>
 #include "loggeriface.hpp"
@@ -28,10 +29,14 @@
 
 #ifdef _MSC_VER
 #define FUNC __FUNCSIG__
-#define LOG_DEBUG(log_str, ...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str, __VA_ARGS__)
-#define LOG_INFO(log_str, ...)  utility::LogHelper::GetInstance().write("info" , FUNC, log_str, __VA_ARGS__)
-#define LOG_WARN(log_str, ...)  utility::LogHelper::GetInstance().write("warn" , FUNC, log_str, __VA_ARGS__)
-#define LOG_ERROR(log_str, ...) utility::LogHelper::GetInstance().write("error", FUNC, log_str, __VA_ARGS__)
+#define LOG_DEBUG(log_str, ...) \
+    utility::LogHelper::GetInstance().write("debug", FUNC, log_str, __VA_ARGS__)
+#define LOG_INFO(log_str, ...)  \
+    utility::LogHelper::GetInstance().write("info" , FUNC, log_str, __VA_ARGS__)
+#define LOG_WARN(log_str, ...)  \
+    utility::LogHelper::GetInstance().write("warn" , FUNC, log_str, __VA_ARGS__)
+#define LOG_ERROR(log_str, ...) \
+    utility::LogHelper::GetInstance().write("error", FUNC, log_str, __VA_ARGS__)
 #else
 #define FUNC __PRETTY_FUNCTION__
 #define LOG_DEBUG(log_str...) utility::LogHelper::GetInstance().write("debug", FUNC, log_str)

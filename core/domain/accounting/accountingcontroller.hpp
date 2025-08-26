@@ -36,7 +36,7 @@ class AccountingController : public AccountingControlInterface,
  public:
     explicit AccountingController(const AccountingDataPtr& data,
                                   const AccountingViewPtr& view);
-    ~AccountingController() = default;
+    ~AccountingController() override = default;
 
     GraphReport getCategorySales() override;
     GraphReport getTodaySalesReport() override;

@@ -45,6 +45,9 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 
 if (NOT (MINGW OR MSVC))
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -pg")
+  # Add coverage flags for gcov
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
 endif ()
 
 
@@ -80,6 +83,11 @@ message(STATUS "All components enabled")
 add_subdirectory (orchestra/application)
 add_subdirectory (orchestra/datamanager)
 add_subdirectory (orchestra/migration/storage)
+endif()
+
+# Force Google Test to use dynamic runtime library to match main project on MSVC
+if (BUILD_UNITTEST AND MSVC)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
 if (BUILD_UNITTEST)

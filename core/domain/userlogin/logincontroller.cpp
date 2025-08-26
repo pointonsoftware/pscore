@@ -21,6 +21,7 @@
 #include "logincontroller.hpp"
 #include <assert.h>
 #include <memory>
+#include <string>
 #include <generalutils.hpp>  // pscore utility
 #include <logger/loghelper.hpp>
 #include <validator/uservalidator.hpp>
@@ -45,6 +46,7 @@ bool LoginController::authenticate(const std::string& id, const std::string& pin
     }
     // Get user info
     entity::User userInfo;
+    // cppcheck-suppress knownConditionTrueFalse ; TODO: implement data provider error handling
     if (getUser(utility::toUpper(id), &userInfo) != AUTHSTATUS::SUCCESS) {
         mView->showDataNotReadyScreen();
         return false;

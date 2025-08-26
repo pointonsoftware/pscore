@@ -19,6 +19,10 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include <gtest/gtest.h>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
 #include <entity/user.hpp>
 
 // mocks

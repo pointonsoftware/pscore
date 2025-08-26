@@ -37,7 +37,7 @@ class DashboardScreen : public ScreenInterface,
                         public domain::dashboard::DashboardViewInterface {
  public:
     explicit DashboardScreen(const std::string& userID);
-    ~DashboardScreen() = default;
+    ~DashboardScreen() override = default;
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;

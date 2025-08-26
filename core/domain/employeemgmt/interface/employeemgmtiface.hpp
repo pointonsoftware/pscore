@@ -92,7 +92,7 @@ typedef std::unique_ptr<EmployeeMgmtControlInterface> EmpMgmtControllerPtr;
 
 // Lib APIs
 CORE_API EmpMgmtControllerPtr createEmployeeMgmtModule
-                    (const EmpMgmtDataPtr& data, const EmpMgmtViewPtr& view);
+(const EmpMgmtDataPtr& data, const EmpMgmtViewPtr& view);
 
 }  // namespace empmgmt
 }  // namespace domain

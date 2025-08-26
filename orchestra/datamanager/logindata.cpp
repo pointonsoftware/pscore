@@ -19,6 +19,7 @@
 *                                                                                                 *
 **************************************************************************************************/
 #include "logindata.hpp"
+#include <string>
 #include <storage/stackdb.hpp>
 
 namespace dataprovider {

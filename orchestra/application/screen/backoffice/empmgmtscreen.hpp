@@ -41,7 +41,7 @@ class EmployeeMgmtScreen : public ScreenInterface,
                            public domain::empmgmt::EmployeeMgmtViewInterface {
  public:
     EmployeeMgmtScreen();
-    ~EmployeeMgmtScreen() = default;
+    ~EmployeeMgmtScreen() override = default;
 
     // ScreenInterface
     void show(std::promise<defines::display>* promise) override;

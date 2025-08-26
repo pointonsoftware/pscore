@@ -21,6 +21,8 @@
 #include "inventorycontroller.hpp"
 #include <algorithm>
 #include <memory>
+#include <string>
+#include <vector>
 #include <logger/loghelper.hpp>
 #include <validator/productvalidator.hpp>
 
@@ -79,10 +81,11 @@ INVENTORYAPISTATUS InventoryController::save(const entity::Product& product,
                 return uomAbbr;
             }(),
             getCategoryList());
-        validationResult->merge(validator.result());
+        const auto& errors = validator.result();
+        validationResult->insert(errors.begin(), errors.end());
     }
 
-    if (!validationResult->empty()) {
+    if (!(validationResult->empty())) {
         LOG_WARN("Entity contains invalid data. Returning validation results.");
         dumpValidationResult(*(validationResult));
         return INVENTORYAPISTATUS::FAILED;

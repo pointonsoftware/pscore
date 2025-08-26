@@ -20,6 +20,8 @@
 **************************************************************************************************/
 #include "customermgmtcontroller.hpp"
 #include <memory>
+#include <string>
+#include <vector>
 #include <generator/chargenerator.hpp>
 #include <logger/loghelper.hpp>
 #include <validator/addressvalidator.hpp>
@@ -72,23 +74,27 @@ CUSTOMERMGMTAPISTATUS CustomerMgmtController::save(const entity::Customer& custo
     {
         LOG_DEBUG("Validating fields");
         entity::validator::PersonValidator validator(customer);
-        validationResult->merge(validator.result());
+        const auto& errors = validator.result();
+        validationResult->insert(errors.begin(), errors.end());
     }
     // validate address
     {
         entity::validator::AddressValidator validator(customer.address());
-        validationResult->merge(validator.result());
+        const auto& errors = validator.result();
+        validationResult->insert(errors.begin(), errors.end());
     }
     // validate contact information
     {
         entity::validator::ContactDetailsValidator validator(customer.contactDetails());
-        validationResult->merge(validator.result());
+        const auto& errors = validator.result();
+        validationResult->insert(errors.begin(), errors.end());
     }
     // validate ID
     {
         for (const entity::PersonalId& personalId : customer.personalIds()) {
             entity::validator::PersonalIDValidator validator(personalId);
-            validationResult->merge(validator.result());
+            const auto& errors = validator.result();
+            validationResult->insert(errors.begin(), errors.end());
         }
     }
     if (!validationResult->empty()) {

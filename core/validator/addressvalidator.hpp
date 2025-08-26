@@ -41,7 +41,7 @@ constexpr char INVALID_ADDRLINE_CHARACTERS[] = "[^a-zA-Z0-9\\-., ]";  // for add
 class AddressValidator : public Validator {
  public:
     explicit AddressValidator(const Address& address);
-    ~AddressValidator() = default;
+    ~AddressValidator() override = default;
 
  private:
     const Address mAddress;

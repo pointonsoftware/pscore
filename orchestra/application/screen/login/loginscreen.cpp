@@ -21,6 +21,7 @@
 #include "loginscreen.hpp"
 #include <iostream>
 #include <memory>
+#include <string>
 // view
 #include <screencommon.hpp>
 // data
@@ -61,7 +62,7 @@ bool LoginScreen::onLogin(const std::string& id, const std::string& pin) {
     return coreController->authenticate(id, pin);
 }
 
-std::string LoginScreen::getUserID() const {
+const std::string& LoginScreen::getUserID() const {
     return mUserID;
 }
 

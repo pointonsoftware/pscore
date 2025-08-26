@@ -40,7 +40,7 @@ constexpr char INVALID_ID_CHARACTERS[] = "[^a-zA-Z0-9\\-]";
 class PersonalIDValidator : public Validator {
  public:
     explicit PersonalIDValidator(const PersonalId& personalID);
-    ~PersonalIDValidator() = default;
+    ~PersonalIDValidator() override = default;
 
  private:
     const PersonalId mPersonalID;

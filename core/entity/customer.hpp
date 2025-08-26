@@ -38,9 +38,9 @@ class Customer : public Person {
              const std::string& birthdate,
              const std::string& gender);
     Customer() = default;
-    ~Customer() = default;
+    ~Customer() override = default;
 
-    inline std::string ID() const {
+    inline const std::string& ID() const {
         return mID;
     }
 
