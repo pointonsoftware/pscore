@@ -1,5 +1,7 @@
 # PSCORE - AI Coding Agent Instructions
 
+**ALWAYS follow these instructions first and fallback to additional search and context gathering ONLY when the information in these instructions is incomplete or found to be in error.**
+
 ## Architecture Overview
 PSCORE is a **3-layer business management engine** following Clean Architecture principles:
 - **`core/`** - Pure business logic (entities, domain controllers, validators)  
@@ -8,22 +10,141 @@ PSCORE is a **3-layer business management engine** following Clean Architecture 
 
 **Key Principle**: Business logic never depends on infrastructure. Dependencies flow inward via interfaces.
 
+### Known Build Issues & Workarounds
+Execute these fixes if you encounter build failures:
+
+```bash
+# Fix 1: Missing cstdint includes (common with newer GCC)
+# If build fails with "uint8_t does not name a type":
+# Add #include <cstdint> to the failing header file
+
+# Fix 2: maybe-uninitialized warnings in GCC 13
+# If build fails with maybe-uninitialized errors:
+# Add -Wno-maybe-uninitialized to COMPILER_EXCEPTION in CMakeLists.txt
+
+# Fix 3: Memory sanitizer issues in console_app
+# AddressSanitizer may detect issues during automated testing
+# This is expected behavior - the console_app has known memory issues
+```
+
+### Manual Validation - REQUIRED After Changes
+**ALWAYS run these validation steps after making code changes:**
+
+1. **Build Validation**:
+   ```bash
+   # Run clean build - NEVER CANCEL: Set timeout 300+ seconds
+   ./clean_build.sh
+   ```
+
+2. **Unit Test Validation**:  
+   ```bash
+   # Run all tests - NEVER CANCEL: Set timeout 30+ seconds
+   ./ci/ci_unittest.sh
+   ```
+
+3. **Code Quality Validation**:
+   ```bash
+   # Lint check - Set timeout 30+ seconds
+   python -m cpplint --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11,,-build/include_subdir --linelength=100 --recursive core utility
+   
+   # Static analysis - Set timeout 30+ seconds  
+   cppcheck --std=c++17 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem --suppress=useStlAlgorithm --error-exitcode=1 --inline-suppr core utility -icore/domain/unittest
+   ```
+
+4. **Functional Testing - Execute User Scenarios**:
+   ```bash
+   # Test login and basic navigation (known to have memory issues but functional)
+   ./build/bin/console_app < ci/automation_input.txt
+   
+   # The console app tests these workflows:
+   # - User login with ID: BGAR123, PIN: 2020  
+   # - Dashboard navigation
+   # - Personal information screen
+   # - Employee management operations
+   # - Inventory control operations
+   # - Customer management operations
+   # - Accounting information access
+   ```
+
+**Critical**: Memory sanitizer will detect issues in console_app - this is EXPECTED. The application functionality works but has stack-use-after-scope issues.
+
+## Development Setup & Build Commands
+
+### Prerequisites - Install These First
+Execute these EXACT commands to install required tools:
+```bash
+# Repository setup (required)
+git submodule init && git submodule update
+
+# Install build tools on Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install -y cmake g++-10 cppcheck
+
+# Install Python linting tools
+pip install wheel setuptools cpplint
+
+# Update compilers (critical for successful build)
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 90
+sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-10 90
+```
+
+### Build Commands - CRITICAL TIMING INFORMATION
+**NEVER CANCEL BUILDS OR TESTS** - Use these exact timeout values:
+
+```bash
+# Clean build - NEVER CANCEL: Takes 3 minutes. Set timeout to 300+ seconds.
+time ./clean_build.sh
+
+# Unit tests - NEVER CANCEL: Takes 0.2 seconds. Set timeout to 30+ seconds.
+time ./ci/ci_unittest.sh
+
+# Code quality checks - Takes 2-3 seconds each
+time python -m cpplint --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11,,-build/include_subdir --linelength=100 --recursive core utility
+
+time cppcheck --std=c++17 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem --suppress=useStlAlgorithm --error-exitcode=1 --inline-suppr core utility -icore/domain/unittest
+```
+
+### Build Output Structure
+After successful build, expect these artifacts:
+```
+build/
+├── lib/          # Domain libraries (*.so shared libs, *.a static libs)  
+├── bin/          # console_app executable + config files + domain_unittest
+└── ...           # Intermediate CMake files
+```
+
+## CI/CD Requirements - ALWAYS Run Before Committing
+
+Execute these commands in order before submitting any changes:
+
+```bash
+# 1. Build check - NEVER CANCEL: 3+ minutes
+./clean_build.sh
+
+# 2. Unit tests - NEVER CANCEL: 0.2 seconds
+./ci/ci_unittest.sh  
+
+# 3. Code linting - NEVER CANCEL: 2 seconds
+python -m cpplint --filter=-readability/multiline_comment,-whitespace/ending_newline,-build/c++11,,-build/include_subdir --linelength=100 --recursive core orchestra utility
+
+# 4. Static analysis - NEVER CANCEL: 2 seconds
+cppcheck --std=c++17 --enable=warning,style,performance,portability,information --suppress=missingIncludeSystem --suppress=useStlAlgorithm --error-exitcode=1 --inline-suppr core orchestra utility -icore/domain/unittest
+
+# 5. Profile test - NEVER CANCEL: 1 second
+./ci/ci_profiling.sh
+```
+
+**All must pass** or the CI build (.github/workflows/linux.yml) will fail.
+
 ## Important References
 **Developer Reference Guide**: For comprehensive setup instructions, detailed workflows, troubleshooting, and advanced development topics, consult `.github/instructions/developer-reference.md`. **Load this document when developers need:**
 - Detailed environment setup and troubleshooting
-- Complete build system configuration
+- Complete build system configuration  
 - Advanced CMake usage and cross-platform builds
 - Code quality tools integration (cppcheck, cpplint, gcov)
 - Git workflow best practices
 - Performance profiling guidance
 - Production deployment procedures
-
-## Development Setup
-**Prerequisites**: CMake, C++17 compiler (MinGW for Windows), Qt Creator (optional)
-**Build**: `./clean_build.sh` (Linux) or import root `CMakeLists.txt` in Qt Creator
-**Submodules**: `git submodule init && git submodule update`
-**Output**: `build/lib/` (domain libraries), `build/bin/` (console_app + configs)
-
 ## Domain-Driven Design Pattern
 Each business domain follows this structure:
 ```
@@ -202,3 +323,54 @@ class InventoryDataProvider : public domain::inventory::InventoryDataInterface {
 4. Add enum to `screendefines.hpp`, add switch-case in `FlowController::show()`
 
 Focus on maintaining **separation of concerns** and **dependency inversion** - business logic should never know about databases, UI frameworks, or external services directly.
+
+## Common Commands Output Reference
+Use these cached outputs instead of running commands repeatedly:
+
+### Repository Root Structure
+```
+/home/runner/work/pscore/pscore/
+├── .github/           # GitHub workflows, instructions, templates
+├── CMakeLists.txt     # Main build configuration
+├── clean_build.sh     # Primary build script
+├── ci/                # CI scripts and automation input
+├── config/            # Configuration files (pslog.cfg)
+├── core/              # Business logic layer
+│   ├── domain/        # Business domains (inventory, customer, etc.)
+│   ├── entity/        # Data entities
+│   └── validator/     # Input validation
+├── doc/               # Documentation (Developer-Guide, FRD)
+├── external/          # Git submodules (gtest, datetime)
+├── orchestra/         # Application layer
+│   ├── application/   # Console UI screens
+│   ├── datamanager/   # Data access implementations
+│   └── migration/     # Database schema
+├── scripts/           # Build helper scripts
+└── utility/           # Infrastructure services
+```
+
+### Build Artifacts After Successful Build
+```
+build/
+├── lib/                      # Generated libraries
+│   ├── libaccounting.so     # Accounting domain
+│   ├── libcustomermgmt.so   # Customer management
+│   ├── libdatamanager.a     # Data access layer
+│   ├── libempmgmt.so        # Employee management
+│   ├── libentity.a          # Business entities
+│   ├── libinventory.so      # Inventory domain
+│   ├── libutility.a         # Infrastructure services
+│   └── lib*.a/*.so          # Other generated libraries
+└── bin/
+    ├── console_app          # Main executable
+    ├── domain_unittest      # Unit test runner
+    └── *.cfg               # Configuration files
+```
+
+### Key Files to Monitor
+Always check these files after making changes:
+- `core/domain/common/basecontroller.hpp` - Base controller template
+- `core/domain/unittest/CMakeLists.txt` - Test build configuration  
+- `orchestra/datamanager/` - Data access implementations
+- `utility/logger/loghelper.hpp` - Logging macros
+- `CMakeLists.txt` - Main build configuration (compiler flags)
