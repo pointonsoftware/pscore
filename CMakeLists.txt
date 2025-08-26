@@ -45,6 +45,9 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 
 if (NOT (MINGW OR MSVC))
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -pg")
+  # Add coverage flags for gcov
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
 endif ()
 
 
