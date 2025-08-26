@@ -65,6 +65,9 @@ class EmployeeMgmtScreen : public ScreenInterface,
     void createEmployee();
     void updateEmployee();
     void removeEmployee();
+    
+    // Override base class method to provide better feedback
+    void invalidOptionSelected() const override;
     app::utility::TableHelper<entity::Employee> mTableHelper;
     app::utility::FieldHelper<entity::Employee> mEmpFieldHelper;
     app::utility::InformationFieldHelper mOtherInfoFieldHelper;

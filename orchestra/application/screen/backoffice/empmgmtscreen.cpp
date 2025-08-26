@@ -367,5 +367,16 @@ void EmployeeMgmtScreen::showUserSuccessfullyCreated(const std::string& name,
     std::cin.get();
 }
 
+void EmployeeMgmtScreen::invalidOptionSelected() const {
+    std::cout << "Sorry, that option is not yet available." << std::endl;
+    // Show current available options to help the user
+    std::cout << "Available options: ";
+    if (isShowingDetailsScreen) {
+        std::cout << "[u] - Update, [d] - Delete, [b] - Back, [0] - Logout" << std::endl;
+    } else {
+        std::cout << "[b] - Back, [c] - Create, [0] - Logout" << std::endl;
+    }
+}
+
 }  // namespace backoffice
 }  // namespace screen
