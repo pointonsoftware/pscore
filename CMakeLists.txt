@@ -38,7 +38,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 # compiler options
 set (COMPILER_EXCEPTION
     "-Wno-variadic-macros -Wno-long-long -Wno-shadow -Wno-unknown-pragmas \
-     -Wno-unused-result")
+     -Wno-unused-result -Wno-maybe-uninitialized")
 message(STATUS "GCC detected, adding compile flags")
 set (CMAKE_CXX_FLAGS "-Wall -pedantic -Werror ${COMPILER_EXCEPTION} -O2")
 endif(CMAKE_COMPILER_IS_GNUCXX)

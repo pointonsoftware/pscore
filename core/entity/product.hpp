@@ -21,6 +21,7 @@
 #ifndef CORE_ENTITY_PRODUCT_HPP_
 #define CORE_ENTITY_PRODUCT_HPP_
 
+#include <cstdint>
 #include <string>
 
 namespace entity {
