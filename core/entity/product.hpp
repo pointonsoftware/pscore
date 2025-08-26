@@ -22,6 +22,7 @@
 #define CORE_ENTITY_PRODUCT_HPP_
 
 #include <string>
+#include <cstdint>
 
 namespace entity {
 

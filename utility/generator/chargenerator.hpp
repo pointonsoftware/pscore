@@ -21,6 +21,7 @@
 #ifndef UTILITY_GENERATOR_CHARGENERATOR_HPP_
 #define UTILITY_GENERATOR_CHARGENERATOR_HPP_
 #include <string>
+#include <cstdint>
 
 namespace utility {
 namespace chargenerator {
