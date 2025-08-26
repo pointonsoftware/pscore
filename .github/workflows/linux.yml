@@ -44,7 +44,11 @@ jobs:
       run  : |
        cd build
        find ./core -name "*.gcda" -exec gcov-10 {} \;
-       bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: true
 
     - name: Profile
       run  : ./ci/ci_profiling.sh
