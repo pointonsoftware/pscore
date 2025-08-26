@@ -6,4 +6,4 @@
 
 # Visual Studio
 /.vs
-/out
+/outbuild/

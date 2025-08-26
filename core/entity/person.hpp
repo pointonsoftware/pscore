@@ -22,6 +22,7 @@
 #define CORE_ENTITY_PERSON_HPP_
 
 #include <string>
+#include <cstdint>
 #include <vector>
 #include <cstdint>
 #include "address.hpp"
