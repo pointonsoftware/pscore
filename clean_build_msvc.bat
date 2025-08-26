@@ -12,10 +12,31 @@ cd /d "%~dp0"
 
 REM Parse command line arguments
 set CORE_CMAKE_FLAGS=-DBUILD_UNITTEST=ON -DBUILD_ALL_COMPONENTS=ON
+set BUILD_CONFIG=Release
+
 :loop
 if not "%1"=="" (
-    set CORE_CMAKE_FLAGS=%1 %CORE_CMAKE_FLAGS%
-    shift
+    if "%1"=="--config" (
+        shift
+        if not "%1"=="" (
+            if /i "%1"=="debug" (
+                set BUILD_CONFIG=Debug
+            ) else if /i "%1"=="release" (
+                set BUILD_CONFIG=Release
+            ) else (
+                echo Invalid config value: %1
+                echo Valid values are: debug, release
+                exit /b 1
+            )
+            shift
+        ) else (
+            echo --config parameter requires a value (debug or release)
+            exit /b 1
+        )
+    ) else (
+        set CORE_CMAKE_FLAGS=%1 %CORE_CMAKE_FLAGS%
+        shift
+    )
     goto loop
 )
 
@@ -25,6 +46,7 @@ mkdir build
 cd build
 
 echo Starting clean build...
+echo Build config: %BUILD_CONFIG%
 echo cmake flags: %CORE_CMAKE_FLAGS%
 
 REM Configure with Visual Studio generator
@@ -35,7 +57,7 @@ if %errorlevel% neq 0 (
 )
 
 REM Build the project
-cmake --build . --config Release
+cmake --build . --config %BUILD_CONFIG%
 if %errorlevel% neq 0 (
     echo Build failed
     exit /b %errorlevel%
@@ -45,11 +67,11 @@ echo Build completed successfully
 
 REM Copy the configs
 if exist ..\config (
-    if not exist bin mkdir bin
-    copy ..\config\* bin\
-    echo Config files copied to bin folder.
+    if not exist bin\%BUILD_CONFIG% mkdir bin\%BUILD_CONFIG%
+    copy ..\config\* bin\%BUILD_CONFIG%\
+    echo Config files copied to bin\%BUILD_CONFIG% folder.
 )
 
 echo.
 echo Build completed successfully!
-echo Binaries are in: %cd%\Release
+echo Binaries are in: %cd%\%BUILD_CONFIG%
