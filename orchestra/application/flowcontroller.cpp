@@ -58,10 +58,10 @@ std::string& getCurrentUserId() {
 }
 
 void FlowController::run() {
+    LOG_INFO("System startup");
     // After the welcome screen, we will display the login screen
     defines::display nextScreen = defines::display::LOGIN;
-    LOG_INFO("System startup");
-    LOG_INFO("Core library version: %s", SCREENCOMMON().getCoreVersion().c_str());
+    
     do {
         // This promise is used for setting the future screen
         std::promise<defines::display> promise;
@@ -71,7 +71,8 @@ void FlowController::run() {
         // Here, we set the next screen to whatever is returned from the promise
         nextScreen = futureScreen.get();
     } while (nextScreen != defines::display::EXIT);
-    LOG_INFO("Exited the console app");
+    
+    LOG_INFO("System shutdown");
 }
 
 void FlowController::show(const defines::display& screenToDisplay,

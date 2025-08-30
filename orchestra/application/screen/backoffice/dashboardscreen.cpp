@@ -25,6 +25,7 @@
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
+#include <ui/theme.hpp>
 // data
 #include <dashboarddata.hpp>
 // utility
@@ -71,12 +72,17 @@ void DashboardScreen::showLandingScreen() const {
 
 void DashboardScreen::showOptions() const {
     std::cout << std::endl;
-    std::cout << "[1] Personal Information" << std::endl;
-    std::cout << "[2] Employee Management" << std::endl;
-    std::cout << "[3] Inventory Control" << std::endl;
-    std::cout << "[4] Customer Management" << std::endl;
-    std::cout << "[5] Accounting Information" << std::endl;
-    std::cout << "[0] Logout" << std::endl;
+    if (ui::Theme::enabled()) {
+        std::cout << ui::Theme::brightGreen();
+    }
+    std::cout << "[1] [2] [3] [4] [5]";
+    if (ui::Theme::enabled()) {
+        std::cout << ui::Theme::reset() << ui::Theme::dim();
+    }
+    std::cout << "  [0] LOGOUT  [x] EXIT" << std::endl;
+    if (ui::Theme::enabled()) {
+        std::cout << ui::Theme::reset();
+    }
 }
 
 void DashboardScreen::showUserInformation() const {

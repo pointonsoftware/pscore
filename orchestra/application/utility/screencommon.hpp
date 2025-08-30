@@ -67,7 +67,7 @@ class ScreenCommon {
         RIGHT
     };
 
-    ScreenCommon() = default;
+    ScreenCommon();
     Indent calculateIndents(VerticalAlignment vAlign,
                             unsigned int width,
                             const std::string& text) const;

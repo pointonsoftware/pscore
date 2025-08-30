@@ -176,6 +176,9 @@ void LogHelper::initializeLoggerType() {
     mLogger = [loggerType] {
         std::unique_ptr<LoggerInterface> temp;
         switch (loggerType) {
+            case LoggerType::OFF:
+                // No logger - temp remains nullptr
+                break;
             case LoggerType::FILE:
                 temp = std::make_unique<FileLogger>();
                 break;
