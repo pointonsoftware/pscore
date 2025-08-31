@@ -67,22 +67,22 @@ void ScreenCommon::clearScreen() const {
 void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     clearScreen();
     
-    // Clean PSCORE ASCII Art like darkwire.app
+    // PSCORE banner with Claude Code CLI style box-drawing characters
     std::cout << std::endl;
     if (ui::Theme::enabled()) {
         std::cout << ui::Theme::bold() << ui::Theme::brightGreen();
     }
     
-    std::cout << "            ██████  ███████  ██████  ██████  ██████  ███████ " << std::endl;
-    std::cout << "            ██   ██ ██      ██      ██    ██ ██   ██ ██      " << std::endl;
-    std::cout << "            ██████  ███████ ██      ██    ██ ██████  █████   " << std::endl;
-    std::cout << "            ██           ██ ██      ██    ██ ██   ██ ██      " << std::endl;
-    std::cout << "            ██      ███████  ██████  ██████  ██   ██ ███████ " << std::endl;
+    std::cout << "            ██████╗ ███████╗ ██████╗ ██████╗ ██████╗ ███████╗" << std::endl;
+    std::cout << "            ██╔══██╗██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝" << std::endl;
+    std::cout << "            ██████╔╝███████╗██║     ██║   ██║██████╔╝█████╗  " << std::endl;
+    std::cout << "            ██╔═══╝ ╚════██║██║     ██║   ██║██╔══██╗██╔══╝  " << std::endl;
+    std::cout << "            ██║     ███████║╚██████╗╚██████╔╝██║  ██║███████╗" << std::endl;
+    std::cout << "            ╚═╝     ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝" << std::endl;
     
     if (ui::Theme::enabled()) {
         std::cout << ui::Theme::reset();
     }
-    
     std::cout << std::endl;
     
     // Version and current screen in a clean darkwire style
