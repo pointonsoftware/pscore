@@ -40,6 +40,7 @@ class ScreenCommon {
 
     // Outputs
     void showTopBanner(const std::string& currentScreen) const;
+    void printPSCORE() const;
     void printTitleText(const std::string& text, bool showBorders = true) const;
     void printItemText(const std::string& label, const std::string& item) const;
     void printColumns(const std::vector<std::string>& columns,
@@ -70,7 +71,13 @@ class ScreenCommon {
     ScreenCommon();
     Indent calculateIndents(VerticalAlignment vAlign,
                             unsigned int width,
-                            const std::string& text) const;
+                            const size_t textSize) const;
+    /**
+     * Calculate display width of text excluding ANSI escape sequences
+     * @param text - String that may contain ANSI codes
+     * @return Display width (visual character count)
+     */
+    size_t getVisualTextSize(const std::string& text) const;
 };
 
 }  // namespace screen

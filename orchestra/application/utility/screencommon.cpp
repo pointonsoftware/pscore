@@ -33,6 +33,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
+#include <regex>
 
 constexpr char CORE_VERSION[] = "version";
 constexpr char CORE_VERSION_MASK[] = "x.x.x";
@@ -66,72 +67,51 @@ void ScreenCommon::clearScreen() const {
 
 void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
     clearScreen();
-    
-    // PSCORE banner with Claude Code CLI style box-drawing characters
-    std::cout << std::endl;
-    if (ui::Theme::enabled()) {
-        std::cout << ui::Theme::bold() << ui::Theme::brightGreen();
-    }
-    
-    std::cout << "            ██████╗ ███████╗ ██████╗ ██████╗ ██████╗ ███████╗" << std::endl;
-    std::cout << "            ██╔══██╗██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝" << std::endl;
-    std::cout << "            ██████╔╝███████╗██║     ██║   ██║██████╔╝█████╗  " << std::endl;
-    std::cout << "            ██╔═══╝ ╚════██║██║     ██║   ██║██╔══██╗██╔══╝  " << std::endl;
-    std::cout << "            ██║     ███████║╚██████╗╚██████╔╝██║  ██║███████╗" << std::endl;
-    std::cout << "            ╚═╝     ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝" << std::endl;
-    
-    if (ui::Theme::enabled()) {
-        std::cout << ui::Theme::reset();
-    }
-    std::cout << std::endl;
-    
+    printPSCORE();
+
     // Version and current screen in a clean darkwire style
     if (ui::Theme::enabled()) {
         std::cout << ui::Theme::dim();
     }
-    
-    // Create a horizontal line with version and current screen
-    std::string versionStr = "v" + std::string(getCoreVersion());
-    std::string separator = "--------------------------------------------------------------------------------";
-    
-    // Center the current screen and version info
-    std::cout << separator << std::endl;
-    
+    printTitleText("Version " + std::string(getCoreVersion()), true);
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
+
     if (ui::Theme::enabled()) {
         std::cout << ui::Theme::reset() << ui::Theme::brightGreen();
-    }
-    
-    // Format: [CURRENT_SCREEN]  [VERSION]  [BUSINESS_MENUS]
-    std::cout << "[" << currentScreen << "]";
-    
-    if (ui::Theme::enabled()) {
         std::cout << ui::Theme::reset() << ui::Theme::dim();
     }
-    
-    std::cout << "  [" << versionStr << "]";
-    
-    if (ui::Theme::enabled()) {
-        std::cout << ui::Theme::reset() << ui::Theme::brightGreen();
-    }
-    
-    std::cout << "  [PERSONAL INFO]  [EMPLOYEES]  [INVENTORY]  [CUSTOMERS]  [ACCOUNTING]" << std::endl;
-    
-    if (ui::Theme::enabled()) {
-        std::cout << ui::Theme::reset() << ui::Theme::dim();
-    }
-    
-    std::cout << separator << std::endl;
-    
+
+    std::cout << "[PERSONAL INFO]  [EMPLOYEES]  [INVENTORY]  [CUSTOMERS]  [ACCOUNTING]" << std::endl;
+
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
+
     if (ui::Theme::enabled()) {
         std::cout << ui::Theme::reset();
     }
-    
+
     std::cout << std::endl;
+}
+
+void ScreenCommon::printPSCORE() const {
+    if (ui::Theme::enabled()) {
+        std::cout << ui::Theme::bold() << ui::Theme::brightGreen();
+    }
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
+    printTitleText("██████╗ ███████╗ ██████╗ ██████╗ ██████╗ ███████╗", true);
+    printTitleText("██╔══██╗██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝", true);
+    printTitleText("██████╔╝███████╗██║     ██║   ██║██████╔╝█████╗  ", true);
+    printTitleText("██╔═══╝ ╚════██║██║     ██║   ██║██╔══██╗██╔══╝  ", true);
+    printTitleText("██║     ███████║╚██████╗╚██████╔╝██║  ██║███████╗", true);
+    printTitleText("╚═╝     ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝", true);
+    printHorizontalBorder(defines::BORDER_CHARACTER_1);
+    if (ui::Theme::enabled()) {
+        std::cout << ui::Theme::reset();
+    }
 }
 
 void ScreenCommon::printTitleText(const std::string& text, bool showBorders) const {
     const Indent indents = calculateIndents(VerticalAlignment::CENTER,
-                                            defines::SCREEN_WIDTH, text);
+                                            defines::SCREEN_WIDTH, getVisualTextSize(text));
     // Simplified border handling
     const char left = (showBorders ? defines::BORDER_CHARACTER_1 : ' ');
     const char right = (showBorders ? defines::BORDER_CHARACTER_1 : ' ');
@@ -173,7 +153,7 @@ void ScreenCommon::printColumns(const std::vector<std::string>& columns,
                                                 VerticalAlignment::CENTER :
                                                 VerticalAlignment::LEFT,
                                                 columnWidth,
-                                                columns[i]);
+                                                columns[i].size());
         /*!
          * If showColumnBorders is true, print defines::BORDER_CHARACTER_3
          * Else, we just print defines::BORDER_CHARACTER_3 on the first column
@@ -244,7 +224,7 @@ std::string ScreenCommon::getInput(const std::string& label, unsigned int maxSiz
         if (ui::Theme::enabled()) {
             std::cout << ui::Theme::reset();
         }
-        
+
         if (std::iswspace(std::cin.peek())) {
             // Ignore if cin is not empty
             std::cin.ignore();
@@ -307,17 +287,17 @@ const std::string ScreenCommon::getUpdateField(const std::vector<std::string>& f
 
 ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
                                                     unsigned int width,
-                                                    const std::string& text) const {
+                                                    const size_t textSize) const {
     Indent indents;
     switch (vAlign) {
         case VerticalAlignment::LEFT:
             indents.start = " ";  // Left offset
-            indents.end = std::string((width - text.size() - 2), ' ');
+            indents.end = std::string((width - textSize - 2), ' ');
             break;
         case VerticalAlignment::CENTER:
-            indents.start = std::string((width - text.size()) / 2, ' ');
+            indents.start = std::string((width - textSize) / 2, ' ');
             indents.end = indents.start;
-            if (!(text.size() % 2)) {
+            if (!(textSize % 2)) {
                 indents.end = indents.start.substr(0, indents.start.size() - 1);
             }
             break;
@@ -330,9 +310,49 @@ ScreenCommon::Indent ScreenCommon::calculateIndents(VerticalAlignment vAlign,
     return indents;
 }
 
+size_t ScreenCommon::getVisualTextSize(const std::string& text) const {
+    // Remove ANSI escape sequences using regex
+    // Pattern matches: ESC[ followed by any number of digits, semicolons, and letters
+    static const std::regex ansiRegex("\033\\[[0-9;]*[a-zA-Z]");
+    const std::string& cleanText = std::regex_replace(text, ansiRegex, "");
+
+    // Count actual printable characters (handling UTF-8)
+    size_t visualLength = 0;
+    for (size_t i = 0; i < cleanText.length(); ) {
+        unsigned char byte = static_cast<unsigned char>(cleanText[i]);
+
+        if (byte < 0x80) {
+            // ASCII character (1 byte) - counts as 1 visual character
+            visualLength++;
+            i++;
+        } else if ((byte & 0xE0) == 0xC0) {
+            // UTF-8 2-byte sequence - counts as 1 visual character
+            visualLength++;
+            i += 2;
+        } else if ((byte & 0xF0) == 0xE0) {
+            // UTF-8 3-byte sequence - counts as 1 visual character
+            visualLength++;
+            i += 3;
+        } else if ((byte & 0xF8) == 0xF0) {
+            // UTF-8 4-byte sequence - counts as 1 visual character
+            visualLength++;
+            i += 4;
+        } else {
+            // Invalid UTF-8 or continuation byte - skip
+            i++;
+        }
+    }
+
+    return visualLength;
+}
+
 const std::string ScreenCommon::getCoreVersion() const {
-    // Simple hardcoded return for debugging
-    return std::string("0.4.12");
+    static std::string version = CORE_VERSION_MASK;
+    if (version == CORE_VERSION_MASK) {
+        utility::Config config(CORE_VERSION);
+        version = config.get("version", CORE_VERSION_MASK);
+    }
+    return version;
 }
 
 }  // namespace screen
