@@ -33,7 +33,7 @@ namespace login {
 
 void LoginScreen::show(std::promise<defines::display>* promise) {
     // Welcome to Core!
-    SCREENCOMMON().showTopBanner("Login");
+    SCREENCOMMON().showTopBanner("Login", {"[x] - Exit"});
 
     do {
         std::string id;

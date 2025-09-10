@@ -70,7 +70,7 @@ void AccountingScreen::show(std::promise<defines::display>* promise) {
 
 void AccountingScreen::showLandingScreen() const {
     LOG_DEBUG("Showing accounting information screen");
-    SCREENCOMMON().showTopBanner("Accounting Information");
+    SCREENCOMMON().showTopBanner("Accounting Information", {"[b] - Back", "[0] - Logout"});
     // @todo - show data according to Product Requirement / Screen Design
     std::cout << std::endl;
     std::cout << "Total transactions count: " << mSalesTable.getDataCount() << std::endl;
@@ -88,13 +88,6 @@ void AccountingScreen::showLandingScreen() const {
     std::cout << "[w] This week" << std::endl;
     std::cout << "[m] This month" << std::endl;
     std::cout << "[r] This year" << std::endl;
-    showOptions();
-}
-
-void AccountingScreen::showOptions() const {
-    std::cout << std::endl << std::endl;
-    SCREENCOMMON().printColumns({"[b] - Back", "[0] - Logout"}, true, false);
-    std::cout << std::endl;
 }
 
 void AccountingScreen::queryTransactionsList() {
@@ -211,11 +204,10 @@ bool AccountingScreen::action(Options option, std::promise<defines::display>* ne
 void AccountingScreen::showSales(domain::accounting::Period period) {
     // Get sales from core
     mSalesTable.setData(mCoreController->getSales(period));
-    SCREENCOMMON().showTopBanner("Accounting Information");
+    SCREENCOMMON().showTopBanner("Accounting Information", {"[b] - Back", "[0] - Logout"});
     std::cout << std::endl;
     std::cout << "Total transactions count: " << mSalesTable.getDataCount() << std::endl;
     mSalesTable.printTable();
-    showOptions();
 }
 
 void AccountingScreen::showInvalidDateTimeRange() {

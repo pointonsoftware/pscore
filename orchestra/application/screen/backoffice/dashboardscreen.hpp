@@ -52,7 +52,6 @@ class DashboardScreen : public ScreenInterface,
     entity::User mCurrentUser;
     void menuSelection(std::promise<defines::display>* promise) const;
     void showLandingScreen() const;
-    void showOptions() const override;
     void showUserInformation() const;
     Options getUserSelection() const;
     bool action(Options option, std::promise<defines::display>* nextScreen) const;

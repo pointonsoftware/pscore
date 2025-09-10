@@ -39,7 +39,8 @@ class ScreenCommon {
     void clearScreen() const;
 
     // Outputs
-    void showTopBanner(const std::string& currentScreen) const;
+    void showTopBanner(const std::string& currentScreen,
+        const std::vector<std::string>& options = {"[b] - Back", "[c] - Create", "[0] - Logout"}) const;
     void printPSCORE() const;
     void printTitleText(const std::string& text, bool showBorders = true) const;
     void printItemText(const std::string& label, const std::string& item) const;
@@ -47,6 +48,7 @@ class ScreenCommon {
                       bool isHeader = false, bool showColumnBorders = true) const;
     void printHorizontalBorder(char borderCharacter) const;
     void printErrorList(const std::vector<std::string>& errors) const;
+    void printOptions(const std::vector<std::string>& options) const;
 
     // Inputs
     std::string getInput(const std::string& label, unsigned int maxSize = 0) const;

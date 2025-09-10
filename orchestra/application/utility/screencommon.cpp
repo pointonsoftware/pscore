@@ -65,7 +65,7 @@ void ScreenCommon::clearScreen() const {
 #endif
 }
 
-void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
+void ScreenCommon::showTopBanner(const std::string& currentScreen, const std::vector<std::string>& options) const {
     clearScreen();
     printPSCORE();
 
@@ -81,7 +81,8 @@ void ScreenCommon::showTopBanner(const std::string& currentScreen) const {
         std::cout << ui::Theme::reset() << ui::Theme::dim();
     }
 
-    std::cout << "[PERSONAL INFO]  [EMPLOYEES]  [INVENTORY]  [CUSTOMERS]  [ACCOUNTING]" << std::endl;
+    // Custom options provided by the calling screen
+    printOptions(options);
 
     printHorizontalBorder(defines::BORDER_CHARACTER_1);
 
@@ -207,6 +208,30 @@ void ScreenCommon::printErrorList(const std::vector<std::string>& errors) const 
     if (ui::Theme::enabled()) std::cout << ui::Theme::use(ui::Theme::reset());
     std::cin.ignore();
     std::cin.get();
+}
+
+void ScreenCommon::printOptions(const std::vector<std::string>& options) const {
+    if (options.empty()) {
+        return;
+    }
+
+    std::string optionsLine;
+    for (size_t i = 0; i < options.size(); ++i) {
+        if (i > 0) {
+            optionsLine += "  ";  // Separator between options
+        }
+        optionsLine += options[i];
+    }
+
+    if (ui::Theme::enabled()) {
+        std::cout << ui::Theme::bold() << ui::Theme::brightGreen();
+    }
+
+    std::cout << optionsLine << std::endl;
+
+    if (ui::Theme::enabled()) {
+        std::cout << ui::Theme::reset();
+    }
 }
 
 std::string ScreenCommon::getInput(const std::string& label, unsigned int maxSize) const {
