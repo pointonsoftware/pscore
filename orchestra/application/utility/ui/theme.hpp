@@ -49,7 +49,7 @@ struct Theme {
     static const char* yellow() { return "\033[33m"; }
     static const char* white() { return "\033[37m"; }
     static const char* green() { return "\033[32m"; }     // standard green
-    static const char* brightGreen() { return "\033[92m"; } // bright green
+    static const char* brightGreen() { return "\033[92m"; }  // bright green
 
     // Convenience wrappers: if disabled, return empty string to avoid escape output
     static const char* use(const char* code) { return enabled() ? code : ""; }

@@ -65,7 +65,9 @@ void DashboardScreen::menuSelection(std::promise<defines::display>* promise) con
 void DashboardScreen::showLandingScreen() const {
     LOG_DEBUG("Showing dashboard screen");
     // Use custom options for dashboard screen
-    SCREENCOMMON().showTopBanner("Dashboard", {" [1] Personal", "[2] Employee", "[3] Inventory", "[4] Customer", "[5] Accounting", "[0] Logout"});
+    SCREENCOMMON().showTopBanner("Dashboard",
+                                 {" [1] Personal", "[2] Employee", "[3] Inventory",
+                                  "[4] Customer", "[5] Accounting", "[0] Logout"});
     std::cout << "Hi " << mCurrentUser.userID()
               << ", please select an option." << std::endl;
 }

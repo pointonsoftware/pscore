@@ -65,7 +65,8 @@ void ScreenCommon::clearScreen() const {
 #endif
 }
 
-void ScreenCommon::showTopBanner(const std::string& currentScreen, const std::vector<std::string>& options) const {
+void ScreenCommon::showTopBanner(const std::string& currentScreen,
+                                 const std::vector<std::string>& options) const {
     clearScreen();
     printPSCORE();
 

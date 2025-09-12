@@ -40,7 +40,8 @@ class ScreenCommon {
 
     // Outputs
     void showTopBanner(const std::string& currentScreen,
-        const std::vector<std::string>& options = {"[b] - Back", "[c] - Create", "[0] - Logout"}) const;
+        const std::vector<std::string>& options =
+            {"[b] - Back", "[c] - Create", "[0] - Logout"}) const;
     void printPSCORE() const;
     void printTitleText(const std::string& text, bool showBorders = true) const;
     void printItemText(const std::string& label, const std::string& item) const;
