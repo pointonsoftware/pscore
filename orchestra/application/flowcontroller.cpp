@@ -55,7 +55,7 @@ std::string& getCurrentUserId() {
     static std::string currentUserId;
     return currentUserId;
 }
-}
+}  // namespace screenshared
 
 void FlowController::run() {
     // After the welcome screen, we will display the login screen

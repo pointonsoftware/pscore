@@ -25,6 +25,7 @@
 // view
 #include <informationscreen.hpp>
 #include <screencommon.hpp>
+#include <ui/theme.hpp>
 // data
 #include <dashboarddata.hpp>
 // utility
@@ -63,25 +64,18 @@ void DashboardScreen::menuSelection(std::promise<defines::display>* promise) con
 
 void DashboardScreen::showLandingScreen() const {
     LOG_DEBUG("Showing dashboard screen");
-    SCREENCOMMON().showTopBanner("Dashboard");
+    // Use custom options for dashboard screen
+    SCREENCOMMON().showTopBanner("Dashboard",
+                                 {" [1] Personal", "[2] Employee", "[3] Inventory",
+                                  "[4] Customer", "[5] Accounting", "[0] Logout"});
     std::cout << "Hi " << mCurrentUser.userID()
-              << ", please select an option below." << std::endl;
-    showOptions();
-}
-
-void DashboardScreen::showOptions() const {
-    std::cout << std::endl;
-    std::cout << "[1] Personal Information" << std::endl;
-    std::cout << "[2] Employee Management" << std::endl;
-    std::cout << "[3] Inventory Control" << std::endl;
-    std::cout << "[4] Customer Management" << std::endl;
-    std::cout << "[5] Accounting Information" << std::endl;
-    std::cout << "[0] Logout" << std::endl;
+              << ", please select an option." << std::endl;
 }
 
 void DashboardScreen::showUserInformation() const {
     LOG_DEBUG("Showing user information screen");
-    SCREENCOMMON().showTopBanner("User Information");
+    // Show different options for user information screen
+    SCREENCOMMON().showTopBanner("User Information", {""});
     if (!mCurrentUser.employeeID().empty()) {
         entity::Employee emp = mCoreController->getUserDetails(mCurrentUser);
         screen::InformationScreen<entity::Employee> userInfoScreen(emp);

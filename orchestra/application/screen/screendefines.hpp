@@ -37,7 +37,7 @@ enum class display {
     ACCNTING  = 0x107
 };
 
-constexpr unsigned int SCREEN_WIDTH = 80;
+constexpr unsigned int SCREEN_WIDTH = 84;
 constexpr unsigned int LABEL_WIDTH = 12;
 constexpr char LABEL_BOUNDARY = ':';
 constexpr char DELIMETER_COMMA = ',';

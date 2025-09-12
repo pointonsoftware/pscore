@@ -35,11 +35,6 @@ class BackOfficeScreenBase {
     virtual void invalidOptionSelected() const {
         std::cout << "Sorry, that option is not yet available." << std::endl;
     }
-    virtual void showOptions() const {
-        std::cout << std::endl << std::endl;
-        SCREENCOMMON().printColumns({"[b] - Back", "[c] - Create", "[0] - Logout"}, true, false);
-        std::cout << std::endl;
-    }
     // Screen options - this represents the buttons in a GUI
     enum class Options {
         LANDING,

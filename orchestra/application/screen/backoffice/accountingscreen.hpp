@@ -49,7 +49,6 @@ class AccountingScreen : public screen::ScreenInterface,
 
  private:
     void showLandingScreen() const;
-    void showOptions() const override;
     void queryTransactionsList();
     Options getUserSelection();
     bool action(Options option, std::promise<defines::display>* nextScreen);

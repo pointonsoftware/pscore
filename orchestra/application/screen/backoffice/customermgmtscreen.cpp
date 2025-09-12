@@ -88,7 +88,6 @@ void CustomerMgmtScreen::showLandingScreen() const {
     LOG_DEBUG("Showing customer management screen");
     SCREENCOMMON().showTopBanner("Customer Management");
     showCustomers();
-    showOptions();
 }
 
 void CustomerMgmtScreen::queryCustomersList() {
@@ -111,7 +110,6 @@ void CustomerMgmtScreen::showCustomerDetails(bool showIndex) const {
     infoScreen.showAddress();
     infoScreen.showContactDetails();
     infoScreen.showPersonalIds();
-    infoScreen.showOptions();
 }
 
 bool CustomerMgmtScreen::fillCustomerInformation(entity::Customer* customer,

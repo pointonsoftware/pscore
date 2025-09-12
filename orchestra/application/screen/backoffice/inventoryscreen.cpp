@@ -88,7 +88,6 @@ void InventoryScreen::showLandingScreen() const {
     LOG_DEBUG("Showing inventory management screen");
     SCREENCOMMON().showTopBanner("Inventory Control");
     showProducts();
-    showOptions();
 }
 
 void InventoryScreen::queryProductsList() {

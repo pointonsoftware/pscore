@@ -88,7 +88,6 @@ void EmployeeMgmtScreen::showLandingScreen() const {
     LOG_DEBUG("Showing employee management screen");
     SCREENCOMMON().showTopBanner("Employee Management");
     showEmployees();
-    showOptions();
 }
 
 void EmployeeMgmtScreen::queryEmployeesList() {

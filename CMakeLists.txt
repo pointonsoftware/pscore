@@ -16,7 +16,12 @@ else()
 endif()
 
 # Version file
-set (version_file "${CMAKE_CURRENT_BINARY_DIR}/bin/version")
+if(MSVC AND DEFINED CMAKE_BUILD_CONFIG)
+    # Use the build config passed from the batch script
+    set (version_file "${CMAKE_CURRENT_BINARY_DIR}/bin/${CMAKE_BUILD_CONFIG}/version")
+else()
+    set (version_file "${CMAKE_CURRENT_BINARY_DIR}/bin/version")
+endif()
 write_file (${version_file} "[CORE]\nversion=${CORE_VERSION}")
 
 
